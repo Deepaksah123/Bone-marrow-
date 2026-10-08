@@ -10,19 +10,18 @@ Source boundary: `Deepaksah123/Bone-marrow-` only.
 - Decompiled ZIP: 26,825 entries
 - Java/Kotlin source: 20,526 files
 - Smali: 817 files
-- XML: 2,371 files
+- XML/resource entries: 2,371 XML files plus decoded-resource inventory
 - `com/marrow2` source: 401 files
 - `com/marrow2/ui` source: 233 files
-- Decoded Android resources including layouts, drawables, colors, fonts and values
 - Existing APK path/batch inventory and exclusion documentation in the repository
 
 ## Previous blockers — status
 
-1. ~~Original `base.apk` unavailable~~ — **RESOLVED**; uploaded and verified.
+1. ~~Original `base.apk` unavailable~~ — **RESOLVED**; uploaded and SHA-256 verified.
 2. ~~Verified decompiled Java/Kotlin unavailable~~ — **RESOLVED**; uploaded decompiler dump verified.
 3. ~~Verified Smali unavailable~~ — **RESOLVED**.
-4. ~~Decoded resource/XML source unavailable~~ — **RESOLVED**.
-5. Source-to-screen/behavior map missing — **ACTIVE NEXT TASK**.
+4. ~~Resource evidence unavailable~~ — **RESOLVED**; original resource inventory and binary resource entries are available. Build-ready XML decoding is still an implementation prerequisite.
+5. ~~Source-to-screen/behavior map missing~~ — **RESOLVED for core domains**; `reconstruction/SOURCE_TO_SCREEN_MAP.md` now records the evidence-backed Home/QBank/Test/Video/supporting flow boundaries.
 
 ## Scope exclusions
 
@@ -40,12 +39,29 @@ Source boundary: `Deepaksah123/Bone-marrow-` only.
 
 ## Current state
 
-The project has moved from **evidence acquisition** to **actual reconstruction**.
+The project is in **actual reconstruction**, not prototype generation.
 
-## Next large batch
+Completed in this phase:
+- verified original APK/decompiler inputs;
+- mapped core source domains;
+- identified the original Home/QBank/Test/Video resource candidates;
+- established the reconstruction order.
 
-1. Trace Home, QBank, Test and Video source-to-screen relationships.
-2. Map resource IDs, layouts, themes, dimensions, colors, strings and drawables.
-3. Establish navigation/state boundaries.
-4. Build the first complete evidence-backed Android UI/navigation batch in the Bone-marrow repository.
-5. Build/QA and iterate from verified failures rather than creating a prototype.
+## Active implementation batch
+
+### Batch A — shell/navigation + Home
+
+1. Decode/normalize the original resource layer required by the shell/Home screens.
+2. Trace main navigation, tab state, deeplink/back-stack behavior and shared Home state.
+3. Reconstruct Home using the original source/resource evidence.
+4. Build and verify the Android target before moving to QBank.
+5. Record any evidence gap instead of substituting guessed UI.
+
+### Following batches
+
+- **B:** QBank
+- **C:** Test
+- **D:** Video
+- **E:** supporting UI
+
+No educational content will be inserted during these UI batches.
