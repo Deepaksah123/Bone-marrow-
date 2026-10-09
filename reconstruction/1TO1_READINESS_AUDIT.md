@@ -39,7 +39,7 @@ Source boundary: `Deepaksah123/Bone-marrow-` only.
 
 ## Current state
 
-The project contains a first native Android app module with four tab destinations and original tab vector assets, light/night palettes, and a build workflow. Important distinction: the current bottom tab row is a custom approximation, not the original Material TabLayout hierarchy; the app-bar content is unresolved. Home/QBank/Test/Video body screens are still placeholders/incomplete, and their data/navigation wiring is not reconstructed. A CI APK build is verified for commit `11dbe5057eabcd018d3a6a48b3bac669f0412f96`; later cleanup commits are rebuilding. No device/emulator visual QA has been performed, so this is not 1:1.
+The project contains a native Android app module and CI workflow. The shell now uses a Material `TabLayout`, custom tab views, and source-derived IDs `fullContainer`, `bottomNavigation`, `cvBottomNavigationContainer`, and `homeAppBar`. The four tab order/icon/string resource mapping is grounded in `DataBuffer.java` and the batch-7 source trace. Home/QBank/Test/Video body implementations remain incomplete and are not yet 1:1. Recent CI exposed stale tab ID references in an earlier commit; those references have since been replaced, and the latest build is pending. No device/emulator visual QA has been performed.
 
 Completed in this phase:
 - verified original APK/decompiler inputs;
@@ -72,3 +72,21 @@ No educational content will be inserted during these UI batches.
 - Removed the unverified `My Tests` / `Grand Tests` / `Previous Year` filter labels from `MainActivity`; the original test fragment has a Material `TabLayout`, but these exact labels were not established from source strings.
 - Removed the unverified `Marrow` text from the reconstructed app bar. The source establishes the `homeAppBar` container, not its exact title/content.
 - The custom bottom row and screen bodies remain provisional; do not call the UI 1:1. Latest commits are being rebuilt by CI.
+
+
+## Parallel reconstruction batch — 2026-10-09
+
+### Shell/navigation work now applied
+
+- Replaced the shell's hand-wired row selection with the original Material `TabLayout` component family.
+- Added the Material Components dependency to the Android module.
+- Populated four tab slots from the source-backed model order and original tab vector/string resources.
+- Aligned shell IDs with source binding names: `fullContainer`, `bottomNavigation`, `cvBottomNavigationContainer`, and `homeAppBar`.
+- Corrected custom tab root sizing so it fills the Material tab slot rather than depending on `0dp` width/weight outside a LinearLayout parent.
+- Kept current header/test filter UI intact per instruction; do not remove existing UI solely because a search pass did not locate its source string. Trace original string/layout resources before changing it.
+
+### Verification
+
+- A previous CI run failed because `MainActivity` still referenced the old `home_tab`/`qbank_tab`/`tests_tab`/`videos_tab` IDs after the XML was switched to a single `TabLayout`. That compile error is known and was addressed by the subsequent Material TabLayout rewrite.
+- Latest CI status must be checked before declaring the batch build-green.
+- Runtime/device visual QA has not been performed. The four content bodies remain incomplete and must not be called 1:1.
