@@ -39,7 +39,7 @@ Source boundary: `Deepaksah123/Bone-marrow-` only.
 
 ## Current state
 
-The project now contains a first native Android app module with the source-verified four-tab shell, original tab vector assets, light/night palettes, and a build workflow. It is still not a complete Android reconstruction; Home/QBank/Test/Video body screens and their data/navigation wiring remain incomplete. Do not describe it as 1:1 or build-verified until CI produces the APK and runtime QA is performed.
+The project contains a first native Android app module with four tab destinations and original tab vector assets, light/night palettes, and a build workflow. Important distinction: the current bottom tab row is a custom approximation, not the original Material TabLayout hierarchy; the app-bar content is unresolved. Home/QBank/Test/Video body screens are still placeholders/incomplete, and their data/navigation wiring is not reconstructed. A CI APK build is verified for commit `11dbe5057eabcd018d3a6a48b3bac669f0412f96`; later cleanup commits are rebuilding. No device/emulator visual QA has been performed, so this is not 1:1.
 
 Completed in this phase:
 - verified original APK/decompiler inputs;
@@ -51,7 +51,7 @@ Completed in this phase:
 
 ### Batch A — shell/navigation + Home
 
-1. Parse the decoded resource files already present under `resources/res/`; inspect the original APK's resource table/binary XML separately because `resources.arsc` is absent from the decompiler ZIP.
+1. Decode the original APK's `resources.arsc` and binary XML into build-ready resources; the decompiler ZIP resource names alone do not provide a build-ready exact hierarchy.
 2. Generate exact resource and screen mappings from actual source references; mark candidate relationships unverified until traced.
 3. Trace main navigation, tab state, deeplink/back-stack behavior and shared Home state with file/method/line evidence.
 4. Only then implement shell/Home from verified evidence; do not create a guessed Android project/tree.
@@ -65,3 +65,10 @@ Completed in this phase:
 - **E:** supporting UI
 
 No educational content will be inserted during these UI batches.
+
+
+## Latest evidence-boundary cleanup (2026-10-09)
+
+- Removed the unverified `My Tests` / `Grand Tests` / `Previous Year` filter labels from `MainActivity`; the original test fragment has a Material `TabLayout`, but these exact labels were not established from source strings.
+- Removed the unverified `Marrow` text from the reconstructed app bar. The source establishes the `homeAppBar` container, not its exact title/content.
+- The custom bottom row and screen bodies remain provisional; do not call the UI 1:1. Latest commits are being rebuilt by CI.
