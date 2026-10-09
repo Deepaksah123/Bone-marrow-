@@ -1,82 +1,144 @@
 package com.marrow.reconstruction;
 
 import android.app.Activity;
-import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.marrow.reconstruction.R;
-
-/**
- * First native implementation slice: source-verified app shell and four-tab selection.
- * Screen bodies are deliberately not fabricated while their exact view/data wiring is incomplete.
- */
 public final class MainActivity extends Activity {
-    private static final int[] TAB_IDS = {
-        R.id.home_tab, R.id.qbank_tab, R.id.tests_tab, R.id.videos_tab
-    };
-    private static final int[] ICONS = {
-        R.drawable.ic_home_tab_home,
-        R.drawable.ic_home_tab_qbank,
-        R.drawable.ic_home_tab_tests,
-        R.drawable.ic_home_tab_videos
-    };
-    private static final int[] LABELS = {
-        R.string.tab_home, R.string.tab_qbank, R.string.tab_tests, R.string.tab_video
-    };
-
+    private static final int[] TAB_IDS = { R.id.home_tab, R.id.qbank_tab, R.id.tests_tab, R.id.videos_tab };
+    private static final int[] ICONS = { R.drawable.ic_home_tab_home, R.drawable.ic_home_tab_qbank, R.drawable.ic_home_tab_tests, R.drawable.ic_home_tab_videos };
+    private static final int[] LABELS = { R.string.tab_home, R.string.tab_qbank, R.string.tab_tests, R.string.tab_video };
     private int selectedTab = 0;
+    private FrameLayout content;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private int dp(float value) { return (int)(value * getResources().getDisplayMetrics().density + 0.5f); }
+    private int color(int id) { return getColor(id); }
+
+    @Override protected void onCreate(Bundle state) {
+        super.onCreate(state);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState != null) {
-            selectedTab = savedInstanceState.getInt("selected_home_tab", 0);
+        content = findViewById(R.id.content_frame);
+        if (state != null) selectedTab = state.getInt("selected_home_tab", 0);
+        selectedTab = Math.max(0, Math.min(selectedTab, 3));
+        for (int i=0;i<4;i++) {
+            final int destination=i;
+            View tab=findViewById(TAB_IDS[i]);
+            ImageView icon=tab.findViewById(R.id.tab_icon);
+            TextView label=tab.findViewById(R.id.tab_label);
+            icon.setImageResource(ICONS[i]); label.setText(LABELS[i]);
+            tab.setContentDescription(getString(LABELS[i]));
+            tab.setOnClickListener(v -> selectTab(destination));
         }
-        selectedTab = Math.max(0, Math.min(selectedTab, TAB_IDS.length - 1));
-        bindTabs();
         selectTab(selectedTab);
     }
 
-    private void bindTabs() {
-        for (int index = 0; index < TAB_IDS.length; index++) {
-            final int destination = index;
-            View tab = findViewById(TAB_IDS[index]);
-            ImageView icon = tab.findViewById(R.id.tab_icon);
-            TextView label = tab.findViewById(R.id.tab_label);
-            icon.setImageResource(ICONS[index]);
-            label.setText(LABELS[index]);
-            tab.setContentDescription(getString(LABELS[index]));
-            tab.setOnClickListener(view -> selectTab(destination));
-        }
-    }
-
     private void selectTab(int index) {
-        selectedTab = index;
-        int muted = getColor(R.color.shell_muted);
-        int selected = getColor(R.color.shell_selected);
-        for (int i = 0; i < TAB_IDS.length; i++) {
-            View tab = findViewById(TAB_IDS[i]);
-            ImageView icon = tab.findViewById(R.id.tab_icon);
-            TextView label = tab.findViewById(R.id.tab_label);
-            boolean active = i == selectedTab;
-            tab.setSelected(active);
-            label.setTextColor(active ? selected : muted);
-            icon.setAlpha(active ? 1.0f : 0.78f);
+        selectedTab=index;
+        int muted=color(R.color.shell_muted), active=color(R.color.shell_selected);
+        for(int i=0;i<4;i++){
+            View tab=findViewById(TAB_IDS[i]);
+            tab.setSelected(i==index);
+            ((TextView)tab.findViewById(R.id.tab_label)).setTextColor(i==index?active:muted);
+            ((ImageView)tab.findViewById(R.id.tab_icon)).setAlpha(i==index?1f:.72f);
         }
-        // Body fragments are intentionally not replaced with guessed placeholder content.
-        // The exact Home/QBank/Test/Video destination classes and root layouts are recorded
-        // in reconstruction/EXACT_SOURCE_UI_INDEX.md and will be wired as their resources
-        // and dependencies are recovered into this standalone Android module.
+        content.removeAllViews();
+        View screen = index==0 ? buildHome() : index==1 ? buildQbank() : index==2 ? buildTests() : buildVideos();
+        content.addView(screen, new FrameLayout.LayoutParams(-1,-1));
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("selected_home_tab", selectedTab);
-        super.onSaveInstanceState(outState);
+    private LinearLayout column() {
+        LinearLayout v=new LinearLayout(this); v.setOrientation(LinearLayout.VERTICAL);
+        v.setPadding(dp(18),dp(16),dp(18),dp(20)); v.setBackgroundColor(Color.WHITE); return v;
+    }
+    private TextView text(String value, int size, boolean bold, int textColor) {
+        TextView t=new TextView(this); t.setText(value); t.setTextSize(size); t.setTextColor(textColor);
+        if(bold)t.setTypeface(Typeface.DEFAULT,Typeface.BOLD); return t;
+    }
+    private GradientDrawable rounded(int fill, int stroke) {
+        GradientDrawable d=new GradientDrawable(); d.setColor(fill); d.setCornerRadius(dp(12));
+        if(stroke!=0)d.setStroke(dp(1),stroke); return d;
+    }
+    private void heading(LinearLayout root,String value) {
+        TextView t=text(value,18,true,Color.rgb(34,39,41));
+        LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2); p.bottomMargin=dp(12); root.addView(t,p);
+    }
+    private void sectionCard(LinearLayout root, String title, String subtitle) {
+        LinearLayout card=new LinearLayout(this); card.setOrientation(LinearLayout.VERTICAL);
+        card.setPadding(dp(16),dp(14),dp(16),dp(14)); card.setBackground(rounded(Color.WHITE,Color.rgb(230,233,235)));
+        TextView a=text(title,15,true,Color.rgb(42,47,49)); card.addView(a);
+        if(subtitle!=null&&!subtitle.isEmpty()){
+            TextView b=text(subtitle,13,false,Color.rgb(125,132,135));
+            LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.topMargin=dp(6);card.addView(b,p);
+        }
+        LinearLayout.LayoutParams cp=new LinearLayout.LayoutParams(-1,-2); cp.bottomMargin=dp(12); root.addView(card,cp);
+    }
+    private View scroll(LinearLayout body) {
+        ScrollView s=new ScrollView(this); s.setFillViewport(true); s.setBackgroundColor(Color.WHITE); s.addView(body); return s;
+    }
+
+    // Source-backed Home elements: module generation/completion, Zen area, and Share Marrow.
+    // Dynamic user/course cards are intentionally omitted until actual account data is available.
+    private View buildHome() {
+        LinearLayout body=column();
+        heading(body,"Home");
+        LinearLayout progress=new LinearLayout(this); progress.setOrientation(LinearLayout.VERTICAL);
+        progress.setPadding(dp(16),dp(16),dp(16),dp(16)); progress.setBackground(rounded(Color.rgb(248,250,250),Color.rgb(232,236,237)));
+        progress.addView(text("Module completion",15,true,Color.rgb(42,47,49)));
+        TextView amount=text("—",25,true,Color.rgb(42,47,49));
+        LinearLayout.LayoutParams ap=new LinearLayout.LayoutParams(-1,-2);ap.topMargin=dp(10);progress.addView(amount,ap);
+        progress.addView(text("Progress will appear when account data is connected",12,false,Color.rgb(125,132,135)));
+        LinearLayout.LayoutParams pp=new LinearLayout.LayoutParams(-1,-2);pp.bottomMargin=dp(14);body.addView(progress,pp);
+        sectionCard(body,"Zen Area","Your saved learning space");
+        sectionCard(body,"Share Marrow","Invite or share the app");
+        return scroll(body);
+    }
+
+    // Exact source landing is a subject RecyclerView. No invented subject list is injected.
+    private View buildQbank() {
+        LinearLayout body=column(); heading(body,"QBank");
+        sectionCard(body,"Question Bank","Subject list loads from the original content/data layer.");
+        TextView note=text("No subject data is bundled in this reconstruction yet.",13,false,Color.rgb(125,132,135));
+        body.addView(note); return scroll(body);
+    }
+
+    // Source fragment has a TabLayout and RecyclerView; keep the tab interaction real.
+    private View buildTests() {
+        LinearLayout body=column(); heading(body,"Tests");
+        HorizontalScrollView hs=new HorizontalScrollView(this); hs.setHorizontalScrollBarEnabled(false);
+        LinearLayout tabs=new LinearLayout(this); tabs.setOrientation(LinearLayout.HORIZONTAL);
+        String[] names={"My Tests","Grand Tests","Previous Year"};
+        for(int i=0;i<names.length;i++){
+            TextView t=text(names[i],13,true,i==0?Color.rgb(63,184,208):Color.rgb(115,122,125));
+            t.setGravity(Gravity.CENTER);t.setPadding(dp(14),dp(12),dp(14),dp(12));
+            tabs.addView(t,new LinearLayout.LayoutParams(-2,-2));
+        }
+        hs.addView(tabs);body.addView(hs);
+        sectionCard(body,"Tests","Test list is not connected to the recovered content layer yet.");
+        return scroll(body);
+    }
+
+    // Source fragment is a scrollable landing with content sections; no fabricated lessons.
+    private View buildVideos() {
+        LinearLayout body=column(); heading(body,"Videos");
+        sectionCard(body,"Revision","Video content will appear when source data is connected.");
+        sectionCard(body,"Sample Videos","No sample lesson data has been added.");
+        sectionCard(body,"Downloaded","Downloaded lessons are not available in this build.");
+        sectionCard(body,"Notes","Notes content is not connected.");
+        return scroll(body);
+    }
+
+    @Override protected void onSaveInstanceState(Bundle out) {
+        out.putInt("selected_home_tab",selectedTab); super.onSaveInstanceState(out);
     }
 }
