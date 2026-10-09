@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/shell_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/shell_background">
+
+    <FrameLayout
+        android:id="@+id/shell_header"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/shell_surface"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:id="@+id/brand_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Marrow"
+            android:textColor="@color/shell_text"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/shell_background" />
+
+    <LinearLayout
+        android:id="@+id/home_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="horizontal"
+        android:background="@color/shell_surface"
+        android:gravity="center_vertical"
+        android:elevation="4dp">
+
+        <include
+            android:id="@+id/home_tab"
+            layout="@layout/item_home_tab" />
+
+        <include
+            android:id="@+id/qbank_tab"
+            layout="@layout/item_home_tab" />
+
+        <include
+            android:id="@+id/tests_tab"
+            layout="@layout/item_home_tab" />
+
+        <include
+            android:id="@+id/videos_tab"
+            layout="@layout/item_home_tab" />
+    </LinearLayout>
+</LinearLayout>
