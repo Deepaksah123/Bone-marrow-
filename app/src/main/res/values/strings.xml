@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Marrow Reconstruction</string>
+    <string name="tab_home">Home</string>
+    <string name="tab_qbank">QBank</string>
+    <string name="tab_tests">Tests</string>
+    <string name="tab_video">Videos</string>
+</resources>
