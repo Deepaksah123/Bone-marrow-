@@ -26,7 +26,7 @@ jobs:
           grep -q '`resources/res/layout/` entries: **578**' reconstruction/EXACT_SOURCE_UI_INDEX.md
           grep -q 'directly verified against the ZIP' reconstruction/SOURCE_TO_SCREEN_MAP.md
           grep -q 'PARTIAL, NOT RESOLVED' reconstruction/1TO1_READINESS_AUDIT.md
-          if grep -Eqi 'exact screen tree is complete|exact screen tree is resolved|verified original tree is complete|layout XML entries.*578' reconstruction/SOURCE_TO_SCREEN_MAP.md; then
+          if grep -Eqi 'zero paths under `res/`|no Android layout XML inventory|layout XML entries.*578 are not substantiated' reconstruction/SOURCE_TO_SCREEN_MAP.md; then
             echo 'Evidence guard failed: unverified resource/tree claim detected.'
             exit 1
           fi
