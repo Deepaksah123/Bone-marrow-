@@ -86,3 +86,50 @@ Other source domains include bookmark, custom module, settings/KYC, profile, pea
 6. The Replica repository is methodology-only; do not copy its implementation, assets, dependencies, UI, or content.
 7. Do not claim a build succeeded until an actual Android module is present and a build is run.
 
+
+
+## Direct source-to-layout resource references (verified)
+
+The decompiled Java/Kotlin text contains 314 distinct `R.layout.*` symbols across 342 reference sites overall. The examples below are exact resource-symbol references found in the listed archive source file and line. Some decompiler output files are obfuscated/renamed, so a reference proves that source file refers to that resource symbol; it does **not**, by itself, establish the user-facing screen route.
+
+| Resource symbol | Exact source reference |
+|---|---|
+| `activity_home_revamp` | `sources/kotlin/parsePeriod.java:83` |
+| `fragment_home` | `sources/kotlin/getNextSegmentHolder.java:79` |
+| `custom_home_tab` | `sources/kotlin/zabz.java:2434` |
+| `activity_home_test` | `sources/kotlin/parseLabel.java:30` |
+| `fragment_home_test` | `sources/kotlin/getNextMediaSequenceAndPartIndex.java:48` |
+| `fragment_qbank_landing` | `sources/kotlin/HlsMediaChunk.java:30` |
+| `fragment_qbank_introduction_marrow2` | `sources/kotlin/feedDataToExtractor.java:114` |
+| `activity_qbank_introduction_marrow2` | `sources/kotlin/getAuthenticatorSelection.java:199` |
+| `activity_qbank_lesson_list` | `sources/kotlin/AbstractActivityC0258zzay.java:150` |
+| `fragment_qbank_lesson_list` | `sources/kotlin/buildDataSource.java:68` |
+| `activity_qbank_play` | `sources/kotlin/getAllAppIds.java:140` |
+| `activity_qbank_score` | `sources/kotlin/AbstractActivityC0270zzbj.java:129` |
+| `fragment_qbank_tracker` | `sources/kotlin/zzef.java:27` |
+| `activity_qbank_tracker` | `sources/kotlin/zzeg.java:151` |
+| `activity_test_introduction_marrow2` | `sources/kotlin/TaskExecutors.java:205`; `sources/kotlin/PaymentInstrumentType.java:196` |
+| `fragment_test_introduction_marrow2` | `sources/kotlin/buildAndPrepareAudioSampleStreamWrappers.java:73` |
+| `fragment_test_score` | `sources/kotlin/buildSampleStreamWrapper.java:76` |
+| `fragment_test_analytics` | `sources/kotlin/HlsMediaPeriod.java:62` |
+| `activity_gt_analytics` | `sources/kotlin/TaskCompletionSource.java:193` |
+| `fragment_video_landing` | `sources/kotlin/buildAndPrepareSampleStreamWrappers.java:126` |
+| `fragment_video_lesson_list` | `sources/kotlin/deriveAudioFormat.java:64` |
+| `activity_lesson_video` | `sources/com/marrow/ui/activities/learn/video/LessonVideoActivity.java:11080` |
+| `fragment_video` | `sources/kotlin/access106.java:110` |
+| `fragment_downloaded_video_list` | `sources/kotlin/removeEldestEntry.java:68` |
+| `fragment_video_notes` | `sources/kotlin/getAction.java:27` |
+| `sample_videos` | `sources/kotlin/loadPlaylistInternal.java:46` |
+| `activity_bookmark_landing` | `sources/kotlin/VideoFrameMetadataListener.java:175` |
+| `activity_custom_module_creation` | `sources/kotlin/parseAvailabilityTimeOffsetUs.java:30` |
+| `activity_theme_selection` | `sources/kotlin/NavigationViewSavedState.java:577` |
+| `activity_main_settings` | `sources/kotlin/parseRoleFlagsFromAccessibilityDescriptors.java:30` |
+| `fragment_profile_landing` | `sources/kotlin/isIndependent.java:109` |
+| `fragment_better_search` | `sources/kotlin/isReusable.java:68` |
+
+### Next trace needed
+
+- Match each `R.layout` symbol to its resource ID in `sources/com/marrow/R.java` and `resources/res/values/public.xml`.
+- Decode the corresponding binary XML to recover actual view hierarchy, attributes, IDs, and included layouts.
+- Trace activity/fragment construction, navigation calls and manifest declarations to associate resources with actual screens.
+- Do not treat the above table as proof of a 1:1 screen-to-layout mapping until those links are verified.
