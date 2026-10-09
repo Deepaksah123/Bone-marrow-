@@ -63,7 +63,7 @@ public final class MainActivity extends Activity {
 
     private LinearLayout column() {
         LinearLayout v=new LinearLayout(this); v.setOrientation(LinearLayout.VERTICAL);
-        v.setPadding(dp(18),dp(16),dp(18),dp(20)); v.setBackgroundColor(Color.WHITE); return v;
+        v.setPadding(dp(18),dp(16),dp(18),dp(20)); v.setBackgroundColor(pageColor()); return v;
     }
     private TextView text(String value, int size, boolean bold, int textColor) {
         TextView t=new TextView(this); t.setText(value); t.setTextSize(size); t.setTextColor(textColor);
@@ -103,15 +103,15 @@ public final class MainActivity extends Activity {
         LinearLayout.LayoutParams ap=new LinearLayout.LayoutParams(-1,-2);ap.topMargin=dp(10);progress.addView(amount,ap);
         progress.addView(text("Progress is not available without the original account data",12,false,secondaryText()));
         LinearLayout.LayoutParams pp=new LinearLayout.LayoutParams(-1,-2);pp.bottomMargin=dp(14);body.addView(progress,pp);
-        sectionCard(body,"Zen Area","Your saved learning space");
-        sectionCard(body,"Share Marrow","Invite or share the app");
+        sectionCard(body,"Zen Area","");
+        sectionCard(body,"Share Marrow","");
         return scroll(body);
     }
 
     // Exact source landing is a subject RecyclerView. No invented subject list is injected.
     private View buildQbank() {
         LinearLayout body=column(); heading(body,"QBank");
-        sectionCard(body,"Question Bank","Subject list loads from the original content/data layer.");
+        sectionCard(body,"Question Bank","");
         TextView note=text("Subject data is not connected in this build.",13,false,secondaryText());
         body.addView(note); return scroll(body);
     }
@@ -135,10 +135,10 @@ public final class MainActivity extends Activity {
     // Source fragment is a scrollable landing with content sections; no fabricated lessons.
     private View buildVideos() {
         LinearLayout body=column(); heading(body,"Videos");
-        sectionCard(body,"Revision","Video content will appear when source data is connected.");
-        sectionCard(body,"Sample Videos","No sample lesson data has been added.");
-        sectionCard(body,"Downloaded","Downloaded lessons are not available in this build.");
-        sectionCard(body,"Notes","Notes content is not connected.");
+        sectionCard(body,"Revision","");
+        sectionCard(body,"Sample Videos","");
+        sectionCard(body,"Downloaded","");
+        sectionCard(body,"Notes","");
         return scroll(body);
     }
 
