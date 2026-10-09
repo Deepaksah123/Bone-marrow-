@@ -243,3 +243,12 @@ Details:
 - [QBank play-to-score route](QBANK_PLAY_TO_SCORE_ROUTE_BATCH_12.md)
 
 Core activity lifecycle methods are partially missing from decompiler output, so the complete lesson-list → introduction → play and back-stack flows remain unresolved. No APK build or runtime QA is claimed.
+
+
+## Test and video internal routes — Batch 13
+
+- **TESTS**: `WalletConstantsCardNetwork` → `addAllowedCountryCodes` → test-introduction activity host, with `test_id` and `analyticsSource` arguments and an embedded fragment.
+- **VIDEOS**: `setScrollPosition` handles a selected video item and launches `LessonVideoActivity` via its Intent factory; the player references `activity_lesson_video`.
+- Source details: [Test and video internal route evidence](TEST_AND_VIDEO_INTERNAL_ROUTES_BATCH_13.md).
+
+Only the core test-introduction and lesson-player routes are mapped; upgrade/payment/subscription/renewal/checkout/upsell/advertising interfaces remain excluded.
