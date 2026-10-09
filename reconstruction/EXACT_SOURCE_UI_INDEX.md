@@ -278,3 +278,11 @@ Several activity lifecycle methods are absent from decompiler output; complete e
 - The separate `fragment_video_lesson_list` binds index groups/overlay, back and empty-state views, loading indicator, index/video RecyclerViews, tabs, toolbar, and subject title.
 - Details: [Video landing and lesson-list binding map](VIDEO_LANDING_AND_LESSON_LIST_BINDINGS_BATCH_16.md).
 - Banner/edition containers are recorded as source evidence only; excluded upsell/monetization interfaces are not in scope.
+
+
+## QBank landing and lesson-list bindings — Batch 17
+
+- QBank landing binds `rvSubjectList` and `progressLoadList`; the fragment attaches its adapter, observes subject/list models, and toggles loading/list visibility.
+- QBank lesson list binds the main/sort containers, back/index/empty-state controls, suggestion container, lesson/filter/sort RecyclerViews, tabs, toolbar, and subject/title labels.
+- QBank play and score host layouts are assigned by their respective base activity constructors.
+- Details: [QBank landing and lesson-list binding map](QBANK_LANDING_AND_LESSON_LIST_BINDINGS_BATCH_17.md).
