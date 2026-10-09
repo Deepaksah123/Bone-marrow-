@@ -1,6 +1,6 @@
 # Bone-marrow — Source-to-Screen Reconstruction Map
 
-Generated from the uploaded original APK/decompiler workspace. This is an implementation map, not a prototype specification.
+Generated from the uploaded original APK/decompiler workspace. This is a preliminary source-domain index, not yet an exact implementation map. Resource/layout names below are unverified candidates unless a direct source/resource-table reference is recorded.
 
 ## Source boundary
 - Repository: `Deepaksah123/Bone-marrow-`
@@ -19,18 +19,11 @@ Generated from the uploaded original APK/decompiler workspace. This is an implem
 | Video | `VideoLandingViewModel`, `VideoLessonListViewModel`, `VideoLessonListActivityViewModel`, `DownloadedVideoListViewModel`, `VideoRevisionListViewModel`, `RevisionCompletedViewModel`, `VideoNotesViewModel`, `SampleVideosViewModel` | `fragment_video_landing`, `fragment_video_lesson_list`, `fragment_video`, `activity_lesson_video`, `fragment_downloaded_video_list`, `fragment_video_notes`, revision/sample video resources |
 | Supporting | Bookmark, Custom Module, Pearl, Settings/Profile, Search, Feedback, Theme, Recent Updates | Corresponding verified package/resource candidates in decompiler dump |
 
-## Resource evidence
+## Resource evidence — corrected boundary
 
-The decompiler contains:
-- 578 layout XML entries
-- 16 landscape layout entries
-- 7 sw600dp layout entries
-- 2,210 drawable entries
-- 216 color entries
-- 7 font entries
-- values and values-night resources
+The inspected `base.apk_Decompiler.com.zip` contains 26,825 entries and 2,371 `.xml`-suffixed entries overall, but **zero paths under `res/` and no Android layout XML inventory**. Therefore earlier counts of 578 layout XML, 16 landscape layouts, 7 `sw600dp` layouts, 2,210 drawables, 216 colors and 7 fonts are not substantiated by this archive and must not be used as implementation evidence until independently matched to the original APK/resource table.
 
-The resource files in the dump are compiled/binary resource representations in several cases. They are therefore treated as evidence until decoded/converted into build-ready Android source. We will not hand-invent XML from screenshots.
+Names in the domain table above are candidates, not verified resource paths. `reconstruction/EXACT_SOURCE_UI_INDEX.md` records exact source paths and the verified archive boundary. The exact screen tree remains blocked on decoding the original APK's `resources.arsc` and binary XML or acquiring a checksum-verified decoded-resource dump. Screenshots are QA only; no XML or tree will be fabricated.
 
 ## Reconstruction order
 
@@ -79,4 +72,4 @@ Bookmark, custom module, pearl, profile/settings, search, feedback, recent updat
 
 ## Current execution state
 
-Evidence acquisition is complete. The project is now in source-to-screen reconstruction. The next implementation unit is **Batch A (shell/navigation + Home)** followed immediately by build/verification before moving to Batch B.
+Source class inventory is available, but exact resource/layout evidence is not yet complete. Do **not** claim the exact screen tree is resolved or start fabricating UI. Next gate: decode and cross-reference original `resources.arsc`/binary XML; then trace shell/navigation and Home with source-line evidence before implementation.
