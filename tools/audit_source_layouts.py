@@ -34,7 +34,7 @@ def main():
         r_java = "sources/com/marrow/R.java"
         if r_java in name_set:
             r_source = archive.read(r_java).decode("utf-8", "replace")
-            match = re.search(r'class layout\s*\{(.*?)\n\s*\}', r_source, re.S)
+            match = re.search(r'class layout\s*\{(.*?)\}', r_source, re.S)
             if match:
                 id_map = {name: rid for name, rid in ID_RE.findall(match.group(1))}
         references = collections.defaultdict(list)
