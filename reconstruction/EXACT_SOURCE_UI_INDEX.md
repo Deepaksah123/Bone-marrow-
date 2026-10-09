@@ -252,3 +252,13 @@ Core activity lifecycle methods are partially missing from decompiler output, so
 - Source details: [Test and video internal route evidence](TEST_AND_VIDEO_INTERNAL_ROUTES_BATCH_13.md).
 
 Only the core test-introduction and lesson-player routes are mapped; upgrade/payment/subscription/renewal/checkout/upsell/advertising interfaces remain excluded.
+
+
+## Additional QBank entry paths — Batch 14
+
+- QBank suggested-question actions launch `setTokenBinding` (QBank introduction host) with source code `2` and analytics key `suggested_qb`.
+- QBank lesson-list event handlers launch the `setAppId` QBank play host via the shared Intent builder; play launch carries step ID, lesson title, parent/source type, and bookmark resume data.
+- Test introduction uses its own `test_id` / `analyticsSource` contract; QBank introduction uses `test_id` / `qbank_source` / `analytics_source`. Keep these contracts separate.
+- Details: [QBank lesson and recommendation entry paths](QBANK_LESSON_AND_RECOMMENDATION_ENTRY_BATCH_14.md).
+
+Several activity lifecycle methods are absent from decompiler output; complete end-to-end transitions and back-stack behavior remain unresolved. No runtime QA or APK build is claimed.
