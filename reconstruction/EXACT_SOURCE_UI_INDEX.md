@@ -192,3 +192,22 @@ Important direct findings:
 - `fragment_video_landing` root is `FrameLayout`, has 44 direct IDs, and includes video landing components.
 - Attribute/theme values and full navigation remain unresolved because the decompiler ZIP lacks `resources.arsc`; the original APK contains it, but Android build tools and offline AXML/ARSC libraries are unavailable in the execution environment.
 - This update does not claim an Android project build or runtime UI validation. Readiness remains **PARTIAL, NOT RESOLVED**.
+
+
+## Verified home navigation update — Batches 5–8
+
+Further static-source tracing has resolved the home shell route and tab destinations:
+
+- Splash startup routes to `kotlin.zadb` via `zadb.Companion.write(Context)`.
+- The tab list is exactly **HOME → QBANK → TESTS → VIDEOS**, sourced from `sources/kotlin/DataBuffer.java:108–123`.
+- The tab model destinations are `makeGooglePlayServicesAvailable`, `ResidentKeyRequirementUnsupportedResidentKeyRequirementException`, `WalletConstantsCardNetwork`, and `setScrollPosition`, respectively.
+- Tab selection is sent to `HomeUIActivityViewModel` as an index event.
+- `sources/kotlin/copyToBuffer.java:163–192` verifies the fragment navigation helper uses `Home_<class name>` tags, removes existing `Home_` fragments, then finds/adds/shows the selected fragment in `R.id.upperContainer`.
+
+Detailed trace documents:
+- [Home activity and tab selection](HOME_ACTIVITY_TAB_TRACE_BATCH_5.md)
+- [Tab state path](HOME_TAB_STATE_TRACE_BATCH_6.md)
+- [Exact tab order and destination classes](EXACT_HOME_TAB_ORDER_AND_TARGETS_BATCH_7.md)
+- [Fragment transaction mechanics](HOME_FRAGMENT_TRANSACTION_TRACE_BATCH_8.md)
+
+This remains static evidence only. The Android Gradle project, full resource dependency resolution, and runtime verification are still pending; reconstruction readiness remains **PARTIAL, NOT RESOLVED**.
