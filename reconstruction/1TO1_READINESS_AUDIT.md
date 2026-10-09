@@ -69,9 +69,9 @@ No educational content will be inserted during these UI batches.
 
 ## Latest evidence-boundary cleanup (2026-10-09)
 
-- Removed the unverified `My Tests` / `Grand Tests` / `Previous Year` filter labels from `MainActivity`; the original test fragment has a Material `TabLayout`, but these exact labels were not established from source strings.
-- Removed the unverified `Marrow` text from the reconstructed app bar. The source establishes the `homeAppBar` container, not its exact title/content.
-- The custom bottom row and screen bodies remain provisional; do not call the UI 1:1. Latest commits are being rebuilt by CI.
+- These two removals were reversed after the user clarified that existing UI must not be removed just because a search pass did not locate its source string. Header and test filters remain in the implementation while their exact source strings/layout relationships are traced.
+- The app bar content and test-filter semantics are still unverified. Preserve them for now; do not treat their presence as proof of original fidelity.
+- The screen bodies remain provisional; do not call the UI 1:1.
 
 
 ## Parallel reconstruction batch — 2026-10-09
@@ -87,6 +87,5 @@ No educational content will be inserted during these UI batches.
 
 ### Verification
 
-- A previous CI run failed because `MainActivity` still referenced the old `home_tab`/`qbank_tab`/`tests_tab`/`videos_tab` IDs after the XML was switched to a single `TabLayout`. That compile error is known and was addressed by the subsequent Material TabLayout rewrite.
-- Latest CI status must be checked before declaring the batch build-green.
+- CI failure chain was traced from logs: (1) stale `R.id.home_tab` etc. references after switching to one `TabLayout`; (2) literal `\\n` characters were accidentally written into `app/build.gradle`; (3) the Gradle dependency block was rewritten in valid syntax at commit `d05a820`. The build for `d05a820` is now the active verification target; check its result before declaring the batch build-green.
 - Runtime/device visual QA has not been performed. The four content bodies remain incomplete and must not be called 1:1.
