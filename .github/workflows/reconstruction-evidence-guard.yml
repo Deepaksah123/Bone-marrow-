@@ -23,7 +23,7 @@ jobs:
           test -f analysis/APK_SHA256.txt
           grep -Fq 'e03a582c20eec102510509918315be53e45bb9fe90647207b2c956a0f55316a3' analysis/APK_SHA256.txt
           test -f reconstruction/EXACT_SOURCE_UI_INDEX.md
-          grep -Fq '`resources/res/layout/` entries: **578**' reconstruction/EXACT_SOURCE_UI_INDEX.md
+          grep -Fq '`resources/res/layout/` direct entries: **578**' reconstruction/EXACT_SOURCE_UI_INDEX.md
           grep -Fq 'directly verified against the ZIP' reconstruction/SOURCE_TO_SCREEN_MAP.md
           grep -Fq 'PARTIAL, NOT RESOLVED' reconstruction/1TO1_READINESS_AUDIT.md
           if find . -maxdepth 3 -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' \) | grep -q .; then
