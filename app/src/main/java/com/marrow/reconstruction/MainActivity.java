@@ -13,9 +13,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import com.google.android.material.tabs.TabLayout;
 
 public final class MainActivity extends Activity {
-    private static final int[] TAB_IDS = { R.id.home_tab, R.id.qbank_tab, R.id.tests_tab, R.id.videos_tab };
+    private TabLayout tabLayout;
     private static final int[] ICONS = { R.drawable.ic_home_tab_home, R.drawable.ic_home_tab_qbank, R.drawable.ic_home_tab_tests, R.drawable.ic_home_tab_videos };
     private static final int[] LABELS = { R.string.tab_home, R.string.tab_qbank, R.string.tab_tests, R.string.tab_video };
     private int selectedTab = 0;
@@ -34,29 +35,44 @@ public final class MainActivity extends Activity {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
         content = findViewById(R.id.content_frame);
+        tabLayout = findViewById(R.id.original_bottom_navigation);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setSelectedTabIndicator(null);
+        tabLayout.setTabRippleColor(null);
+        for (int i=0;i<4;i++) {
+            TabLayout.Tab tab=tabLayout.newTab().setCustomView(R.layout.item_home_tab);
+            View custom=tab.getCustomView();
+            ImageView icon=custom.findViewById(R.id.tab_icon);
+            TextView label=custom.findViewById(R.id.tab_label);
+            icon.setImageResource(ICONS[i]);
+            label.setText(LABELS[i]);
+            custom.setContentDescription(getString(LABELS[i]));
+            tabLayout.addTab(tab,false);
+        }
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override public void onTabSelected(TabLayout.Tab tab) { renderTab(tab.getPosition()); }
+            @Override public void onTabUnselected(TabLayout.Tab tab) { updateTabAppearance(tab,false); }
+            @Override public void onTabReselected(TabLayout.Tab tab) { renderTab(tab.getPosition()); }
+        });
         if (state != null) selectedTab = state.getInt("selected_home_tab", 0);
         selectedTab = Math.max(0, Math.min(selectedTab, 3));
-        for (int i=0;i<4;i++) {
-            final int destination=i;
-            View tab=findViewById(TAB_IDS[i]);
-            ImageView icon=tab.findViewById(R.id.tab_icon);
-            TextView label=tab.findViewById(R.id.tab_label);
-            icon.setImageResource(ICONS[i]); label.setText(LABELS[i]);
-            tab.setContentDescription(getString(LABELS[i]));
-            tab.setOnClickListener(v -> selectTab(destination));
-        }
-        selectTab(selectedTab);
+        tabLayout.selectTab(tabLayout.getTabAt(selectedTab));
     }
 
-    private void selectTab(int index) {
+    private void updateTabAppearance(TabLayout.Tab tab, boolean selected) {
+        if (tab == null || tab.getCustomView() == null) return;
+        View custom=tab.getCustomView();
+        TextView label=custom.findViewById(R.id.tab_label);
+        ImageView icon=custom.findViewById(R.id.tab_icon);
+        label.setTextColor(selected?color(R.color.shell_selected):color(R.color.shell_muted));
+        icon.setAlpha(selected?1f:.72f);
+        custom.setSelected(selected);
+    }
+
+    private void renderTab(int index) {
         selectedTab=index;
-        int muted=color(R.color.shell_muted), active=color(R.color.shell_selected);
-        for(int i=0;i<4;i++){
-            View tab=findViewById(TAB_IDS[i]);
-            tab.setSelected(i==index);
-            ((TextView)tab.findViewById(R.id.tab_label)).setTextColor(i==index?active:muted);
-            ((ImageView)tab.findViewById(R.id.tab_icon)).setAlpha(i==index?1f:.72f);
-        }
+        for(int i=0;i<tabLayout.getTabCount();i++) updateTabAppearance(tabLayout.getTabAt(i),i==index);
         content.removeAllViews();
         View screen = index==0 ? buildHome() : index==1 ? buildQbank() : index==2 ? buildTests() : buildVideos();
         content.addView(screen, new FrameLayout.LayoutParams(-1,-1));
@@ -127,7 +143,7 @@ public final class MainActivity extends Activity {
             TextView t=text(names[i],13,true,i==selectedTestFilter?Color.rgb(63,184,208):secondaryText());
             t.setGravity(Gravity.CENTER);t.setPadding(dp(14),dp(12),dp(14),dp(12));
             final int filter=i;
-            t.setOnClickListener(v -> { selectedTestFilter=filter; selectTab(2); });
+            t.setOnClickListener(v -> { selectedTestFilter=filter; renderTab(2); });
             tabs.addView(t,new LinearLayout.LayoutParams(-2,-2));
         }
         hs.addView(tabs);body.addView(hs);
