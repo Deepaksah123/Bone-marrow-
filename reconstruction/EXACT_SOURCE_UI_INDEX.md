@@ -180,3 +180,15 @@ The following values were cross-checked against `sources/com/marrow/R.java`, act
 - Distinct `R.layout.*` symbols referenced in decompiled Java/Kotlin source: **314**
 - Total direct `R.layout.*` reference sites scanned: **342**
 - `sources/com/marrow/R.java` layout-symbol IDs: resource IDs exist for symbols even when the corresponding decoded resource file is missing; missing files remain explicit gaps, not grounds for fabricating XML.
+
+
+## Binary layout decode update — Batch 3
+
+A local parser has now decoded **616** binary XML layout resource files under `resources/res/layout*` from the supplied decompiler ZIP. It extracted root widget classes, direct view IDs, include-layout references, and cross-referenced layout resource IDs against `sources/com/marrow/R.java`. The focused evidence table is in [VERIFIED_BINARY_LAYOUT_BATCH_3.md](VERIFIED_BINARY_LAYOUT_BATCH_3.md).
+
+Important direct findings:
+- `activity_home_revamp` root is `FrameLayout`, resource ID `0x7f0d0033`; its source binding treats `bottomNavigation` as a `TabLayout`.
+- `fragment_qbank_landing` root is `ConstraintLayout`, with direct IDs `rvSubjectList` and `progressLoadList`.
+- `fragment_video_landing` root is `FrameLayout`, has 44 direct IDs, and includes video landing components.
+- Attribute/theme values and full navigation remain unresolved because the decompiler ZIP lacks `resources.arsc`; the original APK contains it, but Android build tools and offline AXML/ARSC libraries are unavailable in the execution environment.
+- This update does not claim an Android project build or runtime UI validation. Readiness remains **PARTIAL, NOT RESOLVED**.
