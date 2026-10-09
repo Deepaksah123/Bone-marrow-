@@ -20,6 +20,7 @@ public final class MainActivity extends Activity {
     private static final int[] LABELS = { R.string.tab_home, R.string.tab_qbank, R.string.tab_tests, R.string.tab_video };
     private int selectedTab = 0;
     private FrameLayout content;
+    private int selectedTestFilter = 0;
 
     private int dp(float value) { return (int)(value * getResources().getDisplayMetrics().density + 0.5f); }
     private int color(int id) { return getColor(id); }
@@ -123,12 +124,14 @@ public final class MainActivity extends Activity {
         LinearLayout tabs=new LinearLayout(this); tabs.setOrientation(LinearLayout.HORIZONTAL);
         String[] names={"My Tests","Grand Tests","Previous Year"};
         for(int i=0;i<names.length;i++){
-            TextView t=text(names[i],13,true,i==0?Color.rgb(63,184,208):secondaryText());
+            TextView t=text(names[i],13,true,i==selectedTestFilter?Color.rgb(63,184,208):secondaryText());
             t.setGravity(Gravity.CENTER);t.setPadding(dp(14),dp(12),dp(14),dp(12));
+            final int filter=i;
+            t.setOnClickListener(v -> { selectedTestFilter=filter; selectTab(2); });
             tabs.addView(t,new LinearLayout.LayoutParams(-2,-2));
         }
         hs.addView(tabs);body.addView(hs);
-        sectionCard(body,"Tests","Test list is not connected to the recovered content layer yet.");
+        sectionCard(body,names[selectedTestFilter],"Test data is not connected to the recovered data layer.");
         return scroll(body);
     }
 
