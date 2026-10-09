@@ -21,7 +21,7 @@ Source boundary: `Deepaksah123/Bone-marrow-` only.
 2. ~~Verified decompiled Java/Kotlin unavailable~~ — **RESOLVED**; uploaded decompiler dump verified.
 3. ~~Verified Smali unavailable~~ — **RESOLVED**.
 4. ~~Resource evidence unavailable~~ — **RESOLVED**; original resource inventory and binary resource entries are available. Build-ready XML decoding is still an implementation prerequisite.
-5. ~~Source-to-screen/behavior map missing~~ — **RESOLVED for core domains**; `reconstruction/SOURCE_TO_SCREEN_MAP.md` now records the evidence-backed Home/QBank/Test/Video/supporting flow boundaries.
+5. Source-to-screen/behavior map — **PARTIAL, NOT RESOLVED**. Domain ViewModel source files are indexed, but candidate layout names are unverified; exact resource/navigation mapping remains blocked pending original resource-table and binary XML decoding.
 
 ## Scope exclusions
 
@@ -39,23 +39,23 @@ Source boundary: `Deepaksah123/Bone-marrow-` only.
 
 ## Current state
 
-The project is in **actual reconstruction**, not prototype generation.
+The project is in evidence indexing and reconstruction preparation. No complete Android implementation/build is present in the repository yet; do not describe it as a build-verified reconstruction.
 
 Completed in this phase:
 - verified original APK/decompiler inputs;
 - mapped core source domains;
-- identified the original Home/QBank/Test/Video resource candidates;
+- indexed Home/QBank/Test/Video source domains; exact resource candidates remain unverified;
 - established the reconstruction order.
 
 ## Active implementation batch
 
 ### Batch A — shell/navigation + Home
 
-1. Decode/normalize the original resource layer required by the shell/Home screens.
-2. Trace main navigation, tab state, deeplink/back-stack behavior and shared Home state.
-3. Reconstruct Home using the original source/resource evidence.
-4. Build and verify the Android target before moving to QBank.
-5. Record any evidence gap instead of substituting guessed UI.
+1. Decode original `resources.arsc` and binary XML, or acquire a checksum-verified decoded-resource dump.
+2. Generate exact resource and screen mappings from actual references; mark all unverified candidate names.
+3. Trace main navigation, tab state, deeplink/back-stack behavior and shared Home state with file/method/line evidence.
+4. Only then implement shell/Home from verified evidence; do not create a guessed Android project/tree.
+5. Build and verify once an evidence-grounded Android project exists; record gaps rather than substituting guessed UI.
 
 ### Following batches
 
