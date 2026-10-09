@@ -211,3 +211,14 @@ Detailed trace documents:
 - [Fragment transaction mechanics](HOME_FRAGMENT_TRANSACTION_TRACE_BATCH_8.md)
 
 This remains static evidence only. The Android Gradle project, full resource dependency resolution, and runtime verification are still pending; reconstruction readiness remains **PARTIAL, NOT RESOLVED**.
+
+
+## Four-tab root layout mapping — Batch 9
+
+All four top-level tabs now have direct source-to-layout mappings:
+- **HOME** → `makeGooglePlayServicesAvailable` → `fragment_home` (`ConstraintLayout`)
+- **QBANK** → `ResidentKeyRequirementUnsupportedResidentKeyRequirementException` → `fragment_qbank_landing` (`ConstraintLayout`)
+- **TESTS** → `WalletConstantsCardNetwork` → `fragment_home_test` (`ConstraintLayout`)
+- **VIDEOS** → `setScrollPosition` → `fragment_video_landing` (`FrameLayout`)
+
+Evidence and exact source lines: [HOME tab-to-root layout map](HOME_TAB_TO_ROOT_LAYOUT_MAP_BATCH_9.md).
