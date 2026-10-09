@@ -34,8 +34,8 @@ public final class MainActivity extends Activity {
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
-        content = findViewById(R.id.content_frame);
-        tabLayout = findViewById(R.id.original_bottom_navigation);
+        content = findViewById(R.id.fullContainer);
+        tabLayout = findViewById(R.id.bottomNavigation);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setSelectedTabIndicator(null);
