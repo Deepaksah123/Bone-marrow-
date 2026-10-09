@@ -270,3 +270,11 @@ Several activity lifecycle methods are absent from decompiler output; complete e
 - The factory's default launch contract includes `lesson_id`, `video_autoplay=false`, `is_video_origin=false`, `exclude_optional_videos=false`, `start_time=0`, `is_from_bookmark_screen=false`, and null `source`; it conditionally sets the PiP-device Intent flag.
 - Test analytics event strings include test-play start and review list/detail/filter/sheet categories, but do not independently prove their navigation routes. The test-play layout resource exists; a reliable concrete host mapping remains unresolved.
 - Details: [Video player intent contract and test-flow boundary](VIDEO_PLAYER_INTENT_AND_TEST_FLOW_BOUNDARY_BATCH_15.md).
+
+
+## Video landing and lesson-list bindings — Batch 16
+
+- Video landing inflates `fragment_video_landing` and binds the main content, subject EpoxyRecyclerView, deck/announcement ComposeViews, and bookmarked/sample-video containers.
+- The separate `fragment_video_lesson_list` binds index groups/overlay, back and empty-state views, loading indicator, index/video RecyclerViews, tabs, toolbar, and subject title.
+- Details: [Video landing and lesson-list binding map](VIDEO_LANDING_AND_LESSON_LIST_BINDINGS_BATCH_16.md).
+- Banner/edition containers are recorded as source evidence only; excluded upsell/monetization interfaces are not in scope.
