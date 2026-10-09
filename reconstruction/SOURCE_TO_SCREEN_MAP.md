@@ -21,9 +21,9 @@ Generated from the uploaded original APK/decompiler workspace. This is a prelimi
 
 ## Resource evidence — corrected boundary
 
-The inspected `base.apk_Decompiler.com.zip` contains 26,825 entries and 2,371 `.xml`-suffixed entries overall, but **zero paths under `res/` and no Android layout XML inventory**. Therefore earlier counts of 578 layout XML, 16 landscape layouts, 7 `sw600dp` layouts, 2,210 drawables, 216 colors and 7 fonts are not substantiated by this archive and must not be used as implementation evidence until independently matched to the original APK/resource table.
+The inspected `base.apk_Decompiler.com.zip` contains 26,825 entries, including `resources/res/layout/` (578), `resources/res/layout-land/` (16), `resources/res/layout-sw600dp/` (7), `resources/res/drawable/` (2,210), `resources/res/color/` (216), and `resources/res/font/` (7). These counts are directly verified against the ZIP. The archive does not contain a file named `resources.arsc`; exact resource-ID resolution and source-to-screen navigation still require tracing against the original APK/resource table.
 
-Names in the domain table above are candidates, not verified resource paths. `reconstruction/EXACT_SOURCE_UI_INDEX.md` records exact source paths and the verified archive boundary. The exact screen tree remains blocked on decoding the original APK's `resources.arsc` and binary XML or acquiring a checksum-verified decoded-resource dump. Screenshots are QA only; no XML or tree will be fabricated.
+Names in the domain table above are resource candidates, not yet confirmed as the layout selected by each screen. `reconstruction/EXACT_SOURCE_UI_INDEX.md` records the verified resource counts and source paths. The exact screen tree remains blocked on direct source/navigation references and resource-ID resolution. Screenshots are QA only; no XML or tree will be fabricated.
 
 ## Reconstruction order
 
