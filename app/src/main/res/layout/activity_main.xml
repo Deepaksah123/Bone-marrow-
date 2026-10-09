@@ -14,12 +14,19 @@
             android:layout_marginBottom="64dp"
             android:background="@color/shell_background" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/bottomNavigation"
+    <FrameLayout
+        android:id="@+id/cvBottomNavigationContainer"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:layout_gravity="bottom"
-        android:background="@color/shell_surface" />
+        android:background="@color/shell_surface">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/bottomNavigation"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/shell_surface" />
+    </FrameLayout>
     
         <FrameLayout
             android:id="@+id/homeAppBar"
