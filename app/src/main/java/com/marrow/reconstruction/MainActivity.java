@@ -7,7 +7,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -24,6 +23,11 @@ public final class MainActivity extends Activity {
 
     private int dp(float value) { return (int)(value * getResources().getDisplayMetrics().density + 0.5f); }
     private int color(int id) { return getColor(id); }
+    private boolean isDark() { return (getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK) == android.content.res.Configuration.UI_MODE_NIGHT_YES; }
+    private int pageColor() { return isDark() ? Color.rgb(16,19,20) : Color.WHITE; }
+    private int cardColor() { return isDark() ? Color.rgb(23,27,29) : Color.WHITE; }
+    private int primaryText() { return isDark() ? Color.rgb(242,244,244) : Color.rgb(34,39,41); }
+    private int secondaryText() { return isDark() ? Color.rgb(157,165,167) : Color.rgb(125,132,135); }
 
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
@@ -70,21 +74,21 @@ public final class MainActivity extends Activity {
         if(stroke!=0)d.setStroke(dp(1),stroke); return d;
     }
     private void heading(LinearLayout root,String value) {
-        TextView t=text(value,18,true,Color.rgb(34,39,41));
+        TextView t=text(value,18,true,primaryText());
         LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2); p.bottomMargin=dp(12); root.addView(t,p);
     }
     private void sectionCard(LinearLayout root, String title, String subtitle) {
         LinearLayout card=new LinearLayout(this); card.setOrientation(LinearLayout.VERTICAL);
-        card.setPadding(dp(16),dp(14),dp(16),dp(14)); card.setBackground(rounded(Color.WHITE,Color.rgb(230,233,235)));
-        TextView a=text(title,15,true,Color.rgb(42,47,49)); card.addView(a);
+        card.setPadding(dp(16),dp(14),dp(16),dp(14)); card.setBackground(rounded(cardColor(),isDark()?Color.rgb(48,54,56):Color.rgb(230,233,235)));
+        TextView a=text(title,15,true,primaryText()); card.addView(a);
         if(subtitle!=null&&!subtitle.isEmpty()){
-            TextView b=text(subtitle,13,false,Color.rgb(125,132,135));
+            TextView b=text(subtitle,13,false,secondaryText());
             LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.topMargin=dp(6);card.addView(b,p);
         }
         LinearLayout.LayoutParams cp=new LinearLayout.LayoutParams(-1,-2); cp.bottomMargin=dp(12); root.addView(card,cp);
     }
     private View scroll(LinearLayout body) {
-        ScrollView s=new ScrollView(this); s.setFillViewport(true); s.setBackgroundColor(Color.WHITE); s.addView(body); return s;
+        ScrollView s=new ScrollView(this); s.setFillViewport(true); s.setBackgroundColor(pageColor()); s.addView(body); return s;
     }
 
     // Source-backed Home elements: module generation/completion, Zen area, and Share Marrow.
@@ -93,11 +97,11 @@ public final class MainActivity extends Activity {
         LinearLayout body=column();
         heading(body,"Home");
         LinearLayout progress=new LinearLayout(this); progress.setOrientation(LinearLayout.VERTICAL);
-        progress.setPadding(dp(16),dp(16),dp(16),dp(16)); progress.setBackground(rounded(Color.rgb(248,250,250),Color.rgb(232,236,237)));
-        progress.addView(text("Module completion",15,true,Color.rgb(42,47,49)));
-        TextView amount=text("—",25,true,Color.rgb(42,47,49));
+        progress.setPadding(dp(16),dp(16),dp(16),dp(16)); progress.setBackground(rounded(isDark()?Color.rgb(23,27,29):Color.rgb(248,250,250),isDark()?Color.rgb(48,54,56):Color.rgb(232,236,237)));
+        progress.addView(text("Module completion",15,true,primaryText()));
+        TextView amount=text("—",25,true,primaryText());
         LinearLayout.LayoutParams ap=new LinearLayout.LayoutParams(-1,-2);ap.topMargin=dp(10);progress.addView(amount,ap);
-        progress.addView(text("Progress will appear when account data is connected",12,false,Color.rgb(125,132,135)));
+        progress.addView(text("Progress is not available without the original account data",12,false,secondaryText()));
         LinearLayout.LayoutParams pp=new LinearLayout.LayoutParams(-1,-2);pp.bottomMargin=dp(14);body.addView(progress,pp);
         sectionCard(body,"Zen Area","Your saved learning space");
         sectionCard(body,"Share Marrow","Invite or share the app");
@@ -108,7 +112,7 @@ public final class MainActivity extends Activity {
     private View buildQbank() {
         LinearLayout body=column(); heading(body,"QBank");
         sectionCard(body,"Question Bank","Subject list loads from the original content/data layer.");
-        TextView note=text("No subject data is bundled in this reconstruction yet.",13,false,Color.rgb(125,132,135));
+        TextView note=text("Subject data is not connected in this build.",13,false,secondaryText());
         body.addView(note); return scroll(body);
     }
 
@@ -119,7 +123,7 @@ public final class MainActivity extends Activity {
         LinearLayout tabs=new LinearLayout(this); tabs.setOrientation(LinearLayout.HORIZONTAL);
         String[] names={"My Tests","Grand Tests","Previous Year"};
         for(int i=0;i<names.length;i++){
-            TextView t=text(names[i],13,true,i==0?Color.rgb(63,184,208):Color.rgb(115,122,125));
+            TextView t=text(names[i],13,true,i==0?Color.rgb(63,184,208):secondaryText());
             t.setGravity(Gravity.CENTER);t.setPadding(dp(14),dp(12),dp(14),dp(12));
             tabs.addView(t,new LinearLayout.LayoutParams(-2,-2));
         }
