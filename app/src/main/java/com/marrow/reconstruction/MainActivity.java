@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -125,12 +126,13 @@ public final class MainActivity extends Activity {
         return scroll(body);
     }
 
-    // Exact source landing is a subject RecyclerView. No invented subject list is injected.
+    // Source trace resolves fragment_qbank_landing to a ConstraintLayout with
+    // rvSubjectList and progressLoadList. Keep the real structure; do not invent subjects.
     private View buildQbank() {
-        LinearLayout body=column(); heading(body,"QBank");
-        sectionCard(body,"Question Bank","");
-        TextView note=text("Subject data is not connected in this build.",13,false,secondaryText());
-        body.addView(note); return scroll(body);
+        View root = LayoutInflater.from(this).inflate(R.layout.fragment_qbank_landing_replica, content, false);
+        androidx.recyclerview.widget.RecyclerView subjects = root.findViewById(R.id.rvSubjectList);
+        subjects.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+        return root;
     }
 
     // Preserve existing test landing affordances while continuing to trace original strings/resources.
