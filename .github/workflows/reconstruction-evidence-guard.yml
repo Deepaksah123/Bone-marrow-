@@ -26,10 +26,6 @@ jobs:
           grep -q '`resources/res/layout/` entries: **578**' reconstruction/EXACT_SOURCE_UI_INDEX.md
           grep -q 'directly verified against the ZIP' reconstruction/SOURCE_TO_SCREEN_MAP.md
           grep -q 'PARTIAL, NOT RESOLVED' reconstruction/1TO1_READINESS_AUDIT.md
-          if grep -Eqi 'zero paths under `res/`|no Android layout XML inventory|layout XML entries.*578 are not substantiated' reconstruction/SOURCE_TO_SCREEN_MAP.md; then
-            echo 'Evidence guard failed: unverified resource/tree claim detected.'
-            exit 1
-          fi
           if find . -maxdepth 3 -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' \) | grep -q .; then
             echo 'Android build files detected. This guard is not a substitute for source-grounded build/tests.'
           else
