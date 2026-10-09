@@ -286,3 +286,12 @@ Several activity lifecycle methods are absent from decompiler output; complete e
 - QBank lesson list binds the main/sort containers, back/index/empty-state controls, suggestion container, lesson/filter/sort RecyclerViews, tabs, toolbar, and subject/title labels.
 - QBank play and score host layouts are assigned by their respective base activity constructors.
 - Details: [QBank landing and lesson-list binding map](QBANK_LANDING_AND_LESSON_LIST_BINDINGS_BATCH_17.md).
+
+
+## Automated source-to-layout audit — Batch 18
+
+- Added `tools/audit_source_layouts.py` to inventory literal `R.layout.*` references, source locations, IDs from the decompiled `R.java`, matching resource files, and unresolved symbols.
+- Verified against the supplied decompiler ZIP (SHA-256 `92fa24c6d91faafa61e3317adcb5c7c10384eea437fa6b7f99c09ac372ab8685`): 26,825 entries, 20,526 Java/Kotlin files, 616 layout entries, 314 distinct layout symbols, and 342 source reference sites. The dump lacks `resources.arsc`; 10 symbols have no same-named layout entry.
+- The QBank introduction activity remains a verified unresolved resource gap: ID `0x7f0d0051` is referenced in source but the same-named layout file is missing from this dump.
+- Details: [Source-to-layout audit report](SOURCE_TO_LAYOUT_AUDIT_BATCH_18.md).
+- The audit tool has unit tests and a dedicated GitHub Actions workflow. This validates the audit tooling only, not Android UI/build correctness.
