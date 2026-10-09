@@ -39,7 +39,7 @@ Source boundary: `Deepaksah123/Bone-marrow-` only.
 
 ## Current state
 
-The project is in evidence indexing and reconstruction preparation. No complete Android implementation/build is present in the repository yet; do not describe it as a build-verified reconstruction.
+The project now contains a first native Android app module with the source-verified four-tab shell, original tab vector assets, light/night palettes, and a build workflow. It is still not a complete Android reconstruction; Home/QBank/Test/Video body screens and their data/navigation wiring remain incomplete. Do not describe it as 1:1 or build-verified until CI produces the APK and runtime QA is performed.
 
 Completed in this phase:
 - verified original APK/decompiler inputs;
