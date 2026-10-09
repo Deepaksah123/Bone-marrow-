@@ -135,22 +135,24 @@ public final class MainActivity extends Activity {
         return root;
     }
 
-    // Preserve existing test landing affordances while continuing to trace original strings/resources.
+    // Original test landing is a ConstraintLayout with a collapsing app bar,
+    // Material TabLayout, RecyclerView, empty/loading containers. Keep existing filter labels pending trace.
     private View buildTests() {
-        LinearLayout body=column(); heading(body,"Tests");
-        HorizontalScrollView hs=new HorizontalScrollView(this); hs.setHorizontalScrollBarEnabled(false);
-        LinearLayout tabs=new LinearLayout(this); tabs.setOrientation(LinearLayout.HORIZONTAL);
-        String[] names={"My Tests","Grand Tests","Previous Year"};
-        for(int i=0;i<names.length;i++){
-            TextView t=text(names[i],13,true,i==selectedTestFilter?Color.rgb(63,184,208):secondaryText());
-            t.setGravity(Gravity.CENTER);t.setPadding(dp(14),dp(12),dp(14),dp(12));
-            final int filter=i;
-            t.setOnClickListener(v -> { selectedTestFilter=filter; renderTab(2); });
-            tabs.addView(t,new LinearLayout.LayoutParams(-2,-2));
-        }
-        hs.addView(tabs);body.addView(hs);
-        sectionCard(body,names[selectedTestFilter],"Test data is not connected to the recovered data layer.");
-        return scroll(body);
+        View root = LayoutInflater.from(this).inflate(R.layout.fragment_home_test_replica, content, false);
+        com.google.android.material.tabs.TabLayout filters = root.findViewById(R.id.test_tab_toolbar);
+        androidx.recyclerview.widget.RecyclerView list = root.findViewById(R.id.test_list);
+        list.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+        String[] names = {"My Tests", "Grand Tests", "Previous Year"};
+        for (String name : names) filters.addTab(filters.newTab().setText(name), false);
+        filters.addOnTabSelectedListener(new com.google.android.material.tabs.TabLayout.OnTabSelectedListener() {
+            @Override public void onTabSelected(com.google.android.material.tabs.TabLayout.Tab tab) {
+                selectedTestFilter = tab.getPosition();
+            }
+            @Override public void onTabUnselected(com.google.android.material.tabs.TabLayout.Tab tab) { }
+            @Override public void onTabReselected(com.google.android.material.tabs.TabLayout.Tab tab) { }
+        });
+        filters.selectTab(filters.getTabAt(Math.max(0, Math.min(selectedTestFilter, names.length - 1))));
+        return root;
     }
 
     // Source fragment is a scrollable landing with content sections; no fabricated lessons.
