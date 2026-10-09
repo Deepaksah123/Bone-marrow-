@@ -1,15 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/shell_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/shell_background">
+
+    <FrameLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="64dp"
+        android:background="@color/shell_background" />
 
     <FrameLayout
         android:id="@+id/home_app_bar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:layout_gravity="top"
         android:background="@color/shell_surface"
         android:paddingStart="20dp"
         android:paddingEnd="20dp">
@@ -25,17 +33,11 @@
             android:textStyle="bold" />
     </FrameLayout>
 
-    <FrameLayout
-        android:id="@+id/content_frame"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/shell_background" />
-
     <LinearLayout
         android:id="@+id/home_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="64dp"
+        android:layout_gravity="bottom"
         android:orientation="horizontal"
         android:background="@color/shell_surface"
         android:gravity="center_vertical"
@@ -57,4 +59,4 @@
             android:id="@+id/videos_tab"
             layout="@layout/item_home_tab" />
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>
