@@ -222,3 +222,10 @@ All four top-level tabs now have direct source-to-layout mappings:
 - **VIDEOS** → `setScrollPosition` → `fragment_video_landing` (`FrameLayout`)
 
 Evidence and exact source lines: [HOME tab-to-root layout map](HOME_TAB_TO_ROOT_LAYOUT_MAP_BATCH_9.md).
+
+
+## QBank first-step route — Batch 10
+
+The QBank tab's root fragment is mapped to `fragment_qbank_landing`; its subject RecyclerView is populated from observed QBank view-model state. The landing fragment's subject action creates an Intent targeting `ActivityC0259zzaz`, a subclass of `AbstractActivityC0258zzay`, whose constructor supplies `R.layout.activity_qbank_lesson_list`. See [QBank landing → lesson list evidence](QBANK_LANDING_TO_LESSON_LIST_BATCH_10.md).
+
+The QBank landing fragment also contains an upgrade-plan branch in source; all upgrade/subscription/renewal/payment/checkout/upsell/advertising UI remains excluded from reconstruction.
