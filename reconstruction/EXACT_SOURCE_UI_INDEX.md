@@ -229,3 +229,17 @@ Evidence and exact source lines: [HOME tab-to-root layout map](HOME_TAB_TO_ROOT_
 The QBank tab's root fragment is mapped to `fragment_qbank_landing`; its subject RecyclerView is populated from observed QBank view-model state. The landing fragment's subject action creates an Intent targeting `ActivityC0259zzaz`, a subclass of `AbstractActivityC0258zzay`, whose constructor supplies `R.layout.activity_qbank_lesson_list`. See [QBank landing → lesson list evidence](QBANK_LANDING_TO_LESSON_LIST_BATCH_10.md).
 
 The QBank landing fragment also contains an upgrade-plan branch in source; all upgrade/subscription/renewal/payment/checkout/upsell/advertising UI remains excluded from reconstruction.
+
+
+## QBank activity hosts and result route — Batches 11–12
+
+- Concrete activity hosts are mapped to their resource-backed layouts: `ActivityC0259zzaz` → QBank lesson list; `setAppId` → QBank play; `setTokenBinding` → QBank introduction; `ActivityC0274zzbn` → QBank score; `zzel` → QBank tracker.
+- QBank play launch arguments include `step_id`, `lesson_title`, parent/source type, and bookmark resume fields.
+- QBank introduction arguments include `test_id`, `qbank_source`, and `analytics_source`.
+- A direct QBank play completion → score launch is visible in `sources/kotlin/RequestParams.java:5216–5220`.
+
+Details:
+- [QBank activity host and Intent contracts](QBANK_ACTIVITY_HOSTS_AND_INTENT_CONTRACTS_BATCH_11.md)
+- [QBank play-to-score route](QBANK_PLAY_TO_SCORE_ROUTE_BATCH_12.md)
+
+Core activity lifecycle methods are partially missing from decompiler output, so the complete lesson-list → introduction → play and back-stack flows remain unresolved. No APK build or runtime QA is claimed.
