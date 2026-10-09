@@ -21,7 +21,7 @@ Source boundary: `Deepaksah123/Bone-marrow-` only.
 2. ~~Verified decompiled Java/Kotlin unavailable~~ — **RESOLVED**; uploaded decompiler dump verified.
 3. ~~Verified Smali unavailable~~ — **RESOLVED**.
 4. ~~Resource evidence unavailable~~ — **RESOLVED**; original resource inventory and binary resource entries are available. Build-ready XML decoding is still an implementation prerequisite.
-5. Source-to-screen/behavior map — **PARTIAL, NOT RESOLVED**. Domain ViewModel source files are indexed, but candidate layout names are unverified; exact resource/navigation mapping remains blocked pending original resource-table and binary XML decoding.
+5. Source-to-screen/behavior map — **PARTIAL, NOT RESOLVED**. Domain ViewModel source files are indexed, but candidate layout names exist in the archive but their screen-to-layout relationships are unverified; exact resource/navigation mapping remains blocked pending source cross-references and resource-table resolution.
 
 ## Scope exclusions
 
@@ -51,8 +51,8 @@ Completed in this phase:
 
 ### Batch A — shell/navigation + Home
 
-1. Decode original `resources.arsc` and binary XML, or acquire a checksum-verified decoded-resource dump.
-2. Generate exact resource and screen mappings from actual references; mark all unverified candidate names.
+1. Parse the decoded resource files already present under `resources/res/`; inspect the original APK's resource table/binary XML separately because `resources.arsc` is absent from the decompiler ZIP.
+2. Generate exact resource and screen mappings from actual source references; mark candidate relationships unverified until traced.
 3. Trace main navigation, tab state, deeplink/back-stack behavior and shared Home state with file/method/line evidence.
 4. Only then implement shell/Home from verified evidence; do not create a guessed Android project/tree.
 5. Build and verify once an evidence-grounded Android project exists; record gaps rather than substituting guessed UI.
