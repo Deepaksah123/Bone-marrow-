@@ -35,7 +35,8 @@ jobs:
         uses: android-actions/setup-android@v3
         with:
           tools: ""
-          packages: "platform-tools,platforms;android-35,build-tools;35.0.0"
+      - name: Install Android platform and build tools
+        run: sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
