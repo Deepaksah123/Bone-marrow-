@@ -262,3 +262,11 @@ Only the core test-introduction and lesson-player routes are mapped; upgrade/pay
 - Details: [QBank lesson and recommendation entry paths](QBANK_LESSON_AND_RECOMMENDATION_ENTRY_BATCH_14.md).
 
 Several activity lifecycle methods are absent from decompiler output; complete end-to-end transitions and back-stack behavior remain unresolved. No runtime QA or APK build is claimed.
+
+
+## Video player arguments and test-flow evidence boundary — Batch 15
+
+- The video landing selection calls the `LessonVideoActivity` Intent factory with the selected lesson ID, start time 0, and bookmark-origin false.
+- The factory's default launch contract includes `lesson_id`, `video_autoplay=false`, `is_video_origin=false`, `exclude_optional_videos=false`, `start_time=0`, `is_from_bookmark_screen=false`, and null `source`; it conditionally sets the PiP-device Intent flag.
+- Test analytics event strings include test-play start and review list/detail/filter/sheet categories, but do not independently prove their navigation routes. The test-play layout resource exists; a reliable concrete host mapping remains unresolved.
+- Details: [Video player intent contract and test-flow boundary](VIDEO_PLAYER_INTENT_AND_TEST_FLOW_BOUNDARY_BATCH_15.md).
