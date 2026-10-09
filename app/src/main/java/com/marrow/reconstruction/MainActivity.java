@@ -155,14 +155,14 @@ public final class MainActivity extends Activity {
         return root;
     }
 
-    // Source fragment is a scrollable landing with content sections; no fabricated lessons.
+    // Source trace maps Videos to fragment_video_landing (FrameLayout), with a
+    // nested scroll area, subject EpoxyRecyclerView and video/banner containers.
+    // Do not populate invented lessons or recreate excluded upsell/advertising UI.
     private View buildVideos() {
-        LinearLayout body=column(); heading(body,"Videos");
-        sectionCard(body,"Revision","");
-        sectionCard(body,"Sample Videos","");
-        sectionCard(body,"Downloaded","");
-        sectionCard(body,"Notes","");
-        return scroll(body);
+        View root = LayoutInflater.from(this).inflate(R.layout.fragment_video_landing_replica, content, false);
+        androidx.recyclerview.widget.RecyclerView subjects = root.findViewById(R.id.epoxyRVSubject);
+        subjects.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+        return root;
     }
 
     @Override protected void onSaveInstanceState(Bundle out) {
