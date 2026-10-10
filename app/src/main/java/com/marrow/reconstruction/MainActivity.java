@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
@@ -15,6 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public final class MainActivity extends Activity {
     private TabLayout tabLayout;
@@ -34,7 +37,7 @@ public final class MainActivity extends Activity {
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
-        content = findViewById(R.id.fullContainer);
+        content = findViewById(R.id.upperContainer);
         tabLayout = findViewById(R.id.bottomNavigation);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -73,9 +76,13 @@ public final class MainActivity extends Activity {
     private void renderTab(int index) {
         selectedTab=index;
         for(int i=0;i<tabLayout.getTabCount();i++) updateTabAppearance(tabLayout.getTabAt(i),i==index);
-        content.removeAllViews();
-        View screen = index==0 ? buildHome() : index==1 ? buildQbank() : index==2 ? buildTests() : buildVideos();
-        content.addView(screen, new FrameLayout.LayoutParams(-1,-1));
+        FragmentManager manager = getSupportFragmentManager();
+        String tag = "Home_" + TabContentFragment.class.getName() + "_" + index;
+        Fragment existing = manager.findFragmentByTag(tag);
+        if (existing != null && existing.isAdded()) return;
+        manager.beginTransaction()
+                .replace(R.id.upperContainer, TabContentFragment.newInstance(index), tag)
+                .commit();
     }
 
     private LinearLayout column() {
@@ -154,6 +161,32 @@ public final class MainActivity extends Activity {
         androidx.recyclerview.widget.RecyclerView subjects = root.findViewById(R.id.epoxyRVSubject);
         subjects.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
         return root;
+    }
+
+    private View createTabContent(int index, ViewGroup parent) {
+        content = (FrameLayout) parent;
+        return index==0 ? buildHome() : index==1 ? buildQbank() : index==2 ? buildTests() : buildVideos();
+    }
+
+    public static final class TabContentFragment extends Fragment {
+        private static final String ARG_TAB_INDEX = "tab_index";
+
+        static TabContentFragment newInstance(int index) {
+            TabContentFragment fragment = new TabContentFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_TAB_INDEX, index);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle state) {
+            int index = getArguments() == null ? 0 : getArguments().getInt(ARG_TAB_INDEX, 0);
+            if (!(requireActivity() instanceof MainActivity)) {
+                return new View(requireContext());
+            }
+            return ((MainActivity) requireActivity()).createTabContent(
+                    Math.max(0, Math.min(index, 3)), container);
+        }
     }
 
     @Override protected void onSaveInstanceState(Bundle out) {
