@@ -159,21 +159,13 @@ public final class MainActivity extends FragmentActivity {
         ScrollView s=new ScrollView(this); s.setFillViewport(true); s.setBackgroundColor(pageColor()); s.addView(body); return s;
     }
 
-    // Source-backed Home elements: module generation/completion, Zen area, and Share Marrow.
-    // Dynamic user/course cards are intentionally omitted until actual account data is available.
+    // Home hierarchy and IDs were decoded from the original fragment_home binary XML.
+    // User/account progress is intentionally left empty until its original data flow is reconstructed.
     private View buildHome() {
-        LinearLayout body=column();
-        heading(body,"Home");
-        LinearLayout progress=new LinearLayout(this); progress.setOrientation(LinearLayout.VERTICAL);
-        progress.setPadding(dp(16),dp(16),dp(16),dp(16)); progress.setBackground(rounded(isDark()?Color.rgb(23,27,29):Color.rgb(248,250,250),isDark()?Color.rgb(48,54,56):Color.rgb(232,236,237)));
-        progress.addView(text("Module completion",15,true,primaryText()));
-        TextView amount=text("—",25,true,primaryText());
-        LinearLayout.LayoutParams ap=new LinearLayout.LayoutParams(-1,-2);ap.topMargin=dp(10);progress.addView(amount,ap);
-        progress.addView(text("Progress is not available without the original account data",12,false,secondaryText()));
-        LinearLayout.LayoutParams pp=new LinearLayout.LayoutParams(-1,-2);pp.bottomMargin=dp(14);body.addView(progress,pp);
-        sectionCard(body,"Zen Area","");
-        sectionCard(body,"Share Marrow","");
-        return scroll(body);
+        View root = LayoutInflater.from(this).inflate(R.layout.fragment_home_replica, content, false);
+        androidx.recyclerview.widget.RecyclerView cards = root.findViewById(R.id.rvHomeCard);
+        cards.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+        return root;
     }
 
     // Source trace resolves fragment_qbank_landing to a ConstraintLayout with
