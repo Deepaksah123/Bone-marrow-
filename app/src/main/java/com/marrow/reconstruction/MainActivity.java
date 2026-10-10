@@ -22,7 +22,6 @@ public final class MainActivity extends Activity {
     private static final int[] LABELS = { R.string.tab_home, R.string.tab_qbank, R.string.tab_tests, R.string.tab_video };
     private int selectedTab = 0;
     private FrameLayout content;
-    private int selectedTestFilter = 0;
 
     private int dp(float value) { return (int)(value * getResources().getDisplayMetrics().density + 0.5f); }
     private int color(int id) { return getColor(id); }
@@ -142,16 +141,8 @@ public final class MainActivity extends Activity {
         com.google.android.material.tabs.TabLayout filters = root.findViewById(R.id.test_tab_toolbar);
         androidx.recyclerview.widget.RecyclerView list = root.findViewById(R.id.test_list);
         list.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
-        String[] names = {"My Tests", "Grand Tests", "Previous Year"};
-        for (String name : names) filters.addTab(filters.newTab().setText(name), false);
-        filters.addOnTabSelectedListener(new com.google.android.material.tabs.TabLayout.OnTabSelectedListener() {
-            @Override public void onTabSelected(com.google.android.material.tabs.TabLayout.Tab tab) {
-                selectedTestFilter = tab.getPosition();
-            }
-            @Override public void onTabUnselected(com.google.android.material.tabs.TabLayout.Tab tab) { }
-            @Override public void onTabReselected(com.google.android.material.tabs.TabLayout.Tab tab) { }
-        });
-        filters.selectTab(filters.getTabAt(Math.max(0, Math.min(selectedTestFilter, names.length - 1))));
+        // Tab labels and test categories are deliberately not fabricated:
+        // source evidence maps the toolbar container but does not establish its displayed labels.
         return root;
     }
 
