@@ -189,11 +189,11 @@ public final class MainActivity extends FragmentActivity {
     // Material TabLayout, RecyclerView, empty/loading containers. Keep existing filter labels pending trace.
     private View buildTests() {
         View root = LayoutInflater.from(this).inflate(R.layout.fragment_home_test_replica, content, false);
-        com.google.android.material.tabs.TabLayout filters = root.findViewById(R.id.test_tab_toolbar);
-        androidx.recyclerview.widget.RecyclerView list = root.findViewById(R.id.test_list);
+        // These IDs and the root hierarchy are taken from the decoded original fragment_home_test.
+        // Tabs/categories remain unpopulated until their source-backed data flow is implemented.
+        com.google.android.material.tabs.TabLayout tabs = root.findViewById(R.id.tabs);
+        androidx.recyclerview.widget.RecyclerView list = root.findViewById(R.id.rvMainList);
         list.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
-        // Tab labels and test categories are deliberately not fabricated:
-        // source evidence maps the toolbar container but does not establish its displayed labels.
         return root;
     }
 
