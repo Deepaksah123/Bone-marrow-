@@ -252,3 +252,11 @@ jobs:
 
           # Batch 48: inner Video landing scroll content must follow the source light/dark theme.
           grep -A4 -F 'android:id="@+id/clMain"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'android:background="?attr/backgroundColor"'
+
+          # Batch 52: drawer content is intentionally not fabricated while the verified
+          # drawer_menu_revamp binary XML is unavailable in the checked-in source evidence.
+          grep -Fq 'drawer_menu_empty_host_replica' app/src/main/res/layout/activity_main.xml
+          grep -Fq 'original drawer_menu_revamp binary layout' app/src/main/res/layout/drawer_menu_empty_host_replica.xml
+          ! grep -Eq 'android:id="@\+id/nav(YourCourse|ContactUs|ReportCopyright|Faq|AboutUs|Invite|RateUs|Terms|Settings)"' app/src/main/res/layout/drawer_menu_empty_host_replica.xml
+          ! grep -Fq 'nav_drawer_' app/src/main/res/values/strings.xml
+          grep -Fq 'menuIcon.setOnClickListener(v -> drawerLayout.openDrawer(android.view.Gravity.START));' app/src/main/java/com/marrow/reconstruction/MainActivity.java
