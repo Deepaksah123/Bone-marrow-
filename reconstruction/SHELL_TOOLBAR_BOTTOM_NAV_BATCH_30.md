@@ -19,4 +19,4 @@ Drawer menu contents remain a documented empty host because the original `drawer
 
 ## Validation
 
-The evidence guard checks source toolbar dimensions, theme attributes, tab configuration and fragment-container margin. Build and guard status must be verified after this batch; no device screenshot or pixel-diff is claimed.
+The evidence guard passed for the source shell/tab hierarchy: [run 38074219308](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074219308). Android build passed for commit `47d71eef4352`: [run 38074210922](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074210922), artifact ID `11678411729`, digest `sha256:e28b72976cc7360079706b7dcf1a01b7256371ecc51151c4026d16b188a89821`. No device screenshot or pixel-diff is claimed.
