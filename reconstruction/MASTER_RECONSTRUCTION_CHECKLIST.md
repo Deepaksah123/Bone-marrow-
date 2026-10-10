@@ -140,7 +140,7 @@
 - [x] Removed speculative drawer rows, then recovered the original `drawer_menu_revamp` binary XML from the SHA-verified original APK and reconstructed the source-backed hierarchy. Details: [Batch 52](DRAWER_EVIDENCE_BOUNDARY_AND_UI_SMOKE_BATCH_52.md) and [Batch 53](DRAWER_BINARY_XML_RECOVERY_BATCH_53.md).
 - [x] Added CI evidence-guard checks to prevent the speculative drawer rows/labels from returning before source recovery. Updated guard result must be checked on the current HEAD.
 - [x] Added an Android API 35 emulator smoke workflow to launch the app, verify HOME/QBANK/TESTS/VIDEOS labels and source-backed root/loading IDs, tap through tabs, verify app-process survival, exercise the drawer-open action, and capture per-tab UI hierarchy dumps/screenshots plus light/dark Home screenshots for QA. Workflow: [Android UI smoke](../.github/workflows/android-ui-smoke.yml).
-- [ ] Confirm the latest emulator smoke run, inspect all four screenshots and hierarchy dumps, and fix any runtime failures. Latest smoke run [38079764502](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38079764502) was still running when this entry was prepared.
+- [ ] Confirm the latest emulator smoke run, inspect all four screenshots and hierarchy dumps, and fix any runtime failures. Latest smoke run [38081191436](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191436) is the current tab/drawer/theme QA run; inspect its final result and screenshot artifact.
 - [ ] Do original-APK screenshot/pixel comparison after source-exact UI is recovered; CI screenshots alone do not prove 1:1 fidelity.
 
 ## Batch 53 — original drawer binary XML recovery
