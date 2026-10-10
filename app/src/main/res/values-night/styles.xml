@@ -9,5 +9,7 @@
         <item name="android:windowActionModeOverlay">true</item>
         <item name="android:windowBackground">@color/shell_background</item>
         <item name="android:colorAccent">@color/shell_selected</item>
+        <item name="show_home_divider">0</item>
+        <item name="home_bottom_navigation_card_elevation">0dp</item>
     </style>
 </resources>
