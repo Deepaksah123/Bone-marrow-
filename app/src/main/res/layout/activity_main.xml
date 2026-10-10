@@ -22,7 +22,7 @@
             android:id="@+id/homeAppBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/shell_background">
+            android:background="?attr/backgroundColor">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/lytContent"
@@ -37,7 +37,7 @@
                     android:id="@+id/upperContainer"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:background="@color/shell_background"
+                    android:background="?attr/backgroundColor"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toTopOf="@id/popup_notification_container"
                     app:layout_constraintStart_toStartOf="parent"
