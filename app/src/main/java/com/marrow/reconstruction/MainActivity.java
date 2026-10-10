@@ -209,8 +209,16 @@ public final class MainActivity extends FragmentActivity {
     }
 
     private View createTabContent(int index, ViewGroup parent) {
-        content = (FrameLayout) parent;
-        return index==0 ? buildHome() : index==1 ? buildQbank() : index==2 ? buildTests() : buildVideos();
+        // Inflate the source-shaped resource hierarchy instead of synthesizing screen content.
+        // Lists/Compose surfaces remain empty until their original adapters/data bindings are recovered.
+        int layout;
+        switch (index) {
+            case 1: layout = R.layout.fragment_qbank_landing_replica; break;
+            case 2: layout = R.layout.fragment_home_test_replica; break;
+            case 3: layout = R.layout.fragment_video_landing_replica; break;
+            default: layout = R.layout.fragment_home_replica; break;
+        }
+        return LayoutInflater.from(this).inflate(layout, parent, false);
     }
 
     public static class TabContentFragment extends Fragment {
