@@ -10,7 +10,7 @@
     <string name="source_menu_icon_png_base64">iVBORw0KGgoAAAANSUhEUgAAABUAAAAPCAQAAAChU0zgAAAAkUlEQVQoz2P8z8zQyPCE4T8DfvCdYSnD/7b/f/4TBr//dzP+V2U4xvCFgRBQYFBlYGD4z8gwgIDxvwDDHoYzOGR/M5QzfoPz/i/AEwJ//i9BNlWMYT3DLxymWjJoMD5A4tMmBP5zofG5cYWADcNehuMoYhwMAYwvsJm5CiME/vxfj81UFoZEhi8MP9H8XY5NKQAnmXmBG8EH2wAAAABJRU5ErkJggg==</string>
     <string name="text_subjects">Subjects</string>
     <string name="sort_by_v2">Sort by</string>
-    <string name="report_video_piracy">Report Video Piracy</string>
+    <string name="report_video_piracy">Report Copyright</string>
     <string name="intern_mode_v2_header">Intern Mode 2.0 with PYTs!</string>
     <string name="new_text">new</string>
     <string name="pyt_desc">Intern Mode marks the videos that contain Previous Years’ Topics (PYTs) from NEET PG and INI-CET exams.</string>
@@ -19,11 +19,11 @@
     <string name="text_watch_next">Watch Next</string>
     <string name="nav_drawer_your_course">Your Course</string>
     <string name="nav_drawer_contact_us">Contact us</string>
-    <string name="nav_drawer_report_piracy">Report Video Piracy</string>
+    <string name="nav_drawer_report_copyright">Report Video Piracy</string>
     <string name="nav_drawer_faq">FAQ</string>
     <string name="nav_drawer_about_us">About us</string>
-    <string name="nav_drawer_share_app">Share the app</string>
     <string name="nav_drawer_rate_us">Rate us</string>
     <string name="nav_drawer_terms">T&amp;C</string>
-    <string name="nav_drawer_logout">Log out</string>
+    <string name="nav_drawer_invite">Invite</string>
+    <string name="nav_drawer_settings">Settings</string>
 </resources>
