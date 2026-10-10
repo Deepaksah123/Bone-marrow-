@@ -26,4 +26,4 @@ The binary source layouts were decoded for hierarchy and resource references. Th
 
 ## Validation
 
-The evidence guard passed for the source layout/assets batch: [run 38072310571](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38072310571). It verifies the include files, exact include counts (6 + 6), and source hashes for all three copied text drawables. Android build for commit `2151f4e6ded5` is currently running: [run 38072310626](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38072310626); do not treat it as passed until CI completes.
+The evidence guard passed for the source layout/assets batch: [run 38072310571](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38072310571). It verifies the include files, exact include counts (6 + 6), and source hashes for all three copied text drawables. Android build passed for commit `2151f4e6ded5`: [run 38072310626](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38072310626). Debug APK artifact ID `11676808919`, size `8,186,154` bytes, digest `sha256:f50ed94b1ce4e509c3df4883c58a4d96af0a0dc867863ff11bca3bae786c9f49`.
