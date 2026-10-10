@@ -9,7 +9,8 @@
 
 - `app/src/main/assets/lottie/practical_corner_zen_area_pulse_anim.json` copied from `resources/assets/lottie/practical_corner_zen_area_pulse_anim.json`. Source SHA-256: `7c72ee056690ed4f695e3a7bb656b2fa7d669ff2235ae8a0701485384eb32b93`; Git blob SHA `ba6967e247b6188e92e0fe785c419042f923cec1`; size 3,938 bytes. Source and repo blob SHAs match.
 - `app/src/main/res/drawable-mdpi/ic_pc_circle_including_logo.webp` copied from `resources/res/drawable-mdpi/ic_pc_circle_including_logo`. Source SHA-256: `956dc7df0fa49e7065da2a41ae00637f258abc0f15f28707eacf43484ce464e7`; Git blob SHA `e3e0e23d8950b71aeb19988bb27ca9ec9da49879`; size 2,396 bytes. Source and repo blob SHAs match.
-- `app/src/main/res/drawable/ic_practical_corner_zen_are_pattern.xml` copied from the decoded gradient drawable source. Source SHA-256: `4e97644184ec5bdbbf46d83155bf86b85329a4fd7870f5f42bdc298d7716afa6`.
+- `app/src/main/res/drawable/bg_practical_corner_zen_area_gradient_dark.xml` copied byte-for-byte from the correctly named source drawable. Source SHA-256: `cf93b9ccb0aaf959c173f683f51f94cf80a72ed24c42c385f5b7f8c8ba79d958`.
+- The separate `ic_practical_corner_zen_are_pattern.xml` is a 296,606-byte vector in the original archive. A small gradient alias was briefly assigned that name, then removed as soon as the source-path audit revealed the mismatch. The replica currently does **not** reference a substitute for that large vector.
 - An earlier rasterized substitute background was removed. The Lottie file was restored and verified against the original source archive by SHA-256; the committed Git blob is identical to the source JSON. Do not reintroduce the raster substitute.
 
 ## Source hierarchy cross-check
