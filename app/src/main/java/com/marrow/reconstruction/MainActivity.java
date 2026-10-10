@@ -153,7 +153,14 @@ public final class MainActivity extends FragmentActivity {
         View root = LayoutInflater.from(this).inflate(layout, parent, false);
         if (index == 0) {
             androidx.recyclerview.widget.RecyclerView cards = root.findViewById(R.id.rvHomeCard);
-            if (cards != null) cards.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+            if (cards != null) {
+                cards.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+                // Source HomeViewModelV2 starts in loading state; its fragment hides the empty
+                // RecyclerView and shows shimmerMain until real home-card data arrives.
+                cards.setVisibility(View.GONE);
+            }
+            com.facebook.shimmer.ShimmerFrameLayout shimmer = root.findViewById(R.id.shimmerMain);
+            if (shimmer != null) shimmer.setVisibility(View.VISIBLE);
         } else if (index == 1) {
             androidx.recyclerview.widget.RecyclerView subjects = root.findViewById(R.id.rvSubjectList);
             if (subjects != null) subjects.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));

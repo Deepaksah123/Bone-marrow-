@@ -19,4 +19,4 @@ The evidence guard passed, but a passing grep-based guard did not establish Java
 
 ## Validation status
 
-The new Android build and evidence guard must pass for this correction to be considered complete. No APK success or artifact is claimed in this report before those runs finish.
+**Validated:** Android build [38076939681](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38076939681) passed, and evidence guard [38076939536](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38076939536) passed. Artifact ID `11678571578`, size `8,194,359` bytes, SHA-256 `beef4e4bb441851130b8c5804b2651dbfbfe26ac34315f098dd17836d70801c47`.

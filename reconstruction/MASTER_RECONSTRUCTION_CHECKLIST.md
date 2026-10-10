@@ -94,4 +94,9 @@
 
 ## Batch 44 — compile-failure correction
 
-- [x] Fixed Batch 43's Java compilation failure by resolving `colorPrimary` through the Material library's non-transitive R namespace; updated the guard to match. Failure and fix recorded in [Batch 44](THEME_ATTR_COMPILATION_FIX_BATCH_44.md). Await fresh Android build + evidence-guard results before marking the build validated.
+- [x] Fixed Batch 43's Java compilation failure by resolving `colorPrimary` through the Material library's non-transitive R namespace; updated the guard to match. Failure and fix recorded in [Batch 44](THEME_ATTR_COMPILATION_FIX_BATCH_44.md). Build passed in [run 38076939681](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38076939681); evidence guard passed in [run 38076939536](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38076939536). Artifact ID `11678571578`, size `8,194,359` bytes, SHA-256 `beef4e4bb441851130b8c5804b2651dbfbfe26ac34315f098dd17836d70801c47`.
+
+
+## Batch 45 — Home initial loading state
+
+- [x] Restored the source-backed Home initial loading state: hide the empty home-card RecyclerView and show the original shimmer skeleton while real card data/adapters remain unrecovered. Source trace is recorded in [Batch 45](HOME_INITIAL_LOADING_STATE_BATCH_45.md). This is not a claim of live data loading; the skeleton remains visible until real source-backed binding is implemented.

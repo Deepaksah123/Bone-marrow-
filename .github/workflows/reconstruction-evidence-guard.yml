@@ -207,6 +207,10 @@ jobs:
           grep -Fq 'themeColor(R.attr.onBackgroundSurface3, R.color.n_40)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'bookmarkIcon.setVisibility(selectedTab == 0 ? View.VISIBLE : View.GONE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'private int themeColor(int attribute, int fallbackColor)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          # Batch 45: source HomeViewModelV2 initial loading state (no invented home cards).
+          grep -Fq 'cards.setVisibility(View.GONE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'if (shimmer != null) shimmer.setVisibility(View.VISIBLE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'R.id.shimmerMain' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           # Batch 30 lifecycle and optional-root regression checks.
           test "$(grep -Fc 'onSaveInstanceState(Bundle out)' app/src/main/java/com/marrow/reconstruction/MainActivity.java)" -eq 1
           grep -Fq 'if (cards != null)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
