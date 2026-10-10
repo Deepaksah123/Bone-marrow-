@@ -73,12 +73,17 @@
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="lineHeight">19sp</item>
     </style>
-    <style name="TextAppearance.Dr.SmallText2" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="android:textSize">12sp</item>
+    <style name="TextAppearance.Dr.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textSize">10sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="lineHeight">12sp</item>
+    </style>
+    <style name="TextAppearance.Dr.SmallText2" parent="TextAppearance.Dr.Caption">
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:letterSpacing">0</item>
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="lineHeight">14sp</item>
     </style>
     <style name="TextAppearance.Dr.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
         <item name="android:textSize">12sp</item>
