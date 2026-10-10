@@ -18,4 +18,4 @@ This makes the verified XML trees the active UI roots, but does **not** implemen
 
 ## Validation
 
-The evidence guard now asserts each tab-to-layout mapping and the XML inflation call. Android build and evidence guard results are pending for this commit.
+The evidence guard passed: [run 38074219308](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074219308). Android build passed for code commit `47d71eef4352`: [run 38074210922](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074210922). Debug APK artifact ID `11678411729`, size `8,196,583` bytes, digest `sha256:e28b72976cc7360079706b7dcf1a01b7256371ecc51151c4026d16b188a89821`.
