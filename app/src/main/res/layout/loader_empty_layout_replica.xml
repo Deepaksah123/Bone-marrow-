@@ -21,8 +21,8 @@
 
         <ImageView
             android:id="@+id/ivEmptyState"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_tab_test_unselected" />
 
@@ -30,7 +30,9 @@
             android:id="@+id/tvEmptyState"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="30dp"
             android:textColor="@color/shell_muted"
             android:textSize="14sp"
             android:gravity="center" />
