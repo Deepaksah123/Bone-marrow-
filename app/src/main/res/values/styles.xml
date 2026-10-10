@@ -51,6 +51,9 @@
         <item name="onSurfaceBgOutline3">@color/white</item>
         <item name="onSurfaceBlue2">@color/blue5</item>
         <item name="onSurfaceBlue3">@color/blue3</item>
+        <item name="heading7">@style/TextAppearance.Dr.Headline7</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.Dr.Headline2</item>
+        <item name="onSurfaceGreen2">@color/green03</item>
     </style>
     <style name="TextAppearance.Dr.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="android:textSize">36sp</item>
@@ -112,6 +115,20 @@
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:letterSpacing">0</item>
         <item name="android:fontFamily">sans-serif</item>
+        <item name="lineHeight">17sp</item>
+    </style>
+    <style name="TextAppearance.Dr.Headline2" parent="TextAppearance.MaterialComponents.Headline2">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="lineHeight">36sp</item>
+    </style>
+    <style name="TextAppearance.Dr.Headline7" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="lineHeight">17sp</item>
     </style>
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
