@@ -2,4 +2,18 @@
 <resources>
     <dimen name="practical_corner_home_banner_content_top_margin">4dp</dimen>
     <dimen name="margin_20dp">20dp</dimen>
+    <dimen name="margin_36dp">36dp</dimen>
+    <dimen name="margin_4dp">4dp</dimen>
+    <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="pad_XL">24dp</dimen>
+    <dimen name="pad_feature_card">10dp</dimen>
+    <dimen name="pad_large">16dp</dimen>
+    <dimen name="pad_small">6dp</dimen>
+    <dimen name="padding_10">10dp</dimen>
+    <dimen name="suggested_card_image_height">120dp</dimen>
+    <dimen name="suggested_card_width">150dp</dimen>
+    <dimen name="text_primary">16sp</dimen>
+    <dimen name="width_card_status_icon">14dp</dimen>
+    <dimen name="height_card_status_icon">14dp</dimen>
+    <dimen name="margin_card_status_icons">2dp</dimen>
 </resources>
