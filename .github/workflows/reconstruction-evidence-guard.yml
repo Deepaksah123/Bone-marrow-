@@ -80,6 +80,17 @@ jobs:
           grep -Fq 'android:background="?attr/colorSurfaceVariant5"' app/src/main/res/layout/test_tab_toolbar_replica.xml
           grep -Fq '<color name="mb_50">#62c8df</color>' app/src/main/res/values/colors.xml
           grep -Fq '<color name="n_80">#313434</color>' app/src/main/res/values/colors.xml
+          # Visible Video landing controls use source light/dark attributes and spacing.
+          grep -Fq 'android:background="?attr/backgroundVariant2"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'style="?attr/heading6"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'app:thumbTint="?attr/onBackgroundSurface5"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'app:trackTint="?attr/onSurfaceBgOutline"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'android:paddingVertical="@dimen/pad_8dp"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'android:paddingHorizontal="@dimen/pad_14"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'android:layout_marginHorizontal="@dimen/pad_14"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'android:layout_marginVertical="@dimen/margin_40"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq '<color name="mb_90">#16343b</color>' app/src/main/res/values/colors.xml
+          grep -Fq '<color name="n_60">#626768</color>' app/src/main/res/values/colors.xml
           if find . -maxdepth 3 -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' \) | grep -q .; then
             echo 'Android build files detected. This guard is not a substitute for source-grounded build/tests.'
           else
