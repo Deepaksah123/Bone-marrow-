@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="show_home_divider" format="integer" />
+    <attr name="home_bottom_navigation_card_elevation" format="dimension" />
+</resources>
