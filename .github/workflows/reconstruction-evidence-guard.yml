@@ -211,6 +211,10 @@ jobs:
           grep -Fq 'cards.setVisibility(View.GONE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'if (shimmer != null) shimmer.setVisibility(View.VISIBLE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'R.id.shimmerMain' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          # Batch 46: QBankLandingViewModel initial loading state, without fabricated subjects.
+          grep -Fq 'subjects.setVisibility(View.GONE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'R.id.progressLoadList' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'if (progress != null) progress.setVisibility(View.VISIBLE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           # Batch 30 lifecycle and optional-root regression checks.
           test "$(grep -Fc 'onSaveInstanceState(Bundle out)' app/src/main/java/com/marrow/reconstruction/MainActivity.java)" -eq 1
           grep -Fq 'if (cards != null)' app/src/main/java/com/marrow/reconstruction/MainActivity.java

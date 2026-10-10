@@ -17,4 +17,4 @@
 
 ## Runtime limitation
 
-The replica currently has no original Home ViewModel/data observer. Therefore the skeleton remains visible until the verified adapter/data-loading path is reconstructed. This intentionally represents the known loading state rather than presenting fabricated educational content. A new Android build and guard run are required for this batch.
+The replica currently has no original Home ViewModel/data observer. Therefore the skeleton remains visible until the verified adapter/data-loading path is reconstructed. This intentionally represents the known loading state rather than presenting fabricated educational content. **Validated:** Android build [38077165155](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38077165155) passed, and evidence guard [38077165079](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38077165079) passed. Artifact ID `11678926576`, size `8,194,419` bytes, SHA-256 `e74a9aa88d29536871dfce5578df4c9590d0b896d825f19e04e1bfb37d4a735a`.

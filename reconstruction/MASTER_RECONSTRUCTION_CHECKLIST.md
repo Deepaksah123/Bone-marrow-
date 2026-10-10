@@ -99,4 +99,4 @@
 
 ## Batch 45 — Home initial loading state
 
-- [x] Restored the source-backed Home initial loading state: hide the empty home-card RecyclerView and show the original shimmer skeleton while real card data/adapters remain unrecovered. Source trace is recorded in [Batch 45](HOME_INITIAL_LOADING_STATE_BATCH_45.md). This is not a claim of live data loading; the skeleton remains visible until real source-backed binding is implemented.
+- [x] Restored the source-backed Home initial loading state: hide the empty home-card RecyclerView and show the original shimmer skeleton while real card data/adapters remain unrecovered. Source trace is recorded in [Batch 45](HOME_INITIAL_LOADING_STATE_BATCH_45.md). Android build [38077165155](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38077165155) and evidence guard [38077165079](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38077165079) passed. Artifact ID `11678926576`, size `8,194,419` bytes, SHA-256 `e74a9aa88d29536871dfce5578df4c9590d0b896d825f19e04e1bfb37d4a735a`. This is not a claim of live data loading; the skeleton remains visible until real source-backed binding is implemented.

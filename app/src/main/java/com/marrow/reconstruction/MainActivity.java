@@ -163,7 +163,13 @@ public final class MainActivity extends FragmentActivity {
             if (shimmer != null) shimmer.setVisibility(View.VISIBLE);
         } else if (index == 1) {
             androidx.recyclerview.widget.RecyclerView subjects = root.findViewById(R.id.rvSubjectList);
-            if (subjects != null) subjects.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+            if (subjects != null) {
+                subjects.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+                // Source QBankLandingViewModel enters loading before the first real subject list arrives.
+                subjects.setVisibility(View.GONE);
+            }
+            View progress = root.findViewById(R.id.progressLoadList);
+            if (progress != null) progress.setVisibility(View.VISIBLE);
         } else if (index == 2) {
             androidx.recyclerview.widget.RecyclerView list = root.findViewById(R.id.rvMainList);
             if (list != null) list.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
