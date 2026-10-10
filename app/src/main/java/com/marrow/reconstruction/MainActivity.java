@@ -172,7 +172,16 @@ public final class MainActivity extends FragmentActivity {
             if (progress != null) progress.setVisibility(View.VISIBLE);
         } else if (index == 2) {
             androidx.recyclerview.widget.RecyclerView list = root.findViewById(R.id.rvMainList);
-            if (list != null) list.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+            if (list != null) {
+                list.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+                // The source Test landing fragment has explicit showLoading/hideLoading states.
+                // Keep the empty list hidden while its original test adapter/data flow is absent.
+                list.setVisibility(View.GONE);
+            }
+            View loading = root.findViewById(R.id.loadingContainer);
+            if (loading != null) loading.setVisibility(View.VISIBLE);
+            View empty = root.findViewById(R.id.emptyLayout);
+            if (empty != null) empty.setVisibility(View.GONE);
         } else {
             androidx.recyclerview.widget.RecyclerView subjects = root.findViewById(R.id.epoxyRVSubject);
             int spanCount = getResources().getConfiguration().smallestScreenWidthDp >= 600 ? 3 : 2;
