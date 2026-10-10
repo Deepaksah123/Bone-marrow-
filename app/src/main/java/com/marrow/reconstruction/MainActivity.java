@@ -51,11 +51,8 @@ public final class MainActivity extends FragmentActivity {
         ImageView menuIcon = findViewById(R.id.iconMenu);
         androidx.drawerlayout.widget.DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
         menuIcon.setOnClickListener(v -> drawerLayout.openDrawer(android.view.Gravity.START));
-        int[] drawerItemIds = { R.id.navYourCourse, R.id.navContactUs, R.id.navReportCopyright, R.id.navFaq, R.id.navAboutUs, R.id.navInvite, R.id.navRateUs, R.id.navTerms, R.id.navSettings };
-        for (int drawerItemId : drawerItemIds) {
-            View drawerItem = findViewById(drawerItemId);
-            if (drawerItem != null) drawerItem.setOnClickListener(v -> drawerLayout.closeDrawer(android.view.Gravity.START));
-        }
+        // Drawer rows/routes stay absent until the original drawer_menu_revamp
+        // hierarchy and click destinations are recovered from verified APK evidence.
         bookmarkIcon = findViewById(R.id.iconBookmark);
         byte[] menuIconBytes = Base64.decode(getString(R.string.source_menu_icon_png_base64), Base64.DEFAULT);
         menuIcon.setImageBitmap(BitmapFactory.decodeByteArray(menuIconBytes, 0, menuIconBytes.length));
