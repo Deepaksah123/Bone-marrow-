@@ -133,3 +133,12 @@
 ## Batch 51 — QBank root and spinner fidelity
 
 - [x] Restored the original QBank root's theme-aware background, match-parent subject-list width, disabled nested scrolling, source LinearLayoutManager XML attribute, and original `rotate_progress_drawable_blue` spinner drawable from the verified source archive. Targeted guard added. Details: [Batch 51](QBANK_ROOT_AND_SPINNER_FIDELITY_BATCH_51.md). Android build [38078412747](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078412747) and evidence guard [38078412756](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078412756) passed. Artifact ID `11678498594`, size `8,196,390` bytes, SHA-256 `b8cc5a081cc906855a361d34f60dc8acca950bc851b67cdee28a468cef6b175b`.
+
+
+## Batch 52 — drawer evidence boundary + emulator UI smoke
+
+- [x] Removed the unverified generic drawer rows/labels/click handlers after the source audit confirmed the original `drawer_menu_revamp` binary layout is missing from the current checked-in evidence. Kept the source-backed menu action that opens the drawer; the drawer is **not complete** until its original binary XML and routes are recovered. Details: [Batch 52](DRAWER_EVIDENCE_BOUNDARY_AND_UI_SMOKE_BATCH_52.md).
+- [x] Added CI evidence-guard checks to prevent the speculative drawer rows/labels from returning before source recovery. Updated guard result must be checked on the current HEAD.
+- [x] Added an Android API 35 emulator smoke workflow to launch the app, verify HOME/QBANK/TESTS/VIDEOS labels, tap through tabs, and upload screenshots + UI hierarchy dumps for QA. Workflow: [Android UI smoke](../.github/workflows/android-ui-smoke.yml).
+- [ ] Confirm the latest emulator smoke run, inspect all four screenshots and hierarchy dumps, and fix any runtime failures. Smoke run [38079505268](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38079505268) was still running when this entry was prepared.
+- [ ] Do original-APK screenshot/pixel comparison after source-exact UI is recovered; CI screenshots alone do not prove 1:1 fidelity.
