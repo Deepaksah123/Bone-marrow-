@@ -203,7 +203,7 @@ jobs:
           grep -Fq 'android:id="@+id/tvVideoRemainingDuratiom"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           grep -Fq 'style="@style/HorizontalProgressBarVideoDownload"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           # Batch 43: match source DataBuffer tab tint + Home-only bookmark visibility.
-          grep -Fq 'themeColor(R.attr.colorPrimary, R.color.colorPrimary)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'themeColor(com.google.android.material.R.attr.colorPrimary, R.color.colorPrimary)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'themeColor(R.attr.onBackgroundSurface3, R.color.n_40)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'bookmarkIcon.setVisibility(selectedTab == 0 ? View.VISIBLE : View.GONE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'private int themeColor(int attribute, int fallbackColor)' app/src/main/java/com/marrow/reconstruction/MainActivity.java

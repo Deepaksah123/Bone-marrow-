@@ -90,3 +90,8 @@
 ## Batch 43 — source tab appearance
 
 - [x] Recovered the HOME-only bookmark visibility flag and theme-aware selected/unselected tab tint from the original `DataBuffer.java` / `zabz.java` source. Implemented the visual state and added guard assertions in [Batch 43](HOME_TAB_TINT_AND_BOOKMARK_VISIBILITY_BATCH_43.md). Bookmark click routing remains a documented gap; this batch does not claim full toolbar functionality.
+
+
+## Batch 44 — compile-failure correction
+
+- [x] Fixed Batch 43's Java compilation failure by resolving `colorPrimary` through the Material library's non-transitive R namespace; updated the guard to match. Failure and fix recorded in [Batch 44](THEME_ATTR_COMPILATION_FIX_BATCH_44.md). Await fresh Android build + evidence-guard results before marking the build validated.

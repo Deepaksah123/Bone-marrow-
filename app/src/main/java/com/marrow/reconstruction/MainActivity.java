@@ -73,7 +73,7 @@ public final class MainActivity extends FragmentActivity {
         TextView label=custom.findViewById(R.id.title);
         ImageView icon=custom.findViewById(R.id.icon);
         int tint = selected
-                ? themeColor(R.attr.colorPrimary, R.color.colorPrimary)
+                ? themeColor(com.google.android.material.R.attr.colorPrimary, R.color.colorPrimary)
                 : themeColor(R.attr.onBackgroundSurface3, R.color.n_40);
         label.setTextColor(tint);
         icon.setColorFilter(tint);
