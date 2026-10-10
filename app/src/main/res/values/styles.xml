@@ -49,7 +49,7 @@
         <item name="onBackgroundSurface7">@color/n_60</item>
         <item name="onBackgroundVariant2">@color/blue4</item>
         <item name="onSurfaceBgOutline3">@color/white</item>
-        <item name="onSurfaceBlue2">@color/blue5</item>
+        <item name="onSurfaceBlue2">@color/index_color</item>
         <item name="onSurfaceBlue3">@color/blue3</item>
         <item name="heading7">@style/TextAppearance.Dr.Headline7</item>
         <item name="textAppearanceHeadline2">@style/TextAppearance.Dr.Headline2</item>
