@@ -221,6 +221,13 @@ jobs:
           grep -Fq 'R.dimen.margin_6dp' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'R.dimen.margin_4dp' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq '<dimen name="margin_6dp">6dp</dimen>' app/src/main/res/values/dimens.xml
+          # Batch 51: QBank root theme, source RecyclerView attributes, and original spinner drawable.
+          grep -Fq 'android:background="?attr/backgroundColor"' app/src/main/res/layout/fragment_qbank_landing_replica.xml
+          grep -Fq 'android:layout_width="match_parent"' app/src/main/res/layout/fragment_qbank_landing_replica.xml
+          grep -Fq 'android:nestedScrollingEnabled="false"' app/src/main/res/layout/fragment_qbank_landing_replica.xml
+          grep -Fq 'app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"' app/src/main/res/layout/fragment_qbank_landing_replica.xml
+          grep -Fq 'android:indeterminateDrawable="@drawable/rotate_progress_drawable_blue"' app/src/main/res/layout/fragment_qbank_landing_replica.xml
+          test -f app/src/main/res/drawable/rotate_progress_drawable_blue.xml
           # Batch 30 lifecycle and optional-root regression checks.
           test "$(grep -Fc 'onSaveInstanceState(Bundle out)' app/src/main/java/com/marrow/reconstruction/MainActivity.java)" -eq 1
           grep -Fq 'if (cards != null)' app/src/main/java/com/marrow/reconstruction/MainActivity.java

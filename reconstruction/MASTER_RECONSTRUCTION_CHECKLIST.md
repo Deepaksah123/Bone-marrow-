@@ -128,3 +128,8 @@
 
 - [x] Verified the original source archive SHA-256 and audited both pattern vectors. Each has 360 alias references; all 720 references resolve, and every alias file is byte-identical (SHA-256 `4e97644184ec5bdbbf46d83155bf86b85329a4fd7870f5f42bdc298d7716afa6`). Details: [Batch 50](HOME_ZEN_PATTERN_DRAWABLE_DEPENDENCY_AUDIT_BATCH_50.md).
 - [ ] Implement the source-equivalent vector/gradient resource reduction and wire the original light/dark pattern. The audit did not change app resources; build/guard and device visual QA are still required.
+
+
+## Batch 51 — QBank root and spinner fidelity
+
+- [x] Restored the original QBank root's theme-aware background, match-parent subject-list width, disabled nested scrolling, source LinearLayoutManager XML attribute, and original `rotate_progress_drawable_blue` spinner drawable from the verified source archive. Targeted guard added. Details: [Batch 51](QBANK_ROOT_AND_SPINNER_FIDELITY_BATCH_51.md). Build + evidence guard pending.
