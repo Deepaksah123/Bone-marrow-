@@ -54,6 +54,11 @@ public final class MainActivity extends FragmentActivity {
         tabLayout.selectTab(tabLayout.getTabAt(selectedTab));
     }
 
+    @Override protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("selected_home_tab", selectedTab);
+        super.onSaveInstanceState(outState);
+    }
+
     private void updateTabAppearance(TabLayout.Tab tab, boolean selected) {
         if (tab == null || tab.getCustomView() == null) return;
         View custom=tab.getCustomView();
@@ -134,17 +139,17 @@ public final class MainActivity extends FragmentActivity {
         View root = LayoutInflater.from(this).inflate(layout, parent, false);
         if (index == 0) {
             androidx.recyclerview.widget.RecyclerView cards = root.findViewById(R.id.rvHomeCard);
-            cards.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+            if (cards != null) cards.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
         } else if (index == 1) {
             androidx.recyclerview.widget.RecyclerView subjects = root.findViewById(R.id.rvSubjectList);
-            subjects.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+            if (subjects != null) subjects.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
         } else if (index == 2) {
             androidx.recyclerview.widget.RecyclerView list = root.findViewById(R.id.rvMainList);
-            list.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+            if (list != null) list.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
         } else {
             androidx.recyclerview.widget.RecyclerView subjects = root.findViewById(R.id.epoxyRVSubject);
             int spanCount = getResources().getConfiguration().smallestScreenWidthDp >= 600 ? 3 : 2;
-            subjects.setLayoutManager(new androidx.recyclerview.widget.GridLayoutManager(this, spanCount));
+            if (subjects != null) subjects.setLayoutManager(new androidx.recyclerview.widget.GridLayoutManager(this, spanCount));
         }
         return root;
     }
