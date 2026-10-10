@@ -34,4 +34,4 @@ All 22 non-monetization shell IDs recorded in Batch 20 are present. The original
 1. The actual `drawer_menu_revamp` resource is referenced in the original shell but absent from the decompiler ZIP. The drawer host is therefore empty, not a fabricated menu.
 2. Original custom theme/style definitions are extensive. Only the two shell attributes above were recovered and applied in this batch; other dimensions, typography, colors and state selectors remain partial.
 3. The current code does not yet route the menu/search/bookmark actions to reconstructed destinations. Do not add guessed click behavior.
-4. The shell batch build/guard must be checked against the latest commit; no runtime device screenshot QA is claimed.
+4. The combined shell/Home/Tests/Video code batch passed Android build and evidence guard at commit `2d9b435299fa`: [build](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38055616041), [guard](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38055616024). Artifact ID `11671950435`, SHA-256 `f732ff3b05304e31c82db01e3bda0e96a71fd1befb7a69cf8a1608622ab6576f`. No runtime device screenshot QA is claimed.
