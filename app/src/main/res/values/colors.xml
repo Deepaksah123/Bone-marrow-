@@ -9,4 +9,10 @@
     <color name="cloudy_blue">#d8e4e6</color>
     <color name="pure_white">#ffffff</color>
     <color name="shimmer_background">#dddddd</color>
+    <color name="mb_50">#62c8df</color>
+    <color name="n_00">#ffffff</color>
+    <color name="n_05">#f5f5f5</color>
+    <color name="n_80">#313434</color>
+    <color name="n_85">#252727</color>
+    <color name="tGreen">#1f4851</color>
 </resources>
