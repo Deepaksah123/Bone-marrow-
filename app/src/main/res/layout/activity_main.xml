@@ -155,6 +155,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/shell_divider"
+                android:visibility="?attr/show_home_divider"
                 app:layout_constraintBottom_toTopOf="@id/cvBottomNavigationContainer"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -164,7 +165,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/shell_surface"
-                app:cardElevation="2dp"
+                app:cardElevation="?attr/home_bottom_navigation_card_elevation"
                 app:cardUseCompatPadding="false"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
