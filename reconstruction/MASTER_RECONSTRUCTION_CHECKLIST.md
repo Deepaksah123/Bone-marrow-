@@ -72,6 +72,12 @@
 - [ ] Verify the APK installs and opens on the target Android version/device; record the result and artifact checksum.
 - [ ] Update this checklist with commit links and QA evidence after each completed batch.
 
+
+## Batch 47 — Tests initial loading state
+
+- [x] Implemented source-backed initial Test landing loading presentation: hide the empty test list, show the original loading container, and keep the empty-state host hidden until real data state is available. No test cards or results were invented. Details: [Batch 47](TESTS_INITIAL_LOADING_STATE_BATCH_47.md).
+- [ ] Validation pending: run the Android build and evidence guard for this batch; update this entry with the exact run/artifact IDs only after they pass.
+
 ## Guardrails
 
 1. Only use this repository for implementation: `https://github.com/Deepaksah123/Bone-marrow-`.
