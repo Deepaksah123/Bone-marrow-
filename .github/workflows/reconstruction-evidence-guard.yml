@@ -116,6 +116,8 @@ jobs:
           grep -Fq 'android:background="?attr/onSurfaceBgOutline2"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'app:tabMode="scrollable"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'app:tabTextAppearance="?attr/smallText2"' app/src/main/res/layout/activity_main.xml
+          grep -Fq 'tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          ! grep -Fq 'tabLayout.setTabMode(TabLayout.MODE_FIXED);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'app:tabSelectedTextColor="?attr/colorPrimary"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'android:layout_margin="8dp"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'android:id="@+id/ivVideoThumbnail"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
