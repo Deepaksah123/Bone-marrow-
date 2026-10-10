@@ -1,0 +1,109 @@
+name: Android UI smoke and screenshot QA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - ".github/workflows/android-ui-smoke.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "app/**"
+      - ".github/workflows/android-ui-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ui-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out target repository only
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: "platform-tools"
+
+      - name: Install Android platform and build tools
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.9"
+
+      - name: Build debug APK
+        run: gradle --no-daemon :app:assembleDebug
+
+      - name: Launch emulator, verify tab navigation, capture screenshots
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: |
+            set -euo pipefail
+            mkdir -p qa-screenshots
+            adb install app/build/outputs/apk/debug/app-debug.apk
+            adb shell am force-stop com.marrow.reconstruction.replica
+            adb shell am start -W -n com.marrow.reconstruction.replica/com.marrow.reconstruction.MainActivity
+            adb shell uiautomator dump /sdcard/marrow-ui.xml
+            adb pull /sdcard/marrow-ui.xml qa-screenshots/launch-hierarchy.xml
+            grep -q 'com.marrow.reconstruction.replica' qa-screenshots/launch-hierarchy.xml
+            grep -q 'Home' qa-screenshots/launch-hierarchy.xml
+            grep -q 'QBank' qa-screenshots/launch-hierarchy.xml
+            grep -q 'Tests' qa-screenshots/launch-hierarchy.xml
+            grep -q 'Videos' qa-screenshots/launch-hierarchy.xml
+            adb shell screencap -p /sdcard/marrow-home.png
+            adb pull /sdcard/marrow-home.png qa-screenshots/home.png
+            python3 - <<'PY'
+            import re, subprocess, time, xml.etree.ElementTree as ET
+            from pathlib import Path
+
+            hierarchy = Path("qa-screenshots/launch-hierarchy.xml")
+            tree = ET.parse(hierarchy)
+            root = tree.getroot()
+            targets = ["QBank", "Tests", "Videos", "Home"]
+            for target in targets:
+                candidates = []
+                for node in root.iter("node"):
+                    text = node.attrib.get("text", "")
+                    desc = node.attrib.get("content-desc", "")
+                    if text == target or desc == target:
+                        bounds = node.attrib.get("bounds", "")
+                        match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", bounds)
+                        if match:
+                            x1,y1,x2,y2 = map(int, match.groups())
+                            candidates.append(((x1+x2)//2, (y1+y2)//2))
+                if not candidates:
+                    raise SystemExit(f"Could not find tappable tab node: {target}")
+                x,y = candidates[-1]
+                subprocess.run(["adb","shell","input","tap",str(x),str(y)], check=True)
+                time.sleep(2)
+                subprocess.run(["adb","shell","uiautomator","dump","/sdcard/current.xml"], check=True, stdout=subprocess.DEVNULL)
+                subprocess.run(["adb","pull","/sdcard/current.xml",f"qa-screenshots/{target.lower()}-hierarchy.xml"], check=True, stdout=subprocess.DEVNULL)
+                subprocess.run(["adb","shell","screencap","-p",f"/sdcard/{target.lower()}.png"], check=True)
+                subprocess.run(["adb","pull",f"/sdcard/{target.lower()}.png",f"qa-screenshots/{target.lower()}.png"], check=True, stdout=subprocess.DEVNULL)
+                print(f"Captured tab QA: {target} at ({x},{y})")
+            PY
+
+      - name: Upload UI smoke screenshots and hierarchies
+        uses: actions/upload-artifact@v4
+        with:
+          name: marrow-ui-smoke-qa
+          path: qa-screenshots/
+          if-no-files-found: error
+          retention-days: 14
