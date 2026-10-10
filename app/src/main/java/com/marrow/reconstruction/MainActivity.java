@@ -2,6 +2,8 @@ package com.marrow.reconstruction;
 
 import androidx.fragment.app.FragmentActivity;
 import android.graphics.Color;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -37,6 +39,9 @@ public final class MainActivity extends FragmentActivity {
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
+        ImageView menuIcon = findViewById(R.id.iconMenu);
+        byte[] menuIconBytes = Base64.decode(getString(R.string.source_menu_icon_png_base64), Base64.DEFAULT);
+        menuIcon.setImageBitmap(BitmapFactory.decodeByteArray(menuIconBytes, 0, menuIconBytes.length));
         content = findViewById(R.id.upperContainer);
         tabLayout = findViewById(R.id.bottomNavigation);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
