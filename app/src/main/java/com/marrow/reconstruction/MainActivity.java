@@ -54,11 +54,6 @@ public final class MainActivity extends FragmentActivity {
         tabLayout.selectTab(tabLayout.getTabAt(selectedTab));
     }
 
-    @Override protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("selected_home_tab", selectedTab);
-        super.onSaveInstanceState(outState);
-    }
-
     private void updateTabAppearance(TabLayout.Tab tab, boolean selected) {
         if (tab == null || tab.getCustomView() == null) return;
         View custom=tab.getCustomView();
