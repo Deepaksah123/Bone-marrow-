@@ -236,3 +236,6 @@ jobs:
           grep -Fq 'android:id="@+id/emptyLayout"' app/src/main/res/layout/fragment_home_test_replica.xml
           test -f app/src/main/res/layout/loading_layout_replica.xml
           test -f app/src/main/res/layout/loader_empty_layout_replica.xml
+
+          # Batch 48: inner Video landing scroll content must follow the source light/dark theme.
+          grep -A4 -F 'android:id="@+id/clMain"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'android:background="?attr/backgroundColor"'
