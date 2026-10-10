@@ -2,4 +2,6 @@
 <resources>
     <attr name="show_home_divider" format="integer" />
     <attr name="home_bottom_navigation_card_elevation" format="dimension" />
+    <attr name="heading5" format="reference" />
+    <attr name="colorOnSurfaceVariant" format="color" />
 </resources>
