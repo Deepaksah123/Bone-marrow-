@@ -101,3 +101,11 @@ The newer Tests hierarchy/resource batch is being built separately. Do not treat
 2. Reconstruct Home from the decoded hierarchy, not from the current generic card layout; preserve only the user-authorized exclusions.
 3. Finish Videos' 44-ID hierarchy and included-layout cross-reference.
 4. Rebuild after the latest source/layout commit, then perform device-level visual QA. Build success alone is not 1:1 validation.
+
+## Implementation follow-up — Home dynamic Zen area (Batch 23)
+
+The decoded `layout_dynamic_zen_area` include is now a separate `layout_dynamic_zen_area_replica.xml` resource with the original root/include identity (`zenContainer` overridden by include ID `layoutDynamicZenArea`) and source-bound child IDs: `toolbarPlaceholder`, `ivZenAreaBackground`, `lyt_zen_area_content`, `logoAnimationBackground`, `logoAnimation`, `lytZenAreaCta`, `tvPcZenTitle`, and `tvZenCompletedModules`.
+
+The Home include remains `gone` by default, matching the original `fragment_home` include visibility. The title uses the original source text `Practicals`; the completion count is intentionally empty because `9/35 modules` in the source XML is placeholder/account-progress content and must not be shown without the original data flow.
+
+Remaining source asset gaps: `ic_practical_corner_zen_are_pattern` is a 296 KB vector and `ic_pc_circle_including_logo` is a binary WebP in the original archive; the current text-only GitHub write workflow cannot add those binaries as native resource files. They are not substituted with invented artwork. The Lottie animation JSON also needs to be copied from the original assets before the animation can be runtime-verified.
