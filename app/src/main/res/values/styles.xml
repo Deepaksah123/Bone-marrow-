@@ -32,11 +32,24 @@
         <item name="onBackgroundSurface3">@color/n_40</item>
         <item name="onBackgroundSurface5">@color/n_10</item>
         <item name="onSurfaceBgOutline">@color/n_15</item>
-        <item name="onSurfaceBgOutline2">@color/n_15</item>
+        <item name="onSurfaceBgOutline2">@color/white</item>
         <item name="smallText2">@style/TextAppearance.Dr.SmallText2</item>
         <item name="heading6">@style/TextAppearance.Dr.Headline6</item>
         <item name="subtext1">@style/TextAppearance.Dr.Subtitle1</item>
         <item name="subtext2">@style/TextAppearance.Dr.Subtitle2</item>
+        <item name="colorOnSurface">@color/n_60</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorSurfaceVariant14">@color/mb_50</item>
+        <item name="colorSurfaceVariant6">@color/tGreen</item>
+        <item name="onBackgroundSurface1">@color/n_70</item>
+        <item name="onBackgroundSurface4">@color/n_30</item>
+        <item name="onBackgroundSurface6">@color/n_60</item>
+        <item name="onBackgroundSurface7">@color/n_60</item>
+        <item name="onBackgroundVariant2">@color/blue4</item>
+        <item name="onSurfaceBgOutline3">@color/white</item>
+        <item name="onSurfaceBlue2">@color/blue5</item>
+        <item name="onSurfaceBlue3">@color/blue3</item>
     </style>
     <style name="TextAppearance.Dr.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="android:textSize">36sp</item>
