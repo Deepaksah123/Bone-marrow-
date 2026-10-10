@@ -17,7 +17,7 @@ The APK resource table maps `R.layout.drawer_menu_revamp` (`0x7f0d00b3`) to the 
 
 - Reconstructed the original drawer view hierarchy and source binding IDs in `drawer_menu_empty_host_replica.xml`.
 - Restored the profile image subtree (`profile_image_v2.xml`), hidden source `new_course_tag` include, source dimensions, source labels, and theme bindings for the drawer.
-- Restored original APK drawable resources for the Settings icon, profile edit icon/background, footer Marrow wordmark, course arrow and hidden New badge.
+- Restored original APK drawable resources for the Settings icon, profile edit icon/background, footer Marrow wordmark, course arrow and hidden New badge. Restored the source `onSurfaceBlue2 → @color/index_color` mapping for both light and dark themes.
 - Added the original CircleImageView library family used by the APK's profile image view.
 - Updated the evidence guard to require the source-derived drawer IDs and reject excluded purchase/upsell/referral/debug rows.
 
@@ -29,8 +29,8 @@ The original decompiler's text for `ic_arrow_right` was rejected by the current 
 
 ## Validation status
 
-- Android build **PASS** for current app source: [run 38081191407](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191407).
-- Evidence guard **PASS** for current source: [run 38081191405](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191405).
-- Emulator UI smoke: [run 38081511993](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081511993) is running the tab/drawer/theme checks; screenshot artifact and final conclusion are still pending.
+- Android build **PASS** for current app source: [run 38081778235](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081778235).
+- Evidence guard **PASS** for current source: [run 38081778268](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081778268).
+- Emulator UI smoke: [run 38081778228](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081778228) is running the tab/drawer/theme checks; screenshot artifact and final conclusion are still pending.
 
 This batch advances the drawer substantially but does **not** claim the whole app is 1:1. Runtime drawer visibility, row destinations, profile/course data, original APK screenshot comparison and all four tabs' visual parity remain open.
