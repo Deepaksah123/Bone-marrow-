@@ -44,6 +44,9 @@ jobs:
           grep -Fq 'android:src="@drawable/ic_pc_circle_including_logo"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           grep -Fq 'android:text="Practicals"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           grep -Fq 'android:text="9/35 modules"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          grep -Fq 'android:paddingBottom="21dp"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          grep -Fq 'android:layout_marginTop="4dp"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          grep -Fq 'app:layout_constraintBottom_toBottomOf="parent"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           grep -Fq 'style="?attr/heading5"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           grep -Fq 'style="?attr/bodySmall"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           if find . -maxdepth 3 -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' \) | grep -q .; then
