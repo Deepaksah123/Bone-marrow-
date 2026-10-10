@@ -171,6 +171,10 @@ jobs:
           ! grep -Fq 'Module completion' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           # Shell toolbar and bottom navigation source geometry/theme.
           grep -Fq 'android:background="?attr/backgroundColor"' app/src/main/res/layout/activity_main.xml
+          test "$(grep -Fc 'android:background="?attr/backgroundColor"' app/src/main/res/layout/activity_main.xml)" -ge 3
+          test "$(grep -Fc 'android:background="?attr/backgroundColor"' app/src/main/res/layout/fragment_home_replica.xml)" -eq 4
+          ! grep -Fq 'android:background="@color/shell_background"' app/src/main/res/layout/activity_main.xml
+          ! grep -Fq 'android:background="@color/shell_background"' app/src/main/res/layout/fragment_home_replica.xml
           grep -Fq 'android:background="?attr/colorSurfaceVariant5"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'android:minHeight="?attr/actionBarSize"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'android:layout_width="?attr/actionBarSize"' app/src/main/res/layout/activity_main.xml
