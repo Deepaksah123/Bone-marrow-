@@ -31,7 +31,7 @@
 
         <include
             android:id="@+id/layoutContinueWatchingVideoSuggestionCard"
-            layout="@layout/layout_continue_watching_video_suggestion_card"
+            layout="@layout/video_landing_empty_component"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
@@ -268,7 +268,7 @@
 
             <include
                 android:id="@+id/layoutVideoWatchNextCard"
-                layout="@layout/video_landing_empty_component"
+                layout="@layout/layout_continue_watching_video_suggestion_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
