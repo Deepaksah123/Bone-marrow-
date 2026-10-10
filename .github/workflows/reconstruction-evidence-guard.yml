@@ -145,6 +145,10 @@ jobs:
           grep -Fq 'String destinationTag = sourceDestinationTagFor(selectedTab);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'transaction.add(R.id.upperContainer, destination, destinationTag);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'transaction.show(destination);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'return "Home_kotlin.makeGooglePlayServicesAvailable";' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'return "Home_kotlin.ResidentKeyRequirementUnsupportedResidentKeyRequirementException";' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'return "Home_kotlin.WalletConstantsCardNetwork";' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'return "Home_kotlin.setScrollPosition";' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'View root = LayoutInflater.from(this).inflate(layout, parent, false);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           ! grep -Fq 'private View buildHome()' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           ! grep -Fq 'private View buildQbank()' app/src/main/java/com/marrow/reconstruction/MainActivity.java
