@@ -96,6 +96,11 @@ jobs:
           grep -Fq 'android:background="?attr/backgroundColor"' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -Fq '<color name="mb_90">#16343b</color>' app/src/main/res/values/colors.xml
           grep -Fq '<color name="n_60">#626768</color>' app/src/main/res/values/colors.xml
+          # Resource-table-resolved AppThemeV2 dark theme mappings.
+          grep -Fq '<color name="n_70_a_50">#804a4d4e</color>' app/src/main/res/values/colors.xml
+          grep -Fq '<color name="c_7eaaff">#ff7eaaff</color>' app/src/main/res/values/colors.xml
+          grep -Fq '<item name="onSurfaceBgLinks">@color/c_7eaaff</item>' app/src/main/res/values-night/styles.xml
+          grep -Fq '<item name="onSurfaceBgOutline2">@color/n_70_a_50</item>' app/src/main/res/values-night/styles.xml
           # Exact-source assets for the non-monetization Continue Watching card.
           echo 'a5f07798d8dcc95bf425d33e411872d6634c9de8e2f8c1cd67e77d02a6e53d64  app/src/main/res/drawable/ic_marrow_logo_blue.xml' | sha256sum --check
           echo 'a06a2c05486e22248ee0e82ec36e914b599e7d6d47c5a4c334f44f26878f1421  app/src/main/res/drawable/ic_playback_play.xml' | sha256sum --check
