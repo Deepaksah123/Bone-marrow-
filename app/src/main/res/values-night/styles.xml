@@ -51,5 +51,8 @@
         <item name="onSurfaceBgOutline3">@color/c_8e9984</item>
         <item name="onSurfaceBlue2">@color/blue5</item>
         <item name="onSurfaceBlue3">@color/mb_50</item>
+        <item name="heading7">@style/TextAppearance.Dr.Headline7</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.Dr.Headline2</item>
+        <item name="onSurfaceGreen2">@color/green03</item>
     </style>
 </resources>
