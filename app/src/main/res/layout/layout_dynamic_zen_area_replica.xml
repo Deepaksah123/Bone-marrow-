@@ -51,7 +51,7 @@
                 android:layout_height="120dp"
                 android:layout_gravity="center"
                 android:contentDescription="@null"
-                android:background="@drawable/ic_pc_circle_including_logo" />
+                android:src="@drawable/ic_pc_circle_including_logo" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/logoAnimation"
