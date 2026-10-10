@@ -80,3 +80,8 @@
 4. Do not claim 1:1 completion without original-resource comparison and runtime visual QA.
 5. Do not fabricate educational content, account data, screen labels, or interactions to fill empty space.
 6. Keep excluded monetization and advertising UI out of the reconstruction.
+
+
+## Batch 42 — shell/drawer audit
+
+- [x] Audited original shell/drawer behavior against the checksum-verified decompiled source. Confirmed the current drawer include is an empty host, and menu/search/bookmark handlers are incomplete. Recorded exact source classes, binding IDs, exclusions, and safe next steps in [Batch 42](SHELL_AND_DRAWER_GAP_AUDIT_BATCH_42.md). No guessed drawer rows or destinations were added. Original drawer XML is missing from the decompiler dump; recover it from verified binary resources before implementing the drawer. Static audit only; no runtime behavior is claimed.
