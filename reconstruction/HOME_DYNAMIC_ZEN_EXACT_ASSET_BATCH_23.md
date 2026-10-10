@@ -43,3 +43,7 @@ The replica has been corrected to keep `tvZenCompletedModules` as a sibling afte
 - Restored `practical_corner_home_banner_content_top_margin` as a dimension resource: 4dp in `values` and 28dp in `values-v35`, matching the decompiler's source values. The layout now references the named dimension rather than hardcoding 4dp.
 - Corrected the title's end drawable/tint to the source AppCompat attributes `app:drawableEndCompat` and `app:drawableTint`.
 - Latest code commit adds the source `Body2` style and is `5da1cbc59a53`. Evidence guard passed: [run 38057531575](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38057531575). Android build passed for latest Zen code commit `5da1cbc59a53`: [run 38057531540](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38057531540). Latest debug APK artifact ID `11672053446`, size 8,179,949 bytes, digest `sha256:d6b32d8e40dd64ed150d9f76a002e18c424d89bf0aaafbe571fb7068ce9e15ad`.
+
+## Follow-up — top-margin placement correction
+
+A source-named dimension, `practical_corner_home_banner_content_top_margin`, was previously applied as a uniform margin. Because the resource is explicitly a **top margin**, the Zen content container now uses `android:layout_marginTop` only. The evidence guard now checks this exact attribute, not merely that the dimension name exists. This is a narrow source-fidelity correction; the missing 296,606-byte pattern vector and original font remain unresolved.
