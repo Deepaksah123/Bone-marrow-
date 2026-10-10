@@ -6,4 +6,7 @@
     <color name="shell_muted">#FF959A9B</color>
     <color name="shell_divider">#FFE7E9EA</color>
     <color name="shell_selected">#FF62C8DF</color>
+    <color name="cloudy_blue">#d8e4e6</color>
+    <color name="pure_white">#ffffff</color>
+    <color name="shimmer_background">#dddddd</color>
 </resources>
