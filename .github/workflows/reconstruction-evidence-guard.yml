@@ -33,6 +33,7 @@ jobs:
           grep -Fq 'lottie/practical_corner_zen_area_pulse_anim.json' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           grep -Fq '@drawable/ic_pc_circle_including_logo' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           grep -Fq '@dimen/practical_corner_home_banner_content_top_margin' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          grep -Fq 'android:layout_marginTop="@dimen/practical_corner_home_banner_content_top_margin"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           grep -Fq '<dimen name="practical_corner_home_banner_content_top_margin">4dp</dimen>' app/src/main/res/values/dimens.xml
           grep -Fq '<dimen name="practical_corner_home_banner_content_top_margin">28dp</dimen>' app/src/main/res/values-v35/dimens.xml
           test ! -f app/src/main/res/drawable/ic_practical_corner_zen_are_pattern.xml
