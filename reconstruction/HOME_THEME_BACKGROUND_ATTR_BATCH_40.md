@@ -20,4 +20,4 @@ The verified source theme maps `backgroundColor` to `n_05 (#F5F5F5)` in light mo
 
 ## Validation status
 
-Android build and evidence guard are triggered by these commits. Mark this batch build-verified only after both runs pass. Runtime screenshot/pixel parity remains pending.
+Android build passed for the Home/shell code commit: [run 38075586947](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38075586947). Evidence guard passed on the latest checklist commit: [run 38075606322](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38075606322). Debug APK artifact ID `11677674404`, size `8,193,923` bytes, digest `sha256:5880ced6c26df6bdc6650a4e328e6aaeff87b9a7bf161e631d47eb538ad65236`. Runtime screenshot/pixel parity remains pending.
