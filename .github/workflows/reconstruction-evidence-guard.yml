@@ -253,10 +253,12 @@ jobs:
           # Batch 48: inner Video landing scroll content must follow the source light/dark theme.
           grep -A4 -F 'android:id="@+id/clMain"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'android:background="?attr/backgroundColor"'
 
-          # Batch 52: drawer content is intentionally not fabricated while the verified
-          # drawer_menu_revamp binary XML is unavailable in the checked-in source evidence.
+          # Batch 52: drawer hierarchy is reconstructed from the original APK binary XML.
           grep -Fq 'drawer_menu_empty_host_replica' app/src/main/res/layout/activity_main.xml
-          grep -Fq 'original drawer_menu_revamp binary layout' app/src/main/res/layout/drawer_menu_empty_host_replica.xml
-          ! grep -Eq 'android:id="@\+id/nav(YourCourse|ContactUs|ReportCopyright|Faq|AboutUs|Invite|RateUs|Terms|Settings)"' app/src/main/res/layout/drawer_menu_empty_host_replica.xml
-          ! grep -Fq 'nav_drawer_' app/src/main/res/values/strings.xml
+          grep -Fq 'verified original base.apk binary XML for drawer_menu_revamp' app/src/main/res/layout/drawer_menu_empty_host_replica.xml
+          for id in navigation_recycler_view layoutProfilePicture tvProfileName yourCourseContainer navYourCourse tvSettings navAboutUs navFaq navInvite navContactUs navRateUs navReportCopyright navTerms navDownloadPdfNotes navAppVersion; do
+            grep -Fq "android:id=\"@+id/$id\"" app/src/main/res/layout/drawer_menu_empty_host_replica.xml
+          done
+          ! grep -Eq 'android:id="@\+id/(navMyPlan|navBuyNowContainer|navAddVideosContainer|navNotes|navReferalCoupon|navDeleteMcqParent|navExportDb|navLogout)"' app/src/main/res/layout/drawer_menu_empty_host_replica.xml
+          ! grep -Eiq 'go pro|buy notes|subscribe|upgrade plan|get free extension|renew plan|checkout|payment' app/src/main/res/layout/drawer_menu_empty_host_replica.xml
           grep -Fq 'menuIcon.setOnClickListener(v -> drawerLayout.openDrawer(android.view.Gravity.START));' app/src/main/java/com/marrow/reconstruction/MainActivity.java
