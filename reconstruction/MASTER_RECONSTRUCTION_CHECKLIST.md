@@ -151,4 +151,4 @@
 - [x] Kept purchase, Buy Notes, Add Videos, referral-coupon/extension, Pro badge, and debugging/logout UI excluded.
 - [x] Current Android build passed: [run 38081191407](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191407); current evidence guard passed: [run 38081191405](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191405).
 - [ ] Finish emulator smoke [run 38081191436](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191436), inspect screenshot artifacts, and resolve any runtime failures. Source-row visibility/data-binding and click destinations remain open.
-- [ ] Recover the original Home Zen pattern vector family into build-ready resources; no vector data was fabricated.
+- [ ] Recover the original Practical Corner landing pattern resource family into build-ready resources; no vector data was fabricated. Source tracing shows this pattern is applied by PracticalCornerLandingFragment, not the Home root's hidden ivEd6background.
