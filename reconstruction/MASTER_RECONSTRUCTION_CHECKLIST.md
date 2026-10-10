@@ -54,7 +54,7 @@
 ## Remaining work — do not mark complete until verified
 
 - [ ] Decode and resolve the original APK `resources.arsc` to recover authoritative custom-attribute/theme, dimension, color, style and configuration-qualified values. The decompiler ZIP lacks the resource table, but the verified original APK is now available.
-- [ ] Complete Home hierarchy fidelity: the main view tree and direct IDs are now source-derived, but included Zen/shimmer subtrees, exact constraints/styles/dimensions and runtime visibility still need original-resource resolution. Keep monetization UI excluded and do not fabricate account progress.
+- [ ] Complete Home hierarchy fidelity: main view tree and direct IDs are source-derived, and shared palette/dimensions now resolve from the original resource table. Included Zen pattern asset transfer, exact constraints, per-activity theme selection and runtime visibility still need work. Keep monetization UI excluded and do not fabricate account progress.
 - [ ] Finish the `activity_home_revamp` shell hierarchy: the main container relationship and source IDs are restored, but drawer content, exact header/action sizing, toolbar state, dimensions/styles and original runtime navigation remain incomplete.
 - [ ] Compare every implemented screen against the original APK on a device/emulator. Current build success is **not** proof of visual parity.
 - [x] Root ID coverage audit completed: Home non-monetization IDs 17/17, QBank 2/2, Tests 9/9, Videos 44/44, shell 22/22 non-monetization IDs.
