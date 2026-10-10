@@ -27,4 +27,7 @@
     <dimen name="margin_40">40dp</dimen>
     <dimen name="margin_3dp">3dp</dimen>
     <dimen name="pad_6">6dp</dimen>
+    <dimen name="drawer_profile_width">280dp</dimen>
+    <dimen name="margin_24dp">24dp</dimen>
+    <dimen name="pad_normal">8dp</dimen>
 </resources>
