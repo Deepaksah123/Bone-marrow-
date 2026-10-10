@@ -78,7 +78,7 @@
                 android:layout_marginStart="5dp"
                 android:contentDescription="@null"
                 android:padding="4dp"
-                app:srcCompat="@drawable-nodpi/right_arrow"
+                app:srcCompat="@drawable/right_arrow"
                 app:tint="?attr/onBackgroundSurface3" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
