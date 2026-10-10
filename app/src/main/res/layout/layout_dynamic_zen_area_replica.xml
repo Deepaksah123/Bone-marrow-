@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_margin="@dimen/practical_corner_home_banner_content_top_margin"
+        android:layout_marginTop="@dimen/practical_corner_home_banner_content_top_margin"
         android:paddingTop="21dp"
         app:layout_constraintTop_toBottomOf="@id/toolbarPlaceholder"
         app:layout_constraintBottom_toBottomOf="parent"
