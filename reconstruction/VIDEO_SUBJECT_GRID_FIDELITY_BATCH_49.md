@@ -19,4 +19,9 @@
 
 ## Validation
 
-A fresh Android build and evidence guard are required before marking this batch validated.
+Validation (11 Oct 2026):
+
+- Android reconstruction build passed: [run 38078006253](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078006253), commit `884aaf01821899e0c5fd7c7dcc0f7b22f74a4b8e`.
+- Reconstruction evidence guard passed: [run 38078006278](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078006278), same commit.
+- Debug artifact: `marrow-reconstruction-debug`, artifact ID `11678864090`, ZIP size `8,195,237` bytes, artifact ZIP SHA-256 `fadbe68bceb34a26f8db64c07e519067ab0e1073f50f7ca0b8fe924230911fb7`.
+- These CI checks establish compile/assembly and evidence-guard success only. Device install, launch, layout rendering, and phone/tablet visual QA remain pending.
