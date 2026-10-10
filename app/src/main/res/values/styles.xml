@@ -15,6 +15,9 @@
         <item name="heading5">@style/TextAppearance.Dr.Headline5</item>
         <item name="bodySmall">@style/TextAppearance.Dr.Body2</item>
         <item name="colorOnSurfaceVariant">@android:color/white</item>
+        <item name="backgroundColor">@color/n_05</item>
+        <item name="colorSurfaceVariant">@color/n_00</item>
+        <item name="colorSurfaceVariant5">@color/mb_50</item>
     </style>
     <style name="TextAppearance.Dr.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="android:textSize">36sp</item>
@@ -36,5 +39,9 @@
         <item name="android:letterSpacing">0</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="lineHeight">17sp</item>
+    </style>
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
     </style>
 </resources>
