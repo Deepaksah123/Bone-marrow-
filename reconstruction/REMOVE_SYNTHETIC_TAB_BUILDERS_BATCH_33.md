@@ -18,4 +18,4 @@ The old builders were no longer called but still contained invented UI labels an
 
 ## Validation boundary
 
-The evidence guard now fails if the old `buildHome/buildQbank/buildTests/buildVideos` methods or a placeholder module-completion label are reintroduced. Android build must pass after this batch; runtime visual comparison remains pending.
+The Android build passed for cleanup commit `ca60723df92e`: [run 38074469213](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074469213). Debug APK artifact ID `11678407183`, size `8,195,170` bytes, digest `sha256:e9c910eac41a1b087b39d8d2517c2b06e5050db7891f4c4cdcc9b707e46d5880`. The evidence guard was adjusted to recognize the retained root variable; check the current guard run before marking that portion passed. Runtime visual comparison remains pending.
