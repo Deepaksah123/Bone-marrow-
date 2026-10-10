@@ -13,7 +13,7 @@
         <item name="home_bottom_navigation_card_elevation">8dp</item>
         <item name="heading5">@style/TextAppearance.Dr.Headline5</item>
         <item name="bodySmall">@style/TextAppearance.Dr.Body2</item>
-        <item name="colorOnSurfaceVariant">@color/shell_muted</item>
+        <item name="colorOnSurfaceVariant">@android:color/white</item>
     </style>
     <style name="TextAppearance.Dr.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="android:textSize">18sp</item>
