@@ -16,6 +16,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: android-ui-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   ui-smoke:
     runs-on: ubuntu-latest
@@ -97,6 +101,17 @@ jobs:
                     subprocess.run(["adb", "shell", "screencap", "-p", f"/sdcard/{target.lower()}.png"], check=True)
                     subprocess.run(["adb", "pull", f"/sdcard/{target.lower()}.png", f"qa-screenshots/{target.lower()}.png"], check=True, stdout=subprocess.DEVNULL)
                     print(f"Captured tab QA: {target} at ({x}, {y})")
+
+            # Capture both resolved theme modes after tab navigation. These images are
+            # QA evidence only; they are not used to infer or synthesize UI.
+            subprocess.run(["adb", "shell", "cmd", "uimode", "night", "yes"], check=True)
+            time.sleep(2)
+            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/dark-home.png"], check=True)
+            subprocess.run(["adb", "pull", "/sdcard/dark-home.png", "qa-screenshots/dark-home.png"], check=True, stdout=subprocess.DEVNULL)
+            subprocess.run(["adb", "shell", "cmd", "uimode", "night", "no"], check=True)
+            time.sleep(2)
+            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/light-home.png"], check=True)
+            subprocess.run(["adb", "pull", "/sdcard/light-home.png", "qa-screenshots/light-home.png"], check=True, stdout=subprocess.DEVNULL)
             PY
 
       - name: Upload UI smoke screenshots and hierarchies
