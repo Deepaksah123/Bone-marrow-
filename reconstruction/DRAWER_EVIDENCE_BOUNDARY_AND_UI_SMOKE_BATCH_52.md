@@ -17,7 +17,7 @@ This is an evidence-boundary correction, **not** completion of the drawer. The c
 
 ## Emulator QA infrastructure
 
-Added `.github/workflows/android-ui-smoke.yml` to build the app, install it in an Android API 35 emulator, launch MainActivity, assert the four source-backed tab labels are present, tap each tab, and capture UI screenshots plus UIAutomator hierarchy dumps as a short-lived workflow artifact.
+Added `.github/workflows/android-ui-smoke.yml` to build the app, install it in an Android API 35 emulator, launch MainActivity, assert the four source-backed tab labels are present, tap each tab, assert the expected source-backed loading/root IDs and app-process survival, exercise the toolbar drawer-open action, capture each tab's screenshot/hierarchy, and capture light/dark Home screenshots as a short-lived workflow artifact.
 
 Screenshots are runtime QA evidence only; they are not implementation source and are not yet pixel-compared against the original APK. This smoke workflow does not prove full 1:1 parity.
 
@@ -26,7 +26,7 @@ Screenshots are runtime QA evidence only; they are not implementation source and
 - Android build for app source commit `4c63633c0f1666887c2945ca33d7ec7ea9a3a71b`: **PASS**, [run 38078929016](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078929016).
 - Evidence guard before this batch's added drawer assertions: **PASS**, [run 38079505213](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38079505213).
 - Updated evidence guard with Batch 52 assertions: run is triggered by the current commit; final result must be checked before claiming validation.
-- Emulator UI smoke: [run 38079505268](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38079505268) is pending at report creation. Do not treat it as passed until screenshots/hierarchy artifact and all steps are confirmed.
+- Emulator UI smoke: [run 38079764502](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38079764502) is running the latest smoke script; do not treat it as passed until screenshots/hierarchy artifact and all steps are confirmed. Do not treat it as passed until screenshots/hierarchy artifact and all steps are confirmed.
 
 ## Still open
 
