@@ -19,4 +19,8 @@
     <attr name="heading6" format="reference" />
     <attr name="subtext1" format="reference" />
     <attr name="subtext2" format="reference" />
+    <attr name="backdrop50" format="color" />
+    <attr name="onSurfaceBgLinks" format="color" />
+    <attr name="onSurfaceBlue" format="color" />
+    <attr name="onSurfaceBgDivider" format="color" />
 </resources>
