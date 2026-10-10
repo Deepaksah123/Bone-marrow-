@@ -12,7 +12,8 @@ The tab handler now removes inactive fragments whose tags begin with `Home_` ins
 CI now asserts:
 - inactive Home fragments use `transaction.remove(fragment)`;
 - the previous hide-based behavior is not reintroduced;
-- selected destination lookup, add to `upperContainer`, and show-existing paths remain present.
+- selected destination lookup, add to `upperContainer`, and show-existing paths remain present;
+- all four exact source tag strings (`Home_kotlin.makeGooglePlayServicesAvailable`, `Home_kotlin.ResidentKeyRequirementUnsupportedResidentKeyRequirementException`, `Home_kotlin.WalletConstantsCardNetwork`, `Home_kotlin.setScrollPosition`) remain unchanged.
 
 ## Limits
 
