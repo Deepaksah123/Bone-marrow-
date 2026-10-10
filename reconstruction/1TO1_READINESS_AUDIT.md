@@ -51,7 +51,7 @@ Completed in this phase:
 
 ### Batch A — shell/navigation + Home
 
-1. Decode the original APK's `resources.arsc` and binary XML into build-ready resources; the decompiler ZIP resource names alone do not provide a build-ready exact hierarchy.
+1. Decode the original APK's `resources.arsc` and binary XML into build-ready resources. **Drawer resolution completed in Batch 53** by mapping `drawer_menu_revamp` to its obfuscated APK entry and reconstructing the source-backed layout; equivalent resolution for remaining unresolved screens/resources is still pending.
 2. Generate exact resource and screen mappings from actual source references; mark candidate relationships unverified until traced.
 3. Trace main navigation, tab state, deeplink/back-stack behavior and shared Home state with file/method/line evidence.
 4. Only then implement shell/Home from verified evidence; do not create a guessed Android project/tree.
@@ -89,3 +89,10 @@ No educational content will be inserted during these UI batches.
 
 - CI failure chain was traced from logs: (1) stale `R.id.home_tab` etc. references after switching to one `TabLayout`; (2) literal `\\n` characters were accidentally written into `app/build.gradle`; (3) the Gradle dependency block was rewritten in valid syntax at commit `d05a820`. The build for `d05a820` is now the active verification target; check its result before declaring the batch build-green.
 - Runtime/device visual QA has not been performed. The four content bodies remain incomplete and must not be called 1:1.
+
+## Drawer binary XML recovery (Batch 53)
+
+- Original APK SHA-256 and decompiler ZIP SHA-256 were verified against the recorded source artifacts.
+- `R.layout.drawer_menu_revamp` (`0x7f0d00b3`) resolves to obfuscated APK entry `On`; its binary XML was decoded and used to rebuild the drawer hierarchy.
+- Purchase/upsell/referral/debug rows are excluded. Source-row visibility/data binding, profile/course values, and non-monetization click destinations remain unresolved.
+- Android build passed [run 38081191407](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191407); evidence guard passed [run 38081191405](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191405). Emulator UI smoke remains in progress.
