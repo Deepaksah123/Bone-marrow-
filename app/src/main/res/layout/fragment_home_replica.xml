@@ -181,7 +181,7 @@
                     android:id="@+id/llShare"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/margin_36dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     android:padding="10dp"
@@ -198,7 +198,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:layout_marginStart="@dimen/padding_10"
                         android:text="@string/label_home_share"
                         android:textColor="@color/shell_muted"
                         android:textSize="14sp" />
@@ -208,7 +208,8 @@
                     android:id="@+id/heartMarrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="23dp"
+                    android:layout_marginBottom="94dp"
                     android:gravity="center"
                     android:orientation="horizontal"
                     app:layout_constraintTop_toBottomOf="@id/llShare"
@@ -241,9 +242,45 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
+                    android:orientation="vertical"
                     app:layout_constraintTop_toBottomOf="@id/rvHomeCard"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <include layout="@layout/layout_home_cards_shimmer_m2" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:orientation="horizontal">
+                            <include layout="@layout/layout_home_lesson_shimmer_m2" />
+                            <include layout="@layout/layout_home_lesson_shimmer_m2" />
+                            <include layout="@layout/layout_home_lesson_shimmer_m2" />
+                            <include layout="@layout/layout_home_lesson_shimmer_m2" />
+                            <include layout="@layout/layout_home_lesson_shimmer_m2" />
+                            <include layout="@layout/layout_home_lesson_shimmer_m2" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="30dp"
+                            android:orientation="horizontal">
+                            <include layout="@layout/layout_home_lesson_shimmer" />
+                            <include layout="@layout/layout_home_lesson_shimmer" />
+                            <include layout="@layout/layout_home_lesson_shimmer" />
+                            <include layout="@layout/layout_home_lesson_shimmer" />
+                            <include layout="@layout/layout_home_lesson_shimmer" />
+                            <include layout="@layout/layout_home_lesson_shimmer" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
