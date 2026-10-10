@@ -83,7 +83,7 @@ jobs:
             expected_root_ids = {
                 "QBank": "progressLoadList",
                 "Tests": "loadingContainer",
-                "Videos": "epoxyRVSubject",
+                "Videos": "tvInternModeStatus",
                 "Home": "shimmerMain",
             }
                 for target in targets:
@@ -127,6 +127,11 @@ jobs:
             x1, y1, x2, y2 = map(int, match.groups())
             subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True)
             time.sleep(1)
+            subprocess.run(["adb", "shell", "uiautomator", "dump", "/sdcard/drawer-open.xml"], check=True, stdout=subprocess.DEVNULL)
+            subprocess.run(["adb", "pull", "/sdcard/drawer-open.xml", "qa-screenshots/drawer-open-hierarchy.xml"], check=True, stdout=subprocess.DEVNULL)
+            drawer_hierarchy = Path("qa-screenshots/drawer-open-hierarchy.xml").read_text(encoding="utf-8")
+            if "Your Course" not in drawer_hierarchy or "Settings" not in drawer_hierarchy:
+                raise SystemExit("Drawer did not expose the source-backed Your Course and Settings labels")
             subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/drawer-open.png"], check=True)
             subprocess.run(["adb", "pull", "/sdcard/drawer-open.png", "qa-screenshots/drawer-open.png"], check=True, stdout=subprocess.DEVNULL)
             subprocess.run(["adb", "shell", "input", "keyevent", "4"], check=True)
