@@ -96,3 +96,7 @@ No educational content will be inserted during these UI batches.
 - `R.layout.drawer_menu_revamp` (`0x7f0d00b3`) resolves to obfuscated APK entry `On`; its binary XML was decoded and used to rebuild the drawer hierarchy.
 - Purchase/upsell/referral/debug rows are excluded. Source-row visibility/data binding, profile/course values, and non-monetization click destinations remain unresolved.
 - Android build passed [run 38081191407](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191407); evidence guard passed [run 38081191405](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191405). Emulator UI smoke remains in progress.
+
+## Shell binary XML geometry correction (Batch 54)
+
+The original `activity_home_revamp` binary XML (`0x7f0d0033`, obfuscated APK entry `zZ`) has been decoded directly. Shell clipping, toolbar trailing-action grouping/padding, bottom-nav margins, blocker elevation and `fullContainer` elevation are corrected to match the binary XML. Build passed at [run 38082219855](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082219855). Emulator smoke is pending at [run 38082219825](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082219825). Whole-app 1:1 parity remains incomplete.
