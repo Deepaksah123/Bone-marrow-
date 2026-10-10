@@ -87,8 +87,8 @@ No educational content will be inserted during these UI batches.
 
 ### Verification
 
-- CI failure chain was traced from logs: (1) stale `R.id.home_tab` etc. references after switching to one `TabLayout`; (2) literal `\\n` characters were accidentally written into `app/build.gradle`; (3) the Gradle dependency block was rewritten in valid syntax at commit `d05a820`. The build for `d05a820` is now the active verification target; check its result before declaring the batch build-green.
-- Runtime/device visual QA has not been performed. The four content bodies remain incomplete and must not be called 1:1.
+- Historical CI failure chain: stale `R.id.home_tab` references and malformed Gradle dependency syntax were corrected in later commits; the current Android build passes at [run 38086133865](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133865), with evidence guard pass at [run 38086133816](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133816).
+- API 31 runtime UI smoke is currently in progress at [run 38086133823](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133823). Until its screenshot/hierarchy artifact is reviewed, runtime visual QA remains unverified. The four tab content bodies and full-app pixel parity remain incomplete and must not be called 1:1.
 
 ## Drawer binary XML recovery (Batch 53)
 
