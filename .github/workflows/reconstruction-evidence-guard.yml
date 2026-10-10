@@ -178,6 +178,13 @@ jobs:
           grep -Fq 'android:background="?attr/colorSurfaceVariant5"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'android:clickable="true"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'android:layout_height="?attr/actionBarSize"' app/src/main/res/layout/activity_main.xml
+          grep -Fq 'android:paddingHorizontal="8dp"' app/src/main/res/layout/activity_main.xml
+          grep -Fq 'android:paddingHorizontal="6dp"' app/src/main/res/layout/activity_main.xml
+          grep -Fq 'android:layout_marginHorizontal="@dimen/margin_16dp"' app/src/main/res/layout/activity_main.xml
+          grep -Fq 'android:layout_weight="1"' app/src/main/res/layout/activity_main.xml
+          grep -Fq 'android:clipChildren="false"' app/src/main/res/layout/activity_main.xml
+          grep -Fq 'android:clipToPadding="false"' app/src/main/res/layout/activity_main.xml
+          grep -A6 -F 'android:id="@+id/screen_blocker"' app/src/main/res/layout/activity_main.xml | grep -Fq 'android:elevation="8dp"'
           grep -Fq 'android:layout_width="?attr/actionBarSize"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'style="?attr/heading5"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'style="?attr/heading4"' app/src/main/res/layout/activity_main.xml
