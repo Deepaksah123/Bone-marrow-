@@ -200,7 +200,9 @@ public final class MainActivity extends FragmentActivity {
     private View buildVideos() {
         View root = LayoutInflater.from(this).inflate(R.layout.fragment_video_landing_replica, content, false);
         androidx.recyclerview.widget.RecyclerView subjects = root.findViewById(R.id.epoxyRVSubject);
-        subjects.setLayoutManager(new androidx.recyclerview.widget.LinearLayoutManager(this));
+        // Original VideoLandingFragment uses a GridLayoutManager: 2 columns on phones, 3 on tablets.
+        int spanCount = getResources().getConfiguration().smallestScreenWidthDp >= 600 ? 3 : 2;
+        subjects.setLayoutManager(new androidx.recyclerview.widget.GridLayoutManager(this, spanCount));
         return root;
     }
 
