@@ -19,6 +19,15 @@
         <item name="backgroundColor">@color/n_05</item>
         <item name="colorSurfaceVariant">@color/n_00</item>
         <item name="colorSurfaceVariant5">@color/mb_50</item>
+        <item name="backgroundVariant2">@color/mb_90</item>
+        <item name="colorOnBackground">@color/n_60</item>
+        <item name="onBackgroundSurface2">@color/n_50</item>
+        <item name="onBackgroundSurface3">@color/n_40</item>
+        <item name="onBackgroundSurface5">@color/n_10</item>
+        <item name="onSurfaceBgOutline">@color/n_15</item>
+        <item name="heading6">@style/TextAppearance.Dr.Headline6</item>
+        <item name="subtext1">@style/TextAppearance.Dr.Subtitle1</item>
+        <item name="subtext2">@style/TextAppearance.Dr.Subtitle2</item>
     </style>
     <style name="TextAppearance.Dr.Headline1" parent="TextAppearance.MaterialComponents.Headline1">
         <item name="android:textSize">36sp</item>
@@ -34,6 +43,27 @@
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">bold</item>
         <item name="lineHeight">24sp</item>
+    </style>
+    <style name="TextAppearance.Dr.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="lineHeight">19sp</item>
+    </style>
+    <style name="TextAppearance.Dr.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="lineHeight">14sp</item>
+    </style>
+    <style name="TextAppearance.Dr.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="lineHeight">14sp</item>
     </style>
     <style name="TextAppearance.Dr.Headline5" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="android:textSize">18sp</item>
