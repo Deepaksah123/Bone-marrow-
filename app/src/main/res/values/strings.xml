@@ -16,4 +16,5 @@
     <string name="pyt_desc">Intern Mode marks the videos that contain Previous Years’ Topics (PYTs) from NEET PG and INI-CET exams.</string>
     <string name="pyt_turn_on">Turn On</string>
     <string name="nav_learn_more">Learn More</string>
+    <string name="text_watch_next">Watch Next</string>
 </resources>
