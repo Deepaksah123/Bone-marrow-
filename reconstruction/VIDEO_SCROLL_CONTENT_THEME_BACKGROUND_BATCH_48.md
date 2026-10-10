@@ -15,4 +15,4 @@ The outer Video landing `parentFrame` already used `?attr/backgroundColor`, but 
 
 ## Validation
 
-Android build and evidence guard are pending for this batch. Device-level light/dark screenshots and pixel comparison remain outstanding.
+Validation (11 Oct 2026): Android reconstruction build passed [run 38078006253](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078006253) and evidence guard passed [run 38078006278](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078006278) on commit `884aaf01821899e0c5fd7c7dcc0f7b22f74a4b8e`. The build artifact is `marrow-reconstruction-debug`, ID `11678864090`, ZIP size `8,195,237` bytes, ZIP SHA-256 `fadbe68bceb34a26f8db64c07e519067ab0e1073f50f7ca0b8fe924230911fb7`. Device-level light/dark screenshots and pixel comparison remain outstanding.
