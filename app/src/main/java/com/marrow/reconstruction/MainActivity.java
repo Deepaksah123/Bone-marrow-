@@ -44,7 +44,7 @@ public final class MainActivity extends FragmentActivity {
         menuIcon.setImageBitmap(BitmapFactory.decodeByteArray(menuIconBytes, 0, menuIconBytes.length));
         content = findViewById(R.id.upperContainer);
         tabLayout = findViewById(R.id.bottomNavigation);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setSelectedTabIndicator(R.drawable.ic_tab_indicator);
         tabLayout.setSelectedTabIndicatorHeight(dp(4));
