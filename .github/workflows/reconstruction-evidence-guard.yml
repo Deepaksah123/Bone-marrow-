@@ -58,6 +58,16 @@ jobs:
           grep -Fq 'android:autoSizeMinTextSize="12sp"' app/src/main/res/layout/fragment_home_replica.xml
           grep -Fq 'android:autoSizeMaxTextSize="36sp"' app/src/main/res/layout/fragment_home_replica.xml
           grep -Fq 'android:layout_marginBottom="16dp"' app/src/main/res/layout/fragment_home_replica.xml
+          # Home shimmer subtree is source-backed; it contains skeletons only, never fake lessons.
+          test -f app/src/main/res/layout/layout_home_cards_shimmer_m2.xml
+          test -f app/src/main/res/layout/layout_home_lesson_shimmer_m2.xml
+          test -f app/src/main/res/layout/layout_home_lesson_shimmer.xml
+          grep -Fq 'layout="@layout/layout_home_cards_shimmer_m2"' app/src/main/res/layout/fragment_home_replica.xml
+          test "$(grep -o 'layout="@layout/layout_home_lesson_shimmer_m2"' app/src/main/res/layout/fragment_home_replica.xml | wc -l)" -eq 6
+          test "$(grep -o 'layout="@layout/layout_home_lesson_shimmer"' app/src/main/res/layout/fragment_home_replica.xml | wc -l)" -eq 6
+          echo '8c22e2695951e8c94a757e24fc4664f8c19e1d8c5bf054d80bc53360c0f689d2  app/src/main/res/drawable/bg_rounded_white_no_stroke.xml' | sha256sum --check
+          echo '2abf2eab5516be8c1f73b0b3178f3e4578a70d99f015ccd84fe3244473fdf379  app/src/main/res/drawable/ic_marrow_logo_m.xml' | sha256sum --check
+          echo '394e990f90c86a11a747fdaf027be3b89210da12cc36ef66f8718e3e54690ac7  app/src/main/res/drawable/ic_complete.xml' | sha256sum --check
           if find . -maxdepth 3 -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' \) | grep -q .; then
             echo 'Android build files detected. This guard is not a substitute for source-grounded build/tests.'
           else
