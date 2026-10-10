@@ -24,4 +24,8 @@
     <color name="n_60">#626768</color>
     <color name="n_70">#4a4d4e</color>
     <color name="n_70_a_30">#4d4a4d4e</color>
+    <color name="white">#ffffff</color>
+    <color name="links">#4a69a2</color>
+    <color name="n_00_o_50">#80000000</color>
+    <color name="colorPrimary">#62c8df</color>
 </resources>
