@@ -36,6 +36,15 @@ jobs:
           grep -Fq '<dimen name="practical_corner_home_banner_content_top_margin">4dp</dimen>' app/src/main/res/values/dimens.xml
           grep -Fq '<dimen name="practical_corner_home_banner_content_top_margin">28dp</dimen>' app/src/main/res/values-v35/dimens.xml
           test ! -f app/src/main/res/drawable/ic_practical_corner_zen_are_pattern.xml
+          # Zen include identity/order checks from the decoded binary layout.
+          for id in zenContainer toolbarPlaceholder ivZenAreaBackground lyt_zen_area_content logoAnimationBackground logoAnimation lytZenAreaCta tvPcZenTitle tvZenCompletedModules; do
+            grep -Fq "android:id=\"@+id/$id\"" app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          done
+          grep -Fq 'android:src="@drawable/ic_pc_circle_including_logo"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          grep -Fq 'android:text="Practicals"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          grep -Fq 'android:text="9/35 modules"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          grep -Fq 'style="?attr/heading5"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          grep -Fq 'style="?attr/bodySmall"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           if find . -maxdepth 3 -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' \) | grep -q .; then
             echo 'Android build files detected. This guard is not a substitute for source-grounded build/tests.'
           else
