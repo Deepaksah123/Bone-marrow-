@@ -74,15 +74,58 @@ public final class MainActivity extends FragmentActivity {
     }
 
     private void renderTab(int index) {
-        selectedTab=index;
-        for(int i=0;i<tabLayout.getTabCount();i++) updateTabAppearance(tabLayout.getTabAt(i),i==index);
+        selectedTab = Math.max(0, Math.min(index, 3));
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+            updateTabAppearance(tabLayout.getTabAt(i), i == selectedTab);
+        }
+
         FragmentManager manager = getSupportFragmentManager();
-        String tag = "Home_" + TabContentFragment.class.getName() + "_" + index;
-        Fragment existing = manager.findFragmentByTag(tag);
-        if (existing != null && existing.isAdded()) return;
-        manager.beginTransaction()
-                .replace(R.id.upperContainer, TabContentFragment.newInstance(index), tag)
-                .commit();
+        Class<? extends TabContentFragment> destinationClass = fragmentClassFor(selectedTab);
+        String destinationTag = "Home_" + destinationClass.getName();
+        Fragment destination = manager.findFragmentByTag(destinationTag);
+        androidx.fragment.app.FragmentTransaction transaction = manager.beginTransaction();
+
+        // Match the verified source's Home_<fully-qualified-class> tag family:
+        // keep prior destinations managed, hide inactive ones, and show the selected destination.
+        for (Fragment fragment : manager.getFragments()) {
+            if (fragment != null && fragment.isAdded()
+                    && fragment.getTag() != null
+                    && fragment.getTag().startsWith("Home_")
+                    && fragment != destination) {
+                transaction.hide(fragment);
+            }
+        }
+
+        if (destination == null) {
+            destination = newTabFragment(selectedTab);
+            transaction.add(R.id.upperContainer, destination, destinationTag);
+        } else {
+            transaction.show(destination);
+        }
+        transaction.commit();
+    }
+
+    private static Class<? extends TabContentFragment> fragmentClassFor(int index) {
+        switch (index) {
+            case 1: return QBankTabFragment.class;
+            case 2: return TestsTabFragment.class;
+            case 3: return VideosTabFragment.class;
+            default: return HomeTabFragment.class;
+        }
+    }
+
+    private static TabContentFragment newTabFragment(int index) {
+        TabContentFragment fragment;
+        switch (index) {
+            case 1: fragment = new QBankTabFragment(); break;
+            case 2: fragment = new TestsTabFragment(); break;
+            case 3: fragment = new VideosTabFragment(); break;
+            default: fragment = new HomeTabFragment(); break;
+        }
+        Bundle args = new Bundle();
+        args.putInt(TabContentFragment.ARG_TAB_INDEX, Math.max(0, Math.min(index, 3)));
+        fragment.setArguments(args);
+        return fragment;
     }
 
     private LinearLayout column() {
@@ -168,7 +211,7 @@ public final class MainActivity extends FragmentActivity {
         return index==0 ? buildHome() : index==1 ? buildQbank() : index==2 ? buildTests() : buildVideos();
     }
 
-    public static final class TabContentFragment extends Fragment {
+    public static class TabContentFragment extends Fragment {
         private static final String ARG_TAB_INDEX = "tab_index";
 
         static TabContentFragment newInstance(int index) {
@@ -188,6 +231,11 @@ public final class MainActivity extends FragmentActivity {
                     Math.max(0, Math.min(index, 3)), container);
         }
     }
+
+    public static final class HomeTabFragment extends TabContentFragment { }
+    public static final class QBankTabFragment extends TabContentFragment { }
+    public static final class TestsTabFragment extends TabContentFragment { }
+    public static final class VideosTabFragment extends TabContentFragment { }
 
     @Override protected void onSaveInstanceState(Bundle out) {
         out.putInt("selected_home_tab",selectedTab); super.onSaveInstanceState(out);
