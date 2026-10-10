@@ -149,5 +149,6 @@
 - [x] Mapped `R.layout.drawer_menu_revamp` (`0x7f0d00b3`) to the original obfuscated APK entry and decoded its 10,056-byte binary XML.
 - [x] Reconstructed source-backed drawer IDs, profile/course header, footer and non-monetization rows; restored the original small drawer assets and required theme/dimension/string resources.
 - [x] Kept purchase, Buy Notes, Add Videos, referral-coupon/extension, Pro badge, and debugging/logout UI excluded.
-- [ ] Verify the current Android build and emulator smoke; source-row visibility/data-binding and click destinations remain open.
+- [x] Current Android build passed: [run 38081191407](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191407); current evidence guard passed: [run 38081191405](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191405).
+- [ ] Finish emulator smoke [run 38081191436](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191436), inspect screenshot artifacts, and resolve any runtime failures. Source-row visibility/data-binding and click destinations remain open.
 - [ ] Recover the original Home Zen pattern vector family into build-ready resources; no vector data was fabricated.
