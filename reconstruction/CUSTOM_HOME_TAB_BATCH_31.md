@@ -17,4 +17,4 @@ The previous `item_home_tab.xml` had a different hierarchy and different IDs (`t
 
 ## Validation
 
-The evidence guard checks the indicator vector hash, layout IDs/dimensions and Java bindings. Build validation must complete after this batch. This is source-layout alignment, not on-device pixel-diff QA.
+The evidence guard passed for the source custom-tab hierarchy: [run 38074219308](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074219308). Android build passed for commit `47d71eef4352`: [run 38074210922](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074210922), artifact ID `11678411729`, digest `sha256:e28b72976cc7360079706b7dcf1a01b7256371ecc51151c4026d16b188a89821`. This is source-layout alignment, not on-device pixel-diff QA.
