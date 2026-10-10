@@ -15,4 +15,13 @@
     <color name="n_80">#313434</color>
     <color name="n_85">#252727</color>
     <color name="tGreen">#1f4851</color>
+    <color name="mb_90">#16343b</color>
+    <color name="n_10">#e5e6e6</color>
+    <color name="n_15">#d7d9da</color>
+    <color name="n_20">#cacdcd</color>
+    <color name="n_40">#959a9b</color>
+    <color name="n_50">#7b8182</color>
+    <color name="n_60">#626768</color>
+    <color name="n_70">#4a4d4e</color>
+    <color name="n_70_a_30">#4d4a4d4e</color>
 </resources>
