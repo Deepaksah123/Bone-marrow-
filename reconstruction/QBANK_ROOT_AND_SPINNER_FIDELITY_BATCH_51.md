@@ -19,4 +19,4 @@
 
 ## Validation
 
-A fresh Android build and evidence guard are required before this batch is considered validated.
+**Validated:** Android build [38078412747](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078412747) passed, and evidence guard [38078412756](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078412756) passed. Artifact ID `11678498594`, size `8,196,390` bytes, SHA-256 `b8cc5a081cc906855a361d34f60dc8acca950bc851b67cdee28a468cef6b175b`.
