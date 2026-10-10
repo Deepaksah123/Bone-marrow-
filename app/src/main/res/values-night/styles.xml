@@ -15,5 +15,8 @@
         <item name="heading5">@style/TextAppearance.Dr.Headline5</item>
         <item name="bodySmall">@style/TextAppearance.Dr.Body2</item>
         <item name="colorOnSurfaceVariant">@android:color/white</item>
+        <item name="backgroundColor">@color/n_85</item>
+        <item name="colorSurfaceVariant">@color/n_00</item>
+        <item name="colorSurfaceVariant5">@color/n_80</item>
     </style>
 </resources>
