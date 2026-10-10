@@ -152,3 +152,12 @@
 - [x] Current Android build passed: [run 38081778235](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081778235); current evidence guard passed: [run 38081778268](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081778268).
 - [ ] Finish emulator smoke [run 38081778228](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081778228), inspect screenshot artifacts, and resolve any runtime failures. Source-row visibility/data-binding and click destinations remain open.
 - [ ] Recover the original Practical Corner landing pattern resource family into build-ready resources; no vector data was fabricated. Source tracing shows this pattern is applied by PracticalCornerLandingFragment, not the Home root's hidden ivEd6background.
+
+## Batch 54 — original shell binary XML geometry
+
+- [x] Decoded `activity_home_revamp` (`0x7f0d0033`) directly from the verified original APK.
+- [x] Corrected source-backed shell clipping, toolbar action grouping/padding, bottom-nav horizontal margins, blocker elevation and `fullContainer` elevation.
+- [x] Updated the evidence guard to assert the original `fullContainer` elevation instead of the earlier incorrect margin assumption.
+- [x] Android build passed: [run 38082219855](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082219855).
+- [ ] Finish emulator UI smoke and inspect screenshots: [run 38082219825](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082219825).
+- [ ] Full source-state visibility/navigation trace and original-APK pixel comparison remain open.
