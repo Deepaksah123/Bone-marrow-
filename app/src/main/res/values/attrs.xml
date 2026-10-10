@@ -10,4 +10,13 @@
     <attr name="backgroundColor" format="color" />
     <attr name="colorSurfaceVariant" format="color" />
     <attr name="colorSurfaceVariant5" format="color" />
+    <attr name="backgroundVariant2" format="color" />
+    <attr name="colorOnBackground" format="color" />
+    <attr name="onBackgroundSurface2" format="color" />
+    <attr name="onBackgroundSurface3" format="color" />
+    <attr name="onBackgroundSurface5" format="color" />
+    <attr name="onSurfaceBgOutline" format="color" />
+    <attr name="heading6" format="reference" />
+    <attr name="subtext1" format="reference" />
+    <attr name="subtext2" format="reference" />
 </resources>
