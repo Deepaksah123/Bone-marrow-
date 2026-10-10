@@ -86,34 +86,34 @@ jobs:
                 "Videos": "tvInternModeStatus",
                 "Home": "shimmerMain",
             }
-                for target in targets:
-                    candidates = []
-                    for node in root.iter("node"):
-                        node_text = node.attrib.get("text", "")
-                        desc = node.attrib.get("content-desc", "")
-                        if node_text == target or desc == target:
-                            bounds = node.attrib.get("bounds", "")
-                            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", bounds)
-                            if match:
-                                x1, y1, x2, y2 = map(int, match.groups())
-                                candidates.append(((x1 + x2) // 2, (y1 + y2) // 2))
-                    if not candidates:
-                        raise SystemExit(f"Could not find tab node in launch hierarchy: {target}")
-                    x, y = candidates[-1]
-                    subprocess.run(["adb", "shell", "input", "tap", str(x), str(y)], check=True)
-                    time.sleep(2)
-                    subprocess.run(["adb", "shell", "uiautomator", "dump", "/sdcard/current.xml"], check=True, stdout=subprocess.DEVNULL)
-                    hierarchy_path = f"qa-screenshots/{target.lower()}-hierarchy.xml"
-                    subprocess.run(["adb", "pull", "/sdcard/current.xml", hierarchy_path], check=True, stdout=subprocess.DEVNULL)
-                    hierarchy_text = Path(hierarchy_path).read_text(encoding="utf-8")
-                    expected_id = expected_root_ids[target]
-                    if expected_id not in hierarchy_text:
-                        raise SystemExit(f"Tab {target} did not expose expected source-backed loading/root ID: {expected_id}")
-                    if not subprocess.run(["adb", "shell", "pidof", "com.marrow.reconstruction.replica"], check=False, stdout=subprocess.PIPE, text=True).stdout.strip():
-                        raise SystemExit(f"App process exited after selecting tab {target}")
-                    subprocess.run(["adb", "shell", "screencap", "-p", f"/sdcard/{target.lower()}.png"], check=True)
-                    subprocess.run(["adb", "pull", f"/sdcard/{target.lower()}.png", f"qa-screenshots/{target.lower()}.png"], check=True, stdout=subprocess.DEVNULL)
-                    print(f"Captured tab QA: {target} at ({x}, {y})")
+            for target in targets:
+                candidates = []
+                for node in root.iter("node"):
+                    node_text = node.attrib.get("text", "")
+                    desc = node.attrib.get("content-desc", "")
+                    if node_text == target or desc == target:
+                        bounds = node.attrib.get("bounds", "")
+                        match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", bounds)
+                        if match:
+                            x1, y1, x2, y2 = map(int, match.groups())
+                            candidates.append(((x1 + x2) // 2, (y1 + y2) // 2))
+                if not candidates:
+                    raise SystemExit(f"Could not find tab node in launch hierarchy: {target}")
+                x, y = candidates[-1]
+                subprocess.run(["adb", "shell", "input", "tap", str(x), str(y)], check=True)
+                time.sleep(2)
+                subprocess.run(["adb", "shell", "uiautomator", "dump", "/sdcard/current.xml"], check=True, stdout=subprocess.DEVNULL)
+                hierarchy_path = f"qa-screenshots/{target.lower()}-hierarchy.xml"
+                subprocess.run(["adb", "pull", "/sdcard/current.xml", hierarchy_path], check=True, stdout=subprocess.DEVNULL)
+                hierarchy_text = Path(hierarchy_path).read_text(encoding="utf-8")
+                expected_id = expected_root_ids[target]
+                if expected_id not in hierarchy_text:
+                    raise SystemExit(f"Tab {target} did not expose expected source-backed loading/root ID: {expected_id}")
+                if not subprocess.run(["adb", "shell", "pidof", "com.marrow.reconstruction.replica"], check=False, stdout=subprocess.PIPE, text=True).stdout.strip():
+                    raise SystemExit(f"App process exited after selecting tab {target}")
+                subprocess.run(["adb", "shell", "screencap", "-p", f"/sdcard/{target.lower()}.png"], check=True)
+                subprocess.run(["adb", "pull", f"/sdcard/{target.lower()}.png", f"qa-screenshots/{target.lower()}.png"], check=True, stdout=subprocess.DEVNULL)
+                print(f"Captured tab QA: {target} at ({x}, {y})")
 
             # Exercise the source-backed toolbar menu action and record the drawer surface.
             menu_bounds = None
