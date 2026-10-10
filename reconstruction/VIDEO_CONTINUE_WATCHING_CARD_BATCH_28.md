@@ -25,4 +25,4 @@ The original card's runtime model/binding (thumbnail, title, progress and remain
 
 ## Validation
 
-The evidence guard checks exact hashes for all five copied source drawable files and confirms the include points to the dedicated card layout. Android build and guard results must be checked after this batch.
+The evidence guard passed for the exact source drawable hashes and both source include mappings: [run 38073315067](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38073315067). Android build passed for code commit `599f2e69305a`: [run 38073302955](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38073302955). Debug APK artifact ID `11678100530`, size `8,195,852` bytes, digest `sha256:84ea7c9f6a3732e522460ffe94479e3888954a3653d1a03313d252c3329f44ab`.
