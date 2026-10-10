@@ -26,7 +26,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_change_course"
+                android:src="@drawable/ic_arrow_back"
                 android:tint="?attr/colorOnSurfaceVariant" />
             <TextView
                 android:layout_width="0dp"
@@ -50,7 +50,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_email_revamp"
+                android:src="@drawable/ic_info"
                 android:tint="?attr/colorOnSurfaceVariant" />
             <TextView
                 android:layout_width="0dp"
@@ -98,7 +98,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_info_revamp"
+                android:src="@drawable/ic_info"
                 android:tint="?attr/colorOnSurfaceVariant" />
             <TextView
                 android:layout_width="0dp"
@@ -122,7 +122,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_info_revamp"
+                android:src="@drawable/ic_info"
                 android:tint="?attr/colorOnSurfaceVariant" />
             <TextView
                 android:layout_width="0dp"
@@ -146,7 +146,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_share_revamp"
+                android:src="@drawable/share_rv"
                 android:tint="?attr/colorOnSurfaceVariant" />
             <TextView
                 android:layout_width="0dp"
@@ -170,7 +170,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_rating_star"
+                android:src="@drawable/ic_complete"
                 android:tint="?attr/colorOnSurfaceVariant" />
             <TextView
                 android:layout_width="0dp"
@@ -218,7 +218,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_logout_v2"
+                android:src="@drawable/ic_arrow_back"
                 android:tint="?attr/colorOnSurfaceVariant" />
             <TextView
                 android:layout_width="0dp"
