@@ -140,6 +140,11 @@ jobs:
           grep -Fq 'case 2: layout = R.layout.fragment_home_test_replica;' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'case 3: layout = R.layout.fragment_video_landing_replica;' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'default: layout = R.layout.fragment_home_replica;' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'transaction.remove(fragment);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          ! grep -Fq 'transaction.hide(fragment);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'String destinationTag = sourceDestinationTagFor(selectedTab);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'transaction.add(R.id.upperContainer, destination, destinationTag);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'transaction.show(destination);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'View root = LayoutInflater.from(this).inflate(layout, parent, false);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           ! grep -Fq 'private View buildHome()' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           ! grep -Fq 'private View buildQbank()' app/src/main/java/com/marrow/reconstruction/MainActivity.java
