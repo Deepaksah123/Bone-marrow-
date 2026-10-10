@@ -112,6 +112,15 @@ jobs:
           grep -Fq 'android:id="@+id/tvWatchNext"' app/src/main/res/layout/layout_video_watch_next_card.xml
           grep -Fq 'android:id="@+id/tvVideoRemainingDuration"' app/src/main/res/layout/layout_video_watch_next_card.xml
           # All four home tabs inflate source-shaped XML roots; no synthetic screen content entry point.
+          # Direct-ID coverage from decoded source roots; monetization-only Home IDs remain excluded.
+          test "$(grep -o 'android:id="@+id/' app/src/main/res/layout/fragment_home_replica.xml | wc -l)" -eq 17
+          test "$(grep -o 'android:id="@+id/' app/src/main/res/layout/fragment_qbank_landing_replica.xml | wc -l)" -eq 2
+          test "$(grep -o 'android:id="@+id/' app/src/main/res/layout/fragment_home_test_replica.xml | wc -l)" -eq 9
+          test "$(grep -o 'android:id="@+id/' app/src/main/res/layout/fragment_video_landing_replica.xml | wc -l)" -eq 44
+          grep -Fq '<androidx.constraintlayout.widget.ConstraintLayout' app/src/main/res/layout/fragment_home_replica.xml
+          grep -Fq '<androidx.constraintlayout.widget.ConstraintLayout' app/src/main/res/layout/fragment_qbank_landing_replica.xml
+          grep -Fq '<androidx.constraintlayout.widget.ConstraintLayout' app/src/main/res/layout/fragment_home_test_replica.xml
+          grep -Fq '<FrameLayout' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -Fq 'case 1: layout = R.layout.fragment_qbank_landing_replica;' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'case 2: layout = R.layout.fragment_home_test_replica;' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'case 3: layout = R.layout.fragment_video_landing_replica;' app/src/main/java/com/marrow/reconstruction/MainActivity.java
