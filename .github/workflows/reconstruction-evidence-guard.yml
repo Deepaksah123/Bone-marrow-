@@ -271,3 +271,16 @@ jobs:
           ! grep -Eq 'android:id="@\+id/(navMyPlan|navBuyNowContainer|navAddVideosContainer|navNotes|navReferalCoupon|navDeleteMcqParent|navExportDb|navLogout)"' app/src/main/res/layout/drawer_menu_empty_host_replica.xml
           ! grep -Eiq 'go pro|buy notes|subscribe|upgrade plan|get free extension|renew plan|checkout|payment' app/src/main/res/layout/drawer_menu_empty_host_replica.xml
           grep -Fq 'menuIcon.setOnClickListener(v -> drawerLayout.openDrawer(android.view.Gravity.START));' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+
+          # Search route is source-traced to Better Search; paid controls remain excluded.
+          grep -Fq 'SearchOverlayFragment.TAG' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'add(R.id.fullContainer, new SearchOverlayFragment()' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          for id in llSearch ivBack ivSearch etSearch ivClose tvInitMessage tlFilters llRecentSearch rvResults llError imgError tvNoResult clProgress pbMain clEmpty tvClearAll; do
+            grep -Fq "android:id=\"@+id/$id\"" app/src/main/res/layout/fragment_better_search_replica.xml
+          done
+          ! grep -Fq 'android:id="@+id/clProMain"' app/src/main/res/layout/fragment_better_search_replica.xml
+          ! grep -Fq 'android:id="@+id/btViewPlans"' app/src/main/res/layout/fragment_better_search_replica.xml
+          grep -Fq 'hint_better_search' app/src/main/res/layout/fragment_better_search_replica.xml
+          grep -Fq 'label_bs_init' app/src/main/res/layout/fragment_better_search_replica.xml
+          grep -Fq 'android:statusBarColor">?attr/colorSurfaceVariant5</item>' app/src/main/res/values/styles.xml
+          grep -Fq 'android:statusBarColor">?attr/colorSurfaceVariant5</item>' app/src/main/res/values-night/styles.xml

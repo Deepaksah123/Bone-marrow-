@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundColor">
+
+    <LinearLayout
+        android:id="@+id/llSearch"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorSurfaceVariant5"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:contentDescription="@null"
+            android:padding="16dp"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/icv_bs_back" />
+
+        <ImageView
+            android:id="@+id/ivSearch"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="@dimen/margin_20dp"
+            android:contentDescription="@null"
+            app:srcCompat="@drawable/icv_search_icon" />
+
+        <EditText
+            android:id="@+id/etSearch"
+            style="?attr/bodyLarge"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:hint="@string/hint_better_search"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLength="33"
+            android:paddingStart="0dp"
+            android:paddingEnd="0dp"
+            android:singleLine="true"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textColorHint="?attr/colorOnSurfaceVariant"
+            android:textCursorDrawable="@drawable/color_bs_cursor" />
+
+        <ImageView
+            android:id="@+id/ivClose"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:contentDescription="@null"
+            android:padding="16dp"
+            android:visibility="gone"
+            android:tint="?attr/colorOnSurfaceVariant"
+            app:srcCompat="@drawable/ic_action_close2" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvInitMessage"
+        style="?attr/subtext1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_24"
+        android:layout_marginTop="@dimen/margin_28dp"
+        android:layout_marginEnd="@dimen/padding_24"
+        android:text="@string/label_bs_init"
+        android:textColor="?attr/onBackgroundSurface3"
+        app:layout_constraintTop_toBottomOf="@id/llSearch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tlFilters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorSurfaceVariant5"
+        android:visibility="gone"
+        app:tabGravity="fill"
+        app:tabIndicator="@drawable/tab_indicator_white"
+        app:tabIndicatorColor="?attr/colorOnSurfaceVariant"
+        app:tabIndicatorHeight="1dp"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="?attr/colorOnSurfaceVariant"
+        app:tabTextColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintTop_toBottomOf="@id/llSearch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/llRecentSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/llSearch"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            style="?attr/subtext2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_12dp"
+            android:text="@string/label_recent_search"
+            android:textColor="?attr/onBackgroundSurface3" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?attr/onSurfaceBgDivider" />
+
+        <TextView
+            android:id="@+id/tvClearAll"
+            style="?attr/subtext2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_12dp"
+            android:text="@string/label_clear_all"
+            android:textColor="?attr/onSurfaceBgLinks" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvResults"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_20dp"
+        android:visibility="gone"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/tlFilters"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/llError"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tlFilters"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/imgError"
+            android:layout_width="41dp"
+            android:layout_height="40dp"
+            android:contentDescription="@null"
+            android:tint="?attr/onSurfaceBgOutline"
+            app:srcCompat="@drawable/search_result_no_found" />
+
+        <TextView
+            android:id="@+id/tvNoResult"
+            style="?attr/bodySmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_28dp"
+            android:text="@string/label_bs_qbank_error"
+            android:textColor="?attr/onBackgroundSurface2" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clProgress"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?attr/backgroundColor"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tlFilters"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ProgressBar
+            android:id="@+id/pbMain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateDrawable="@drawable/rotate_progress_drawable_blue"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="?attr/backgroundColor"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tlFilters"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

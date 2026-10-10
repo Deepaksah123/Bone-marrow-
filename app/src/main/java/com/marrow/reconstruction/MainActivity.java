@@ -51,6 +51,18 @@ public final class MainActivity extends FragmentActivity {
         ImageView menuIcon = findViewById(R.id.iconMenu);
         androidx.drawerlayout.widget.DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
         menuIcon.setOnClickListener(v -> drawerLayout.openDrawer(android.view.Gravity.START));
+        ImageView searchIcon = findViewById(R.id.iconSearch);
+        searchIcon.setOnClickListener(v -> {
+            FragmentManager manager = getSupportFragmentManager();
+            if (manager.findFragmentByTag(SearchOverlayFragment.TAG) == null) {
+                manager.beginTransaction()
+                        .setCustomAnimations(R.anim.trans_left_in, R.anim.trans_left_out,
+                                R.anim.trans_right_in, R.anim.trans_right_out)
+                        .add(R.id.fullContainer, new SearchOverlayFragment(), SearchOverlayFragment.TAG)
+                        .addToBackStack(SearchOverlayFragment.TAG)
+                        .commit();
+            }
+        });
         // The drawer's source-backed non-monetization hierarchy is reconstructed.
         // Keep account data and row destinations unbound until their original flows are traced.
         bookmarkIcon = findViewById(R.id.iconBookmark);

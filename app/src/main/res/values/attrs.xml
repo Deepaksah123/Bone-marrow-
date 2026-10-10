@@ -6,6 +6,7 @@
     <attr name="heading4" format="reference" />
     <attr name="heading5" format="reference" />
     <attr name="bodySmall" format="reference" />
+    <attr name="bodyLarge" format="reference" />
     <attr name="colorOnSurfaceVariant" format="color" />
     <attr name="backgroundColor" format="color" />
     <attr name="colorSurfaceVariant" format="color" />

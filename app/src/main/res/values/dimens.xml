@@ -30,4 +30,7 @@
     <dimen name="drawer_profile_width">280dp</dimen>
     <dimen name="margin_24dp">24dp</dimen>
     <dimen name="pad_normal">8dp</dimen>
+    <dimen name="margin_28dp">28dp</dimen>
+    <dimen name="padding_24">24dp</dimen>
+    <dimen name="margin_12dp">12dp</dimen>
 </resources>

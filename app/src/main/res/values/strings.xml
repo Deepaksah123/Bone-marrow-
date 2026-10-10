@@ -26,4 +26,9 @@
     <string name="nav_item_terms">T&amp;C</string>
     <string name="nav_item_invite_friends">Share the app</string>
     <string name="report_copyright">Report Video Piracy</string>
+    <string name="hint_better_search">Try MB7831, PM4232</string>
+    <string name="label_bs_init">Search MCQ IDs, Pearl IDs, topics from Qbank, Tests, Videos, Video Topics and Pearls</string>
+    <string name="label_recent_search">Recently searched</string>
+    <string name="label_clear_all">Clear all</string>
+    <string name="label_bs_qbank_error">No results found in QBank</string>
 </resources>

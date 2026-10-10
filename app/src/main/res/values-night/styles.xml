@@ -3,7 +3,7 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:fontFamily">sans</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:statusBarColor">@color/shell_surface</item>
+        <item name="android:statusBarColor">?attr/colorSurfaceVariant5</item>
         <item name="android:navigationBarColor">@color/shell_surface</item>
         <item name="android:windowLightNavigationBar">false</item>
         <item name="android:windowActionModeOverlay">true</item>
@@ -15,6 +15,7 @@
         <item name="heading4">@style/TextAppearance.Dr.Headline4</item>
         <item name="heading5">@style/TextAppearance.Dr.Headline5</item>
         <item name="bodySmall">@style/TextAppearance.Dr.Body2</item>
+        <item name="bodyLarge">@style/TextAppearance.Dr.Body1</item>
         <item name="colorOnSurfaceVariant">@android:color/white</item>
         <item name="backgroundColor">@color/n_85</item>
         <item name="colorSurfaceVariant">@color/n_00</item>
