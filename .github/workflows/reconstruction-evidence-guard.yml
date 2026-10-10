@@ -49,6 +49,15 @@ jobs:
           grep -Fq 'app:layout_constraintBottom_toBottomOf="parent"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           grep -Fq 'style="?attr/heading5"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           grep -Fq 'style="?attr/bodySmall"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          # Home completion UI values verified from original binary XML.
+          grep -Fq 'android:layout_marginBottom="@dimen/margin_20dp"' app/src/main/res/layout/fragment_home_replica.xml
+          grep -Fq 'style="?attr/heading1"' app/src/main/res/layout/fragment_home_replica.xml
+          grep -Fq 'android:layout_width="@dimen/module_circular_progress_size"' app/src/main/res/layout/fragment_home_replica.xml
+          grep -Fq 'android:layout_height="@dimen/module_circular_progress_size"' app/src/main/res/layout/fragment_home_replica.xml
+          grep -Fq 'android:progress="100"' app/src/main/res/layout/fragment_home_replica.xml
+          grep -Fq 'android:autoSizeMinTextSize="12sp"' app/src/main/res/layout/fragment_home_replica.xml
+          grep -Fq 'android:autoSizeMaxTextSize="36sp"' app/src/main/res/layout/fragment_home_replica.xml
+          grep -Fq 'android:layout_marginBottom="16dp"' app/src/main/res/layout/fragment_home_replica.xml
           if find . -maxdepth 3 -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' \) | grep -q .; then
             echo 'Android build files detected. This guard is not a substitute for source-grounded build/tests.'
           else
