@@ -23,7 +23,7 @@
 
 ## Validation
 
-- Android build PASS: [run 38086133865](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133865). Debug APK artifact ID `11682261632`, 8,269,398 bytes, SHA-256 `8aa289841eeb52239d3b069d329a909f76515ec33e059748512fa20d25d31d7f`.
+- Android build PASS: [run 38086133865](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133865). Debug APK Actions artifact ZIP ID `11682261632`, ZIP size 8,269,398 bytes, SHA-256 `8aa289841eeb52239d3b069d329a909f76515ec33e059748512fa20d25d31d7f`.
 - Evidence guard PASS: [run 38086133816](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133816).
 - API 31 emulator smoke is in progress: [run 38086133823](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133823). It now exercises Search open/Back return and captures `search-open.png` plus the corresponding hierarchies; runtime QA is not yet claimed.
 - Search data flow and original-APK pixel comparison remain open.
