@@ -80,8 +80,7 @@ public final class MainActivity extends FragmentActivity {
         }
 
         FragmentManager manager = getSupportFragmentManager();
-        Class<? extends TabContentFragment> destinationClass = fragmentClassFor(selectedTab);
-        String destinationTag = "Home_" + destinationClass.getName();
+        String destinationTag = sourceDestinationTagFor(selectedTab);
         Fragment destination = manager.findFragmentByTag(destinationTag);
         androidx.fragment.app.FragmentTransaction transaction = manager.beginTransaction();
 
@@ -105,12 +104,14 @@ public final class MainActivity extends FragmentActivity {
         transaction.commit();
     }
 
-    private static Class<? extends TabContentFragment> fragmentClassFor(int index) {
+    // These destination names are verified in the original DataBuffer model.
+    // Local wrapper Fragments keep reconstruction classes separate from source names.
+    private static String sourceDestinationTagFor(int index) {
         switch (index) {
-            case 1: return QBankTabFragment.class;
-            case 2: return TestsTabFragment.class;
-            case 3: return VideosTabFragment.class;
-            default: return HomeTabFragment.class;
+            case 1: return "Home_kotlin.ResidentKeyRequirementUnsupportedResidentKeyRequirementException";
+            case 2: return "Home_kotlin.WalletConstantsCardNetwork";
+            case 3: return "Home_kotlin.setScrollPosition";
+            default: return "Home_kotlin.makeGooglePlayServicesAvailable";
         }
     }
 
