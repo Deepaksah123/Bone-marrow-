@@ -3,6 +3,7 @@ package com.marrow.reconstruction;
 import androidx.fragment.app.FragmentActivity;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.TypedValue;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 
 public final class MainActivity extends FragmentActivity {
     private TabLayout tabLayout;
+    private ImageView bookmarkIcon;
     private static final int[] ICONS = { R.drawable.ic_home_tab_home, R.drawable.ic_home_tab_qbank, R.drawable.ic_home_tab_tests, R.drawable.ic_home_tab_videos };
     private static final int[] LABELS = { R.string.tab_home, R.string.tab_qbank, R.string.tab_tests, R.string.tab_video };
     private int selectedTab = 0;
@@ -22,10 +24,21 @@ public final class MainActivity extends FragmentActivity {
     private int dp(float value) { return (int)(value * getResources().getDisplayMetrics().density + 0.5f); }
     private int color(int id) { return getColor(id); }
 
+    private int themeColor(int attribute, int fallbackColor) {
+        TypedValue value = new TypedValue();
+        if (getTheme().resolveAttribute(attribute, value, true)) {
+            if (value.resourceId != 0) return getColor(value.resourceId);
+            if (value.type >= TypedValue.TYPE_FIRST_COLOR_INT
+                    && value.type <= TypedValue.TYPE_LAST_COLOR_INT) return value.data;
+        }
+        return color(fallbackColor);
+    }
+
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
         ImageView menuIcon = findViewById(R.id.iconMenu);
+        bookmarkIcon = findViewById(R.id.iconBookmark);
         byte[] menuIconBytes = Base64.decode(getString(R.string.source_menu_icon_png_base64), Base64.DEFAULT);
         menuIcon.setImageBitmap(BitmapFactory.decodeByteArray(menuIconBytes, 0, menuIconBytes.length));
         tabLayout = findViewById(R.id.bottomNavigation);
@@ -59,7 +72,9 @@ public final class MainActivity extends FragmentActivity {
         View custom=tab.getCustomView();
         TextView label=custom.findViewById(R.id.title);
         ImageView icon=custom.findViewById(R.id.icon);
-        int tint = selected ? color(R.color.mb_50) : color(R.color.n_40);
+        int tint = selected
+                ? themeColor(R.attr.colorPrimary, R.color.colorPrimary)
+                : themeColor(R.attr.onBackgroundSurface3, R.color.n_40);
         label.setTextColor(tint);
         icon.setColorFilter(tint);
         custom.setSelected(selected);
@@ -67,6 +82,10 @@ public final class MainActivity extends FragmentActivity {
 
     private void renderTab(int index) {
         selectedTab = Math.max(0, Math.min(index, 3));
+        // The source DataBuffer exposes the bookmark action on HOME only.
+        if (bookmarkIcon != null) {
+            bookmarkIcon.setVisibility(selectedTab == 0 ? View.VISIBLE : View.GONE);
+        }
         for (int i = 0; i < tabLayout.getTabCount(); i++) {
             updateTabAppearance(tabLayout.getTabAt(i), i == selectedTab);
         }

@@ -85,3 +85,8 @@
 ## Batch 42 — shell/drawer audit
 
 - [x] Audited original shell/drawer behavior against the checksum-verified decompiled source. Confirmed the current drawer include is an empty host, and menu/search/bookmark handlers are incomplete. Recorded exact source classes, binding IDs, exclusions, and safe next steps in [Batch 42](SHELL_AND_DRAWER_GAP_AUDIT_BATCH_42.md). No guessed drawer rows or destinations were added. Original drawer XML is missing from the decompiler dump; recover it from verified binary resources before implementing the drawer. Static audit only; no runtime behavior is claimed.
+
+
+## Batch 43 — source tab appearance
+
+- [x] Recovered the HOME-only bookmark visibility flag and theme-aware selected/unselected tab tint from the original `DataBuffer.java` / `zabz.java` source. Implemented the visual state and added guard assertions in [Batch 43](HOME_TAB_TINT_AND_BOOKMARK_VISIBILITY_BATCH_43.md). Bookmark click routing remains a documented gap; this batch does not claim full toolbar functionality.
