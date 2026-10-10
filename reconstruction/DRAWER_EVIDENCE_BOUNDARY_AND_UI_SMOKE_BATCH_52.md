@@ -12,16 +12,16 @@ The current drawer is no longer an empty placeholder. Purchase/upsell/referral/d
 
 ## Emulator QA infrastructure
 
-Added `.github/workflows/android-ui-smoke.yml` to build the app, install it in an Android API 35 emulator, launch MainActivity, assert the four source-backed tab labels and loading/root IDs, tap each tab, verify app-process survival, open the toolbar drawer and assert the source-backed `Your Course` and `Settings` labels. It captures each tab's UI hierarchy/screenshot plus drawer-open and light/dark Home screenshots as a short-lived workflow artifact.
+Added `.github/workflows/android-ui-smoke.yml` to build the app, install it in an Android API 34 emulator, launch MainActivity, assert the four source-backed tab labels and loading/root IDs, tap each tab, verify app-process survival, open the toolbar drawer and assert the source-backed `Your Course` and `Settings` labels. It captures each tab's UI hierarchy/screenshot plus drawer-open and light/dark Home screenshots as a short-lived workflow artifact.
 
 The app is relaunched under each theme mode before light/dark capture. Screenshots are runtime QA evidence only; they are not implementation source and are not yet pixel-compared against the original APK.
 
 ## Validation
 
 - Source-backed drawer IDs and scope exclusions are guarded by CI.
-- Android build: **PASS**, [run 38081778235](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081778235).
-- Evidence guard: **PASS**, [run 38081778268](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081778268).
-- Emulator UI smoke: [run 38081778228](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081778228) is still running; its final result and screenshot artifact must be inspected.
+- Android build: **PASS**, [run 38082219855](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082219855).
+- Evidence guard: **PASS**, [run 38082552280](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082552280).
+- Emulator UI smoke: [run 38082552298](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082552298) is still running; its final result and screenshot artifact must be inspected.
 
 ## Still open
 
