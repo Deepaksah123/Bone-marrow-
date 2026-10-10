@@ -19,7 +19,7 @@
 - Added a source-shaped Search overlay fragment and wired the toolbar search icon to open it in `fullContainer` with source slide animations and back-stack behavior.
 - Added source UI assets, strings, dimensions, and the missing body-large typography attribute.
 - Mapped light/dark status-bar color to the original theme's `?attr/colorPrimary`; status-bar icon contrast remains controlled by the source light/dark theme flags.
-- Back and clear controls work. Search result/history adapters and API-backed behavior remain intentionally unimplemented; no questions or results are invented.
+- Back and clear controls are wired in code; their runtime behavior is being checked by the current emulator smoke. Search result/history adapters and API-backed behavior remain intentionally unimplemented; no questions or results are invented.
 
 ## Validation
 
