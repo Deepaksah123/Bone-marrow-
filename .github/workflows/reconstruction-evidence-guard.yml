@@ -26,6 +26,16 @@ jobs:
           grep -Fq '`resources/res/layout/` direct entries: **578**' reconstruction/EXACT_SOURCE_UI_INDEX.md
           grep -Fq 'directly verified against the ZIP' reconstruction/SOURCE_TO_SCREEN_MAP.md
           grep -Fq 'PARTIAL, NOT RESOLVED' reconstruction/1TO1_READINESS_AUDIT.md
+          # Exact-source asset checks: fail closed if any restored binary/text asset is altered.
+          echo '7c72ee056690ed4f695e3a7bb656b2fa7d669ff2235ae8a0701485384eb32b93  app/src/main/assets/lottie/practical_corner_zen_area_pulse_anim.json' | sha256sum --check
+          echo '956dc7df0fa49e7065da2a41ae00637f258abc0f15f28707eacf43484ce464e7  app/src/main/res/drawable-mdpi/ic_pc_circle_including_logo.webp' | sha256sum --check
+          echo 'cf93b9ccb0aaf959c173f683f51f94cf80a72ed24c42c385f5b7f8c8ba79d958  app/src/main/res/drawable/bg_practical_corner_zen_area_gradient_dark.xml' | sha256sum --check
+          grep -Fq 'lottie/practical_corner_zen_area_pulse_anim.json' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          grep -Fq '@drawable/ic_pc_circle_including_logo' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          grep -Fq '@dimen/practical_corner_home_banner_content_top_margin' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          grep -Fq '<dimen name="practical_corner_home_banner_content_top_margin">4dp</dimen>' app/src/main/res/values/dimens.xml
+          grep -Fq '<dimen name="practical_corner_home_banner_content_top_margin">28dp</dimen>' app/src/main/res/values-v35/dimens.xml
+          test ! -f app/src/main/res/drawable/ic_practical_corner_zen_are_pattern.xml
           if find . -maxdepth 3 -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' \) | grep -q .; then
             echo 'Android build files detected. This guard is not a substitute for source-grounded build/tests.'
           else
