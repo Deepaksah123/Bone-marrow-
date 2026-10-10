@@ -39,7 +39,7 @@ The replica has been corrected to keep `tvZenCompletedModules` as a sibling afte
 
 ## Follow-up — source typography and qualified dimensions
 
-- Restored the source `TextAppearance.Dr.Headline5` style basis (18sp, medium sans-serif, 22sp line height, zero letter spacing) and `TextAppearance.Dr.Body2` basis (14sp, regular sans-serif, 17sp line height) for the completion label, with `heading5`, `bodySmall` and `colorOnSurfaceVariant` theme bindings. The exact original Roboto font file and full theme palette are not yet copied, so font-family and colors remain best-effort rather than a claim of pixel identity.
+- Restored the source `TextAppearance.Dr.Headline5` style basis (18sp, medium sans-serif, 22sp line height, zero letter spacing) and `TextAppearance.Dr.Body2` basis (14sp, regular sans-serif, 17sp line height) for the completion label, with `heading5`, `bodySmall` and `colorOnSurfaceVariant` theme bindings. The original `AppThemeV2` and `AppThemeV2.Dark` both map `colorOnSurfaceVariant` to `@color/white`; both replica theme files now use `@android:color/white` for that attribute. The exact Roboto font files remain absent, so font-family rendering is still a system-font approximation.
 - Restored `practical_corner_home_banner_content_top_margin` as a dimension resource: 4dp in `values` and 28dp in `values-v35`, matching the decompiler's source values. The layout now references the named dimension rather than hardcoding 4dp.
 - Corrected the title's end drawable/tint to the source AppCompat attributes `app:drawableEndCompat` and `app:drawableTint`.
 - Latest code commit adds the source `Body2` style and is `5da1cbc59a53`. Evidence guard passed: [run 38057531575](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38057531575). Android build passed for latest Zen code commit `5da1cbc59a53`: [run 38057531540](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38057531540). Latest debug APK artifact ID `11672053446`, size 8,179,949 bytes, digest `sha256:d6b32d8e40dd64ed150d9f76a002e18c424d89bf0aaafbe571fb7068ce9e15ad`.
@@ -47,3 +47,8 @@ The replica has been corrected to keep `tvZenCompletedModules` as a sibling afte
 ## Follow-up — top-margin placement correction
 
 A source-named dimension, `practical_corner_home_banner_content_top_margin`, was previously applied as a uniform margin. Because the resource is explicitly a **top margin**, the Zen content container now uses `android:layout_marginTop` only. The evidence guard now checks this exact attribute, not merely that the dimension name exists. This is a narrow source-fidelity correction; the missing 296,606-byte pattern vector and original font remain unresolved.
+
+
+## Source archive recovery — 10 October 2026
+
+The decompiler ZIP `base.apk_Decompiler.com.zip` was located in the Library and SHA-256 verified as `92fa24c6d91faafa61e3317adcb5c7c10384eea437fa6b7f99c09ac372ab8685`. The original APK was also present locally and verified against SHA-256 `e03a582c20eec102510509918315be53e45bb9fe90647207b2c956a0f55316a3`. The archive confirms the light pattern vector is 296,606 bytes and the dark pattern vector is 298,407 bytes. The decompiler emits hundreds of generated drawable aliases used by the vector paths, so copying the large XML alone is not yet a safe/complete resource transfer. The vector is therefore still not wired into the layout until its referenced resources are validated.
