@@ -10,7 +10,7 @@
 - `app/src/main/assets/lottie/practical_corner_zen_area_pulse_anim.json` copied from `resources/assets/lottie/practical_corner_zen_area_pulse_anim.json`. Source SHA-256: `7c72ee056690ed4f695e3a7bb656b2fa7d669ff2235ae8a0701485384eb32b93`; size 3,938 bytes.
 - `app/src/main/res/drawable-mdpi/ic_pc_circle_including_logo.webp` copied from `resources/res/drawable-mdpi/ic_pc_circle_including_logo`. Source SHA-256: `956dc7df0fa49e7065da2a41ae00637f258abc0f15f28707eacf43484ce464e7`; size 2,396 bytes.
 - `app/src/main/res/drawable/ic_practical_corner_zen_are_pattern.xml` copied from the decoded gradient drawable source. Source SHA-256: `4e97644184ec5bdbbf46d83155bf86b85329a4fd7870f5f42bdc298d7716afa6`.
-- An earlier rasterized substitute background and a manually reconstructed animation file were removed before the exact source animation was restored. Do not use those substitute assets.
+- An earlier rasterized substitute background was removed. The Lottie file was restored and verified against the original source archive by SHA-256; the committed Git blob is identical to the source JSON. Do not reintroduce the raster substitute.
 
 ## Source hierarchy cross-check
 
