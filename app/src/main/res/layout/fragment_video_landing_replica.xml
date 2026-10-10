@@ -4,7 +4,7 @@
     android:id="@+id/parentFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/shell_background">
+    android:background="?attr/backgroundColor">
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -17,21 +17,29 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomNudgeContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom">
+        android:layout_height="match_parent">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/snackbar_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/layoutContinueWatchingVideoSuggestionCard"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <include
             android:id="@+id/layoutContinueWatchingVideoSuggestionCard"
             layout="@layout/video_landing_empty_component"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:layout_marginBottom="0dp"
+            android:paddingBottom="6dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -39,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:fillViewport="true">
+        android:fillViewport="false">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clMain"
@@ -90,22 +98,20 @@
                 android:id="@+id/llInternMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/shell_surface"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="12dp"
-                android:paddingBottom="8dp"
+                android:background="?attr/backgroundVariant2"
+                android:paddingVertical="@dimen/pad_8dp"
                 app:layout_constraintTop_toBottomOf="@id/clSwitchEdition"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
                     android:id="@+id/tvInternModeStatus"
+                    style="?attr/heading6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:text="Intern Mode"
-                    android:textColor="@color/shell_text"
-                    android:textSize="14sp"
+                    android:textColor="?attr/colorOnBackground"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/ibTooltip"
                     app:layout_constraintTop_toTopOf="parent"
@@ -113,12 +119,13 @@
 
                 <ImageButton
                     android:id="@+id/ibTooltip"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
-                    android:contentDescription="Intern Mode information"
-                    android:padding="7dp"
-                    android:src="@drawable/ic_info"
+                    android:contentDescription="@null"
+                    android:padding="@dimen/pad_8dp"
+                    app:srcCompat="@drawable/ic_info"
+                    app:tint="?attr/onBackgroundSurface3"
                     app:layout_constraintEnd_toStartOf="@id/switchInternMode"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
@@ -127,7 +134,10 @@
                     android:id="@+id/switchInternMode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:checked="false"
+                    app:thumbTint="?attr/onBackgroundSurface5"
+                    app:trackTint="?attr/onSurfaceBgOutline"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent" />
@@ -149,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/internModeDivider"
+                app:layout_constraintTop_toBottomOf="@id/llInternMode"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
@@ -213,6 +223,8 @@
                 android:id="@+id/horizontalScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:paddingHorizontal="@dimen/pad_14"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/clInternModeBanner"
                 app:layout_constraintStart_toStartOf="parent"
@@ -233,6 +245,7 @@
                 android:id="@+id/llFilledHorizontalView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_16dp"
                 android:orientation="horizontal"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/horizontalScrollView"
@@ -266,9 +279,7 @@
                 android:id="@+id/llSubjectHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="16dp"
+                android:layout_margin="@dimen/margin_16dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@id/layoutVideoWatchNextCard"
@@ -276,11 +287,11 @@
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
+                    style="?attr/subtext2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/text_subjects"
-                    android:textColor="@color/shell_muted"
-                    android:textSize="13sp" />
+                    android:textColor="?attr/onBackgroundSurface3" />
 
                 <Space
                     android:layout_width="0dp"
@@ -289,27 +300,31 @@
 
                 <TextView
                     android:id="@+id/tvSortByHeader"
+                    style="?attr/subtext1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/margin_8dp"
                     android:text="@string/sort_by_v2"
-                    android:textColor="@color/shell_muted"
-                    android:textSize="13sp" />
+                    android:textColor="?attr/onBackgroundSurface3" />
 
                 <TextView
                     android:id="@+id/sortType"
+                    style="?attr/subtext2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:textColor="@color/shell_text"
-                    android:textSize="13sp" />
+                    android:layout_marginStart="@dimen/pad_8dp"
+                    android:paddingBottom="@dimen/margin_8dp"
+                    android:textColor="?attr/colorOnBackground" />
 
                 <ImageView
                     android:id="@+id/ivSortDropDown"
-                    android:layout_width="12dp"
-                    android:layout_height="12dp"
-                    android:layout_marginStart="8dp"
-                    android:contentDescription="Sort options"
-                    android:src="@drawable/icv_arrow_drop_down" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/pad_8dp"
+                    android:paddingBottom="@dimen/margin_8dp"
+                    android:contentDescription="@null"
+                    app:srcCompat="@drawable/icv_arrow_drop_down"
+                    app:tint="?attr/onBackgroundSurface3" />
             </LinearLayout>
 
             <com.airbnb.epoxy.EpoxyRecyclerView
@@ -318,28 +333,27 @@
                 android:layout_height="wrap_content"
                 android:clipToPadding="false"
                 android:nestedScrollingEnabled="false"
-                android:paddingStart="14dp"
-                android:paddingEnd="14dp"
+                android:paddingHorizontal="@dimen/pad_14"
                 app:layout_constraintTop_toBottomOf="@id/llSubjectHeader"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <TextView
                 android:id="@+id/tvReportPiracy"
+                style="?attr/subtext1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="16dp"
-                android:drawableStart="@drawable/ic_report_piracy"
+                android:layout_marginBottom="@dimen/margin_40"
+                android:padding="@dimen/padding_10"
                 android:drawablePadding="8dp"
-                android:gravity="center_vertical"
+                android:gravity="center"
                 android:text="@string/report_video_piracy"
-                android:textColor="@color/shell_muted"
-                android:textSize="13sp"
+                android:textColor="?attr/onBackgroundSurface2"
+                app:drawableStartCompat="@drawable/ic_report_piracy"
                 app:layout_constraintTop_toBottomOf="@id/epoxyRVSubject"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <View
                 android:id="@+id/sortOverlay"
