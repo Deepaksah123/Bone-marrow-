@@ -215,6 +215,12 @@ jobs:
           grep -Fq 'subjects.setVisibility(View.GONE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'R.id.progressLoadList' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'if (progress != null) progress.setVisibility(View.VISIBLE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          # Batch 49: Video subject grid device detection and exact source item offsets.
+          grep -Fq 'int spanCount = isSourceTablet() ? 3 : 2;' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'boolean supportsPredictiveItemAnimations()' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'R.dimen.margin_6dp' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'R.dimen.margin_4dp' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq '<dimen name="margin_6dp">6dp</dimen>' app/src/main/res/values/dimens.xml
           # Batch 30 lifecycle and optional-root regression checks.
           test "$(grep -Fc 'onSaveInstanceState(Bundle out)' app/src/main/java/com/marrow/reconstruction/MainActivity.java)" -eq 1
           grep -Fq 'if (cards != null)' app/src/main/java/com/marrow/reconstruction/MainActivity.java

@@ -4,6 +4,7 @@
     <dimen name="margin_20dp">20dp</dimen>
     <dimen name="margin_36dp">36dp</dimen>
     <dimen name="margin_4dp">4dp</dimen>
+    <dimen name="margin_6dp">6dp</dimen>
     <dimen name="margin_8dp">8dp</dimen>
     <dimen name="pad_XL">24dp</dimen>
     <dimen name="pad_feature_card">10dp</dimen>

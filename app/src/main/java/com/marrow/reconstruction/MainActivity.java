@@ -1,6 +1,8 @@
 package com.marrow.reconstruction;
 
 import androidx.fragment.app.FragmentActivity;
+import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.TypedValue;
@@ -23,6 +25,15 @@ public final class MainActivity extends FragmentActivity {
 
     private int dp(float value) { return (int)(value * getResources().getDisplayMetrics().density + 0.5f); }
     private int color(int id) { return getColor(id); }
+
+    // Mirrors the original Google Play Services DeviceProperties.isTablet(Resources) test.
+    private boolean isSourceTablet() {
+        Configuration configuration = getResources().getConfiguration();
+        int screenSize = configuration.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+        return screenSize > Configuration.SCREENLAYOUT_SIZE_LARGE
+                || (screenSize <= Configuration.SCREENLAYOUT_SIZE_LARGE
+                && configuration.smallestScreenWidthDp >= 600);
+    }
 
     private int themeColor(int attribute, int fallbackColor) {
         TypedValue value = new TypedValue();
@@ -184,8 +195,28 @@ public final class MainActivity extends FragmentActivity {
             if (empty != null) empty.setVisibility(View.GONE);
         } else {
             androidx.recyclerview.widget.RecyclerView subjects = root.findViewById(R.id.epoxyRVSubject);
-            int spanCount = getResources().getConfiguration().smallestScreenWidthDp >= 600 ? 3 : 2;
-            if (subjects != null) subjects.setLayoutManager(new androidx.recyclerview.widget.GridLayoutManager(this, spanCount));
+            int spanCount = isSourceTablet() ? 3 : 2;
+            if (subjects != null) {
+                subjects.setLayoutManager(new androidx.recyclerview.widget.GridLayoutManager(this, spanCount) {
+                    @Override
+                    public boolean supportsPredictiveItemAnimations() {
+                        return false;
+                    }
+                });
+                final int verticalSpacing = getResources().getDimensionPixelSize(R.dimen.margin_6dp);
+                final int horizontalSpacing = getResources().getDimensionPixelSize(R.dimen.margin_4dp);
+                subjects.addItemDecoration(new androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
+                    @Override
+                    public void getItemOffsets(Rect outRect, View view,
+                            androidx.recyclerview.widget.RecyclerView parent,
+                            androidx.recyclerview.widget.RecyclerView.State state) {
+                        outRect.top = verticalSpacing;
+                        outRect.bottom = verticalSpacing;
+                        outRect.left = horizontalSpacing;
+                        outRect.right = horizontalSpacing;
+                    }
+                });
+            }
         }
         return root;
     }

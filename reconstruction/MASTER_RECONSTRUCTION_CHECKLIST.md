@@ -117,3 +117,8 @@
 ## Batch 46 — QBank initial loading state
 
 - [x] Matched the original QBank loading observer: hide the empty subject RecyclerView and show `progressLoadList` until the real subject list arrives. Evidence: [Batch 46](QBANK_INITIAL_LOADING_STATE_BATCH_46.md). Android build [38077287838](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38077287838) and evidence guard [38077287841](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38077287841) passed. Artifact ID `11678636989`, size `8,194,476` bytes, SHA-256 `7f3b2663e1b48aa9aa145795457e3eea770c357730245a53e8554a192dbe9fbe`. No subject data was fabricated.
+
+
+## Batch 49 — Video subject grid fidelity
+
+- [x] Matched the original Video landing grid behavior from `setScrollPosition.java`: exact tablet detection semantics, 2/3-column grid, predictive animations disabled, and 6dp vertical / 4dp horizontal item offsets. Added the source-backed `margin_6dp` dimension and guard checks. Details: [Batch 49](VIDEO_SUBJECT_GRID_FIDELITY_BATCH_49.md). Build + evidence guard pending.
