@@ -19,4 +19,4 @@ The original Roboto font files are not copied, so system-font equivalents are us
 
 ## Validation
 
-The evidence guard checks the source theme and spacing attributes. Verify CI after this batch; a successful build is not a runtime visual comparison.
+The evidence guard passed for the source theme/spacing batch: [run 38072839299](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38072839299). Android build passed for code commit `061124ff3498`: [run 38072831065](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38072831065). Debug APK artifact ID `11677224204`, size `8,188,199` bytes, digest `sha256:1bec4f25351f16041d658dfc74e4d7a911c10c50469020e4218e80c8e0c5465e`. A successful build is not a runtime visual comparison.
