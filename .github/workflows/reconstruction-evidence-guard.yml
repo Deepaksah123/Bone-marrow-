@@ -91,6 +91,18 @@ jobs:
           grep -Fq 'android:layout_marginVertical="@dimen/margin_40"' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -Fq '<color name="mb_90">#16343b</color>' app/src/main/res/values/colors.xml
           grep -Fq '<color name="n_60">#626768</color>' app/src/main/res/values/colors.xml
+          # Exact-source assets for the non-monetization Continue Watching card.
+          echo 'a5f07798d8dcc95bf425d33e411872d6634c9de8e2f8c1cd67e77d02a6e53d64  app/src/main/res/drawable/ic_marrow_logo_blue.xml' | sha256sum --check
+          echo 'a06a2c05486e22248ee0e82ec36e914b599e7d6d47c5a4c334f44f26878f1421  app/src/main/res/drawable/ic_playback_play.xml' | sha256sum --check
+          echo '33bea6070bfcaa443b8eb76eb3c9599a7859bc78614b76194666025038969ee6  app/src/main/res/drawable/circle_4d000000.xml' | sha256sum --check
+          echo 'f4a9f7a6fd6e080c10881554f592dd17a4fc2d7d0e13d3bfd85384433660b4da  app/src/main/res/drawable/ic_switch_orientation_close.xml' | sha256sum --check
+          echo '61b810044ec2d8965a57a8dacd525d02e4cf3c97b37049f0e766311cc5978b32  app/src/main/res/drawable/bg_progressbar_blue_background.xml' | sha256sum --check
+          test -f app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
+          grep -Fq 'layout="@layout/layout_continue_watching_video_suggestion_card"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'android:id="@+id/ivVideoThumbnail"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
+          grep -Fq 'android:id="@+id/pbSuggestedVideo"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
+          grep -Fq 'android:id="@+id/tvVideoRemainingDuratiom"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
+          grep -Fq 'style="@style/HorizontalProgressBarVideoDownload"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           if find . -maxdepth 3 -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' \) | grep -q .; then
             echo 'Android build files detected. This guard is not a substitute for source-grounded build/tests.'
           else
