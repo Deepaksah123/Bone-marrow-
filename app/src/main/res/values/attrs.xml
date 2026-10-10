@@ -41,4 +41,7 @@
     <attr name="onSurfaceBlue2" format="color" />
     <attr name="onSurfaceBlue3" format="color" />
     <attr name="colorSurfaceVariant13" format="color" />
+    <attr name="heading7" format="reference" />
+    <attr name="textAppearanceHeadline2" format="reference" />
+    <attr name="onSurfaceGreen2" format="color" />
 </resources>
