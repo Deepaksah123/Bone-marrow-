@@ -20,3 +20,7 @@ Drawer menu contents remain a documented empty host because the original `drawer
 ## Validation
 
 The evidence guard passed for the source shell/tab hierarchy: [run 38074219308](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074219308). Android build passed for commit `47d71eef4352`: [run 38074210922](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074210922), artifact ID `11678411729`, digest `sha256:e28b72976cc7360079706b7dcf1a01b7256371ecc51151c4026d16b188a89821`. No device screenshot or pixel-diff is claimed.
+
+## Superseding drawer update — Batch 53
+
+The empty-host decision above was correct while the original drawer XML was unavailable in the decompiler ZIP. The exact binary XML has since been recovered from the SHA-verified original APK and the source-backed non-monetization hierarchy is now reconstructed. See [Drawer Binary XML Recovery — Batch 53](DRAWER_BINARY_XML_RECOVERY_BATCH_53.md). Runtime visibility/data binding and row routes remain open; this does not establish whole-app 1:1 parity.
