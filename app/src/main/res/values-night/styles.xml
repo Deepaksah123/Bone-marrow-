@@ -12,6 +12,7 @@
         <item name="show_home_divider">0</item>
         <item name="home_bottom_navigation_card_elevation">0dp</item>
         <item name="heading1">@style/TextAppearance.Dr.Headline1</item>
+        <item name="heading4">@style/TextAppearance.Dr.Headline4</item>
         <item name="heading5">@style/TextAppearance.Dr.Headline5</item>
         <item name="bodySmall">@style/TextAppearance.Dr.Body2</item>
         <item name="colorOnSurfaceVariant">@android:color/white</item>
