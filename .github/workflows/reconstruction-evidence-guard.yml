@@ -225,3 +225,14 @@ jobs:
           else
             echo 'Evidence guard passed. No Android module detected; this validates evidence docs only, not UI/build correctness.'
           fi
+
+          # Batch 47: source Test landing loading/empty-state wiring.
+          grep -Fq 'View loading = root.findViewById(R.id.loadingContainer);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'if (loading != null) loading.setVisibility(View.VISIBLE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'View empty = root.findViewById(R.id.emptyLayout);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'if (empty != null) empty.setVisibility(View.GONE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'list.setVisibility(View.GONE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'android:id="@+id/loadingContainer"' app/src/main/res/layout/fragment_home_test_replica.xml
+          grep -Fq 'android:id="@+id/emptyLayout"' app/src/main/res/layout/fragment_home_test_replica.xml
+          test -f app/src/main/res/layout/loading_layout_replica.xml
+          test -f app/src/main/res/layout/loader_empty_layout_replica.xml
