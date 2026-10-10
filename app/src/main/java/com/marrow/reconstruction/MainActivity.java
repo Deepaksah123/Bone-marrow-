@@ -51,7 +51,7 @@ public final class MainActivity extends FragmentActivity {
         ImageView menuIcon = findViewById(R.id.iconMenu);
         androidx.drawerlayout.widget.DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
         menuIcon.setOnClickListener(v -> drawerLayout.openDrawer(android.view.Gravity.START));
-        int[] drawerItemIds = { R.id.drawerYourCourse, R.id.drawerContactUs, R.id.drawerReportPiracy, R.id.drawerFaq, R.id.drawerAboutUs, R.id.drawerShareApp, R.id.drawerRateUs, R.id.drawerTerms, R.id.drawerLogout };
+        int[] drawerItemIds = { R.id.navYourCourse, R.id.navContactUs, R.id.navReportCopyright, R.id.navFaq, R.id.navAboutUs, R.id.navInvite, R.id.navRateUs, R.id.navTerms, R.id.navSettings };
         for (int drawerItemId : drawerItemIds) {
             View drawerItem = findViewById(drawerItemId);
             if (drawerItem != null) drawerItem.setOnClickListener(v -> drawerLayout.closeDrawer(android.view.Gravity.START));
