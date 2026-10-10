@@ -2,12 +2,12 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/loadingContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:visibility="gone">
+    android:layout_height="match_parent">
 
     <ProgressBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:padding="@dimen/pad_large"
         android:indeterminateDrawable="@drawable/rotate_progress_drawable_blue_med" />
 </FrameLayout>
