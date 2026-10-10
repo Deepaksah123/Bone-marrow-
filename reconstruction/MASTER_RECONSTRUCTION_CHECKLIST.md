@@ -140,7 +140,7 @@
 - [x] Removed speculative drawer rows, then recovered the original `drawer_menu_revamp` binary XML from the SHA-verified original APK and reconstructed the source-backed hierarchy. Details: [Batch 52](DRAWER_EVIDENCE_BOUNDARY_AND_UI_SMOKE_BATCH_52.md) and [Batch 53](DRAWER_BINARY_XML_RECOVERY_BATCH_53.md).
 - [x] Added CI evidence-guard checks to prevent the speculative drawer rows/labels from returning before source recovery. Updated guard result must be checked on the current HEAD.
 - [x] Added an Android API 35 emulator smoke workflow to launch the app, verify HOME/QBANK/TESTS/VIDEOS labels and source-backed root/loading IDs, tap through tabs, verify app-process survival, exercise the drawer-open action, and capture per-tab UI hierarchy dumps/screenshots plus light/dark Home screenshots for QA. Workflow: [Android UI smoke](../.github/workflows/android-ui-smoke.yml).
-- [ ] Confirm the latest emulator smoke run, inspect all four screenshots and hierarchy dumps, and fix any runtime failures. Latest smoke run [38081511993](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081511993) is the current tab/drawer/theme QA run; inspect its final result and screenshot artifact.
+- [ ] Confirm the latest emulator smoke run, inspect all four screenshots and hierarchy dumps, and fix any runtime failures. Latest smoke run [38081778228](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081778228) is the current tab/drawer/theme QA run; inspect its final result and screenshot artifact.
 - [ ] Do original-APK screenshot/pixel comparison after source-exact UI is recovered; CI screenshots alone do not prove 1:1 fidelity.
 
 ## Batch 53 — original drawer binary XML recovery
@@ -149,6 +149,6 @@
 - [x] Mapped `R.layout.drawer_menu_revamp` (`0x7f0d00b3`) to the original obfuscated APK entry and decoded its 10,056-byte binary XML.
 - [x] Reconstructed source-backed drawer IDs, profile/course header, footer and non-monetization rows; restored the original small drawer assets and required theme/dimension/string resources.
 - [x] Kept purchase, Buy Notes, Add Videos, referral-coupon/extension, Pro badge, and debugging/logout UI excluded.
-- [x] Current Android build passed: [run 38081191407](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191407); current evidence guard passed: [run 38081191405](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191405).
-- [ ] Finish emulator smoke [run 38081511993](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081511993), inspect screenshot artifacts, and resolve any runtime failures. Source-row visibility/data-binding and click destinations remain open.
+- [x] Current Android build passed: [run 38081778235](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081778235); current evidence guard passed: [run 38081778268](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081778268).
+- [ ] Finish emulator smoke [run 38081778228](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081778228), inspect screenshot artifacts, and resolve any runtime failures. Source-row visibility/data-binding and click destinations remain open.
 - [ ] Recover the original Practical Corner landing pattern resource family into build-ready resources; no vector data was fabricated. Source tracing shows this pattern is applied by PracticalCornerLandingFragment, not the Home root's hidden ivEd6background.
