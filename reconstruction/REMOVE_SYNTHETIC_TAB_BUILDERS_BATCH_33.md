@@ -18,4 +18,4 @@ The old builders were no longer called but still contained invented UI labels an
 
 ## Validation boundary
 
-The Android build passed for cleanup commit `ca60723df92e`: [run 38074469213](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074469213). Debug APK artifact ID `11678407183`, size `8,195,170` bytes, digest `sha256:e9c910eac41a1b087b39d8d2517c2b06e5050db7891f4c4cdcc9b707e46d5880`. The evidence guard was adjusted to recognize the retained root variable; check the current guard run before marking that portion passed. Runtime visual comparison remains pending.
+The Android build passed for cleanup commit `ca60723df92e`: [run 38074469213](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074469213). Debug APK artifact ID `11678407183`, size `8,195,170` bytes, digest `sha256:e9c910eac41a1b087b39d8d2517c2b06e5050db7891f4c4cdcc9b707e46d5880`. The corrected evidence guard passed: [run 38074557943](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074557943). Runtime visual comparison remains pending.
