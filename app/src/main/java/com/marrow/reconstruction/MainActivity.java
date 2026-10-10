@@ -1,6 +1,6 @@
 package com.marrow.reconstruction;
 
-import android.app.Activity;
+import androidx.fragment.app.FragmentActivity;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -19,7 +19,7 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-public final class MainActivity extends Activity {
+public final class MainActivity extends FragmentActivity {
     private TabLayout tabLayout;
     private static final int[] ICONS = { R.drawable.ic_home_tab_home, R.drawable.ic_home_tab_qbank, R.drawable.ic_home_tab_tests, R.drawable.ic_home_tab_videos };
     private static final int[] LABELS = { R.string.tab_home, R.string.tab_qbank, R.string.tab_tests, R.string.tab_video };
