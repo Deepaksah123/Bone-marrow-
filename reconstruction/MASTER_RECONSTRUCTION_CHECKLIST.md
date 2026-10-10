@@ -76,7 +76,13 @@
 ## Batch 47 — Tests initial loading state
 
 - [x] Implemented source-backed initial Test landing loading presentation: hide the empty test list, show the original loading container, and keep the empty-state host hidden until real data state is available. No test cards or results were invented. Details: [Batch 47](TESTS_INITIAL_LOADING_STATE_BATCH_47.md).
-- [ ] Validation pending: run the Android build and evidence guard for this batch; update this entry with the exact run/artifact IDs only after they pass.
+- [x] Android build [38077629617](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38077629617) and evidence guard [38077629680](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38077629680) passed for code commit `53ce875754dc`. Artifact ID `11679262916`, size `8,194,557` bytes, SHA-256 `3802fc314cb80fc843bde0bd2a76cd451dc958bcdbc12461941306cb9da59b59`. Device-level QA remains pending.
+
+
+## Batch 48 — Video scroll content theme correction
+
+- [x] Fixed a nested background mismatch missed by the broad theme guard: `clMain` inside the Video landing scroll view now resolves `?attr/backgroundColor` instead of hard-coded `@color/shell_background`. Details: [Batch 48](VIDEO_SCROLL_CONTENT_THEME_BACKGROUND_BATCH_48.md).
+- [ ] Validation pending: Android build and targeted evidence guard must pass before this batch is marked validated.
 
 ## Guardrails
 
