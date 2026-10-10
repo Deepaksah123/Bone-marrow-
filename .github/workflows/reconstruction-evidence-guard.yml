@@ -111,6 +111,12 @@ jobs:
           grep -Fq '<item name="onSurfaceBgOutline3">@color/c_8e9984</item>' app/src/main/res/values-night/styles.xml
           grep -Fq '<color name="blue4">#4da3b6</color>' app/src/main/res/values/colors.xml
           grep -Fq '<color name="green03">#c0ed86</color>' app/src/main/res/values/colors.xml
+          # Source typography: SmallText2 inherits the 10sp/12sp Caption metrics.
+          grep -Fq 'style name="TextAppearance.Dr.Caption" parent="TextAppearance.MaterialComponents.Caption"' app/src/main/res/values/styles.xml
+          grep -Fq '<item name="android:textSize">10sp</item>' app/src/main/res/values/styles.xml
+          grep -Fq '<item name="lineHeight">12sp</item>' app/src/main/res/values/styles.xml
+          grep -Fq 'style name="TextAppearance.Dr.SmallText2" parent="TextAppearance.Dr.Caption"' app/src/main/res/values/styles.xml
+          grep -Fq '<item name="android:fontFamily">sans-serif-medium</item>' app/src/main/res/values/styles.xml
           # Exact-source assets for the non-monetization Continue Watching card.
           echo 'a5f07798d8dcc95bf425d33e411872d6634c9de8e2f8c1cd67e77d02a6e53d64  app/src/main/res/drawable/ic_marrow_logo_blue.xml' | sha256sum --check
           echo 'a06a2c05486e22248ee0e82ec36e914b599e7d6d47c5a4c334f44f26878f1421  app/src/main/res/drawable/ic_playback_play.xml' | sha256sum --check
