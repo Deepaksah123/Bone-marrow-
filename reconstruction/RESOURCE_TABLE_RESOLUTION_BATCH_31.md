@@ -6,7 +6,7 @@
 
 ## Source table recovered
 
-The original APK's `resources.arsc` is present (3,327,896 bytes). A local read-only pass over the table identified package `com.marrow`, 22 resource types, 373 type/config chunks and 39,097 parsed entries. The decoded resource table is now the source of truth for the values below; this replaces guesses based only on layout text or screenshots.
+The original APK's `resources.arsc` is present (3,327,896 bytes). A local read-only pass over the table identified package `com.marrow`, 22 resource types, 373 type/config chunks and 39,097 parsed entries. The decompiler archive also contains the readable `resources/res/values/colors.xml`, `dimens.xml`, `attrs.xml`, and `styles.xml`; the original resource table was used to verify resource IDs/aliases and theme configuration. The source XML and binary table agree on the values below.
 
 ## Verified source values
 
@@ -43,7 +43,7 @@ The original `AppThemeV2` / `AppThemeV2.Dark` table maps:
 - Light `onSurfaceBgOutline2 → white`; dark `onSurfaceBgOutline2 → n_70_a_50`.
 - `Headline1=36sp/43sp line-height`, `Headline4=20sp/24sp`, `Headline5=18sp/22sp`, `Headline6=16sp/19sp`, `Subtitle1=12sp/14sp`, `Subtitle2=12sp/14sp`. Source fonts are `roboto_medium`, `roboto_bold`, and `roboto_regular` respectively; current app uses Android system equivalents because the original font binaries have not yet been transferred into the target repository.
 
-The target dark-theme `onSurfaceBgLinks` and `onSurfaceBgOutline2` mappings were corrected to the exact table values. New source colors are protected by the evidence guard.
+The target light/dark theme now maps `colorOnSurface`, `colorOnPrimary`, `colorPrimaryVariant`, `colorSurfaceVariant14/6`, `onBackgroundSurface1/2/3/4/5/6/7`, `onBackgroundVariant2`, `onSurfaceBgDivider`, `onSurfaceBgLinks`, `onSurfaceBgOutline/2/3`, and `onSurfaceBlue/2/3` to source resource values. In particular, light `onSurfaceBgOutline2` is `white`; dark `onSurfaceBgOutline2` is `n_70_a_50`; dark `onSurfaceBgLinks` is `c_7eaaff`. The source-specific palette tokens were added and the evidence guard now verifies representative mappings. Android build passed for the complete color/theme code batch at commit `c42441806516`: [run 38074568348](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074568348). Artifact ID `11677648227`, size `8,195,477` bytes, digest `sha256:731fef107ec8d86bd51611272684921ec3486c39e1e32e3def74edbba58f1ac2`. The latest evidence guard passed [run 38074590738](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074590738).
 
 ## Important boundary
 
