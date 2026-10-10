@@ -100,7 +100,12 @@ jobs:
           test -f app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           grep -Fq 'layout="@layout/layout_continue_watching_video_suggestion_card"' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -A1 'android:id="@+id/layoutVideoWatchNextCard"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'layout="@layout/layout_continue_watching_video_suggestion_card"'
-          grep -A1 'android:id="@+id/layoutContinueWatchingVideoSuggestionCard"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'layout="@layout/video_landing_empty_component"'
+          grep -A1 'android:id="@+id/layoutContinueWatchingVideoSuggestionCard"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'layout="@layout/layout_video_watch_next_card"'
+          echo '26b87f708a4ce0b71dbbf2f25513cd0c08329068b7e75879eaf9ccb43edd6539  app/src/main/res/drawable/ic_watch_next_placeholder.xml' | sha256sum --check
+          echo '57431419c80ad5352cc05d38d94700c1df1e166b84406976a98cdf07704c3aad  app/src/main/res/drawable-nodpi/right_arrow.png' | sha256sum --check
+          test -f app/src/main/res/layout/layout_video_watch_next_card.xml
+          grep -Fq 'android:id="@+id/tvWatchNext"' app/src/main/res/layout/layout_video_watch_next_card.xml
+          grep -Fq 'android:id="@+id/tvVideoRemainingDuration"' app/src/main/res/layout/layout_video_watch_next_card.xml
           grep -Fq 'android:id="@+id/ivVideoThumbnail"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           grep -Fq 'android:id="@+id/pbSuggestedVideo"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           grep -Fq 'android:id="@+id/tvVideoRemainingDuratiom"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
