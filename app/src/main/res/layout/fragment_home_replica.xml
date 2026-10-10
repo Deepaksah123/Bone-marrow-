@@ -129,92 +129,15 @@
                     android:visibility="gone"
                     app:constraint_referenced_ids="ivEd6background,tvModuleCompletionSubText,tvModuleCompletionNumber,pbModuleCompletion" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <include
                     android:id="@+id/layoutDynamicZenArea"
+                    layout="@layout/layout_dynamic_zen_area_replica"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:visibility="gone"
-                    android:paddingTop="12dp"
-                    android:paddingBottom="12dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent">
-
-                    <View
-                        android:id="@+id/toolbarPlaceholder"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:visibility="gone"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <ImageView
-                        android:id="@+id/ivZenAreaBackground"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:contentDescription="@null"
-                        android:visibility="gone"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <LinearLayout
-                        android:id="@+id/lyt_zen_area_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="16dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
-
-                        <FrameLayout
-                            android:layout_width="120dp"
-                            android:layout_height="120dp">
-
-                            <ImageView
-                                android:id="@+id/logoAnimationBackground"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:contentDescription="@null" />
-
-                            <com.airbnb.lottie.LottieAnimationView
-                                android:id="@+id/logoAnimation"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
-                        </FrameLayout>
-
-                        <androidx.constraintlayout.widget.ConstraintLayout
-                            android:id="@+id/lytZenAreaCta"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:paddingTop="8dp">
-
-                            <TextView
-                                android:id="@+id/tvPcZenTitle"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Practicals"
-                                android:textColor="@color/shell_text"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent" />
-                        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                        <TextView
-                            android:id="@+id/tvZenCompletedModules"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/shell_muted"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                    app:layout_constraintEnd_toEndOf="parent" />
 
                 <androidx.compose.ui.platform.ComposeView
                     android:id="@+id/ed8Zen"
