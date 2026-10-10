@@ -27,11 +27,25 @@
             android:background="@color/shell_surface" />
     </FrameLayout>
 
-    <!-- Source binds homeAppBar as a container; title text is not verified. -->
+    <!-- Preserve the existing header while its exact original resource hierarchy is traced. -->
     <FrameLayout
         android:id="@+id/homeAppBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_gravity="top"
-        android:background="@color/shell_surface" />
+        android:background="@color/shell_surface"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:id="@+id/brand_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="Marrow"
+            android:textColor="@color/shell_text"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </FrameLayout>
 </FrameLayout>
