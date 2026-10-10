@@ -29,17 +29,17 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
-                app:layout_constraintBottom_toTopOf="@id/cvBottomNavigationContainer"
+                app:layout_constraintBottom_toTopOf="@id/thinTopDivider"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <FrameLayout
                     android:id="@+id/upperContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
                     android:background="@color/shell_background"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/popup_notification_container"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
 
@@ -48,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone"
+                    android:layout_gravity="bottom"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent">
@@ -162,7 +162,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cvBottomNavigationContainer"
                 android:layout_width="match_parent"
-                android:layout_height="64dp"
+                android:layout_height="wrap_content"
                 android:backgroundTint="@color/shell_surface"
                 app:cardElevation="2dp"
                 app:cardUseCompatPadding="false"
@@ -179,28 +179,32 @@
                     <com.google.android.material.tabs.TabLayout
                         android:id="@+id/bottomNavigation"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/shell_surface" />
+                        android:layout_height="56dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="@color/shell_surface"
+                        app:tabIndicator="@drawable/ic_tab_indicator"
+                        app:tabIndicatorHeight="4dp"
+                        app:tabIndicatorFullWidth="true" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
             <FrameLayout
                 android:id="@+id/fullContainer"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@color/shell_background"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/toolbar"
-                app:layout_constraintBottom_toTopOf="@id/cvBottomNavigationContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:background="@android:color/transparent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <FrameLayout
+        <include
             android:id="@+id/drawerMenu"
+            layout="@layout/drawer_menu_empty_host_replica"
             android:layout_width="280dp"
             android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="@color/shell_surface" />
+            android:layout_gravity="start" />
     </androidx.drawerlayout.widget.DrawerLayout>
 </FrameLayout>
