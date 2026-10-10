@@ -121,4 +121,4 @@
 
 ## Batch 49 — Video subject grid fidelity
 
-- [x] Matched the original Video landing grid behavior from `setScrollPosition.java`: exact tablet detection semantics, 2/3-column grid, predictive animations disabled, and 6dp vertical / 4dp horizontal item offsets. Added the source-backed `margin_6dp` dimension and guard checks. Details: [Batch 49](VIDEO_SUBJECT_GRID_FIDELITY_BATCH_49.md). Build + evidence guard pending.
+- [x] Matched the original Video landing grid behavior from `setScrollPosition.java`: exact tablet detection semantics, 2/3-column grid, predictive animations disabled, and 6dp vertical / 4dp horizontal item offsets. Added the source-backed `margin_6dp` dimension and guard checks. Details: [Batch 49](VIDEO_SUBJECT_GRID_FIDELITY_BATCH_49.md). Android build [38078006253](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078006253) and evidence guard [38078006278](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078006278) passed. Artifact ID `11678864090`, size `8,195,237` bytes, artifact ZIP SHA-256 `fadbe68bceb34a26f8db64c07e519067ab0e1073f50f7ca0b8fe924230911fb7`. Device-level phone/tablet visual QA remains pending.
