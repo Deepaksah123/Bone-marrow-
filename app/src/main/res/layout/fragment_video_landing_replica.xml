@@ -53,7 +53,7 @@
             android:id="@+id/clMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/shell_background">
+            android:background="?attr/backgroundColor">
 
             <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/composeViewAnnouncementBanner"
