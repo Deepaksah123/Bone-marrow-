@@ -99,6 +99,8 @@ jobs:
           echo '61b810044ec2d8965a57a8dacd525d02e4cf3c97b37049f0e766311cc5978b32  app/src/main/res/drawable/bg_progressbar_blue_background.xml' | sha256sum --check
           test -f app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           grep -Fq 'layout="@layout/layout_continue_watching_video_suggestion_card"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -A1 'android:id="@+id/layoutVideoWatchNextCard"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'layout="@layout/layout_continue_watching_video_suggestion_card"'
+          grep -A1 'android:id="@+id/layoutContinueWatchingVideoSuggestionCard"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'layout="@layout/video_landing_empty_component"'
           grep -Fq 'android:id="@+id/ivVideoThumbnail"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           grep -Fq 'android:id="@+id/pbSuggestedVideo"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           grep -Fq 'android:id="@+id/tvVideoRemainingDuratiom"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
