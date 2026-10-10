@@ -22,6 +22,8 @@ android {
 
 dependencies {
     implementation 'com.google.android.material:material:1.12.0'
+    // Original drawer profile image uses de.hdodenhof.circleimageview.CircleImageView.
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'androidx.fragment:fragment:1.8.6'
