@@ -1,11 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  Source-faithful placeholder: the original drawer_menu_revamp binary layout
-  is not present in the verified decompiler archive. Do not invent menu rows.
-  Replace this host only after the original view tree is recovered.
--->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_menu_host"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:background="?attr/backgroundColor" />
+    android:layout_gravity="start|top"
+    android:orientation="vertical"
+    android:background="?attr/colorSurfaceVariant5"
+    android:focusable="true"
+    android:clickable="true">
+
+    <ScrollView
+        android:id="@+id/navigation_recycler_view"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="start|top"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="@dimen/drawer_profile_width"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/margin_24dp"
+            android:paddingBottom="24dp"
+            android:paddingHorizontal="24dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/navMyProfileView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+
+                <include
+                    android:id="@+id/layoutProfilePicture"
+                    layout="@layout/profile_image_v2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvProfileName"
+                    style="?attr/heading6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textColor="?attr/colorSurfaceVariant"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toEndOf="@id/layoutProfilePicture"
+                    app:layout_constraintTop_toTopOf="@id/layoutProfilePicture" />
+
+                <TextView
+                    android:id="@+id/tvSettings"
+                    style="?attr/heading7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/pad_normal"
+                    android:text="@string/nav_text_settings"
+                    android:textColor="?attr/onSurfaceBlue2"
+                    android:drawablePadding="@dimen/margin_8dp"
+                    app:drawableLeftCompat="@drawable/ic_settings"
+                    app:drawableTint="?attr/onSurfaceBlue2"
+                    app:layout_constraintStart_toStartOf="@id/tvProfileName"
+                    app:layout_constraintTop_toBottomOf="@id/tvProfileName" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/topDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="22dp"
+                android:alpha="0.4"
+                android:background="?attr/onSurfaceBgDivider" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/yourCourseContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/navYourCourse"
+                    style="?attr/heading4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/your_course"
+                    android:textColor="?attr/colorSurfaceVariant"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:clickable="false"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <include
+                    android:id="@+id/newCourse"
+                    layout="@layout/new_course_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/pad_normal"
+                    android:visibility="gone"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintBottom_toBottomOf="@id/navYourCourse"
+                    app:layout_constraintStart_toEndOf="@id/navYourCourse"
+                    app:layout_constraintTop_toTopOf="@id/navYourCourse" />
+
+                <TextView
+                    android:id="@+id/yourCourse"
+                    style="?attr/subtext1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textColor="?attr/colorSurfaceVariant"
+                    app:layout_constrainedWidth="true"
+                    app:layout_constraintEnd_toStartOf="@id/imageView5"
+                    app:layout_constraintHorizontal_bias="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/navYourCourse" />
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:padding="2dp"
+                    android:src="@drawable/ic_arrow_right"
+                    android:contentDescription="@null"
+                    app:tint="?attr/colorSurfaceVariant"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/bottomDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:alpha="0.4"
+                android:background="?attr/onSurfaceBgDivider" />
+
+            <View
+                android:id="@+id/divider_2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:alpha="0.4"
+                android:background="?attr/onSurfaceBgDivider" />
+
+            <TextView
+                android:id="@+id/navLearnMore"
+                style="?attr/heading7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/nav_learn_more"
+                android:textColor="?attr/colorSurfaceVariant"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/navFaq"
+                style="?attr/heading7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/nav_item_faq"
+                android:textColor="?attr/colorSurfaceVariant"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/navContactUs"
+                style="?attr/heading7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/contact_us"
+                android:textColor="?attr/colorSurfaceVariant"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/navAboutUs"
+                style="?attr/heading7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/nav_item_about_us"
+                android:textColor="?attr/colorSurfaceVariant"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/navRateUs"
+                style="?attr/heading7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/nav_item_rate_us"
+                android:textColor="?attr/colorSurfaceVariant"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/navTerms"
+                style="?attr/heading7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/nav_item_terms"
+                android:textColor="?attr/colorSurfaceVariant"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/navInvite"
+                style="?attr/heading7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/nav_item_invite_friends"
+                android:textColor="?attr/colorSurfaceVariant"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/navReportCopyright"
+                style="?attr/heading7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/report_copyright"
+                android:textColor="?attr/colorSurfaceVariant"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/navDownloadPdfNotes"
+                style="?attr/heading4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="?attr/colorSurfaceVariant"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/navAppVersion"
+        style="?attr/subtext2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="@dimen/margin_24dp"
+        android:textColor="?attr/onSurfaceBlue2"
+        android:visibility="visible" />
+
+    <ImageView
+        android:layout_width="88dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="@dimen/margin_8dp"
+        android:layout_marginBottom="@dimen/margin_40"
+        android:layout_marginHorizontal="@dimen/margin_24dp"
+        android:src="@drawable/ic_marrow_white"
+        android:contentDescription="@null"
+        android:visibility="visible"
+        app:tint="?attr/onSurfaceBlue2" />
+</LinearLayout>
