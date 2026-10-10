@@ -15,7 +15,7 @@
         android:paddingBottom="16dp">
 
         <LinearLayout
-            android:id="@+id/drawerYourCourse"
+            android:id="@+id/navYourCourse"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:gravity="center_vertical"
@@ -39,7 +39,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/drawerContactUs"
+            android:id="@+id/navContactUs"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:gravity="center_vertical"
@@ -63,7 +63,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/drawerReportPiracy"
+            android:id="@+id/navReportCopyright"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:gravity="center_vertical"
@@ -81,13 +81,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginStart="20dp"
-                android:text="@string/nav_drawer_report_piracy"
+                android:text="@string/nav_drawer_report_copyright"
                 android:textColor="@color/shell_text"
                 android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/drawerFaq"
+            android:id="@+id/navFaq"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:gravity="center_vertical"
@@ -111,7 +111,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/drawerAboutUs"
+            android:id="@+id/navAboutUs"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:gravity="center_vertical"
@@ -135,7 +135,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/drawerShareApp"
+            android:id="@+id/navInvite"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:gravity="center_vertical"
@@ -153,13 +153,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginStart="20dp"
-                android:text="@string/nav_drawer_share_app"
+                android:text="@string/nav_drawer_invite"
                 android:textColor="@color/shell_text"
                 android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/drawerRateUs"
+            android:id="@+id/navRateUs"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:gravity="center_vertical"
@@ -183,7 +183,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/drawerTerms"
+            android:id="@+id/navTerms"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:gravity="center_vertical"
@@ -207,7 +207,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/drawerLogout"
+            android:id="@+id/navSettings"
             android:layout_width="match_parent"
             android:layout_height="52dp"
             android:gravity="center_vertical"
@@ -225,7 +225,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginStart="20dp"
-                android:text="@string/nav_drawer_logout"
+                android:text="@string/nav_drawer_settings"
                 android:textColor="@color/shell_text"
                 android:textSize="14sp" />
         </LinearLayout>
