@@ -29,4 +29,4 @@ The app is relaunched under each theme mode before light/dark capture. Screensho
 - Inspect the emulator screenshots and fix any runtime failures.
 - Do original-APK screenshot/pixel comparison in light/dark mode.
 - Complete full navigation and live data-binding fidelity across Home, QBank, Tests and Videos.
-- Recover the original Home Zen pattern vector family into build-ready resources; the verified vector aliases still need a clean transfer into the app.
+- Recover the original Practical Corner landing pattern resource family into build-ready resources; the verified vector aliases still need a clean transfer into the app. This is a separate Practical Corner screen, not the Home root's hidden ivEd6background.
