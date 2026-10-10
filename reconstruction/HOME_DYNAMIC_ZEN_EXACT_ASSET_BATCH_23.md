@@ -1,0 +1,37 @@
+# Home Dynamic Zen Area — Exact Asset + Hierarchy Follow-up (Batch 23)
+
+**Repository:** `Deepaksah123/Bone-marrow-` only  
+**Verified source archive:** `base.apk_Decompiler.com.zip`  
+**Archive SHA-256:** `92fa24c6d91faafa61e3317adcb5c7c10384eea437fa6b7f99c09ac372ab8685`  
+**Original APK SHA-256:** `e03a582c20eec102510509918315be53e45bb9fe90647207b2c956a0f55316a3`
+
+## Exact source assets restored
+
+- `app/src/main/assets/lottie/practical_corner_zen_area_pulse_anim.json` copied from `resources/assets/lottie/practical_corner_zen_area_pulse_anim.json`. Source SHA-256: `7c72ee056690ed4f695e3a7bb656b2fa7d669ff2235ae8a0701485384eb32b93`; size 3,938 bytes.
+- `app/src/main/res/drawable-mdpi/ic_pc_circle_including_logo.webp` copied from `resources/res/drawable-mdpi/ic_pc_circle_including_logo`. Source SHA-256: `956dc7df0fa49e7065da2a41ae00637f258abc0f15f28707eacf43484ce464e7`; size 2,396 bytes.
+- `app/src/main/res/drawable/ic_practical_corner_zen_are_pattern.xml` copied from the decoded gradient drawable source. Source SHA-256: `4e97644184ec5bdbbf46d83155bf86b85329a4fd7870f5f42bdc298d7716afa6`.
+- An earlier rasterized substitute background and a manually reconstructed animation file were removed before the exact source animation was restored. Do not use those substitute assets.
+
+## Source hierarchy cross-check
+
+The binary `resources/res/layout/layout_dynamic_zen_area` establishes this view order:
+
+1. `ConstraintLayout` root `zenContainer`
+2. `View` `toolbarPlaceholder`
+3. `ImageView` `ivZenAreaBackground`
+4. `LinearLayout` `lyt_zen_area_content`
+   - `FrameLayout`
+     - `ImageView` `logoAnimationBackground`
+     - `LottieAnimationView` `logoAnimation`
+   - `ConstraintLayout` `lytZenAreaCta`
+     - `TextView` `tvPcZenTitle` with source literal `Practicals`
+   - sibling `TextView` `tvZenCompletedModules` with source literal `9/35 modules`
+
+The replica has been corrected to keep `tvZenCompletedModules` as a sibling after `lytZenAreaCta` and to use 21dp top padding on the content container, matching the decoded dimension value. The include remains `gone` in `fragment_home_replica.xml`, matching the parent include's default visibility. The static `9/35 modules` is only the layout's default literal; live account progress binding is not implemented.
+
+## Validation status
+
+- The evidence guard passed on commit `962756ca24bf`: [guard run](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38057133262).
+- Android build for the subsequent Zen padding/source asset updates is queued as run [38057164187](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38057164187). Do not treat that newer build as passed until it completes.
+- No on-device screenshot or pixel-diff verification is claimed.
+- Remaining gap: exact compiled XML attributes/styles still need resource-ID resolution against the original APK resource table; this decompiler dump has no `resources.arsc`. Home account/data bindings and click routes remain unimplemented.
