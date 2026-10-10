@@ -24,4 +24,4 @@ The original resource table is not available in the decompiler archive; attribut
 
 ## Validation
 
-The CI evidence guard result for this batch must be checked after commit. Build and runtime visual QA are separate checks.
+The evidence guard passed for the root-ID audit: [run 38074402816](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074402816). Android build code remains the already-validated `47d71eef4352` [run 38074210922](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074210922); this batch changed only guard/report files. Runtime visual QA is still separate and pending.
