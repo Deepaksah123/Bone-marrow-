@@ -30,4 +30,6 @@ dependencies {
     // These views are present in the original fragment_home hierarchy.
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.airbnb.android:lottie:6.6.2'
+    // The original Video landing binds an EpoxyRecyclerView.
+    implementation 'com.airbnb.android:epoxy:5.1.4'
 }
