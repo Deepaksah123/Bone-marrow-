@@ -23,7 +23,7 @@
         <item name="colorPrimary">@color/mb_50</item>
         <item name="colorSurface">@color/n_80</item>
         <item name="backdrop50">@color/n_00_o_50</item>
-        <item name="onSurfaceBgLinks">@color/links</item>
+        <item name="onSurfaceBgLinks">@color/c_7eaaff</item>
         <item name="onSurfaceBlue">@color/mb_50</item>
         <item name="onSurfaceBgDivider">@color/n_70_a_30</item>
         <item name="backgroundVariant2">@color/tGreen</item>
@@ -32,7 +32,7 @@
         <item name="onBackgroundSurface3">@color/n_40</item>
         <item name="onBackgroundSurface5">@color/n_50</item>
         <item name="onSurfaceBgOutline">@color/n_70</item>
-        <item name="onSurfaceBgOutline2">@color/n_70_a_30</item>
+        <item name="onSurfaceBgOutline2">@color/n_70_a_50</item>
         <item name="smallText2">@style/TextAppearance.Dr.SmallText2</item>
         <item name="heading6">@style/TextAppearance.Dr.Headline6</item>
         <item name="subtext1">@style/TextAppearance.Dr.Subtitle1</item>
