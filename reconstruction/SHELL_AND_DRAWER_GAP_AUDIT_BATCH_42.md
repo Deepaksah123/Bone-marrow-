@@ -26,3 +26,7 @@ Do **not** fill the drawer with guessed rows, invented account details, fabricat
 ## Validation boundary
 
 This is a static source audit. It does not claim the drawer is fixed or runtime-tested. Current Android build and evidence-guard status must be tracked separately from device-level QA.
+
+## Resolution update — Batch 53
+
+The decompiler ZIP still lacks a decoded file named `drawer_menu_revamp`, but the original APK itself was recovered and SHA-256 verified. Its resource table maps `R.layout.drawer_menu_revamp` (`0x7f0d00b3`) to obfuscated entry `On`; that 10,056-byte binary XML has now been decoded and used to reconstruct the drawer's source-backed view hierarchy. See [Drawer Binary XML Recovery — Batch 53](DRAWER_BINARY_XML_RECOVERY_BATCH_53.md). Runtime visibility/data binding and click destinations remain open; monetization/referral/debug rows stay excluded.
