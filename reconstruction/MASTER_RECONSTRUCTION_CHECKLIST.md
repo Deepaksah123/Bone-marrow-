@@ -8,6 +8,7 @@
 ## Verified completed
 
 - [x] Original source evidence inventory and binary-layout decode report recorded in `reconstruction/EXACT_SOURCE_UI_INDEX.md` and `reconstruction/VERIFIED_BINARY_LAYOUT_BATCH_3.md`.
+- [x] Evidence guard now verifies SHA-256 for the exact source Lottie JSON, mdpi logo WebP and dark Zen gradient, checks the layout references and source-qualified 4dp/28dp dimensions, and fails if the incorrect pattern-gradient substitute is reintroduced.
 - [x] Four top-level tabs and source-backed order recorded: HOME → QBANK → TESTS → VIDEOS.
 - [x] Tab destination/root-layout mappings documented in `reconstruction/HOME_TAB_TO_ROOT_LAYOUT_MAP_BATCH_9.md`.
 - [x] QBank landing replica has the verified `ConstraintLayout` root and source-bound IDs `rvSubjectList`, `progressLoadList`.
