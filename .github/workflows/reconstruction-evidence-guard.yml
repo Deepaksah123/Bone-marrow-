@@ -89,6 +89,11 @@ jobs:
           grep -Fq 'android:paddingHorizontal="@dimen/pad_14"' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -Fq 'android:layout_marginHorizontal="@dimen/pad_14"' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -Fq 'android:layout_marginVertical="@dimen/margin_40"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'android:id="@+id/layoutContinueWatchingVideoSuggestionCard"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -A2 -Fq 'android:id="@+id/layoutContinueWatchingVideoSuggestionCard"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'layout="@layout/layout_continue_watching_video_suggestion_card"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'layout="@layout/layout_video_watch_next_card"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'android:background="?attr/backgroundColor"' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -Fq '<color name="mb_90">#16343b</color>' app/src/main/res/values/colors.xml
           grep -Fq '<color name="n_60">#626768</color>' app/src/main/res/values/colors.xml
           # Exact-source assets for the non-monetization Continue Watching card.
