@@ -24,7 +24,7 @@ This corrects the earlier Batch 30 interpretation that `fullContainer` had an ou
 
 - Monetization/plan banners remain empty/hidden hosts; no purchase, upgrade, checkout or subscription UI was added.
 - Android build passed for the shell correction and drawer batch: [run 38082219855](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082219855).
-- Evidence guard for the subsequent documentation/guard correction: [run 38082293980](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082293980), in progress at report creation.
-- Emulator UI smoke and screenshots: [run 38082219825](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082219825), in progress at report creation.
+- Evidence guard passed after the source-geometry assertion correction: [run 38082552280](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082552280).
+- Emulator UI smoke and screenshots: [run 38082552298](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082552298), currently running with bounded command timeouts.
 
 No original-APK pixel-diff or whole-app 1:1 claim is made. Main screen data bindings, drawer row visibility/destinations, full Home/QBank/Test/Video parity and source screenshot comparison remain open.
