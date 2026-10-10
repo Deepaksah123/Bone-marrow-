@@ -29,9 +29,8 @@ The original decompiler's text for `ic_arrow_right` was rejected by the current 
 
 ## Validation status
 
-- Evidence guard passed for commit `4222a0ffc863e75fdc04c7ae90130e22580f1fbf`: [run 38081056377](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081056377). This was before the last resource additions and must not be treated as validation of current HEAD.
-- Current Android build: [run 38081191407](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191407), in progress at report creation.
-- Current evidence guard: [run 38081191405](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191405), in progress at report creation.
-- Current emulator UI smoke: [run 38081191436](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191436), queued at report creation.
+- Android build **PASS** for current app source: [run 38081191407](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191407).
+- Evidence guard **PASS** for current source: [run 38081191405](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191405).
+- Emulator UI smoke: [run 38081191436](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191436) is running the tab/drawer/theme checks; screenshot artifact and final conclusion are still pending.
 
 This batch advances the drawer substantially but does **not** claim the whole app is 1:1. Runtime drawer visibility, row destinations, profile/course data, original APK screenshot comparison and all four tabs' visual parity remain open.
