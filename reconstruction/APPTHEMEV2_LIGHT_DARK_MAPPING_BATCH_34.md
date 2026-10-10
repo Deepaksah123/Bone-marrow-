@@ -16,4 +16,4 @@ This maps semantic theme attributes to the recorded source palette; it does not 
 
 ## Validation
 
-Light theme Android build passed: [run 38074564411](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074564411). Attribute/theme declaration guard passed on [run 38074567890](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074567890). Dark theme build is running: [run 38074568348](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074568348); mark dark validation complete only after it finishes.
+Light theme Android build passed: [run 38074564411](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074564411). Attribute/theme declaration guard passed on [run 38074567890](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074567890). Dark theme Android build also passed: [run 38074568348](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074568348), debug APK artifact ID `11677648227`, size `8,195,477` bytes, digest `sha256:731fef107ec8d86bd51611272684921ec3486c39e1e32e3def74edbba58f1ac2`.
