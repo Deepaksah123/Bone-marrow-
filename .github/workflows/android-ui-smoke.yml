@@ -53,7 +53,7 @@ jobs:
       - name: Launch emulator, verify tab navigation, capture screenshots
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 35
+          api-level: 34
           target: google_apis
           arch: x86_64
           profile: pixel_2
@@ -127,13 +127,13 @@ jobs:
             x1, y1, x2, y2 = map(int, match.groups())
             subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True)
             time.sleep(1)
-            subprocess.run(["adb", "shell", "uiautomator", "dump", "/sdcard/drawer-open.xml"], check=True, stdout=subprocess.DEVNULL)
-            subprocess.run(["adb", "pull", "/sdcard/drawer-open.xml", "qa-screenshots/drawer-open-hierarchy.xml"], check=True, stdout=subprocess.DEVNULL)
+            subprocess.run(["adb", "shell", "uiautomator", "dump", "/sdcard/drawer-open.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
+            subprocess.run(["adb", "pull", "/sdcard/drawer-open.xml", "qa-screenshots/drawer-open-hierarchy.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
             drawer_hierarchy = Path("qa-screenshots/drawer-open-hierarchy.xml").read_text(encoding="utf-8")
             if "Your Course" not in drawer_hierarchy or "Settings" not in drawer_hierarchy:
                 raise SystemExit("Drawer did not expose the source-backed Your Course and Settings labels")
-            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/drawer-open.png"], check=True)
-            subprocess.run(["adb", "pull", "/sdcard/drawer-open.png", "qa-screenshots/drawer-open.png"], check=True, stdout=subprocess.DEVNULL)
+            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/drawer-open.png"], check=True, timeout=30)
+            subprocess.run(["adb", "pull", "/sdcard/drawer-open.png", "qa-screenshots/drawer-open.png"], check=True, stdout=subprocess.DEVNULL, timeout=30)
             subprocess.run(["adb", "shell", "input", "keyevent", "4"], check=True)
             time.sleep(1)
 
@@ -143,14 +143,14 @@ jobs:
             subprocess.run(["adb", "shell", "am", "force-stop", "com.marrow.reconstruction.replica"], check=True)
             subprocess.run(["adb", "shell", "am", "start", "-W", "-n", "com.marrow.reconstruction.replica/com.marrow.reconstruction.MainActivity"], check=True, stdout=subprocess.DEVNULL)
             time.sleep(2)
-            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/dark-home.png"], check=True)
-            subprocess.run(["adb", "pull", "/sdcard/dark-home.png", "qa-screenshots/dark-home.png"], check=True, stdout=subprocess.DEVNULL)
+            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/dark-home.png"], check=True, timeout=30)
+            subprocess.run(["adb", "pull", "/sdcard/dark-home.png", "qa-screenshots/dark-home.png"], check=True, stdout=subprocess.DEVNULL, timeout=30)
             subprocess.run(["adb", "shell", "cmd", "uimode", "night", "no"], check=True)
             subprocess.run(["adb", "shell", "am", "force-stop", "com.marrow.reconstruction.replica"], check=True)
             subprocess.run(["adb", "shell", "am", "start", "-W", "-n", "com.marrow.reconstruction.replica/com.marrow.reconstruction.MainActivity"], check=True, stdout=subprocess.DEVNULL)
             time.sleep(2)
-            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/light-home.png"], check=True)
-            subprocess.run(["adb", "pull", "/sdcard/light-home.png", "qa-screenshots/light-home.png"], check=True, stdout=subprocess.DEVNULL)
+            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/light-home.png"], check=True, timeout=30)
+            subprocess.run(["adb", "pull", "/sdcard/light-home.png", "qa-screenshots/light-home.png"], check=True, stdout=subprocess.DEVNULL, timeout=30)
             PY
 
       - name: Upload UI smoke screenshots and hierarchies
