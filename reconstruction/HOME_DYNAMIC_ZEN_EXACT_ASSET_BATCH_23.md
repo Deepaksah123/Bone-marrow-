@@ -36,3 +36,10 @@ The replica has been corrected to keep `tvZenCompletedModules` as a sibling afte
 - Android build for the subsequent Zen padding/source asset updates is queued as run [38057164187](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38057164187). Do not treat that newer build as passed until it completes.
 - No on-device screenshot or pixel-diff verification is claimed.
 - Remaining gap: exact compiled XML attributes/styles still need resource-ID resolution against the original APK resource table; this decompiler dump has no `resources.arsc`. Home account/data bindings and click routes remain unimplemented.
+
+## Follow-up — source typography and qualified dimensions
+
+- Restored the original `TextAppearance.Dr.Headline5` style basis (18sp, medium sans-serif, 22sp line height, zero letter spacing) and the `heading5` / `colorOnSurfaceVariant` theme bindings for the Practicals CTA. The exact original Roboto font file and full theme palette are not yet copied, so font-family and colors remain best-effort rather than a claim of pixel identity.
+- Restored `practical_corner_home_banner_content_top_margin` as a dimension resource: 4dp in `values` and 28dp in `values-v35`, matching the decompiler's source values. The layout now references the named dimension rather than hardcoding 4dp.
+- Corrected the title's end drawable/tint to the source AppCompat attributes `app:drawableEndCompat` and `app:drawableTint`.
+- Latest code commit: `ed1d2c860f38`. Evidence guard passed: [run 38057383835](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38057383835). Android build: [run 38057383849](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38057383849), currently in progress when this report was updated.
