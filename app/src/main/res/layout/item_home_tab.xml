@@ -1,30 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tab_item_root"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
     android:gravity="center"
-    android:orientation="vertical"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    android:paddingTop="7dp"
-    android:paddingBottom="5dp">
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/tab_icon"
-        android:layout_width="21dp"
+    <FrameLayout
+        android:layout_width="20dp"
         android:layout_height="20dp"
-        android:contentDescription="@null"
-        android:scaleType="fitCenter" />
+        android:layout_marginTop="8dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_home_tab_tests" />
+
+        <ImageView
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:srcCompat="@drawable/ic_home_indicator" />
+    </FrameLayout>
 
     <TextView
-        android:id="@+id/tab_label"
+        android:id="@+id/title"
+        style="?attr/smallText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:fontFamily="sans"
-        android:includeFontPadding="false"
-        android:textColor="@color/shell_muted"
-        android:textSize="11sp" />
+        android:layout_marginTop="@dimen/margin_3dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="?attr/colorPrimary" />
 </LinearLayout>
