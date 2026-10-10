@@ -3,7 +3,7 @@
 **Repository:** `Deepaksah123/Bone-marrow-`  
 **Branch:** `main`  
 **Updated:** 2026-10-10  
-**Status:** Buildable debug APK; source reconstruction and visual fidelity are still incomplete.
+**Status:** Latest navigation batch builds successfully; source reconstruction and visual fidelity are still incomplete.
 
 ## Verified completed
 
@@ -13,6 +13,10 @@
 - [x] QBank landing replica has the verified `ConstraintLayout` root and source-bound IDs `rvSubjectList`, `progressLoadList`.
 - [x] Test landing replica includes source-bound `test_tab_toolbar`, `loader_empty_layout`, and `loading_layout` containers.
 - [x] Video landing replica includes several source-bound view IDs, including `clMain`, `epoxyRVSubject`, and the documented deck/bookmark/sample-video containers.
+- [x] Navigation batch commit `7ff041d7c84a4d7b8a4cfc095e2322ad11c4296b` replaces the prior per-tab `replace()` flow with separate tagged tab fragments and add/show/hide behavior: [commit](https://github.com/Deepaksah123/Bone-marrow-/commit/7ff041d7c84a4d7b8a4cfc095e2322ad11c4296b).
+- [x] Android debug build compiled and assembled successfully for navigation commit `7ff041d7c84a4d7b8a4cfc095e2322ad11c4296b`: [GitHub Actions run](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38052847889).
+- [x] Evidence guard passed for navigation commit `7ff041d7c84a4d7b8a4cfc095e2322ad11c4296b`: [GitHub Actions run](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38052847844).
+- [x] Debug APK artifact uploaded: `marrow-reconstruction-debug`, artifact ID `11669882167`, SHA-256 digest `f8adf9e46a32741851a59563ed3cb61e192c08e7248257a342c8dab1e773d921` (artifact is available from the build run above).
 - [x] Existing app-bar title/header restored in commit `84d79c004840ddcae485ce61c5ba171ce50547ae`; do not remove existing UI merely because a detail is not yet verified.
 - [x] Android debug build succeeded for commit `84d79c004840ddcae485ce61c5ba171ce50547ae`: [GitHub Actions run](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38029001898).
 - [x] Reconstruction evidence guard succeeded for the same commit: [GitHub Actions run](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38029001876).
@@ -26,7 +30,8 @@
 - [ ] Reconstruct the actual `activity_home_revamp` shell dimensions, header, tab layout, content container, drawer and relevant non-monetization elements from source/resources.
 - [ ] Compare every implemented screen against the original APK on a device/emulator. Current build success is **not** proof of visual parity.
 - [ ] Complete source-to-layout and ID checks for Home, QBank, Tests and Videos; verify each included layout and asset against the original archive.
-- [ ] Trace and implement actual navigation/state behavior, loading/empty states, back navigation, saved selection, and screen transitions from decompiled source.
+- [ ] Finish exact navigation fidelity: current implementation uses local wrapper fragment classes and source-shaped add/show/hide transactions; it is not yet proven equivalent to the original obfuscated destination classes, saved state, back-stack, or all transitions.
+- [ ] Trace and implement source-backed loading/empty states, back navigation, saved selection, and screen transitions from decompiled source.
 - [ ] Run build + evidence guard after every implementation batch and inspect the latest artifact.
 - [ ] Verify the APK installs and opens on the target Android version/device; record the result and artifact checksum.
 - [ ] Update this checklist with commit links and QA evidence after each completed batch.
