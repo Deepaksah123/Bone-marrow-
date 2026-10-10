@@ -198,6 +198,11 @@ jobs:
           grep -Fq 'android:id="@+id/pbSuggestedVideo"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           grep -Fq 'android:id="@+id/tvVideoRemainingDuratiom"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           grep -Fq 'style="@style/HorizontalProgressBarVideoDownload"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
+          # Batch 30 lifecycle and optional-root regression checks.
+          test "$(grep -Fc 'onSaveInstanceState(Bundle out)' app/src/main/java/com/marrow/reconstruction/MainActivity.java)" -eq 1
+          grep -Fq 'if (cards != null)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'if (subjects != null)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'if (list != null)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           if find . -maxdepth 3 -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' \) | grep -q .; then
             echo 'Android build files detected. This guard is not a substitute for source-grounded build/tests.'
           else
