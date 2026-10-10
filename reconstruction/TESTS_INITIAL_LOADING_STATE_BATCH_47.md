@@ -24,4 +24,4 @@ This is a source-backed initial loading presentation, **not** a completed test-d
 
 ## Validation
 
-Android build and evidence guard must both pass for the implementation commit before this batch is marked validated.
+**Validated:** Android build [38077629617](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38077629617) passed and evidence guard [38077629680](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38077629680) passed for code commit `53ce875754dc`. Artifact ID `11679262916`, size `8,194,557` bytes, SHA-256 `3802fc314cb80fc843bde0bd2a76cd451dc958bcdbc12461941306cb9da59b59`. This confirms compile/guard checks only; no device visual QA is claimed.
