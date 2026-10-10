@@ -160,7 +160,9 @@
 - [x] Added the source-shaped search UI and source drawable/animation resources; back and clear controls work, and the initial message/hint use source strings.
 - [x] Excluded the source `clProMain` / `btViewPlans` monetization subtree.
 - [x] Status bar uses source `?attr/colorPrimary`; light/dark icon contrast follows the source theme flags.
-- [ ] Confirm latest Android build, evidence guard and emulator smoke/screenshot artifact, including Search overlay open/Back return.
+- [x] Android build PASS: [run 38086133865](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133865); evidence guard PASS: [run 38086133816](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133816).
+- [x] Debug APK artifact: ID `11682261632`, size `8,269,398` bytes, SHA-256 `8aa289841eeb52239d3b069d329a909f76515ec33e059748512fa20d25d31d7f`.
+- [ ] API 31 emulator smoke [run 38086133823](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133823) is still running; Search open/Back screenshot QA remains pending.
 - [ ] Search data adapter, query API, recent-search history and original-APK pixel comparison remain open.
 - Details: [Batch 56 report](SEARCH_OVERLAY_SOURCE_UI_BATCH_56.md).
 
