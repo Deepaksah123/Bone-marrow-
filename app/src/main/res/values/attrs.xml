@@ -23,4 +23,5 @@
     <attr name="onSurfaceBgLinks" format="color" />
     <attr name="onSurfaceBlue" format="color" />
     <attr name="onSurfaceBgDivider" format="color" />
+    <attr name="colorSurfaceVariant16" format="color" />
 </resources>
