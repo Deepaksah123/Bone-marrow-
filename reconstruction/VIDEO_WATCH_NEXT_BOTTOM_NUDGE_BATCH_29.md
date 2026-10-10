@@ -15,4 +15,4 @@ Both the main `layoutVideoWatchNextCard` and bottom-nudge `layoutContinueWatchin
 
 ## Validation
 
-The evidence guard checks both include-to-layout mappings and exact SHA-256 hashes for the placeholder vector and right-arrow PNG. Confirm CI build and guard results after this batch; no on-device visual comparison is claimed.
+The evidence guard passed for both include mappings and exact source asset hashes: [run 38073315067](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38073315067). Android build compiled and uploaded the debug APK for commit `599f2e69305a`: [run 38073302955](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38073302955). Artifact ID `11678100530`, size `8,195,852` bytes, digest `sha256:84ea7c9f6a3732e522460ffe94479e3888954a3653d1a03313d252c3329f44ab`. The workflow is still in post-action finalization; the compile and upload steps succeeded. No on-device visual comparison is claimed.
