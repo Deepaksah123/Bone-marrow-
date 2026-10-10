@@ -40,4 +40,5 @@
     <attr name="onSurfaceBgOutline3" format="color" />
     <attr name="onSurfaceBlue2" format="color" />
     <attr name="onSurfaceBlue3" format="color" />
+    <attr name="colorSurfaceVariant13" format="color" />
 </resources>
