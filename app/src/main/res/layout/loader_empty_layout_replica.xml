@@ -5,7 +5,6 @@
     android:layout_height="match_parent">
 
     <include
-        android:id="@+id/loading_container_include"
         layout="@layout/layout_loading_container_med_replica"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
