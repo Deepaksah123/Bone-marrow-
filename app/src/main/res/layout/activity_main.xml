@@ -1,57 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/shell_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/shell_background">
 
-    <FrameLayout
-        android:id="@+id/fullContainer"
+    <View
+        android:id="@+id/screen_blocker"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="56dp"
-        android:layout_marginBottom="64dp"
-        android:background="@color/shell_background">
+        android:background="#FF000000"
+        android:visibility="gone" />
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/homeAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/shell_background">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/lytContent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintBottom_toTopOf="@id/cvBottomNavigationContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <FrameLayout
+                    android:id="@+id/upperContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/shell_background"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/popup_notification_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <FrameLayout
+                        android:id="@+id/renewPlanBanner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+
+                    <FrameLayout
+                        android:id="@+id/collegeYearUpdateBanner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+
+                    <FrameLayout
+                        android:id="@+id/kycUploadBanner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/shell_surface"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/iconMenu"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="Open navigation drawer"
+                    android:padding="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/textBrandingContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    app:layout_constraintStart_toEndOf="@id/iconMenu"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <TextView
+                        android:id="@+id/textBranding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Marrow"
+                        android:textColor="@color/shell_text"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textPageTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="@color/shell_text"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@id/iconMenu"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iconBookmark"
+                    android:layout_width="36dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="Bookmarks"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_bookmark_filled"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toStartOf="@id/iconSearch"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iconSearch"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="Search"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_search_revamp"
+                    android:tint="@color/shell_text"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/thinTopDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/shell_divider"
+                app:layout_constraintBottom_toTopOf="@id/cvBottomNavigationContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvBottomNavigationContainer"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:backgroundTint="@color/shell_surface"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="false"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/layoutBottomNavigationContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/bottomNavigation"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/shell_surface" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <FrameLayout
+                android:id="@+id/fullContainer"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@color/shell_background"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintBottom_toTopOf="@id/cvBottomNavigationContainer"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
-            android:id="@+id/upperContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:id="@+id/cvBottomNavigationContainer"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_gravity="bottom"
-        android:background="@color/shell_surface">
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/bottomNavigation"
-            android:layout_width="match_parent"
+            android:id="@+id/drawerMenu"
+            android:layout_width="280dp"
             android:layout_height="match_parent"
+            android:layout_gravity="start"
             android:background="@color/shell_surface" />
-    </FrameLayout>
-
-    <!-- Preserve the existing header while its exact original resource hierarchy is traced. -->
-    <FrameLayout
-        android:id="@+id/homeAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_gravity="top"
-        android:background="@color/shell_surface"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp">
-
-        <TextView
-            android:id="@+id/brand_title"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="Marrow"
-            android:textColor="@color/shell_text"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-    </FrameLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 </FrameLayout>
