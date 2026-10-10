@@ -19,3 +19,5 @@
 ## Runtime limitation
 
 The replica still lacks the original QBank ViewModel and data fetch/observer. The progress indicator therefore remains visible until the verified subject-list binding is reconstructed. This deliberately avoids showing invented QBank content.
+
+**Validated:** Android build [38077287838](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38077287838) passed, and evidence guard [38077287841](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38077287841) passed. Artifact ID `11678636989`, size `8,194,476` bytes, SHA-256 `7f3b2663e1b48aa9aa145795457e3eea770c357730245a53e8554a192dbe9fbe`.
