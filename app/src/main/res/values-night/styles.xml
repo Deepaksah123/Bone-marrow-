@@ -19,6 +19,11 @@
         <item name="backgroundColor">@color/n_85</item>
         <item name="colorSurfaceVariant">@color/n_00</item>
         <item name="colorSurfaceVariant5">@color/n_80</item>
+        <item name="colorSurface">@color/n_80</item>
+        <item name="backdrop50">@color/n_00_o_50</item>
+        <item name="onSurfaceBgLinks">@color/links</item>
+        <item name="onSurfaceBlue">@color/mb_50</item>
+        <item name="onSurfaceBgDivider">@color/n_70_a_30</item>
         <item name="backgroundVariant2">@color/tGreen</item>
         <item name="colorOnBackground">@color/n_10</item>
         <item name="onBackgroundSurface2">@color/n_20</item>
