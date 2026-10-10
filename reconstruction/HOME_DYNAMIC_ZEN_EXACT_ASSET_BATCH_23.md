@@ -28,7 +28,7 @@ The binary `resources/res/layout/layout_dynamic_zen_area` establishes this view 
      - `TextView` `tvPcZenTitle` with source literal `Practicals`
    - sibling `TextView` `tvZenCompletedModules` with source literal `9/35 modules`
 
-The replica has been corrected to keep `tvZenCompletedModules` as a sibling after `lytZenAreaCta` and to use 21dp top padding on the content container, matching the decoded dimension value. The include remains `gone` in `fragment_home_replica.xml`, matching the parent include's default visibility. The static `9/35 modules` is only the layout's default literal; live account progress binding is not implemented.
+The replica has been corrected to keep `tvZenCompletedModules` as a sibling after `lytZenAreaCta`, use the source's 21dp **bottom padding**, 4dp progress-label top margin, source-qualified content top margin, and vertically center the Practicals title using top and bottom constraints. The include remains `gone` in `fragment_home_replica.xml`, matching the parent include's default visibility. The static `9/35 modules` is only the layout's default literal; live account progress binding is not implemented.
 
 ## Validation status
 
