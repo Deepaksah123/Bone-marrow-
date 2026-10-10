@@ -24,3 +24,5 @@ The evidence guard passed for the source shell/tab hierarchy: [run 38074219308](
 ## Superseding drawer update — Batch 53
 
 The empty-host decision above was correct while the original drawer XML was unavailable in the decompiler ZIP. The exact binary XML has since been recovered from the SHA-verified original APK and the source-backed non-monetization hierarchy is now reconstructed. See [Drawer Binary XML Recovery — Batch 53](DRAWER_BINARY_XML_RECOVERY_BATCH_53.md). Runtime visibility/data binding and row routes remain open; this does not establish whole-app 1:1 parity.
+
+Batch 54 supersedes the earlier fullContainer geometry note with a direct decode of the original `activity_home_revamp` binary XML: `fullContainer` has 8dp elevation and no 8dp outer margin. See [Shell Binary XML Fidelity Corrections — Batch 54](SHELL_BINARY_XML_FIDELITY_BATCH_54.md).
