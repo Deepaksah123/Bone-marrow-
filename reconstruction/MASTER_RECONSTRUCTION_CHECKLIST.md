@@ -10,7 +10,7 @@
 - [x] Original source evidence inventory and binary-layout decode report recorded in `reconstruction/EXACT_SOURCE_UI_INDEX.md` and `reconstruction/VERIFIED_BINARY_LAYOUT_BATCH_3.md`.
 - [x] Evidence guard now verifies SHA-256 for the exact source Lottie JSON, mdpi logo WebP and dark Zen gradient, checks the layout references and source-qualified 4dp/28dp dimensions, and fails if the incorrect pattern-gradient substitute is reintroduced.
 - [x] Four top-level tabs and source-backed order recorded: HOME → QBANK → TESTS → VIDEOS.
-- [x] Batch 30: selected top-level tab is now saved during activity recreation; optional RecyclerView roots are null-checked before layout-manager setup. Details: `reconstruction/TAB_STATE_AND_OPTIONAL_VIEW_GUARDS_BATCH_30.md` (build/guard pending).
+- [x] Batch 30: existing selected-tab save/restore was verified; optional RecyclerView roots are now null-checked before layout-manager setup. Details: `reconstruction/TAB_STATE_AND_OPTIONAL_VIEW_GUARDS_BATCH_30.md` (build/guard pending).
 - [x] Tab destination/root-layout mappings documented in `reconstruction/HOME_TAB_TO_ROOT_LAYOUT_MAP_BATCH_9.md`.
 - [x] QBank landing replica has the verified `ConstraintLayout` root and source-bound IDs `rvSubjectList`, `progressLoadList`.
 - [x] Test landing replica includes source-bound `test_tab_toolbar`, `loader_empty_layout`, and `loading_layout` containers.
