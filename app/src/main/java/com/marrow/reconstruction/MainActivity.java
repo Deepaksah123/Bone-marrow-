@@ -20,6 +20,7 @@ public final class MainActivity extends FragmentActivity {
     private int selectedTab = 0;
 
     private int dp(float value) { return (int)(value * getResources().getDisplayMetrics().density + 0.5f); }
+    private int color(int id) { return getColor(id); }
 
     @Override protected void onCreate(Bundle state) {
         super.onCreate(state);
