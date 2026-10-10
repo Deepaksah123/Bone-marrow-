@@ -3,7 +3,7 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:fontFamily">sans</item>
         <item name="android:windowLightStatusBar">false</item>
-        <item name="android:statusBarColor">?attr/colorSurfaceVariant5</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
         <item name="android:navigationBarColor">@color/shell_surface</item>
         <item name="android:windowLightNavigationBar">false</item>
         <item name="android:windowActionModeOverlay">true</item>

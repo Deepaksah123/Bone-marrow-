@@ -18,10 +18,11 @@
 
 - Added a source-shaped Search overlay fragment and wired the toolbar search icon to open it in `fullContainer` with source slide animations and back-stack behavior.
 - Added source UI assets, strings, dimensions, and the missing body-large typography attribute.
-- Changed light/dark status-bar color to follow `?attr/colorSurfaceVariant5`, aligning it with the source toolbar surface.
+- Mapped light/dark status-bar color to the original theme's `?attr/colorPrimary`; status-bar icon contrast remains controlled by the source light/dark theme flags.
 - Back and clear controls work. Search result/history adapters and API-backed behavior remain intentionally unimplemented; no questions or results are invented.
 
 ## Validation
 
-- Build, evidence guard and emulator screenshot QA are triggered by this commit and must be checked before this batch is considered validated.
+- Build and evidence guard passed for the initial batch commit; the emulator smoke was still running when this follow-up QA improvement was prepared.
+- A follow-up smoke step now exercises the Search overlay, verifies its source-backed input/instruction IDs, captures `search-open.png`, taps Back, and verifies return to Home.
 - Search data flow and original-APK pixel comparison remain open.

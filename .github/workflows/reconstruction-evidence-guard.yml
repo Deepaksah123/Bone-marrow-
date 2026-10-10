@@ -282,5 +282,5 @@ jobs:
           ! grep -Fq 'android:id="@+id/btViewPlans"' app/src/main/res/layout/fragment_better_search_replica.xml
           grep -Fq 'hint_better_search' app/src/main/res/layout/fragment_better_search_replica.xml
           grep -Fq 'label_bs_init' app/src/main/res/layout/fragment_better_search_replica.xml
-          grep -Fq 'android:statusBarColor">?attr/colorSurfaceVariant5</item>' app/src/main/res/values/styles.xml
-          grep -Fq 'android:statusBarColor">?attr/colorSurfaceVariant5</item>' app/src/main/res/values-night/styles.xml
+          grep -Fq 'android:statusBarColor">?attr/colorPrimary</item>' app/src/main/res/values/styles.xml
+          grep -Fq 'android:statusBarColor">?attr/colorPrimary</item>' app/src/main/res/values-night/styles.xml

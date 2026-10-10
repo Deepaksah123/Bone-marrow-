@@ -159,8 +159,8 @@
 - [x] Recovered the original search route: toolbar `iconSearch` opens the Better Search fragment in `fullContainer` with back-stack navigation and source slide animations.
 - [x] Added the source-shaped search UI and source drawable/animation resources; back and clear controls work, and the initial message/hint use source strings.
 - [x] Excluded the source `clProMain` / `btViewPlans` monetization subtree.
-- [x] Status bar follows the resolved toolbar surface in light/dark themes.
-- [ ] Confirm latest Android build, evidence guard and emulator smoke/screenshot artifact.
+- [x] Status bar uses source `?attr/colorPrimary`; light/dark icon contrast follows the source theme flags.
+- [ ] Confirm latest Android build, evidence guard and emulator smoke/screenshot artifact, including Search overlay open/Back return.
 - [ ] Search data adapter, query API, recent-search history and original-APK pixel comparison remain open.
 - Details: [Batch 56 report](SEARCH_OVERLAY_SOURCE_UI_BATCH_56.md).
 
