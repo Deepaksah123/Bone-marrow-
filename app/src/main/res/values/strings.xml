@@ -17,4 +17,13 @@
     <string name="pyt_turn_on">Turn On</string>
     <string name="nav_learn_more">Learn More</string>
     <string name="text_watch_next">Watch Next</string>
+    <string name="nav_drawer_your_course">Your Course</string>
+    <string name="nav_drawer_contact_us">Contact us</string>
+    <string name="nav_drawer_report_piracy">Report Video Piracy</string>
+    <string name="nav_drawer_faq">FAQ</string>
+    <string name="nav_drawer_about_us">About us</string>
+    <string name="nav_drawer_share_app">Share the app</string>
+    <string name="nav_drawer_rate_us">Rate us</string>
+    <string name="nav_drawer_terms">T&amp;C</string>
+    <string name="nav_drawer_logout">Log out</string>
 </resources>
