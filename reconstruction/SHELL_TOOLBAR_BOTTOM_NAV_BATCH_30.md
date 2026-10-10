@@ -9,7 +9,7 @@
 - Toolbar height uses `wrap_content` plus source `?attr/actionBarSize` minimum height. Menu icon uses `actionBarSize` width/height, 16dp padding and source `colorOnSurfaceVariant` tint.
 - Branding now uses the source Headline5 theme style and 16dp start spacing; page title uses Headline4 and is centered across the toolbar, matching the source constraints.
 - Search and bookmark icons use 32dp sizing, source padding/tint, and the source 8dp trailing spacing.
-- Bottom navigation card uses the source `backgroundColor`, zero corner radius and source elevation attribute. The TabLayout restores source scrollable mode, fill gravity, 0dp max width, indicator, selected-text color, tab text style and text color.
+- Bottom navigation card uses the source `backgroundColor`, zero corner radius and source elevation attribute. The TabLayout restores source scrollable mode, fill gravity, 0dp max width, indicator, selected-text color, tab text style and text color. The Java setup previously overrode the XML to fixed mode; it now uses `TabLayout.MODE_SCROLLABLE` so runtime matches the decoded source.
 - Divider uses `onSurfaceBgOutline2`; the full-screen fragment container restores the source 8dp outer margin.
 - Added `smallText2` text appearance and light/dark divider mappings.
 
