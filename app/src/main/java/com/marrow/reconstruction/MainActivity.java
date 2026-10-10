@@ -46,8 +46,9 @@ public final class MainActivity extends FragmentActivity {
         tabLayout = findViewById(R.id.bottomNavigation);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setSelectedTabIndicator(null);
-        tabLayout.setTabRippleColor(null);
+        tabLayout.setSelectedTabIndicator(R.drawable.ic_tab_indicator);
+        tabLayout.setSelectedTabIndicatorHeight(dp(4));
+        tabLayout.setTabIndicatorFullWidth(true);
         for (int i=0;i<4;i++) {
             TabLayout.Tab tab=tabLayout.newTab().setCustomView(R.layout.item_home_tab);
             View custom=tab.getCustomView();
