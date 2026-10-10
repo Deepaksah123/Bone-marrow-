@@ -32,6 +32,8 @@
         <item name="onBackgroundSurface3">@color/n_40</item>
         <item name="onBackgroundSurface5">@color/n_50</item>
         <item name="onSurfaceBgOutline">@color/n_70</item>
+        <item name="onSurfaceBgOutline2">@color/n_70_a_30</item>
+        <item name="smallText2">@style/TextAppearance.Dr.SmallText2</item>
         <item name="heading6">@style/TextAppearance.Dr.Headline6</item>
         <item name="subtext1">@style/TextAppearance.Dr.Subtitle1</item>
         <item name="subtext2">@style/TextAppearance.Dr.Subtitle2</item>
