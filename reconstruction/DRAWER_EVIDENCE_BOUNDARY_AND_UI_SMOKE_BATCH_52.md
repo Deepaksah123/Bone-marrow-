@@ -19,9 +19,9 @@ The app is relaunched under each theme mode before light/dark capture. Screensho
 ## Validation
 
 - Source-backed drawer IDs and scope exclusions are guarded by CI.
-- Android build: [run 38081191407](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191407), in progress at report update.
-- Evidence guard: [run 38081191405](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191405), in progress at report update.
-- Emulator UI smoke: [run 38081191436](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191436), queued at report update.
+- Android build: **PASS**, [run 38081191407](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191407).
+- Evidence guard: **PASS**, [run 38081191405](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191405).
+- Emulator UI smoke: [run 38081191436](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191436) is still running; its final result and screenshot artifact must be inspected.
 
 ## Still open
 
