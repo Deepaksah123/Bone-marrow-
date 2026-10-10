@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/profileImageContainer"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:elevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/profileInitialsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="0dp"
+            android:visibility="visible"
+            app:cardBackgroundColor="?attr/onSurfaceBlue2"
+            app:cardCornerRadius="999dp">
+
+            <TextView
+                android:id="@+id/tvProfileInitials"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAppearance="?attr/textAppearanceHeadline2"
+                android:textColor="?attr/colorOnPrimary"
+                android:textAllCaps="true"
+                android:textAlignment="center" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivProfilePicture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="0dp"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/btnEditProfilePicture"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@drawable/drw_circle_primary_color"
+        android:padding="4dp"
+        android:src="@drawable/ic_edit_mode"
+        android:visibility="gone"
+        android:elevation="1dp"
+        android:backgroundTint="?attr/onBackgroundSurface5"
+        app:tint="?attr/onBackgroundSurface1"
+        app:layout_constraintEnd_toEndOf="@id/profileImageContainer"
+        app:layout_constraintTop_toTopOf="@id/profileImageContainer" />
+</androidx.constraintlayout.widget.ConstraintLayout>
