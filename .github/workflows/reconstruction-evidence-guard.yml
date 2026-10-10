@@ -197,7 +197,8 @@ jobs:
           ! grep -Fq 'R.id.tab_icon' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           ! grep -Fq 'R.id.tab_label' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'app:tabSelectedTextColor="?attr/colorPrimary"' app/src/main/res/layout/activity_main.xml
-          grep -Fq 'android:layout_margin="8dp"' app/src/main/res/layout/activity_main.xml
+          grep -A8 -F 'android:id="@+id/fullContainer"' app/src/main/res/layout/activity_main.xml | grep -Fq 'android:elevation="8dp"'
+          ! grep -A8 -F 'android:id="@+id/fullContainer"' app/src/main/res/layout/activity_main.xml | grep -Fq 'android:layout_margin="8dp"'
           grep -Fq 'android:id="@+id/ivVideoThumbnail"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           grep -Fq 'android:id="@+id/pbSuggestedVideo"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           grep -Fq 'android:id="@+id/tvVideoRemainingDuratiom"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
