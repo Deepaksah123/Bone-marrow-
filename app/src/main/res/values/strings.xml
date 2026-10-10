@@ -5,4 +5,6 @@
     <string name="tab_qbank">QBank</string>
     <string name="tab_tests">Tests</string>
     <string name="tab_video">Videos</string>
+    <string name="label_magic_module_new_module">New Magic Module</string>
+    <string name="label_home_share">Share Marrow</string>
 </resources>
