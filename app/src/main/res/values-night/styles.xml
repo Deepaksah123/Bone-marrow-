@@ -37,5 +37,18 @@
         <item name="heading6">@style/TextAppearance.Dr.Headline6</item>
         <item name="subtext1">@style/TextAppearance.Dr.Subtitle1</item>
         <item name="subtext2">@style/TextAppearance.Dr.Subtitle2</item>
+        <item name="colorOnSurface">@color/n_10</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorSurfaceVariant14">@color/tGreen</item>
+        <item name="colorSurfaceVariant6">@color/tGreen</item>
+        <item name="onBackgroundSurface1">@color/white</item>
+        <item name="onBackgroundSurface4">@color/n_50</item>
+        <item name="onBackgroundSurface6">@color/green03</item>
+        <item name="onBackgroundSurface7">@color/c_fce897</item>
+        <item name="onBackgroundVariant2">@color/mb_90</item>
+        <item name="onSurfaceBgOutline3">@color/c_8e9984</item>
+        <item name="onSurfaceBlue2">@color/blue5</item>
+        <item name="onSurfaceBlue3">@color/mb_50</item>
     </style>
 </resources>
