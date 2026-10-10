@@ -176,7 +176,8 @@ jobs:
           ! grep -Fq 'android:background="@color/shell_background"' app/src/main/res/layout/activity_main.xml
           ! grep -Fq 'android:background="@color/shell_background"' app/src/main/res/layout/fragment_home_replica.xml
           grep -Fq 'android:background="?attr/colorSurfaceVariant5"' app/src/main/res/layout/activity_main.xml
-          grep -Fq 'android:minHeight="?attr/actionBarSize"' app/src/main/res/layout/activity_main.xml
+          grep -Fq 'android:clickable="true"' app/src/main/res/layout/activity_main.xml
+          grep -Fq 'android:layout_height="?attr/actionBarSize"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'android:layout_width="?attr/actionBarSize"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'style="?attr/heading5"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'style="?attr/heading4"' app/src/main/res/layout/activity_main.xml
