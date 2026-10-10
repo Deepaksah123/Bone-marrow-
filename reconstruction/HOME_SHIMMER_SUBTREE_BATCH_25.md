@@ -26,4 +26,4 @@ The binary source layouts were decoded for hierarchy and resource references. Th
 
 ## Validation
 
-The evidence guard checks the include files, exact include counts (6 + 6), and source hashes for the three copied text drawables. Android build and evidence guard status must be confirmed from CI after this batch.
+The evidence guard passed for the source layout/assets batch: [run 38072310571](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38072310571). It verifies the include files, exact include counts (6 + 6), and source hashes for all three copied text drawables. Android build for commit `2151f4e6ded5` is currently running: [run 38072310626](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38072310626); do not treat it as passed until CI completes.
