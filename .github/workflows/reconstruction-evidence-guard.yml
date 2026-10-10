@@ -68,6 +68,18 @@ jobs:
           echo '8c22e2695951e8c94a757e24fc4664f8c19e1d8c5bf054d80bc53360c0f689d2  app/src/main/res/drawable/bg_rounded_white_no_stroke.xml' | sha256sum --check
           echo '2abf2eab5516be8c1f73b0b3178f3e4578a70d99f015ccd84fe3244473fdf379  app/src/main/res/drawable/ic_marrow_logo_m.xml' | sha256sum --check
           echo '394e990f90c86a11a747fdaf027be3b89210da12cc36ef66f8718e3e54690ac7  app/src/main/res/drawable/ic_complete.xml' | sha256sum --check
+          # Tests landing and toolbar geometry from decoded original layouts.
+          grep -Fq 'android:layout_height="@dimen/tab_height"' app/src/main/res/layout/fragment_home_test_replica.xml
+          grep -Fq 'app:tabMode="fixed"' app/src/main/res/layout/fragment_home_test_replica.xml
+          grep -Fq 'app:tabGravity="fill"' app/src/main/res/layout/fragment_home_test_replica.xml
+          grep -Fq 'android:paddingTop="4dp"' app/src/main/res/layout/fragment_home_test_replica.xml
+          grep -Fq 'android:paddingBottom="6dp"' app/src/main/res/layout/fragment_home_test_replica.xml
+          grep -Fq 'app:expandedTitleMarginStart="@dimen/home_test_toolbar_horizontal_margin"' app/src/main/res/layout/fragment_home_test_replica.xml
+          grep -Fq 'android:paddingBottom="@dimen/margin_10dp"' app/src/main/res/layout/fragment_home_test_replica.xml
+          grep -Fq 'style="?attr/heading4"' app/src/main/res/layout/test_tab_toolbar_replica.xml
+          grep -Fq 'android:background="?attr/colorSurfaceVariant5"' app/src/main/res/layout/test_tab_toolbar_replica.xml
+          grep -Fq '<color name="mb_50">#62c8df</color>' app/src/main/res/values/colors.xml
+          grep -Fq '<color name="n_80">#313434</color>' app/src/main/res/values/colors.xml
           if find . -maxdepth 3 -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' \) | grep -q .; then
             echo 'Android build files detected. This guard is not a substitute for source-grounded build/tests.'
           else
