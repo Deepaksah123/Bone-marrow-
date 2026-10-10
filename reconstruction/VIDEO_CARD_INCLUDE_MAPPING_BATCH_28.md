@@ -16,4 +16,4 @@ Both include roots expose different view IDs and content structure (continue/res
 
 ## Validation
 
-The reconstruction evidence guard now checks the card mappings and theme background. Android build and guard outcomes are pending for this batch; no runtime screenshot or pixel parity is claimed.
+The Android build passed for code commit `32aa3a13e995`: [run 38074064454](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074064454). Debug APK artifact ID `11677922158`, size `8,196,572` bytes, digest `sha256:7944050e0eb69336c69ef5736850f1972ca60f972e95e6756b2daad83b64b30a`. The evidence guard passed after the mapping assertions were corrected: [run 38074106241](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074106241). No runtime screenshot or pixel parity is claimed.
