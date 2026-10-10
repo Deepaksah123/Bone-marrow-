@@ -2,7 +2,7 @@
 
 **Repository:** `Deepaksah123/Bone-marrow-`  
 **Branch:** `main`  
-**Updated:** 2026-10-10  
+**Updated:** 2026-10-11  
 **Status:** Home, Tests, Video-root and shell hierarchy batches compile and pass the evidence guard; included subtrees, runtime behavior and visual parity remain incomplete.
 
 ## Verified completed
@@ -82,7 +82,7 @@
 ## Batch 48 — Video scroll content theme correction
 
 - [x] Fixed a nested background mismatch missed by the broad theme guard: `clMain` inside the Video landing scroll view now resolves `?attr/backgroundColor` instead of hard-coded `@color/shell_background`. Details: [Batch 48](VIDEO_SCROLL_CONTENT_THEME_BACKGROUND_BATCH_48.md).
-- [ ] Validation pending: Android build and targeted evidence guard must pass before this batch is marked validated.
+- [x] Android build [38078006253](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078006253) and evidence guard [38078006278](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078006278) passed on commit `884aaf01821899e0c5fd7c7dcc0f7b22f74a4b8e`. Artifact ID `11678864090`, size `8,195,237` bytes, artifact ZIP SHA-256 `fadbe68bceb34a26f8db64c07e519067ab0e1073f50f7ca0b8fe924230911fb7`. Device-level light/dark screenshots and pixel comparison remain pending.
 
 ## Guardrails
 
