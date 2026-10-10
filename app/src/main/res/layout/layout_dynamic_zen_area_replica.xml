@@ -85,19 +85,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <TextView
-                android:id="@+id/tvZenCompletedModules"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="9/35 modules"
-                android:textColor="@color/shell_muted"
-                android:textSize="13sp"
-                app:layout_constraintTop_toBottomOf="@id/tvPcZenTitle"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/tvZenCompletedModules"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="9/35 modules"
+            android:textColor="@color/shell_muted"
+            android:textSize="13sp" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
