@@ -153,6 +153,18 @@
 - [ ] Finish emulator smoke [run 38082552298](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082552298), inspect screenshot artifacts, and resolve any runtime failures. Source-row visibility/data-binding and click destinations remain open.
 - [ ] Recover the original Practical Corner landing pattern resource family into build-ready resources; no vector data was fabricated. Source tracing shows this pattern is applied by PracticalCornerLandingFragment, not the Home root's hidden ivEd6background.
 
+
+## Batch 55 — Home Zen progress integrity + emulator smoke fix
+
+- [x] Removed the hard-coded `9/35 modules` value from `layout_dynamic_zen_area_replica.xml`; source account progress remains empty until its real data binding is recovered.
+- [x] Updated the evidence guard to reject a static `9/35 modules` value.
+- [x] Fixed emulator-runner POSIX shell startup: `set -euo pipefail` failed because the action runs scripts through `sh`; now uses portable `set -eu`.
+- [x] Evidence guard passed for the workflow-fix commit: [run 38084717980](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38084717980).
+- [ ] Confirm build + evidence guard for the Home XML/guard correction commits `a23376b` / `9e0f51e`, then inspect the newest emulator smoke run and its screenshot/hierarchy artifact.
+- [ ] Original-APK pixel comparison and search/bookmark/drawer destination fidelity remain open.
+- Details: [Batch 55 report](HOME_ZEN_PROGRESS_AND_UI_SMOKE_FIX_BATCH_55.md).
+
+
 ## Batch 54 — original shell binary XML geometry
 
 - [x] Decoded `activity_home_revamp` (`0x7f0d0033`) directly from the verified original APK.
