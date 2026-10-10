@@ -51,6 +51,11 @@ public final class MainActivity extends FragmentActivity {
         ImageView menuIcon = findViewById(R.id.iconMenu);
         androidx.drawerlayout.widget.DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
         menuIcon.setOnClickListener(v -> drawerLayout.openDrawer(android.view.Gravity.START));
+        int[] drawerItemIds = { R.id.drawerYourCourse, R.id.drawerContactUs, R.id.drawerReportPiracy, R.id.drawerFaq, R.id.drawerAboutUs, R.id.drawerShareApp, R.id.drawerRateUs, R.id.drawerTerms, R.id.drawerLogout };
+        for (int drawerItemId : drawerItemIds) {
+            View drawerItem = findViewById(drawerItemId);
+            if (drawerItem != null) drawerItem.setOnClickListener(v -> drawerLayout.closeDrawer(android.view.Gravity.START));
+        }
         bookmarkIcon = findViewById(R.id.iconBookmark);
         byte[] menuIconBytes = Base64.decode(getString(R.string.source_menu_icon_png_base64), Base64.DEFAULT);
         menuIcon.setImageBitmap(BitmapFactory.decodeByteArray(menuIconBytes, 0, menuIconBytes.length));
