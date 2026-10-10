@@ -2,35 +2,31 @@
 
 **Repository:** `Deepaksah123/Bone-marrow-`  
 **Branch:** `main`  
-**Source boundary:** original Marrow APK/decompiler evidence only; no external repository assets or implementation imported.
+**Source boundary:** original Marrow APK/decompiler evidence only; no external repository implementation was imported.
 
-## Drawer decision
+## Drawer evidence correction
 
-The original shell references `drawer_menu_revamp`, and source binding identifiers were recorded in Batch 42. The exact decoded binary XML tree for that layout is not present in the current checked-in source tree or available Library artifacts. The previous generic rows, labels and row click handlers were not source-exact.
+The first part of this batch removed the speculative generic drawer rows and handlers because the named `drawer_menu_revamp` XML was absent from the checked-in decompiler ZIP. The original APK was then recovered from the user's Library and verified against the project SHA-256 records. Batch 53 decodes the actual binary XML and reconstructs the source-backed drawer hierarchy. See [Drawer Binary XML Recovery — Batch 53](DRAWER_BINARY_XML_RECOVERY_BATCH_53.md).
 
-- Replaced the speculative drawer row list with a neutral empty host that preserves the source shell's drawer include and open action.
-- Removed the matching speculative row click handlers and unused row labels.
-- Kept the menu icon's source-backed behavior: opening the start drawer.
-- Added evidence-guard assertions to prevent speculative drawer rows/labels from silently returning before the original binary layout is recovered.
-
-This is an evidence-boundary correction, **not** completion of the drawer. The correct next implementation step is to recover the original `drawer_menu_revamp` binary XML and trace its source-backed child hierarchy/routes. Do not infer destinations from names alone.
+The current drawer is no longer an empty placeholder. Purchase/upsell/referral/debug rows are excluded by project scope. Profile name, course detail and app version remain blank until their real data bindings are recovered; source rows whose original XML default is `gone` are not made visible by guesswork.
 
 ## Emulator QA infrastructure
 
-Added `.github/workflows/android-ui-smoke.yml` to build the app, install it in an Android API 35 emulator, launch MainActivity, assert the four source-backed tab labels are present, tap each tab, assert the expected source-backed loading/root IDs and app-process survival, exercise the toolbar drawer-open action, capture each tab's screenshot/hierarchy, and relaunch under each system theme mode before capturing light/dark Home screenshots as a short-lived workflow artifact.
+Added `.github/workflows/android-ui-smoke.yml` to build the app, install it in an Android API 35 emulator, launch MainActivity, assert the four source-backed tab labels and loading/root IDs, tap each tab, verify app-process survival, open the toolbar drawer and assert the source-backed `Your Course` and `Settings` labels. It captures each tab's UI hierarchy/screenshot plus drawer-open and light/dark Home screenshots as a short-lived workflow artifact.
 
-Screenshots are runtime QA evidence only; they are not implementation source and are not yet pixel-compared against the original APK. This smoke workflow does not prove full 1:1 parity.
+The app is relaunched under each theme mode before light/dark capture. Screenshots are runtime QA evidence only; they are not implementation source and are not yet pixel-compared against the original APK.
 
 ## Validation
 
-- Android build for app source commit `4c63633c0f1666887c2945ca33d7ec7ea9a3a71b`: **PASS**, [run 38078929016](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38078929016).
-- Evidence guard before this batch's added drawer assertions: **PASS**, [run 38079505213](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38079505213).
-- Updated evidence guard with Batch 52 assertions: run is triggered by the current commit; final result must be checked before claiming validation.
-- Emulator UI smoke: [run 38079901707](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38079901707) is running the latest smoke script; do not treat it as passed until screenshots/hierarchy artifact and all steps are confirmed. Do not treat it as passed until screenshots/hierarchy artifact and all steps are confirmed.
+- Source-backed drawer IDs and scope exclusions are guarded by CI.
+- Android build: [run 38081191407](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191407), in progress at report update.
+- Evidence guard: [run 38081191405](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191405), in progress at report update.
+- Emulator UI smoke: [run 38081191436](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38081191436), queued at report update.
 
 ## Still open
 
-- Original drawer binary XML and exact route bindings.
-- Actual device visual comparison against the original APK in light/dark mode.
-- Full navigation and live data-binding fidelity across Home, QBank, Tests and Videos.
-- Source pattern-vector transfer for the Home Zen area; original vector files are not in the current repository tree or searchable Library results.
+- Trace original drawer row visibility/data-binding flow and source click destinations.
+- Inspect the emulator screenshots and fix any runtime failures.
+- Do original-APK screenshot/pixel comparison in light/dark mode.
+- Complete full navigation and live data-binding fidelity across Home, QBank, Tests and Videos.
+- Recover the original Home Zen pattern vector family into build-ready resources; the verified vector aliases still need a clean transfer into the app.
