@@ -52,8 +52,8 @@ public final class MainActivity extends FragmentActivity {
         for (int i=0;i<4;i++) {
             TabLayout.Tab tab=tabLayout.newTab().setCustomView(R.layout.item_home_tab);
             View custom=tab.getCustomView();
-            ImageView icon=custom.findViewById(R.id.tab_icon);
-            TextView label=custom.findViewById(R.id.tab_label);
+            ImageView icon=custom.findViewById(R.id.icon);
+            TextView label=custom.findViewById(R.id.title);
             icon.setImageResource(ICONS[i]);
             label.setText(LABELS[i]);
             custom.setContentDescription(getString(LABELS[i]));
@@ -72,10 +72,11 @@ public final class MainActivity extends FragmentActivity {
     private void updateTabAppearance(TabLayout.Tab tab, boolean selected) {
         if (tab == null || tab.getCustomView() == null) return;
         View custom=tab.getCustomView();
-        TextView label=custom.findViewById(R.id.tab_label);
-        ImageView icon=custom.findViewById(R.id.tab_icon);
-        label.setTextColor(selected?color(R.color.shell_selected):color(R.color.shell_muted));
-        icon.setAlpha(selected?1f:.72f);
+        TextView label=custom.findViewById(R.id.title);
+        ImageView icon=custom.findViewById(R.id.icon);
+        int tint = selected ? color(R.color.mb_50) : color(R.color.n_40);
+        label.setTextColor(tint);
+        icon.setColorFilter(tint);
         custom.setSelected(selected);
     }
 
