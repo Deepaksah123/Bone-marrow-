@@ -118,6 +118,17 @@ jobs:
           grep -Fq 'app:tabTextAppearance="?attr/smallText2"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           ! grep -Fq 'tabLayout.setTabMode(TabLayout.MODE_FIXED);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          # Exact custom tab hierarchy and source icon/label IDs.
+          echo '6b067450320cdd08f214798cfebee2c4644d3e28b0a3c40009ac3ffdefb00780  app/src/main/res/drawable/ic_home_indicator.xml' | sha256sum --check
+          grep -Fq 'android:id="@+id/icon"' app/src/main/res/layout/item_home_tab.xml
+          grep -Fq 'android:id="@+id/indicator"' app/src/main/res/layout/item_home_tab.xml
+          grep -Fq 'android:id="@+id/title"' app/src/main/res/layout/item_home_tab.xml
+          grep -Fq 'android:layout_width="20dp"' app/src/main/res/layout/item_home_tab.xml
+          grep -Fq 'android:layout_marginTop="@dimen/margin_3dp"' app/src/main/res/layout/item_home_tab.xml
+          grep -Fq 'custom.findViewById(R.id.icon)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'custom.findViewById(R.id.title)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          ! grep -Fq 'R.id.tab_icon' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          ! grep -Fq 'R.id.tab_label' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'app:tabSelectedTextColor="?attr/colorPrimary"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'android:layout_margin="8dp"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'android:id="@+id/ivVideoThumbnail"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
