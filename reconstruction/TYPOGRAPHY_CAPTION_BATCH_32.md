@@ -19,4 +19,4 @@ The exact Roboto font binaries are in the original APK under obfuscated archive 
 
 ## Validation
 
-The evidence guard now checks Caption inheritance and the 10sp/12sp metrics. Android build and guard must be confirmed for this exact style commit; this change has not been device/pixel-diff verified.
+The source guard passed [run 38074841342](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074841342). Android build passed for style commit `468a0e5552c0` [run 38074833753](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38074833753). Debug APK artifact ID `11678038295`, size `8,195,366` bytes, digest `sha256:c189dfa232bf9bd857b8cf60ef61a9919145b7b58aa97486b54eb320355e3936`. This change has not been device/pixel-diff verified.
