@@ -20,4 +20,4 @@ The test screen's empty/loading includes are still hidden at the parent level un
 
 ## Validation
 
-The evidence guard checks the source-backed tab, AppBar, CollapsingToolbar, RecyclerView, toolbar style and theme color mappings. Check the latest GitHub Actions run before claiming the new code builds; no device screenshot or pixel-diff is claimed.
+The evidence guard passed for the Tests geometry batch: [run 38072602160](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38072602160). Android build passed for code commit `6bc87b41ed7d`: [run 38072593877](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38072593877). Debug APK artifact ID `11677153986`, size `8,185,065` bytes, digest `sha256:57f7d93793e5713bf45c6e3e1143fc291aa3deeb8e948b76f36a766bf56a0933`. No device screenshot or pixel-diff is claimed.
