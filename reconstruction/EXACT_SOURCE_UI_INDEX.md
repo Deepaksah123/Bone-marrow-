@@ -364,3 +364,14 @@ The original fragment transaction helper constructs tags as `Home_ + Class.getNa
 - Separate recovered callbacks start `com.marrow.kt.ui.activities.sync.SyncingActivity`, runtime `o.createFloatList`, and runtime `o.getAnchorU`, then finish. They are alternate callback destinations, not proof that the launcher unconditionally routes to one of them.
 - Raw `classes.dex` code units 9811–9849 in the 12,952-unit `SplashActivity.onCreate` body encode a duplicate-launch guard: if `isTaskRoot()` is false, the Intent has category `android.intent.category.LAUNCHER`, and its action equals `android.intent.action.MAIN`, the code calls `finish()`.
 - The decompiler explicitly skips `SplashActivity.onCreate`; callback selection remains unresolved. Do not invent a default callback route from these separate callback methods.
+
+
+Intern Mode switch pipeline source evidence
+
+
+
+## Intern Mode switch pipeline — Batch 66
+
+- Original Videos fragment: `sources/kotlin/setScrollPosition.java` (runtime DEX `o.setScrollPosition`). Its binding listener forwards the checked boolean to the fragment handler, which dispatches `TransformationChildCard.MediaBrowserCompatItemReceiver(checked)` to `VideoLandingViewModel.IconCompatParcelizer(event)`.
+- Original ViewModel: `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java:1992–2000`. The handler compares the event with the current model state, updates the state when changed, and launches the transition coroutine; the fragment's observer drives switch/status/tint/banner/progress UI.
+- Original source has explicit ON and OFF render paths; UI behavior is not just text or tint changes. The full backend/state dependency graph is not integrated locally, so the local switch remains disabled until that path can be integrated from verified source.
