@@ -234,3 +234,20 @@ The original Videos fragment is `sources/kotlin/setScrollPosition.java` (runtime
 
 The relevant source evidence is in `setScrollPosition.java:265–276, 2816–2821, 3038–3040`, `VideoLandingViewModel.java:1897–2000`, and `ExpandableTransformationBehavior.java`. The raw runtime class is `o.setScrollPosition`; the decompiler's source package alias is `kotlin.setScrollPosition`.
 
+
+
+## VideoLandingUIState field semantics from original data class
+
+The original `sources/kotlin/TransformationChildLayout.java` carries Kotlin metadata identifying its runtime type as `com.marrow2.ui.video.landing.model.VideoLandingUIState`. Its six fields are explicitly named in that metadata and accessor methods:
+
+| State field | Verified meaning |
+|---|---|
+| `editionSwitchBannerText` | nullable banner text for edition switching |
+| `isInternModeEnabled` | whether the Intern Mode feature is enabled/available |
+| `isInternModeOn` | the current Intern Mode checked/on state used by the switch event comparison |
+| `showPytBanner` | visibility state for the PYT banner |
+| `sortOrder` | current sort-order integer |
+| `showInternModeSnackBar` | whether the Intern Mode snackbar should be shown |
+
+The zero-argument data-class constructor defaults these fields to null/false/false/false/0/false, but this is only the data class's default construction—not proof that every account/course remains in this state after repository/configuration loading. The separate loaded-state model `InternModelLoadedUIData` tracks loading and the checked/on values used during transition rendering. These state distinctions must be preserved if the original ViewModel is integrated; do not collapse feature availability and checked/on state into one local boolean.
+
