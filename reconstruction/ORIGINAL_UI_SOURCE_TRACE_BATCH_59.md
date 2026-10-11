@@ -103,3 +103,11 @@ Core layout/resource references cross-check successfully. Tooltip IDs, hierarchy
 - Updated emulator QA to stop tapping the unverified switch or accepting synthetic ON/OFF screenshots. It still checks the verified OFF default, captures that state, and tests the independently source-traced tooltip open/Done flow.
 - The source-bound verifier now fails if a local-only `setOnCheckedChangeListener`/visual-state imitation is reintroduced.
 - Remaining for this control: trace the exact original listener/event, ViewModel state mutation, observer-to-binding updates, persisted/default state, and transition side effects before enabling it.
+
+
+## Toolbar title source correction — Batch 63 (2026-10-11)
+
+- The earlier Batch 98 note records a screenshot-based title transcription. That is not accepted as implementation evidence under the source-only reconstruction rule.
+- Direct source now checked: `zabz.java:2563–2567` binds the non-Home toolbar title from `DataBuffer.getRemoteActionCompatParcelizer()`; `DataBuffer.java:43–51, 63–70` initializes the title field to empty and exposes a setter. The complete source flow that supplies its value is still unresolved.
+- The local screenshot-derived title strings were removed. The title view remains visible on non-Home tabs but blank until the genuine update path is recovered. No claim is made that the original runtime title is blank.
+- Original app label verified as `Marrow`; the local app label now matches it. App ID remains separate from the original package.
