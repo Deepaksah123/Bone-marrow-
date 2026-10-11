@@ -320,3 +320,10 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Hardened runtime checks for the Better Search route: smoke QA now requires the source-bound query field and initial message after opening, then requires the query field to be gone and the four-tab shell to be restored after the original toolbar Back action.
 - Added explicit visibility assertions around the Intern Mode tooltip trigger and Done action, rather than relying on screenshots alone to imply that the overlay opened and closed.
 - These checks use existing original-source IDs and do not add or fabricate UI. The next emulator run must pass and produce reviewable evidence; the replica is still not certified 1:1.
+
+
+## Stale-run isolation for emulator QA — Batch 87 (2026-10-11)
+
+- The smoke run on commit `dc0192593f84762e9764ff33ec9a64330c61ea80` remained in progress with no status/log/artifact updates since its start at 12:44 UTC, while newer smoke runs were repeatedly left pending or cancelled by the branch-scoped concurrency group.
+- Changed the concurrency key to include the GitHub Actions run ID. This allows the latest bounded smoke workflow to execute on its own hosted runner instead of waiting behind the stale emulator job; `cancel-in-progress: false` still preserves each run's evidence rather than cancelling active work.
+- This is an execution-isolation measure, not a runtime pass. The latest run must complete and its screenshots/diagnostics must be reviewed. Resource limits remain 2048 MB, 2 cores, 18 minutes per emulator step, and 30 minutes per job.
