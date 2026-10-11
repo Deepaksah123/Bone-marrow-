@@ -108,6 +108,6 @@ Core layout/resource references cross-check successfully. Tooltip IDs, hierarchy
 ## Toolbar title source correction — Batch 63 (2026-10-11)
 
 - The earlier Batch 98 note records a screenshot-based title transcription. That is not accepted as implementation evidence under the source-only reconstruction rule.
-- Direct source now checked: `zabz.java:2563–2567` binds the non-Home toolbar title from `DataBuffer.getRemoteActionCompatParcelizer()`; `DataBuffer.java:43–51, 63–70` initializes the title field to empty and exposes a setter. The complete source flow that supplies its value is still unresolved.
+- Direct source now checked: `zabz.java:2563–2567` binds the non-Home toolbar title from `DataBuffer.getRemoteActionCompatParcelizer()`; `DataBuffer.java:43–51, 63–70` initializes the title field to empty and exposes a setter. Batch 64 raw-DEX inspection traced the three setter calls to `CourseConfigV2.CourseStrings.getQbankHeaderTitle()`, `getTestHeaderTitle()`, and `getVideoHeaderTitle()` in `HomeUIActivityViewModel$read.invokeSuspend`. Actual values remain course-config data, not static labels.
 - The local screenshot-derived title strings were removed. The title view remains visible on non-Home tabs but blank until the genuine update path is recovered. No claim is made that the original runtime title is blank.
 - Original app label verified as `Marrow`; the local app label now matches it. App ID remains separate from the original package.
