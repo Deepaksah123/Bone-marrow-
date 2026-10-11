@@ -203,32 +203,17 @@ public final class MainActivity extends FragmentActivity {
     private void configureInternModeSwitch(View root) {
         com.google.android.material.switchmaterial.SwitchMaterial modeSwitch =
                 root.findViewById(R.id.switchInternMode);
-        View modeContainer = root.findViewById(R.id.llInternMode);
         TextView modeStatus = root.findViewById(R.id.tvInternModeStatus);
-        if (modeSwitch == null || modeContainer == null || modeStatus == null) return;
+        if (modeSwitch == null || modeStatus == null) return;
 
-        modeSwitch.setChecked(false);
-        updateInternModeVisualState(modeSwitch, modeContainer, modeStatus, false);
-        modeSwitch.setOnCheckedChangeListener((button, checked) ->
-                updateInternModeVisualState(modeSwitch, modeContainer, modeStatus, checked));
-    }
-
-    private void updateInternModeVisualState(
-            com.google.android.material.switchmaterial.SwitchMaterial modeSwitch,
-            View modeContainer, TextView modeStatus, boolean enabled) {
+        // The original XML defines the initial switch state as unchecked and the
+        // OFF colors through its theme attributes. The original event -> ViewModel
+        // -> observer transition has not yet been traced end-to-end here. Do not
+        // fake an ON/OFF transition by changing only the label and colors.
         modeStatus.setText(String.format(Locale.ROOT,
-                getString(R.string.concise_mode), enabled ? "ON" : "OFF"));
-        // The original setScrollPosition fragment falls back to sepia80 (ON) and
-        // bg_no_guess (OFF) when these theme attributes are not defined.
-        modeContainer.setBackgroundColor(resolveThemeColor(
-                enabled ? R.attr.colorSurfaceVariant13 : R.attr.backgroundColor,
-                enabled ? color(R.color.sepia80) : color(R.color.bg_no_guess)));
-        modeSwitch.setTrackTintList(ColorStateList.valueOf(resolveThemeColor(
-                enabled ? R.attr.onBackgroundVariant2 : R.attr.onSurfaceBgOutline,
-                android.graphics.Color.TRANSPARENT)));
-        modeSwitch.setThumbTintList(ColorStateList.valueOf(resolveThemeColor(
-                enabled ? R.attr.onSurfaceBlue3 : R.attr.onBackgroundSurface5,
-                android.graphics.Color.TRANSPARENT)));
+                getString(R.string.concise_mode), modeSwitch.isChecked() ? "ON" : "OFF"));
+        modeSwitch.setClickable(false);
+        modeSwitch.setFocusable(false);
     }
 
     private int resolveThemeColor(int attribute, int fallback) {
