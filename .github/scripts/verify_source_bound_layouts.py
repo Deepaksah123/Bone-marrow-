@@ -147,30 +147,30 @@ def main() -> int:
     # Source-decoded layout attributes beyond ID coverage.
     if 'android:fillViewport="true"' in home_xml:
         failures.append("Home: original NestedScrollView does not declare fillViewport=true")
-    ed6 = re.search(r'<View\s+android:id="@\\+id/ivEd6background"(?:(?!/>).)*?/>', home_xml, re.S)
+    ed6 = re.search(r'<View\s+android:id="@\+id/ivEd6background"(?:(?!/>).)*?/>', home_xml, re.S)
     if not ed6 or 'android:background="?attr/colorSurfaceVariant14"' not in ed6.group(0):
         failures.append("Home: ED6 background View is missing its original theme background")
-    progress = re.search(r'<ProgressBar\s+android:id="@\\+id/pbModuleCompletion"(?:(?!/>).)*?/>', home_xml, re.S)
+    progress = re.search(r'<ProgressBar\s+android:id="@\+id/pbModuleCompletion"(?:(?!/>).)*?/>', home_xml, re.S)
     if not progress or 'android:layout_gravity="center"' not in progress.group(0) or 'android:rotation="90"' not in progress.group(0):
         failures.append("Home: completion ProgressBar is missing original center gravity or 90-degree rotation")
-    subtext = re.search(r'<TextView\s+android:id="@\\+id/tvModuleCompletionSubText"(?:(?!/>).)*?/>', home_xml, re.S)
+    subtext = re.search(r'<TextView\s+android:id="@\+id/tvModuleCompletionSubText"(?:(?!/>).)*?/>', home_xml, re.S)
     if not subtext or 'android:layout_gravity="center"' not in subtext.group(0) or 'android:gravity="center"' in subtext.group(0):
         failures.append("Home: completion subtitle must use the original layout_gravity, not android:gravity")
     qbank_xml = (LAYOUT / "fragment_qbank_landing_replica.xml").read_text(encoding="utf-8")
-    qbank_list = re.search(r'<androidx\\.recyclerview\\.widget\\.RecyclerView\\s+android:id="@\\+id/rvSubjectList"(?:(?!/>).)*?/>', qbank_xml, re.S)
+    qbank_list = re.search(r'<androidx\.recyclerview\.widget\.RecyclerView\s+android:id="@\+id/rvSubjectList"(?:(?!/>).)*?/>', qbank_xml, re.S)
     if not qbank_list or 'android:clipToPadding=' in qbank_list.group(0):
         failures.append("QBank: remove the non-source clipToPadding override from rvSubjectList")
     video_xml = (LAYOUT / "fragment_video_landing_replica.xml").read_text(encoding="utf-8")
-    video_progress = re.search(r'<ProgressBar\\s+android:id="@\\+id/progressBar"(?:(?!/>).)*?/>', video_xml, re.S)
+    video_progress = re.search(r'<ProgressBar\s+android:id="@\+id/progressBar"(?:(?!/>).)*?/>', video_xml, re.S)
     if not video_progress or 'android:layout_marginEnd="2dp"' not in video_progress.group(0):
         failures.append("Videos: progressBar is missing original 2dp end margin")
-    video_scroll = re.search(r'<androidx\\.core\\.widget\\.NestedScrollView\\s+android:id="@\\+id/rootScrollView"(?:(?!/>).)*?>', video_xml, re.S)
+    video_scroll = re.search(r'<androidx\.core\.widget\.NestedScrollView\s+android:id="@\+id/rootScrollView"(?:(?!/>).)*?>', video_xml, re.S)
     if not video_scroll or 'android:clipToPadding=' in video_scroll.group(0):
         failures.append("Videos: remove the non-source clipToPadding override from rootScrollView")
 
     # Source-decoded Tests attributes from the original fragment_home_test binary XML.
     tests_xml = (LAYOUT / "fragment_home_test_replica.xml").read_text(encoding="utf-8")
-    tabs = re.search(r'<com\\.google\\.android\\.material\\.tabs\\.TabLayout\\s+android:id="@\\+id/tabs"(?:(?!/>).)*?/>', tests_xml, re.S)
+    tabs = re.search(r'<com\.google\.android\.material\.tabs\.TabLayout\s+android:id="@\+id/tabs"(?:(?!/>).)*?/>', tests_xml, re.S)
     if not tabs:
         failures.append("Tests: cannot locate source-bound TabLayout")
     else:
@@ -187,25 +187,25 @@ def main() -> int:
         for unsupported in ('app:layout_constraintStart_toStartOf="parent"', 'app:layout_constraintEnd_toEndOf="parent"'):
             if unsupported in tabs.group(0):
                 failures.append(f"Tests TabLayout: non-source constraint {unsupported}")
-    rv_tests = re.search(r'<androidx\\.recyclerview\\.widget\\.RecyclerView\\s+android:id="@\\+id/rvMainList"(?:(?!/>).)*?/>', tests_xml, re.S)
+    rv_tests = re.search(r'<androidx\.recyclerview\.widget\.RecyclerView\s+android:id="@\+id/rvMainList"(?:(?!/>).)*?/>', tests_xml, re.S)
     if not rv_tests or 'android:layout_marginBottom="@dimen/margin_10dp"' not in rv_tests.group(0):
         failures.append("Tests: rvMainList must use original 10dp bottom margin")
     elif 'android:paddingBottom=' in rv_tests.group(0):
         failures.append("Tests: rvMainList has non-source bottom padding instead of bottom margin")
     for include_id, layout_name in (("emptyLayout", "loader_empty_layout_replica"), ("loadingContainer", "loading_layout_replica")):
-        include = re.search(rf'<include\\s+android:id="@\\+id/{include_id}"(?:(?!/>).)*?/>', tests_xml, re.S)
+        include = re.search(rf'<include\s+android:id="@\+id/{include_id}"(?:(?!/>).)*?/>', tests_xml, re.S)
         if not include or f'layout="@layout/{layout_name}"' not in include.group(0):
             failures.append(f"Tests: {include_id} must reference original include layout {layout_name}")
         elif any(attr in include.group(0) for attr in ('android:visibility=', 'android:layout_width=', 'android:layout_height=')):
             failures.append(f"Tests: {include_id} must preserve original include defaults")
-    appbar = re.search(r'<com\\.google\\.android\\.material\\.appbar\\.AppBarLayout\\s+android:id="@\\+id/appbarGTa"(?:(?!>).)*?>', tests_xml, re.S)
+    appbar = re.search(r'<com\.google\.android\.material\.appbar\.AppBarLayout\s+android:id="@\+id/appbarGTa"(?:(?!>).)*?>', tests_xml, re.S)
     if not appbar or 'android:paddingTop="4dp"' not in appbar.group(0) or 'android:paddingBottom="6dp"' not in appbar.group(0):
         failures.append("Tests: AppBarLayout is missing original 4dp/6dp vertical padding")
     elif 'app:layout_constraintTop_toTopOf="parent"' in appbar.group(0):
         failures.append("Tests: AppBarLayout has a non-source ConstraintLayout attribute")
 
     if failures:
-        print("\\nSOURCE-BOUND LAYOUT VALIDATION: FAIL")
+        print("\nSOURCE-BOUND LAYOUT VALIDATION: FAIL")
         for failure in failures:
             print(f"- {failure}")
         return 1
