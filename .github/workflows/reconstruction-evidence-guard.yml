@@ -260,8 +260,9 @@ jobs:
           test -f app/src/main/res/layout/loading_layout_replica.xml
           test -f app/src/main/res/layout/loader_empty_layout_replica.xml
 
-          # Batch 48: inner Video landing scroll content must follow the source light/dark theme.
-          grep -A4 -F 'android:id="@+id/clMain"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'android:background="?attr/backgroundColor"'
+          # Batch 63: preserve the original Video scroll-root constraint; clMain has no explicit background.
+          grep -A5 -F 'android:id="@+id/rootScrollView"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'app:layout_constraintTop_toTopOf="parent"'
+          if grep -A5 -F 'android:id="@+id/clMain"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'android:background='; then echo "Evidence guard failure: non-source clMain background"; exit 1; fi
 
           # Batch 56: source-bound Video Intern Mode banner close and tooltip affordance.
           grep -Fq 'View internModeBanner = root.findViewById(R.id.clInternModeBanner);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
