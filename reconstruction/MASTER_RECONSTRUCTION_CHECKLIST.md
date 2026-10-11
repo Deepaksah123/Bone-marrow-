@@ -205,3 +205,11 @@
 - Added source guard assertions against screenshot-title regressions and decompiler-alias runtime tags.
 - Validation on intermediate commit `f01bdaeb83eea470a224cab0fb6c2cbfddbb73c7`: Android build, evidence guard, and source layout audit tests passed. Emulator smoke QA was still running at that checkpoint; it must be inspected separately. The combined raw-package correction/guard commit still requires a fresh build and CI validation after it is pushed to the working branch.
 - Full source-native Fragment/Application/Activity integration and 1:1 parity remain incomplete; no manifest-only launcher swap was made.
+
+
+## Batch 66 — Intern Mode event/state trace
+
+- [x] Traced the original Videos fragment switch listener through `o.setScrollPosition`, the checked-boolean event `TransformationChildCard.MediaBrowserCompatItemReceiver`, and `VideoLandingViewModel.IconCompatParcelizer` state update.
+- [x] Verified original state observer owns ON/OFF label, checked state, theme tints, banners, and transition/loading labels; the behavior is not a cosmetic toggle.
+- [x] Kept the local switch non-clickable/non-focusable because the original ViewModel/repository/use-case graph is not integrated. Updated smoke comments and added a regression test to reject a local listener before source integration.
+- [ ] Full original Videos ViewModel and data/repository dependency integration remains unresolved; this batch does not claim Intern Mode parity.
