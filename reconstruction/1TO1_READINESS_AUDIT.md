@@ -366,3 +366,9 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 
 - Corrected Batch 92's log-capture wrapper: the emulator action runs its script through POSIX `sh`, so Bash-only `set -o pipefail` would fail before Python starts. The wrapper now uses `set -eu`, redirects Python output to the QA log, records its exit status without masking failures, prints the log, and exits with the original status.
 - Updated the workflow contract guard to require the POSIX-safe wrapper. This specifically prevents a harness regression from blocking runtime QA before the smoke script starts.
+
+
+## POSIX exit-status guard regex fix — Batch 94 (2026-10-11)
+
+- The latest CI run exposed a test-harness issue: the workflow contract checker treated the dollar sign in `exit "$status"` as a regular-expression anchor, so it falsely failed before app build/emulator steps.
+- Escaped the dollar sign in the checker pattern so it validates the intended literal shell variable expansion. The workflow itself was already using POSIX-safe syntax; this commit fixes the guard rather than weakening the contract.
