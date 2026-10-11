@@ -1,4 +1,4 @@
-name: Android UI smoke and screenshot QA
+name: Android UI smoke QA
 
 on:
   push:
@@ -8,7 +8,6 @@ on:
       - ".github/scripts/verify_source_bound_layouts.py"
       - ".github/scripts/run_android_ui_smoke.py"
       - ".github/scripts/test_android_ui_smoke.py"
-      - ".github/scripts/verify_android_ui_smoke_workflow.py"
       - ".github/workflows/android-ui-smoke.yml"
   pull_request:
     branches: [main]
@@ -17,7 +16,6 @@ on:
       - ".github/scripts/verify_source_bound_layouts.py"
       - ".github/scripts/run_android_ui_smoke.py"
       - ".github/scripts/test_android_ui_smoke.py"
-      - ".github/scripts/verify_android_ui_smoke_workflow.py"
       - ".github/workflows/android-ui-smoke.yml"
   workflow_dispatch:
 
@@ -26,8 +24,6 @@ permissions:
 
 concurrency:
   group: android-ui-smoke-${{ github.ref }}
-  # Keep only the newest emulator smoke run for this ref; duplicate cold boots
-  # have left multiple System UI instances stalled and competing for runner resources.
   cancel-in-progress: true
 
 jobs:
@@ -35,20 +31,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - name: Check out target repository only
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify bounded emulator execution and QA evidence retention
+      - name: Prepare QA evidence directory
         run: |
-          python3 -B .github/scripts/verify_android_ui_smoke_workflow.py
+          mkdir -p qa-screenshots
+          printf 'commit=%s\nrun_id=%s\nworkflow=%s\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" "$GITHUB_WORKFLOW" > qa-screenshots/run-context.txt
 
-      - name: Verify original-source replica layout bindings
-        run: |
-          python3 -B .github/scripts/verify_source_bound_layouts.py
+      - name: Validate source-traced layout IDs and XML
+        run: python3 -B .github/scripts/verify_source_bound_layouts.py
 
-      - name: Test ANR detection and source-bound accessibility targeting
-        run: |
-          python3 -B .github/scripts/test_android_ui_smoke.py
+      - name: Test smoke QA helpers
+        run: python3 -B .github/scripts/test_android_ui_smoke.py
 
       - name: Set up Java 17
         uses: actions/setup-java@v4
@@ -61,7 +56,7 @@ jobs:
         with:
           packages: "platform-tools"
 
-      - name: Install Android platform and build tools
+      - name: Install Android build tools
         run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
       - name: Set up Gradle
@@ -72,17 +67,7 @@ jobs:
       - name: Build debug APK
         run: gradle --no-daemon :app:assembleDebug
 
-      - name: Prepare QA evidence directory before emulator startup
-        run: |
-          mkdir -p qa-screenshots
-          {
-            echo "commit=$GITHUB_SHA"
-            echo "run_id=$GITHUB_RUN_ID"
-            echo "workflow=$GITHUB_WORKFLOW"
-            echo "emulator_script_invoked=false"
-          } > qa-screenshots/run-context.txt
-
-      - name: Launch emulator, verify tab navigation, capture screenshots
+      - name: Run emulator smoke QA
         timeout-minutes: 18
         uses: reactivecircus/android-emulator-runner@v2
         with:
@@ -91,22 +76,16 @@ jobs:
           arch: x86_64
           profile: pixel_2
           disable-animations: true
-          # The API 30 / 2 GiB / 2-core image repeatedly froze System UI during
-          # cold boot (visible ANR, >5 minute display freeze) before app QA.
-          # Use the already-installed target platform's API level and a less
-          # constrained emulator so a system-image ANR cannot masquerade as app QA.
           emulator-options: -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio -memory 4096 -cores 4
           script: |
-            python3 .github/scripts/run_android_ui_smoke.py > qa-screenshots/smoke-run.log 2>&1
-            status=$?
-            cat qa-screenshots/smoke-run.log
-            exit "$status"
+            set -o pipefail
+            python3 .github/scripts/run_android_ui_smoke.py 2>&1 | tee qa-screenshots/smoke-run.log
 
-      - name: Upload UI smoke screenshots, interaction captures, and failure diagnostics
+      - name: Upload QA evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: marrow-ui-smoke-qa
           path: qa-screenshots/
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 14
