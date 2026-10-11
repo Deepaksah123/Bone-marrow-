@@ -209,3 +209,10 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Added a final emulator-only recovery: after preserving diagnostics and exhausting two BACK attempts, restart the unresponsive `com.android.systemui` process, then require its process to return and the ANR window to remain absent through a 12-second stability interval. The replica app process is not force-stopped or modified by this recovery.
 - A replica-owned ANR, failed System UI restart, or any still-visible/recurrent ANR remains fatal. No screenshot is accepted while an ANR window is visible.
 - This is QA-environment recovery only. Runtime QA must still pass and the screenshot artifact must be reviewed; pixel-level 1:1 parity and original data-bound screen states remain unverified.
+
+
+## System-server-owned ANR dialog dismissal correction — Batch 72 (2026-10-11)
+
+- Inspected artifact [11700091640](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38132812697/artifacts/11700091640) at the window-record level. The visible alert's title names `com.android.systemui`, but its actual window owner is the Android system process (`package=android`); restarting the System UI process alone does not remove that already-created alert window.
+- The bounded fallback now sends BACK after System UI has restarted, then rechecks the window dump and requires a 12-second clean stability window. The gate still rejects any visible ANR dialog and never treats a covered screenshot as valid.
+- This is a QA-harness-only correction. A fresh successful smoke run and screenshot review are still required; 1:1 parity and data-bound screen states are not yet certified.

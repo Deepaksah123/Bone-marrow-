@@ -136,7 +136,12 @@ def assert_no_anr_dialog(stage: str) -> None:
             write_anr_diagnostics(f"{stage}: System UI did not restart after bounded recovery")
             raise SystemExit("Emulator System UI did not restart after its visible ANR")
 
-        time.sleep(10)
+        # The ANR dialog is a system_server-owned alert window even though its
+        # title names System UI. Restarting System UI alone does not dismiss it;
+        # send BACK after the process returns, then verify a clean stability window.
+        time.sleep(5)
+        adb(["shell", "input", "keyevent", "4"], timeout=15, check=False)
+        time.sleep(5)
         windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
         marker = visible_anr_marker(windows)
         if not marker:
