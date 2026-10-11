@@ -413,3 +413,11 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Its ANR diagnostics identify a visible `Application Not Responding: com.android.systemui` window and a display freeze exceeding five minutes. The earlier smoke workflow used API 30 with 2 GiB RAM and 2 CPU cores; that run is rejected as runtime QA.
 - Updated the smoke emulator to API 35 with 4 GiB RAM and 4 CPU cores. Updated the workflow-contract guard to enforce that configuration, while retaining the 30-minute job ceiling, 18-minute emulator-step ceiling, source-bound interaction checks, and unconditional diagnostics/screenshot upload.
 - Validation status after this change: **awaiting new CI results**. The updated emulator is only a test-environment remediation; it does not itself fix missing screen data or establish 1:1 parity. No subject/lesson/test rows were fabricated.
+
+
+## Parallel QA batch — 2026-10-11
+
+- Added static regression assertions for four independent fidelity areas: Home first-frame shimmer/empty-list visibility, QBank loading/list visibility, Tests loading/zero-state visibility, and Videos grid behavior (phone/tablet span count, predictive-animation disablement, and 6dp/4dp item offsets).
+- These assertions validate already implemented source-grounded behavior; they do not populate missing server-backed educational data.
+- The source-evidence guard and Android build were triggered for this batch. Emulator screenshot QA remains a separate gate and is not considered passed until its artifact includes completed navigation captures and no ANR.
+- Parallel implementation work remains split by acceptance gates: source-bound structure and initial state, toolbar/interaction regression checks, and emulator/runtime evidence. No external repositories or unrelated assets were introduced.
