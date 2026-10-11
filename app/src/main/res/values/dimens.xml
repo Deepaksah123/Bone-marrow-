@@ -35,4 +35,5 @@
     <dimen name="margin_12dp">12dp</dimen>
     <dimen name="margin_50">50dp</dimen>
     <dimen name="tooltip_height_340dp">340dp</dimen>
+    <dimen name="margin_60">60dp</dimen>
 </resources>
