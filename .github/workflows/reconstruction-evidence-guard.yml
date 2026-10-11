@@ -306,6 +306,9 @@ jobs:
           grep -Fq 'android:id="@+id/ibTooltip"' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -Fq 'video-tooltip-open' .github/scripts/run_android_ui_smoke.py
           grep -Fq 'video-tooltip-closed' .github/scripts/run_android_ui_smoke.py
+          # Batch 67: isolate screenshots from optional Digital Wellbeing ANRs and reject generic ANR dialogs.
+          grep -Fq 'com.google.android.apps.wellbeing' .github/scripts/run_android_ui_smoke.py
+          grep -Fq 'dumpsys", "activity", "activities"' .github/scripts/run_android_ui_smoke.py
 
           # Batch 52: drawer hierarchy is reconstructed from the original APK binary XML.
           grep -Fq 'drawer_menu_empty_host_replica' app/src/main/res/layout/activity_main.xml
