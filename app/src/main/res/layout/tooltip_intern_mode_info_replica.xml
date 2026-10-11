@@ -1,53 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/tooltipInternModeInfo"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="@dimen/pad_14"
-    android:layout_marginTop="@dimen/margin_8dp"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     android:visibility="visible"
-    app:cardBackgroundColor="?attr/colorSurfaceVariant13"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="0dp">
+    android:enabled="true"
+    android:fitsSystemWindows="true"
+    android:paddingHorizontal="@dimen/margin_50">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/pad_8dp">
+        android:layout_height="match_parent"
+        android:layout_marginTop="44dp"
+        android:background="@color/black"
+        android:alpha="0.1" />
 
-        <TextView
-            android:id="@+id/tvInternModeTooltipTitle"
-            style="?attr/subtext1"
-            android:layout_width="0dp"
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="?attr/actionBarSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardInternModeTooltip"
+            android:layout_width="@dimen/tooltip_height_340dp"
             android:layout_height="wrap_content"
-            android:text="@string/text_concise_mode_only"
-            android:textColor="?attr/colorOnBackground"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/btnCloseInternModeTooltip"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/margin_16dp"
+            android:layout_marginTop="-18dp"
+            app:cardBackgroundColor="?attr/colorSurface"
+            app:cardCornerRadius="@dimen/margin_8dp"
+            app:cardUseCompatPadding="true">
 
-        <ImageButton
-            android:id="@+id/btnCloseInternModeTooltip"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@android:color/transparent"
-            android:contentDescription="Close"
-            android:src="@drawable/ic_close_gopro"
-            android:tint="?attr/onBackgroundSurface3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/margin_20dp"
+                android:paddingTop="16dp"
+                android:paddingHorizontal="@dimen/padding_24">
 
-        <TextView
-            android:id="@+id/tvInternModeTooltipDescription"
-            style="?attr/subtext2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_8dp"
-            android:text="@string/text_concise_tooltip_description_updated"
-            android:textColor="?attr/onBackgroundSurface3"
-            app:layout_constraintTop_toBottomOf="@id/tvInternModeTooltipTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/txtToolTipBody"
+                    style="?attr/bodySmall"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8dp"
+                    android:text="@string/text_concise_tooltip_description"
+                    android:textColor="?attr/colorOnSurface" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/padding_10"
+                    android:gravity="end"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvLearnMore"
+                        style="?attr/subtext2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:text="@string/nav_learn_more"
+                        android:textColor="?attr/onSurfaceBgLinks" />
+
+                    <Button
+                        android:id="@+id/btnInternModeToolTipDone"
+                        style="?attr/bodySmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="@dimen/margin_60"
+                        android:layout_marginHorizontal="@dimen/margin_8dp"
+                        android:paddingHorizontal="@dimen/padding_24"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:alpha="0.13"
+                        android:text="@string/got_it"
+                        android:textColor="?attr/colorOnPrimary" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <ImageView
+            android:id="@+id/ivTooltip"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_gravity="start|top"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="-38dp"
+            android:src="@drawable/tooltip_arrow_v1"
+            android:tint="?attr/colorSurface"
+            app:layout_constraintBottom_toTopOf="@id/container"
+            app:layout_constraintStart_toStartOf="@id/container"
+            app:layout_constraintTop_toTopOf="@id/container" />
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
