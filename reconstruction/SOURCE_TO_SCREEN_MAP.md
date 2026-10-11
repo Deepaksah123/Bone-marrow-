@@ -259,3 +259,8 @@ This proves a persistence step exists in the original event chain, but not that 
 
 
 
+
+
+## Batch 67 — defer video controls whose original ViewModel event effects are absent
+
+The original binding confirms that these are event-driven controls, not direct visibility mutations: `setScrollPosition.java:2816–2821` forwards the Intern Mode checked boolean; the click handlers around `2761–2871` dispatch typed `TransformationChildCard` events to `VideoLandingViewModel`. The original banner-dismiss action and tooltip trigger/dismiss actions therefore depend on ViewModel state and observers. The local implementation previously substituted direct `View.GONE`/visibility changes and a hard-coded tooltip body for those original state transitions. Batch 67 removes those substitute listeners and marks the controls non-clickable/non-focusable until the original ViewModel and binding observer graph is integrated. The emulator smoke now verifies that boundary instead of claiming tooltip-open/close parity. The original event class-to-state transition for each of these controls is not yet fully mapped, so no exact local substitute is introduced.
