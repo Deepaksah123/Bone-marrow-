@@ -70,12 +70,8 @@ jobs:
             timeout 120s adb install app/build/outputs/apk/debug/app-debug.apk
             timeout 15s adb shell am force-stop com.marrow.reconstruction.replica
             timeout 45s adb shell am start -n com.marrow.reconstruction.replica/com.marrow.reconstruction.MainActivity
-            for attempt in $(seq 1 20); do
-              if timeout 8s adb shell pidof com.marrow.reconstruction.replica | grep -q .; then break; fi
-              sleep 1
-            done
-            timeout 10s adb shell pidof com.marrow.reconstruction.replica | grep -q .
             sleep 2
+            timeout 10s adb shell pidof com.marrow.reconstruction.replica | grep -q .
             python3 - <<'PY'
             import re, subprocess, time
             from pathlib import Path
