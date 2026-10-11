@@ -185,6 +185,13 @@ def main() -> int:
     colors_xml = (VALUES / "colors.xml").read_text(encoding="utf-8")
     if '<color name="darkGrey">#4a4d4e</color>' not in colors_xml:
         failures.append("Videos banner: missing original darkGrey theme color")
+    if '<color name="bg_no_guess">#f5f5f5</color>' not in colors_xml:
+        failures.append("Intern Mode: missing original APK bg_no_guess fallback color")
+    if '<color name="sepia80">#fce795</color>' not in colors_xml:
+        failures.append("Intern Mode: missing original APK sepia80 fallback color")
+    main_activity = (ROOT / "app/src/main/java/com/marrow/reconstruction/MainActivity.java").read_text(encoding="utf-8")
+    if "enabled ? color(R.color.sepia80) : color(R.color.bg_no_guess)" not in main_activity:
+        failures.append("Intern Mode: background fallback colors differ from the original fragment")
     if 'configureInternModeSwitch(root);' not in (ROOT / "app/src/main/java/com/marrow/reconstruction/MainActivity.java").read_text(encoding="utf-8"):
         failures.append("Videos: original Intern Mode OFF/ON visual state binding is missing")
 
