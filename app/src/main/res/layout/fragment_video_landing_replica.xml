@@ -417,7 +417,7 @@
 
             <include
                 android:id="@+id/tooltipInternModeInfo"
-                layout="@layout/video_landing_empty_component"
+                layout="@layout/tooltip_intern_mode_info_replica"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
