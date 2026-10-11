@@ -431,3 +431,18 @@ SHA-256 fingerprints calculated directly from the genuine `base.apk_Decompiler.c
 ## VideoLandingViewModel constructor dependency boundary — verified source
 
 The original constructor at `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java:344–359` takes seven injected arguments: `isEncodingHighResolutionPcm`, `LogLogLevel`, `getDisplaySizeV17`, `binarySearchCeil`, `isSeekPending`, `Allocator`, and `getPlatform`. The source archive contains each original interface/class; their current local app equivalents and injection wiring are not present as an integrated original graph. These are not safely replaceable by a single local boolean or a newly written preference listener. The first five include data/use-case or event-sink contracts, `Allocator` initializes state streams, and `getPlatform` supplies the coroutine context base. Full implementation-specific bindings still require tracing their genuine providers/repositories.
+
+
+## VideoLandingViewModel constructor interface fingerprints
+
+The following fingerprints were calculated from the uploaded original decompiler archive and identify the constructor contracts described in this batch:
+
+| Original source entry | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/kotlin/LogLogLevel.java` | 2248 | `4f6d43968da4b1536c2bc9d581f0df72b84760cf9e81af6bd124be8c19ff165c` |
+| `sources/kotlin/getDisplaySizeV17.java` | 6152 | `9d5f35cb8d103bcc934f63706583ae13d5cfc50fa2fcc1b610586420517642a9` |
+| `sources/kotlin/binarySearchCeil.java` | 417 | `669ef272e049adc768df95eb67fed01bfd9195f4a776ffb8b8e2e80deec4cf55` |
+| `sources/kotlin/isSeekPending.java` | 717 | `eacde35ef2de8951b017e910e98e0182c51c104206f08861de3f10acc09e3ac2` |
+| `sources/kotlin/Allocator.java` | 5149 | `e90d821bb1775baedf5432240985f29b1b7fc07bfd83909656f80f460f589884` |
+| `sources/kotlin/getPlatform.java` | 6455 | `716d77e8ca930276b2014049b9a0489ddda35c50ad71421c761f90c56cb890a2` |
+
