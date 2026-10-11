@@ -144,6 +144,32 @@ def main() -> int:
             if f'<item name="{name}">{value}</item>' not in style_text:
                 failures.append(f"Home completion chip: {style_path.name} missing {name}={value}")
 
+    # Source-decoded Video switch row, state label, and Tests toolbar padding.
+    toolbar_xml = (LAYOUT / "test_tab_toolbar_replica.xml").read_text(encoding="utf-8")
+    if 'android:paddingVertical="15dp"' not in toolbar_xml:
+        failures.append("Tests toolbar: missing original 15dp vertical padding")
+    if 'android:paddingStart="15dp"' in toolbar_xml or 'android:paddingEnd="15dp"' in toolbar_xml:
+        failures.append("Tests toolbar: non-source horizontal padding override")
+    if 'name="concise_mode"' not in (VALUES / "strings.xml").read_text(encoding="utf-8"):
+        failures.append("Videos: missing source concise_mode string resource")
+    video_source = (LAYOUT / "fragment_video_landing_replica.xml").read_text(encoding="utf-8")
+    for expected in (
+        'android:background="?attr/backgroundVariant2"',
+        'android:paddingStart="@dimen/margin_16dp"',
+        'style="?attr/heading7"',
+        'android:paddingVertical="@dimen/pad_normal"',
+        'android:layout_width="20dp"',
+        'android:layout_height="20dp"',
+        'android:padding="4dp"',
+        'android:text="@string/concise_mode"',
+        'app:layout_constraintStart_toEndOf="@id/tvInternModeStatus"',
+        'android:background="?attr/onSurfaceBgDivider"',
+    ):
+        if expected not in video_source:
+            failures.append(f"Videos: missing source-derived attribute {expected}")
+    if 'configureInternModeSwitch(root);' not in (ROOT / "app/src/main/java/com/marrow/reconstruction/MainActivity.java").read_text(encoding="utf-8"):
+        failures.append("Videos: original Intern Mode OFF/ON visual state binding is missing")
+
     # Source-decoded layout attributes beyond ID coverage.
     if 'android:fillViewport="true"' in home_xml:
         failures.append("Home: original NestedScrollView does not declare fillViewport=true")

@@ -2,6 +2,7 @@ package com.marrow.reconstruction;
 
 import androidx.fragment.app.FragmentActivity;
 import android.content.res.Configuration;
+import android.content.res.ColorStateList;
 import android.graphics.Rect;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import java.util.Locale;
 
 public final class MainActivity extends FragmentActivity {
     private TabLayout tabLayout;
@@ -167,6 +169,46 @@ public final class MainActivity extends FragmentActivity {
         return fragment;
     }
 
+    private void configureInternModeSwitch(View root) {
+        com.google.android.material.switchmaterial.SwitchMaterial modeSwitch =
+                root.findViewById(R.id.switchInternMode);
+        View modeContainer = root.findViewById(R.id.llInternMode);
+        TextView modeStatus = root.findViewById(R.id.tvInternModeStatus);
+        if (modeSwitch == null || modeContainer == null || modeStatus == null) return;
+
+        modeSwitch.setChecked(false);
+        updateInternModeVisualState(modeSwitch, modeContainer, modeStatus, false);
+        modeSwitch.setOnCheckedChangeListener((button, checked) ->
+                updateInternModeVisualState(modeSwitch, modeContainer, modeStatus, checked));
+    }
+
+    private void updateInternModeVisualState(
+            com.google.android.material.switchmaterial.SwitchMaterial modeSwitch,
+            View modeContainer, TextView modeStatus, boolean enabled) {
+        modeStatus.setText(String.format(Locale.ROOT,
+                getString(R.string.concise_mode), enabled ? "ON" : "OFF"));
+        modeContainer.setBackgroundColor(resolveThemeColor(
+                enabled ? R.attr.colorSurfaceVariant13 : R.attr.backgroundColor,
+                android.graphics.Color.TRANSPARENT));
+        modeSwitch.setTrackTintList(ColorStateList.valueOf(resolveThemeColor(
+                enabled ? R.attr.onBackgroundVariant2 : R.attr.onSurfaceBgOutline,
+                android.graphics.Color.TRANSPARENT)));
+        modeSwitch.setThumbTintList(ColorStateList.valueOf(resolveThemeColor(
+                enabled ? R.attr.onSurfaceBlue3 : R.attr.onBackgroundSurface5,
+                android.graphics.Color.TRANSPARENT)));
+    }
+
+    private int resolveThemeColor(int attribute, int fallback) {
+        TypedValue value = new TypedValue();
+        if (getTheme().resolveAttribute(attribute, value, true)) {
+            if (value.resourceId != 0) {
+                return androidx.core.content.ContextCompat.getColor(this, value.resourceId);
+            }
+            return value.data;
+        }
+        return fallback;
+    }
+
     private View createTabContent(int index, ViewGroup parent) {
         // Inflate the source-shaped resource hierarchy instead of synthesizing screen content.
         // Lists/Compose surfaces remain empty until their original adapters/data bindings are recovered.
@@ -210,6 +252,7 @@ public final class MainActivity extends FragmentActivity {
             View empty = root.findViewById(R.id.emptyLayout);
             if (empty != null) empty.setVisibility(View.GONE);
         } else {
+            configureInternModeSwitch(root);
             androidx.recyclerview.widget.RecyclerView subjects = root.findViewById(R.id.epoxyRVSubject);
             int spanCount = isSourceTablet() ? 3 : 2;
             if (subjects != null) {

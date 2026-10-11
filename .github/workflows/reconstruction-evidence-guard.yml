@@ -264,6 +264,13 @@ jobs:
           grep -A5 -F 'android:id="@+id/rootScrollView"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'app:layout_constraintTop_toTopOf="parent"'
           if grep -A5 -F 'android:id="@+id/clMain"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'android:background='; then echo "Evidence guard failure: non-source clMain background"; exit 1; fi
 
+          # Batch 64: toolbar vertical padding and source-backed Intern Mode state.
+          grep -Fq 'android:paddingVertical="15dp"' app/src/main/res/layout/test_tab_toolbar_replica.xml
+          if grep -Eq 'android:padding(Start|End)="15dp"' app/src/main/res/layout/test_tab_toolbar_replica.xml; then echo "Evidence guard failure: non-source Tests toolbar horizontal padding"; exit 1; fi
+          grep -Fq '<string name="concise_mode">Intern Mode : %s</string>' app/src/main/res/values/strings.xml
+          grep -Fq 'configureInternModeSwitch(root);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'android:text="@string/concise_mode"' app/src/main/res/layout/fragment_video_landing_replica.xml
+
           # Batch 56: source-bound Video Intern Mode banner close and tooltip affordance.
           grep -Fq 'View internModeBanner = root.findViewById(R.id.clInternModeBanner);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'closeInternModeBanner.setOnClickListener(v ->' app/src/main/java/com/marrow/reconstruction/MainActivity.java

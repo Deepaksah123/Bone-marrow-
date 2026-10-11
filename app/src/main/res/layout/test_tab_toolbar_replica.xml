@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/colorSurfaceVariant5"
-    android:paddingStart="15dp"
-    android:paddingEnd="15dp"
+    android:paddingVertical="15dp"
     android:gravity="center_vertical"
     android:orientation="horizontal">
 
