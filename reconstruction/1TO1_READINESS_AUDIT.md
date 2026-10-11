@@ -247,3 +247,12 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Added a source-shell Back handler in `MainActivity`: when the start drawer is open, BACK closes it and returns without finishing the activity; other Back events continue through `FragmentActivity` so the Search fragment back stack is preserved.
 - The smoke runner now requires all four app tabs to be visible again after closing the drawer. This prevents a live process ID or launcher search widget from being mistaken for the app's foreground screen.
 - Build, evidence guard, and a fresh emulator smoke run are required before accepting this batch. Full pixel-level parity remains unverified.
+
+
+## ADB tap-timeout diagnostics hardening — Batch 77 (2026-10-11)
+
+- Inspected the latest API 30 smoke run [38136691295](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38136691295) and its artifact [11701761636](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38136691295/artifacts/11701761636). The evidence/build checks passed, but emulator smoke failed while issuing the source-derived tap for the Tests tab at `(514, 1720)`: the ADB shell tap command exceeded its 10-second timeout.
+- The run uploaded only Home and QBank screenshots plus ANR/window diagnostics; the failure happened before Tests, Videos, drawer, Search, or Intern Mode runtime checks could complete. Therefore this run does not validate those interactions.
+- Updated `.github/scripts/run_android_ui_smoke.py` to give ADB input taps a 30-second timeout and preserve ANR/window/process/logcat diagnostics if the command still times out. A timed-out tap is deliberately **not retried**, because the device may have received the tap even if the host-side command did not return; repeating it could cause an unintended second state transition.
+- Added a unit regression test proving that a timed-out tap requests diagnostics and is not retried.
+- This is QA-harness resilience only. It does not change the app UI or establish runtime QA. Wait for the new CI result, inspect its artifact, and continue only from observed evidence. Full pixel-level 1:1 parity remains unverified.
