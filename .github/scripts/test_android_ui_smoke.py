@@ -2,12 +2,15 @@
 """Unit tests for the Android smoke gate's ANR and accessibility parsers."""
 from __future__ import annotations
 
+import struct
 import subprocess
+import tempfile
 import unittest
 from unittest.mock import patch
+from pathlib import Path
 import xml.etree.ElementTree as ET
 
-from run_android_ui_smoke import assert_text, find_node, node_center, tab_is_selected, tap, visible_anr_marker, visible_system_ui_anr, wait_button_center
+from run_android_ui_smoke import assert_text, find_node, node_center, tab_is_selected, tap, validate_png_capture, visible_anr_marker, visible_system_ui_anr, wait_button_center
 
 
 class VisibleAnrMarkerTests(unittest.TestCase):
@@ -168,6 +171,44 @@ class AccessibilityParserTests(unittest.TestCase):
             'bounds="[10,10][90,90]" visible-to-user="false" /></hierarchy>'
         )
         self.assertIsNone(find_node(root, content_desc="Videos"))
+
+
+class ScreenshotEvidenceTests(unittest.TestCase):
+    @staticmethod
+    def fake_png(width: int = 1080, height: int = 1920) -> bytes:
+        # Minimal byte sequence sufficient to exercise PNG signature + IHDR parsing.
+        return bytes((137, 80, 78, 71, 13, 10, 26, 10)) + bytes(8) + struct.pack(">II", width, height)
+
+    def test_valid_png_manifest_entry_reports_size_and_dimensions(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "home.png"
+            payload = self.fake_png()
+            path.write_bytes(payload)
+            self.assertEqual(
+                validate_png_capture(path),
+                {"file": "home.png", "bytes": len(payload), "width": 1080, "height": 1920},
+            )
+
+    def test_corrupt_or_non_png_capture_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "qbank.png"
+            path.write_bytes(b"not a png image")
+            with self.assertRaisesRegex(SystemExit, "not a valid PNG"):
+                validate_png_capture(path)
+
+    def test_too_small_capture_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "tests.png"
+            path.write_bytes(self.fake_png(160, 240))
+            with self.assertRaisesRegex(SystemExit, "implausible dimensions 160x240"):
+                validate_png_capture(path)
+
+    def test_missing_capture_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "videos.png"
+            with self.assertRaisesRegex(SystemExit, "evidence missing"):
+                validate_png_capture(path)
+
 
 
 class TapTimeoutTests(unittest.TestCase):
