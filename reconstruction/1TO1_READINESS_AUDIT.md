@@ -397,3 +397,12 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Runtime captures showed the shell branding remained “Marrow” on all tabs. The supplied original screen-capture PDF shows the Home branding on Home, “QBank Edition 8.5” on QBank, “Tests” on Tests, and “Videos Edition 8.5” on Videos.
 - Bound the existing source-shaped centered `textPageTitle` and left `textBranding` views to those captured tab states. The exact displayed strings are transcribed from the supplied original screenshots; no lesson/content rows were fabricated.
 - Added emulator assertions for title text and branding/page-title visibility on every tab. This is a specific shell fidelity correction, not a full 1:1 claim; populated data screens and pixel comparison remain outstanding.
+
+## Latest verification snapshot — 2026-10-11
+
+- Branch: `source-fidelity/intern-mode-colors`; current implementation commit at snapshot: `62e3e91565e48f347eaa87988789dd48d1510a45`.
+- Android debug build: **PASS** — [workflow run 38150703937](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38150703937). Artifact `marrow-reconstruction-debug` was produced.
+- Reconstruction evidence guard: **PASS** — [workflow run 38150703987](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38150703987).
+- Android UI smoke / emulator screenshots: **IN PROGRESS / NOT ACCEPTED** — [workflow run 38150703961](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38150703961) last reported its emulator interaction step active, with no screenshot artifact yet. Do not infer a pass from the green build or evidence guard.
+- Latest verified shell correction: Home keeps the original Marrow branding without a centered page title; QBank shows `QBank Edition 8.5`; Tests shows `Tests`; Videos shows `Videos Edition 8.5`. Smoke assertions now check those source-screenshot-backed title states.
+- Remaining acceptance blockers: inspect completed emulator captures and diagnostics; establish original-source mappings for unresolved body views and runtime states; compare original references to emulator screenshots; resolve mismatches without invented content. Full visual 1:1 parity and FAT PASS remain **unverified**.
