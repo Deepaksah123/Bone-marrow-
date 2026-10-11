@@ -439,3 +439,14 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Evidence guard on that commit: PASS (workflow run `38163159691`).
 - Emulator smoke QA on that commit: was still in progress at the last check (run `38163159756`); do not treat it as passed until completed captures and diagnostics are inspected.
 - Full original startup parity remains **UNRESOLVED**. This batch improves source evidence and prevents an unsafe manifest-only switch; it does not complete the actual original Activity/Application integration.
+
+
+## Screenshot-derived toolbar labels removed — Batch 63 (2026-10-11)
+
+- Source check: `sources/kotlin/zabz.java:2563–2567` assigns the non-Home toolbar title from `DataBuffer.getRemoteActionCompatParcelizer()`, not from the three local static title resources.
+- Source check: `sources/kotlin/DataBuffer.java:43–51` initializes the mutable title field to an empty string; lines 63–70 expose its getter/setter. The exact original configuration/ViewModel update that populates this field remains unresolved.
+- Removed the local static labels `QBank Edition 8.5`, `Tests`, and `Videos Edition 8.5`, because their prior provenance was screenshot transcription rather than verified source binding. The title view remains visible on non-Home tabs but its text is left empty until the original data flow is traced. The Home branch continues to hide the page title.
+- Corrected local launcher label `Marrow Reconstruction` to original source string `Marrow`, verified in original `resources/res/values/strings.xml` and manifest reference `@string/app_name`. The distinct application ID is retained.
+- Smoke QA only checks the source-derived title-view visibility states, not screenshot-derived title text. Static validation/build must be rerun on the batch commit; runtime QA must be evaluated separately.
+- This correction supersedes the historical Batch 98 note that described screenshot-transcribed titles as an implementation change. Screenshots remain QA/reference material only; they are no longer used as the source of those strings.
+
