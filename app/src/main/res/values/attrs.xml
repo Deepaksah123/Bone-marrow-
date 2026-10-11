@@ -39,6 +39,9 @@
     <attr name="onBackgroundSurface7" format="color" />
     <attr name="onBackgroundVariant2" format="color" />
     <attr name="onSurfaceBgOutline3" format="color" />
+    <attr name="onSurfaceBgOutline4" format="color" />
+    <attr name="colorSurfaceVariant19" format="color" />
+    <attr name="cardViewStrokeWidth" format="dimension" />
     <attr name="onSurfaceBlue2" format="color" />
     <attr name="onSurfaceBlue3" format="color" />
     <attr name="colorSurfaceVariant13" format="color" />
