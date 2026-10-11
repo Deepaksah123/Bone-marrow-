@@ -518,3 +518,8 @@ The original `VideoLandingViewModel` constructor accepts seven dependencies: `is
 - Verified the coroutine-dispatcher provider routes through `CoroutinesDispatchersModule`, and the `isSeekPending` provider routes through `AppModule` / `RtspHeadersBuilder`.
 - The original app-wide factory, repositories, provider graph, and ViewModel lifecycle integration remain absent from the replica. The UI controls therefore remain deferred; a newly written isolated ViewModel would not establish 1:1 behavior.
 - The decompiler omits several coroutine bodies. Their state/data effects remain unresolved rather than inferred.
+
+
+## Batch 69 — original transition resource restoration
+
+Restored the four original strings used by the source-controlled loading/transition overlay: `text_mapping_pyt`, `text_turning_off_intern_mode`, `text_reducing_video_hrs`, and `text_original_video_hrs`. Their exact values were verified in the uploaded decompiler archive's `resources/res/values/strings.xml`. Added regression coverage for these values, both original tooltip descriptions, and `concise_mode`. The source model has separate `showLoader`, `isEd6`, and `isInternModeChecked` values; its observer selects messages based on those values. The replica does not invent them: the overlay and tooltip remain hidden while the original state pipeline is absent.
