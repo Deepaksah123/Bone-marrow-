@@ -58,14 +58,14 @@ jobs:
           arch: x86_64
           profile: pixel_2
           disable-animations: true
-          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -memory 2048
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -memory 3072
           script: |
             set -eu
             mkdir -p qa-screenshots
             timeout 120s adb install app/build/outputs/apk/debug/app-debug.apk
             timeout 15s adb shell am force-stop com.marrow.reconstruction.replica
             timeout 60s adb shell am start -W -n com.marrow.reconstruction.replica/com.marrow.reconstruction.MainActivity
-            timeout 30s adb shell uiautomator dump /sdcard/marrow-ui.xml
+            timeout 30s adb shell uiautomator dump --compressed /sdcard/marrow-ui.xml
             timeout 30s adb pull /sdcard/marrow-ui.xml qa-screenshots/launch-hierarchy.xml
             grep -q 'com.marrow.reconstruction.replica' qa-screenshots/launch-hierarchy.xml
             grep -q 'Home' qa-screenshots/launch-hierarchy.xml
