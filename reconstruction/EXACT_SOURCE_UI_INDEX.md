@@ -36,8 +36,8 @@ The archive **does contain** a resource tree rooted at `resources/res/`, includi
 ## Main host hierarchy — verified declarations
 
 - Launcher Activity: `com.marrow.ui.activities.onboarding.splash.SplashActivity`.
-- Main Activity: `kotlin.zadb`, declared in the original manifest as non-exported, `singleTop`, theme `@style/Marrow2`.
-- Inheritance chain: `zadb → zaaz → zaay → zabz → zaO → zabr → addObserverForBackInvoker`.
+- Main Activity runtime class: `o.zadb`, declared in the raw original APK manifest as non-exported, `singleTop`, theme `@style/Marrow2`. The decompiler alias is `kotlin.zadb` in `sources/kotlin/zadb.java`.
+- Raw DEX inheritance chain: `o.zadb → o.zaaz → o.zaay → o.zabz → o.zaO → o.zabr → o.addObserverForBackInvoker`. The decompiler Java files remap these `o.*` names to `kotlin.*` source aliases.
 - Original main-shell binding: `kotlin/parsePeriod.java` inflates `R.layout.activity_home_revamp`; the binding is held/accessed by `kotlin/zabr.java`.
 - Original tab controller: `kotlin/zabz.java`; it consumes `DataBuffer` values and configures custom tab views, toolbar/bookmark state, and tab selection.
 - Limitation: `SplashActivity.onCreate` and multiple inherited `onCreate` bodies are marked not decompiled. The source proves class/layout ownership and portions of tab behavior, not every lifecycle branch.
@@ -237,7 +237,7 @@ Important direct findings:
 
 Further static-source tracing has resolved the home shell route and tab destinations:
 
-- Splash startup routes to `kotlin.zadb` via `zadb.Companion.write(Context)`.
+- Splash callback handoff targets runtime `o.zadb` via its companion intent factory; the decompiler alias is `kotlin.zadb`.
 - The tab list is exactly **HOME → QBANK → TESTS → VIDEOS**, sourced from `sources/kotlin/DataBuffer.java:108–123`.
 - The tab model destinations are `makeGooglePlayServicesAvailable`, `ResidentKeyRequirementUnsupportedResidentKeyRequirementException`, `WalletConstantsCardNetwork`, and `setScrollPosition`, respectively.
 - Tab selection is sent to `HomeUIActivityViewModel` as an index event.
@@ -343,3 +343,16 @@ Several activity lifecycle methods are absent from decompiler output; complete e
 - Original bytecode: `classes.dex`, `Lcom/marrow2/ui/main/viewmodel/HomeUIActivityViewModel$read;->invokeSuspend` contains calls to `CourseConfigV2.CourseStrings.getQbankHeaderTitle()`, `getTestHeaderTitle()`, and `getVideoHeaderTitle()`, each followed by `DataBuffer.read(String)`. The Java coroutine body is decompiler-skipped, so this call-site evidence is the stronger recovered boundary.
 - The actual title values are course-config data; do not replace them with fixed labels transcribed from screenshots. Until the original configuration/ViewModel path is integrated, the reconstruction leaves the title text empty.
 - Original app label: manifest references `@string/app_name`; `resources/res/values/strings.xml` defines it as `Marrow`.
+
+
+## Runtime class names versus decompiler aliases — Batch 65
+
+The raw original APK manifest and DEX type descriptors are authoritative for runtime names. The decompiler's source paths under `sources/kotlin/` remap these classes from runtime package `o`:
+
+- `o.zadb` ← `sources/kotlin/zadb.java`
+- `o._coerceBooleanFromInt` ← `sources/kotlin/_coerceBooleanFromInt.java`
+- `o.DataBuffer` ← `sources/kotlin/DataBuffer.java`
+- `o.copyToBuffer` ← `sources/kotlin/copyToBuffer.java`
+- Tab Fragments: `o.makeGooglePlayServicesAvailable`, `o.ResidentKeyRequirementUnsupportedResidentKeyRequirementException`, `o.WalletConstantsCardNetwork`, `o.setScrollPosition`
+
+The original fragment transaction helper constructs tags as `Home_ + Class.getName()`, so source-native tags are `Home_o.*`. The reconstruction now uses those runtime-qualified tags; the local Fragment classes are still wrappers and do not satisfy source-native class identity.
