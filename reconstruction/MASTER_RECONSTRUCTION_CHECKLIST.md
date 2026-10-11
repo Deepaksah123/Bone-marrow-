@@ -224,3 +224,12 @@
 - [x] Recomputed the SHA-256 fingerprints for eight original Intern Mode source/dependency files directly from the supplied decompiler archive.
 - [ ] Integrate the original VideoLanding ViewModel, event classes, observer, and injected dependencies before enabling these actions. Do not claim tooltip/banner interaction parity yet.
 - [ ] Latest Android build and emulator smoke results must be checked on the final batch commit; earlier smoke runs were cancelled when the branch was advanced.
+
+
+## Batch 68 — original VideoLanding dependency graph
+
+- [x] Traced the original `VideoLandingViewModel` factory callsite and recorded its seven constructor providers in source order.
+- [x] Verified archive implementation classes for the first four injected interfaces and the AppModule/coroutine-dispatcher provider paths.
+- [x] Preserved source fingerprints for the factory, ViewModel, and dependency implementations.
+- [ ] Integrate the original application provider graph and ViewModel lifecycle before enabling VideoLanding event controls; several coroutine bodies remain decompiler-unresolved.
+- [ ] Re-run build, evidence guard, layout/unit tests, and emulator smoke QA on the final PR head. Prior emulator smoke run was cancelled when branch commits advanced.
