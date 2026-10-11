@@ -84,12 +84,16 @@ jobs:
         timeout-minutes: 18
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 30
+          api-level: 35
           target: default
           arch: x86_64
           profile: pixel_2
           disable-animations: true
-          emulator-options: -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio -memory 2048 -cores 2
+          # The API 30 / 2 GiB / 2-core image repeatedly froze System UI during
+          # cold boot (visible ANR, >5 minute display freeze) before app QA.
+          # Use the already-installed target platform's API level and a less
+          # constrained emulator so a system-image ANR cannot masquerade as app QA.
+          emulator-options: -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio -memory 4096 -cores 4
           script: |
             python3 .github/scripts/run_android_ui_smoke.py > qa-screenshots/smoke-run.log 2>&1
             status=$?
