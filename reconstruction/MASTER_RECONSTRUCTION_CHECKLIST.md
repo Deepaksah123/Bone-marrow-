@@ -188,3 +188,11 @@
 - [x] Android build passed: [run 38082219855](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082219855).
 - [ ] Finish emulator UI smoke and inspect screenshots: [run 38082552298](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082552298).
 - [ ] Full source-state visibility/navigation trace and original-APK pixel comparison remain open.
+
+
+## Parallel batch execution — 2026-10-11
+
+- [x] Added static regression assertions for source-backed initial states and video subject-grid behavior in the source-bound layout verifier. This protects Home shimmer vs empty list, QBank spinner vs empty subject list, Tests loading vs empty list, and Videos 2/3-column layout/spacing behavior.
+- [x] Toolbar title/branding states are guarded against resource and Java-binding regressions.
+- [ ] Current-head emulator run must finish with screenshots/diagnostics uploaded before runtime QA can be marked PASS.
+- [ ] Reconstruct original ViewModel/adapter/data bindings and perform pixel comparison; do not fabricate rows to make loading states disappear.
