@@ -88,7 +88,7 @@ No educational content will be inserted during these UI batches.
 ### Verification
 
 - Historical CI failure chain: stale `R.id.home_tab` references and malformed Gradle dependency syntax were corrected in later commits; the current Android build passes at [run 38086133865](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133865), with evidence guard pass at [run 38086133816](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133816).
-- API 31 runtime UI smoke is currently in progress at [run 38086133823](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133823). Until its screenshot/hierarchy artifact is reviewed, runtime visual QA remains unverified. The four tab content bodies and full-app pixel parity remain incomplete and must not be called 1:1.
+- The earlier API 31 smoke run [38086133823](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133823) **failed** on its older checkout: activity start timed out and the job exited with code 137 before screenshot artifacts were uploaded. It is not a runtime-QA pass. Batch 57 corrected three over-escaped bounds regexes in the Video interaction smoke checks; the new workflow run must pass and its artifacts must be reviewed before runtime fidelity is claimed. The four tab content bodies and full-app pixel parity remain incomplete and must not be called 1:1.
 
 ## Drawer binary XML recovery (Batch 53)
 
@@ -100,3 +100,10 @@ No educational content will be inserted during these UI batches.
 ## Shell binary XML geometry correction (Batch 54)
 
 The original `activity_home_revamp` binary XML (`0x7f0d0033`, obfuscated APK entry `zZ`) has been decoded directly. Shell clipping, toolbar trailing-action grouping/padding, bottom-nav margins, blocker elevation and `fullContainer` elevation are corrected to match the binary XML. The source-traced Better Search overlay and source slide animations are now present. Latest build/evidence validation and API 31 UI smoke are tracked at [build run 38086133865](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133865), [guard run 38086133816](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133816), and [smoke run 38086133823](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38086133823). Whole-app 1:1 parity remains incomplete.
+
+
+## Video UI smoke correction — Batch 57 (2026-10-11)
+
+- Inspected the failed API 31 smoke run and found the three Video interaction bounds checks used over-escaped raw-string regexes, unlike the already-working shell/search checks. They could not parse normal Android bounds such as `[x1,y1][x2,y2]`.
+- Corrected the Video tab, tooltip trigger, and tooltip close-control bounds regexes in `.github/workflows/android-ui-smoke.yml` in commit [`dbf3245`](https://github.com/Deepaksah123/Bone-marrow-/commit/dbf3245aae661f42583e257f37c03d01cb88b1ea).
+- This is a QA harness correction only; it does not add UI, educational data, or behavior and does not prove the UI is 1:1. Await the workflow triggered by the correction and inspect its screenshots/hierarchies before marking runtime QA passed.
