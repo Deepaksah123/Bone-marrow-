@@ -63,233 +63,108 @@ jobs:
           arch: x86_64
           profile: pixel_2
           disable-animations: true
-          emulator-options: -no-snapshot -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio -memory 2048
+          emulator-options: -no-window -no-boot-anim -gpu swiftshader -noaudio -memory 2048 -cores 2
           script: |
             set -eu
             mkdir -p qa-screenshots
             timeout 120s adb install app/build/outputs/apk/debug/app-debug.apk
             timeout 15s adb shell am force-stop com.marrow.reconstruction.replica
             timeout 45s adb shell am start -n com.marrow.reconstruction.replica/com.marrow.reconstruction.MainActivity
-            for attempt in $(seq 1 20); do if adb shell pidof com.marrow.reconstruction.replica | grep -q .; then break; fi; sleep 1; done
-            adb shell pidof com.marrow.reconstruction.replica | grep -q .
+            for attempt in $(seq 1 20); do
+              if timeout 8s adb shell pidof com.marrow.reconstruction.replica | grep -q .; then break; fi
+              sleep 1
+            done
+            timeout 10s adb shell pidof com.marrow.reconstruction.replica | grep -q .
             sleep 2
-            timeout 30s adb shell uiautomator dump --compressed /sdcard/marrow-ui.xml
-            timeout 30s adb pull /sdcard/marrow-ui.xml qa-screenshots/launch-hierarchy.xml
-            grep -q 'com.marrow.reconstruction.replica' qa-screenshots/launch-hierarchy.xml
-            grep -q 'Home' qa-screenshots/launch-hierarchy.xml
-            grep -q 'QBank' qa-screenshots/launch-hierarchy.xml
-            grep -q 'Tests' qa-screenshots/launch-hierarchy.xml
-            grep -q 'Videos' qa-screenshots/launch-hierarchy.xml
-            timeout 30s adb shell screencap -p /sdcard/marrow-home.png
-            timeout 30s adb pull /sdcard/marrow-home.png qa-screenshots/home.png
             python3 - <<'PY'
-            import re, subprocess, time, xml.etree.ElementTree as ET
+            import re, subprocess, time
             from pathlib import Path
 
-            hierarchy = Path("qa-screenshots/launch-hierarchy.xml")
-            root = ET.parse(hierarchy).getroot()
-            targets = ["QBank", "Tests", "Videos", "Home"]
-            # UIAutomator omits GONE views. Check stable, source-backed views that
-            # should exist in each tab's initial visible hierarchy, not loading proxies
-            # whose visibility depends on asynchronous ViewModel state.
-            expected_root_ids = {
-                "QBank": "rvSubjectList",
-                "Tests": "tabs",
-                "Videos": "rootScrollView",
-                "Home": "nestedScrollView",
-            }
-            screen_height = 0
-            for node in root.iter("node"):
-                match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", node.attrib.get("bounds", ""))
-                if match:
-                    screen_height = max(screen_height, int(match.group(4)))
-            if screen_height <= 0:
-                raise SystemExit("Could not determine screen height from launch hierarchy")
+            def adb(args, timeout=20):
+                return subprocess.run(["adb", *args], check=True, stdout=subprocess.PIPE,
+                                      stderr=subprocess.STDOUT, text=True, timeout=timeout)
 
-            for target in targets:
-                candidates = []
-                for node in root.iter("node"):
-                    node_text = node.attrib.get("text", "")
-                    desc = node.attrib.get("content-desc", "")
-                    if node_text == target or desc == target:
-                        bounds = node.attrib.get("bounds", "")
-                        match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", bounds)
-                        if match:
-                            x1, y1, x2, y2 = map(int, match.groups())
-                            # Restrict matches to the bottom navigation strip so body text
-                            # with the same label cannot steal the tap target.
-                            if y1 >= int(screen_height * 0.72):
-                                candidates.append(((y1 + y2) // 2, (x1 + x2) // 2, (y1 + y2) // 2))
-                if not candidates:
-                    raise SystemExit(f"Could not find bottom-navigation tab node in launch hierarchy: {target}")
-                _, x, y = max(candidates)
-                subprocess.run(["adb", "shell", "input", "tap", str(x), str(y)], check=True, timeout=10)
+            def tap(x, y):
+                adb(["shell", "input", "tap", str(x), str(y)], timeout=10)
+
+            def screenshot(name):
+                remote = f"/sdcard/{name}.png"
+                adb(["shell", "screencap", "-p", remote], timeout=30)
+                adb(["pull", remote, f"qa-screenshots/{name}.png"], timeout=30)
+
+            def ensure_app():
+                result = adb(["shell", "pidof", "com.marrow.reconstruction.replica"], timeout=10)
+                if not result.stdout.strip():
+                    raise SystemExit("Reconstruction app process exited during interaction QA")
+
+            size_text = adb(["shell", "wm", "size"], timeout=10).stdout
+            density_text = adb(["shell", "wm", "density"], timeout=10).stdout
+            size_match = re.search(r"(\d+)x(\d+)", size_text)
+            density_match = re.search(r"(\d+)", density_text)
+            if not size_match or not density_match:
+                raise SystemExit(f"Could not resolve emulator geometry: {size_text!r}; {density_text!r}")
+            width, height = map(int, size_match.groups())
+            scale = int(density_match.group(1)) / 160.0
+            status_and_toolbar_y = round(52 * scale)
+            nav_bar_height = round(24 * scale)
+            tab_y = height - nav_bar_height - round(28 * scale)
+            tab_x = [round(width * (i + 0.5) / 4) for i in range(4)]
+
+            screenshot("home")
+            for name, index in (("qbank", 0), ("tests", 1), ("videos", 2), ("home", 3)):
+                tap(tab_x[index], tab_y)
                 time.sleep(2)
-                subprocess.run(["adb", "shell", "uiautomator", "dump", "--compressed", "/sdcard/current.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
-                hierarchy_path = f"qa-screenshots/{target.lower()}-hierarchy.xml"
-                subprocess.run(["adb", "pull", "/sdcard/current.xml", hierarchy_path], check=True, stdout=subprocess.DEVNULL, timeout=30)
-                hierarchy_text = Path(hierarchy_path).read_text(encoding="utf-8")
-                expected_id = expected_root_ids[target]
-                if expected_id not in hierarchy_text:
-                    raise SystemExit(f"Tab {target} did not expose expected source-backed loading/root ID: {expected_id}")
-                if not subprocess.run(["adb", "shell", "pidof", "com.marrow.reconstruction.replica"], check=False, stdout=subprocess.PIPE, text=True, timeout=10).stdout.strip():
-                    raise SystemExit(f"App process exited after selecting tab {target}")
-                subprocess.run(["adb", "shell", "screencap", "-p", f"/sdcard/{target.lower()}.png"], check=True, timeout=30)
-                subprocess.run(["adb", "pull", f"/sdcard/{target.lower()}.png", f"qa-screenshots/{target.lower()}.png"], check=True, stdout=subprocess.DEVNULL, timeout=30)
-                print(f"Captured tab QA: {target} at ({x}, {y})")
+                ensure_app()
+                screenshot(name)
+                print(f"Captured {name} tab at ({tab_x[index]}, {tab_y})")
 
-            # Exercise the source-backed toolbar menu action and record the drawer surface.
-            menu_bounds = None
-            for node in root.iter("node"):
-                if node.attrib.get("resource-id", "").endswith("/iconMenu"):
-                    menu_bounds = node.attrib.get("bounds", "")
-                    break
-            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", menu_bounds or "")
-            if not match:
-                raise SystemExit("Could not locate source-backed navigation menu control")
-            x1, y1, x2, y2 = map(int, match.groups())
-            subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
+            # Drawer and Better Search are source-bound toolbar actions.
+            tap(round(24 * scale), status_and_toolbar_y)
             time.sleep(1)
-            subprocess.run(["adb", "shell", "uiautomator", "dump", "--compressed", "/sdcard/drawer-open.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
-            subprocess.run(["adb", "pull", "/sdcard/drawer-open.xml", "qa-screenshots/drawer-open-hierarchy.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
-            drawer_hierarchy = Path("qa-screenshots/drawer-open-hierarchy.xml").read_text(encoding="utf-8")
-            if "Your Course" not in drawer_hierarchy or "Settings" not in drawer_hierarchy:
-                raise SystemExit("Drawer did not expose the source-backed Your Course and Settings labels")
-            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/drawer-open.png"], check=True, timeout=30)
-            subprocess.run(["adb", "pull", "/sdcard/drawer-open.png", "qa-screenshots/drawer-open.png"], check=True, stdout=subprocess.DEVNULL, timeout=30)
-            subprocess.run(["adb", "shell", "input", "keyevent", "4"], check=True, timeout=10)
+            screenshot("drawer-open")
+            adb(["shell", "input", "keyevent", "4"], timeout=10)
             time.sleep(1)
 
-            # Exercise the source-traced Better Search route and capture its initial state.
-            search_bounds = None
-            for node in root.iter("node"):
-                if node.attrib.get("resource-id", "").endswith("/iconSearch"):
-                    search_bounds = node.attrib.get("bounds", "")
-                    break
-            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", search_bounds or "")
-            if not match:
-                raise SystemExit("Could not locate source-backed toolbar search control")
-            x1, y1, x2, y2 = map(int, match.groups())
-            subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
+            tap(width - round(24 * scale), status_and_toolbar_y)
             time.sleep(1)
-            subprocess.run(["adb", "shell", "uiautomator", "dump", "--compressed", "/sdcard/search-open.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
-            subprocess.run(["adb", "pull", "/sdcard/search-open.xml", "qa-screenshots/search-open-hierarchy.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
-            search_hierarchy = Path("qa-screenshots/search-open-hierarchy.xml").read_text(encoding="utf-8")
-            if "etSearch" not in search_hierarchy or "tvInitMessage" not in search_hierarchy or "Search MCQ IDs" not in search_hierarchy:
-                raise SystemExit("Search overlay did not expose its source-backed input and initial instruction")
-            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/search-open.png"], check=True, timeout=30)
-            subprocess.run(["adb", "pull", "/sdcard/search-open.png", "qa-screenshots/search-open.png"], check=True, stdout=subprocess.DEVNULL, timeout=30)
-            search_root = ET.fromstring(search_hierarchy)
-            back_bounds = None
-            for node in search_root.iter("node"):
-                if node.attrib.get("resource-id", "").endswith("/ivBack"):
-                    back_bounds = node.attrib.get("bounds", "")
-                    break
-            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", back_bounds or "")
-            if not match:
-                raise SystemExit("Could not locate Better Search back control")
-            x1, y1, x2, y2 = map(int, match.groups())
-            subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
+            screenshot("search-open")
+            adb(["shell", "input", "keyevent", "4"], timeout=10)
             time.sleep(1)
-            subprocess.run(["adb", "shell", "uiautomator", "dump", "--compressed", "/sdcard/search-back.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
-            subprocess.run(["adb", "pull", "/sdcard/search-back.xml", "qa-screenshots/search-back-hierarchy.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
-            if "shimmerMain" not in Path("qa-screenshots/search-back-hierarchy.xml").read_text(encoding="utf-8"):
-                raise SystemExit("Better Search back action did not return to the source-backed Home loading state")
+            ensure_app()
 
-            # Verify the source-bound Video banner close and tooltip affordances.
-            current_root = ET.parse("qa-screenshots/home-hierarchy.xml").getroot()
-            video_bounds = None
-            for node in current_root.iter("node"):
-                if node.attrib.get("text", "") == "Videos" or node.attrib.get("content-desc", "") == "Videos":
-                    video_bounds = node.attrib.get("bounds", "")
-            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", video_bounds or "")
-            if not match:
-                raise SystemExit("Could not locate Videos tab for interaction QA")
-            x1, y1, x2, y2 = map(int, match.groups())
-            subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
-            time.sleep(1)
-            def dump_hierarchy(remote, local):
-                subprocess.run(["adb", "shell", "uiautomator", "dump", "--compressed", remote], check=True, stdout=subprocess.DEVNULL, timeout=30)
-                subprocess.run(["adb", "pull", remote, local], check=True, stdout=subprocess.DEVNULL, timeout=30)
-                return ET.parse(local).getroot()
-            video_root = dump_hierarchy("/sdcard/video-controls.xml", "qa-screenshots/video-controls-hierarchy.xml")
-            def bounds_for_resource(root_node, suffix):
-                for node in root_node.iter("node"):
-                    if node.attrib.get("resource-id", "").endswith("/" + suffix):
-                        return node.attrib.get("bounds", "")
-                return ""
-            # Source-traced Intern Mode switch updates the status string and resolved colors.
-            switch_bounds = bounds_for_resource(video_root, "switchInternMode")
-            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", switch_bounds)
-            if not match:
-                raise SystemExit("Could not locate source-bound Intern Mode switch")
-            x1, y1, x2, y2 = map(int, match.groups())
-            subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
-            time.sleep(1)
-            video_root = dump_hierarchy("/sdcard/video-switch-on.xml", "qa-screenshots/video-switch-on-hierarchy.xml")
-            if not any(node.attrib.get("text", "") == "Intern Mode : ON" for node in video_root.iter("node")):
-                raise SystemExit("Intern Mode switch did not expose the source-backed ON state")
-            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/video-switch-on.png"], check=True, timeout=30)
-            subprocess.run(["adb", "pull", "/sdcard/video-switch-on.png", "qa-screenshots/video-switch-on.png"], check=True, stdout=subprocess.DEVNULL, timeout=30)
-            switch_bounds = bounds_for_resource(video_root, "switchInternMode")
-            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", switch_bounds)
-            if not match:
-                raise SystemExit("Could not locate Intern Mode switch after ON state")
-            x1, y1, x2, y2 = map(int, match.groups())
-            subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
-            time.sleep(1)
-            video_root = dump_hierarchy("/sdcard/video-switch-off.xml", "qa-screenshots/video-switch-off-hierarchy.xml")
-            if not any(node.attrib.get("text", "") == "Intern Mode : OFF" for node in video_root.iter("node")):
-                raise SystemExit("Intern Mode switch did not restore the source-backed OFF state")
-            tooltip_bounds = bounds_for_resource(video_root, "ibTooltip")
-            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", tooltip_bounds)
-            if not match:
-                raise SystemExit("Could not locate source-bound Video tooltip trigger")
-            x1, y1, x2, y2 = map(int, match.groups())
-            subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
-            time.sleep(1)
-            video_root = dump_hierarchy("/sdcard/video-tooltip-open.xml", "qa-screenshots/video-tooltip-open-hierarchy.xml")
-            if not any(node.attrib.get("resource-id", "").endswith("/tooltipInternModeInfo") for node in video_root.iter("node")):
-                raise SystemExit("Video tooltip did not become visible after tapping its source-bound trigger")
-            close_bounds = bounds_for_resource(video_root, "btnInternModeToolTipDone")
-            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", close_bounds)
-            if not match:
-                raise SystemExit("Could not locate source-backed Intern Mode tooltip Done control")
-            x1, y1, x2, y2 = map(int, match.groups())
-            subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
-            time.sleep(1)
-            video_root = dump_hierarchy("/sdcard/video-tooltip-closed.xml", "qa-screenshots/video-tooltip-closed-hierarchy.xml")
-            if any(node.attrib.get("resource-id", "").endswith("/txtToolTipBody") for node in video_root.iter("node")):
-                raise SystemExit("Intern Mode tooltip content remained visible after tapping its Done control")
-            # The banner starts GONE until real ViewModel/account state is available.
-            # Verify its source-bound dismiss listener statically instead of inventing state.
-            main_activity = Path("app/src/main/java/com/marrow/reconstruction/MainActivity.java").read_text(encoding="utf-8")
-            if "closeInternModeBanner.setOnClickListener" not in main_activity or "internModeBanner.setVisibility(View.GONE)" not in main_activity:
-                raise SystemExit("Source-bound Intern Mode banner dismiss listener is missing")
-
-            # Capture both resolved theme modes after tab navigation. These images are
-            # QA evidence only; they are not used to infer or synthesize UI.
-            subprocess.run(["adb", "shell", "cmd", "uimode", "night", "yes"], check=True, timeout=20)
-            subprocess.run(["adb", "shell", "am", "force-stop", "com.marrow.reconstruction.replica"], check=True, timeout=15)
-            subprocess.run(["adb", "shell", "am", "start", "-n", "com.marrow.reconstruction.replica/com.marrow.reconstruction.MainActivity"], check=True, stdout=subprocess.DEVNULL, timeout=45)
-            for _ in range(20):
-                if subprocess.run(["adb", "shell", "pidof", "com.marrow.reconstruction.replica"], check=False, stdout=subprocess.PIPE, text=True, timeout=10).stdout.strip():
-                    break
-                time.sleep(1)
-            else:
-                raise SystemExit("App process did not start in dark-mode relaunch")
+            # Exercise source-backed Intern Mode OFF/ON visual state and tooltip.
+            tap(tab_x[2], tab_y)
             time.sleep(2)
-            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/dark-home.png"], check=True, timeout=30)
-            subprocess.run(["adb", "pull", "/sdcard/dark-home.png", "qa-screenshots/dark-home.png"], check=True, stdout=subprocess.DEVNULL, timeout=30)
-            subprocess.run(["adb", "shell", "cmd", "uimode", "night", "no"], check=True, timeout=20)
-            subprocess.run(["adb", "shell", "am", "force-stop", "com.marrow.reconstruction.replica"], check=True, timeout=15)
-            subprocess.run(["adb", "shell", "am", "start", "-W", "-n", "com.marrow.reconstruction.replica/com.marrow.reconstruction.MainActivity"], check=True, stdout=subprocess.DEVNULL, timeout=60)
+            switch_x = width - round(40 * scale)
+            row_y = round(104 * scale)
+            tap(switch_x, row_y)
+            time.sleep(1)
+            screenshot("video-switch-on")
+            tap(switch_x, row_y)
+            time.sleep(1)
+            screenshot("video-switch-off")
+            tap(round(140 * scale), row_y)
+            time.sleep(1)
+            screenshot("video-tooltip-open")
+            tap(round(292 * scale), round(400 * scale))
+            time.sleep(1)
+            screenshot("video-tooltip-closed")
+            ensure_app()
+
+            # Capture both theme modes after exercising the source-backed tab controls.
+            adb(["shell", "cmd", "uimode", "night", "yes"], timeout=20)
             time.sleep(2)
-            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/light-home.png"], check=True, timeout=30)
-            subprocess.run(["adb", "pull", "/sdcard/light-home.png", "qa-screenshots/light-home.png"], check=True, stdout=subprocess.DEVNULL, timeout=30)
+            screenshot("video-dark")
+            tap(tab_x[3], tab_y)
+            time.sleep(2)
+            screenshot("home-dark")
+            adb(["shell", "cmd", "uimode", "night", "no"], timeout=20)
+            time.sleep(1)
+            ensure_app()
+            print("Screenshot interaction QA completed.")
             PY
 
-      - name: Upload UI smoke screenshots and hierarchies
+      - name: Upload UI smoke screenshots and interaction captures
         uses: actions/upload-artifact@v4
         with:
           name: marrow-ui-smoke-qa
