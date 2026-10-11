@@ -304,6 +304,27 @@ def main() -> int:
     if 'R.string.text_concise_tooltip_description' not in activity_java:
         failures.append("Videos tooltip must use the verified default original body string")
 
+    # Emulator QA must publish a complete, validated screenshot manifest rather than
+    # relying on a green build or a handful of screenshots from an interrupted run.
+    smoke_script = (ROOT / ".github/scripts/run_android_ui_smoke.py").read_text(encoding="utf-8")
+    for capture in (
+        "home", "qbank", "tests", "videos", "drawer-open", "search-open",
+        "video-switch-on", "video-switch-off", "video-tooltip-open",
+        "video-tooltip-closed", "video-dark", "home-dark",
+    ):
+        if f'"{capture}"' not in smoke_script:
+            failures.append(f"Emulator QA: required screenshot capture {capture} is not declared")
+    for required_contract in (
+        "screenshot-manifest.json",
+        "required_capture_count",
+        "struct.unpack(\">II\", image_bytes[16:24])",
+        "Required screenshot evidence missing",
+        "Required screenshot is not a valid PNG",
+        "implausible dimensions",
+    ):
+        if required_contract not in smoke_script:
+            failures.append(f"Emulator QA: screenshot evidence validation missing {required_contract}")
+
     if failures:
         print("\nSOURCE-BOUND LAYOUT VALIDATION: FAIL")
         for failure in failures:
