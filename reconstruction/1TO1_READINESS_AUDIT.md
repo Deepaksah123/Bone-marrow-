@@ -510,3 +510,11 @@ The original use-case/repository path is now traced one layer deeper: `isMediaSt
 ## VideoLandingViewModel injected dependency inventory
 
 The original `VideoLandingViewModel` constructor accepts seven dependencies: `isEncodingHighResolutionPcm`, `LogLogLevel`, `getDisplaySizeV17`, `binarySearchCeil`, `isSeekPending`, `Allocator`, and `getPlatform` (`VideoLandingViewModel.java:344–359`). Their interface/class source files exist in the genuine decompiler archive, but the local replica has not integrated their provider/repository graph. This is why event controls remain deferred: the original behavior cannot be reproduced by adding isolated click listeners or substituting a local preference flag.
+
+
+## Batch 68 — exact original ViewModel factory boundary
+
+- Traced the original `VideoLandingViewModel` construction to `cloneWithUpdatedTimeline.java:2066`, case 103, and recorded all seven constructor provider expressions and the verified implementation classes for the first five contracts.
+- Verified the coroutine-dispatcher provider routes through `CoroutinesDispatchersModule`, and the `isSeekPending` provider routes through `AppModule` / `RtspHeadersBuilder`.
+- The original app-wide factory, repositories, provider graph, and ViewModel lifecycle integration remain absent from the replica. The UI controls therefore remain deferred; a newly written isolated ViewModel would not establish 1:1 behavior.
+- The decompiler omits several coroutine bodies. Their state/data effects remain unresolved rather than inferred.
