@@ -12,6 +12,7 @@ PACKAGE = "com.marrow.reconstruction.replica"
 ACTIVITY = f"{PACKAGE}/com.marrow.reconstruction.MainActivity"
 OUT = Path("qa-screenshots")
 OUT.mkdir(parents=True, exist_ok=True)
+SYSTEM_UI_ANR_RECOVERY_USED = False
 
 
 def adb(args: list[str], timeout: int = 20, check: bool = True) -> subprocess.CompletedProcess[str]:
@@ -64,14 +65,47 @@ def visible_anr_marker(window_dump: str) -> str | None:
     return None
 
 
+def visible_system_ui_anr(window_dump: str) -> bool:
+    """Identify a visible ANR owned by System UI, not by the replica app."""
+    blocks = re.split(r"(?=window #\\d+\\s)", window_dump.lower())
+    indicators = ("application not responding", "isn't responding", "is not responding", "anrdialog")
+    return any(
+        any(marker in block for marker in indicators)
+        and "com.android.systemui" in block
+        and "isvisible=true" in block
+        and "surface: shown=true" in block
+        for block in blocks
+    )
+
+
 def assert_no_anr_dialog(stage: str) -> None:
-    # dumpsys retains hidden/stale ANR window records after dismissal. Reject only
-    # a window whose own record says it is visible and its surface is shown.
-    windows = adb(["shell", "dumpsys", "window", "windows"], timeout=20).stdout
+    # Never capture while any ANR dialog is visible. On this cold-boot emulator,
+    # System UI can transiently ANR during first app install/startup; preserve its
+    # diagnostics, dismiss that one system-owned dialog once, then re-check that
+    # the window is actually gone. App ANRs and repeat System UI ANRs remain fatal.
+    global SYSTEM_UI_ANR_RECOVERY_USED
+    windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
     marker = visible_anr_marker(windows)
-    if marker:
-        write_anr_diagnostics(f"{stage}: visible ANR window marker {marker}")
-        raise SystemExit(f"Visible emulator ANR dialog detected {stage}: {marker}")
+    if not marker:
+        return
+
+    if visible_system_ui_anr(windows) and not SYSTEM_UI_ANR_RECOVERY_USED:
+        write_anr_diagnostics(f"{stage}: transient visible System UI ANR; diagnostics captured before recovery")
+        SYSTEM_UI_ANR_RECOVERY_USED = True
+        adb(["shell", "input", "keyevent", "4"], timeout=15, check=False)
+        time.sleep(5)
+        windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
+        marker = visible_anr_marker(windows)
+        if not marker:
+            print(
+                "Transient System UI ANR dialog dismissed after diagnostics; "
+                "continuing only after verifying its window is no longer visible.",
+                flush=True,
+            )
+            return
+
+    write_anr_diagnostics(f"{stage}: visible ANR window marker {marker}")
+    raise SystemExit(f"Visible emulator ANR dialog detected {stage}: {marker}")
 
 
 def find_node(root: ET.Element, *, resource_id: str | None = None,
@@ -120,7 +154,7 @@ def read_hierarchy() -> ET.Element:
     return root
 
 
-def wait_for_tabs(timeout: int = 60) -> ET.Element:
+def wait_for_tabs(timeout: int = 120) -> ET.Element:
     labels = ("Home", "QBank", "Tests", "Videos")
     deadline = time.monotonic() + timeout
     last_error = "tab labels not present yet"
@@ -216,7 +250,7 @@ def main() -> None:
     else:
         raise SystemExit("App process did not start")
     # Wait for the app's actual accessibility tree, not merely a live PID or splash screen.
-    hierarchy = wait_for_tabs(timeout=60)
+    hierarchy = wait_for_tabs(timeout=120)
     hierarchy = tap_tab("Home", hierarchy)
     screenshot("home")
     for label in ("QBank", "Tests", "Videos", "Home"):

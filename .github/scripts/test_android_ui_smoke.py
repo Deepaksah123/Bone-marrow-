@@ -5,7 +5,7 @@ from __future__ import annotations
 import unittest
 import xml.etree.ElementTree as ET
 
-from run_android_ui_smoke import find_node, node_center, tab_is_selected, visible_anr_marker
+from run_android_ui_smoke import find_node, node_center, tab_is_selected, visible_anr_marker, visible_system_ui_anr
 
 
 class VisibleAnrMarkerTests(unittest.TestCase):
@@ -28,6 +28,24 @@ class VisibleAnrMarkerTests(unittest.TestCase):
           Surface: shown=true layer=1 alpha=1.0
         """
         self.assertEqual(visible_anr_marker(dump), "application not responding")
+        self.assertTrue(visible_system_ui_anr(dump))
+
+    def test_visible_replica_anr_is_not_classified_as_system_ui(self) -> None:
+        dump = """
+        Window #4 Window{f2c880f u0 Application Not Responding: com.marrow.reconstruction.replica}:
+          isVisible=true
+          Surface: shown=true layer=1 alpha=1.0
+        """
+        self.assertIsNotNone(visible_anr_marker(dump))
+        self.assertFalse(visible_system_ui_anr(dump))
+
+    def test_hidden_system_ui_anr_is_not_recoverable(self) -> None:
+        dump = """
+        Window #4 Window{f2c880f u0 Application Not Responding: com.android.systemui}:
+          isVisible=false
+          Surface: shown=false layer=0 alpha=0.0
+        """
+        self.assertFalse(visible_system_ui_anr(dump))
 
     def test_hidden_anr_does_not_inherit_visibility_from_another_window(self) -> None:
         dump = """

@@ -184,3 +184,12 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Identified that the smoke script used equal-quarter x coordinates even though the original shell uses a scrollable `TabLayout` with horizontal margins. Replaced guessed coordinates for tabs, toolbar actions, the Intern Mode switch, tooltip trigger, and Done button with live accessibility-node bounds. The gate now checks selected-tab and switch checked state instead of assuming taps succeeded.
 - Added a first-render wait that requires all four source-backed tab accessibility labels before the initial screenshot. The workflow runs parser/targeting unit tests before APK build and emulator startup.
 - These are QA harness changes only; no replica UI, educational content, paid UI, or guessed destinations were added. Runtime QA still requires a successful new run and inspection of its screenshot artifact. Home/QBank/Tests/Videos data-bound content, remaining behavior, and pixel-level 1:1 comparison remain incomplete.
+
+
+## Cold-boot System UI ANR recovery and emulator startup — Batch 69 (2026-10-11)
+
+- Reviewed the latest runtime diagnostics from [smoke run 38129372613](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38129372613). The visible ANR window belonged to `com.android.systemui`; the replica process was alive and its Activity remained resumed, but the splash screen had not yet been replaced when the first hierarchy check ran. This is an emulator startup/runtime failure, not accepted visual evidence.
+- Updated the smoke gate to preserve full diagnostics before a single recovery attempt for a visible System UI-owned ANR, dismiss it, and continue only if a fresh window dump confirms the ANR dialog is gone. Replica-owned ANRs and repeated System UI ANRs remain fatal; screenshots are never captured while an ANR dialog is visible.
+- Increased the first-render accessibility wait to 120 seconds and removed forced snapshot disabling from emulator launch options to allow the runner's normal boot path.
+- Added regression coverage that distinguishes a visible System UI ANR from a replica-owned ANR and from hidden/stale System UI records.
+- Runtime QA is still pending until a fresh run completes and its screenshots are reviewed. This batch does not claim pixel-level 1:1 parity; real Home/QBank/Tests/Videos data binding and unresolved source-traced actions remain outstanding.
