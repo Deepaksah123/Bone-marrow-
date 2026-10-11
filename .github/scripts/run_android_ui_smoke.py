@@ -393,7 +393,8 @@ def validate_png_capture(image_path: Path, *, minimum_width: int = 320, minimum_
     if not image_path.is_file():
         raise SystemExit(f"Required screenshot evidence missing: {image_path}")
     image_bytes = image_path.read_bytes()
-    if (len(image_bytes) < 24 or not image_bytes.startswith(bytes((137, 80, 78, 71, 13, 10, 26, 10)))\n            or image_bytes[12:16] != b"IHDR"):
+    if (len(image_bytes) < 24 or not image_bytes.startswith(bytes((137, 80, 78, 71, 13, 10, 26, 10)))
+            or image_bytes[12:16] != b"IHDR"):
         raise SystemExit(f"Required screenshot is not a valid PNG: {image_path}")
     width, height = struct.unpack(">II", image_bytes[16:24])
     if width < minimum_width or height < minimum_height:
