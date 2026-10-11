@@ -107,6 +107,42 @@ def main() -> int:
             ):
                 failures.append(f"Tooltip: unresolved @drawable/{name}")
 
+    # Source-decoded Home completion-chip attributes (original fragment_home binary XML).
+    home_xml = (LAYOUT / "fragment_home_replica.xml").read_text(encoding="utf-8")
+    for expected in (
+        'app:cardBackgroundColor="?attr/colorSurfaceVariant19"',
+        'app:strokeColor="?attr/onSurfaceBgOutline4"',
+        'app:strokeWidth="?attr/cardViewStrokeWidth"',
+        'android:paddingHorizontal="19dp"',
+        'android:paddingVertical="6dp"',
+        'android:layout_marginEnd="@dimen/margin_4dp"',
+        'android:layout_marginStart="@dimen/margin_6dp"',
+        'style="?attr/subtext2"',
+        'android:tint="?attr/onBackgroundSurface3"',
+    ):
+        if expected not in home_xml:
+            failures.append(f"Home completion chip: missing source-derived attribute {expected}")
+    attrs_xml = (VALUES / "attrs.xml").read_text(encoding="utf-8")
+    for name in ("colorSurfaceVariant19", "onSurfaceBgOutline4", "cardViewStrokeWidth"):
+        if f'name="{name}"' not in attrs_xml:
+            failures.append(f"Home completion chip: missing theme attribute declaration {name}")
+    for style_path, expected_values in (
+        (VALUES / "styles.xml", {
+            "colorSurfaceVariant19": "@color/sepia05",
+            "onSurfaceBgOutline4": "@color/n_00",
+            "cardViewStrokeWidth": "0dp",
+        }),
+        (VALUES / "values-night" / "styles.xml", {
+            "colorSurfaceVariant19": "@color/n_80",
+            "onSurfaceBgOutline4": "@color/c_988d58",
+            "cardViewStrokeWidth": "1dp",
+        }),
+    ):
+        style_text = style_path.read_text(encoding="utf-8")
+        for name, value in expected_values.items():
+            if f'<item name="{name}">{value}</item>' not in style_text:
+                failures.append(f"Home completion chip: {style_path.name} missing {name}={value}")
+
     if failures:
         print("\nSOURCE-BOUND LAYOUT VALIDATION: FAIL")
         for failure in failures:
