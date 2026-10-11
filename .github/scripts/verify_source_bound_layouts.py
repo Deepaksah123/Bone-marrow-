@@ -133,7 +133,7 @@ def main() -> int:
             "onSurfaceBgOutline4": "@color/n_00",
             "cardViewStrokeWidth": "0dp",
         }),
-        (VALUES / "values-night" / "styles.xml", {
+        (ROOT / "app/src/main/res/values-night/styles.xml", {
             "colorSurfaceVariant19": "@color/n_80",
             "onSurfaceBgOutline4": "@color/c_988d58",
             "cardViewStrokeWidth": "1dp",
