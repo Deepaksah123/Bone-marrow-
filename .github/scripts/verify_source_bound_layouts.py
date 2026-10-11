@@ -281,6 +281,19 @@ def main() -> int:
     if "textBranding.setVisibility(View.VISIBLE)" not in activity_java or "textPageTitle.setVisibility(View.GONE)" not in activity_java:
         failures.append("Home toolbar must retain branding and hide the centered page title")
 
+    # Source-backed first-frame loading state must not regress into a visible empty list.
+    # The real original adapters/ViewModels are not present, so these placeholders are intentional.
+    if 'cards.setVisibility(View.GONE)' not in activity_java or 'shimmer.setVisibility(View.VISIBLE)' not in activity_java:
+        failures.append("Home initial state must hide empty rvHomeCard and show shimmerMain")
+    if 'subjects.setVisibility(View.GONE)' not in activity_java or 'progress.setVisibility(View.VISIBLE)' not in activity_java:
+        failures.append("QBank initial state must hide empty rvSubjectList and show progressLoadList")
+    if 'list.setVisibility(View.GONE)' not in activity_java or 'loading.setVisibility(View.VISIBLE)' not in activity_java or 'empty.setVisibility(View.GONE)' not in activity_java:
+        failures.append("Tests initial state must hide empty rvMainList/emptyLayout and show loadingContainer")
+    if 'isSourceTablet() ? 3 : 2' not in activity_java or 'return false;' not in activity_java[activity_java.find('supportsPredictiveItemAnimations')-100:activity_java.find('supportsPredictiveItemAnimations')+180]:
+        failures.append("Videos subject grid must retain source tablet columns and disable predictive animations")
+    if 'outRect.top = verticalSpacing;' not in activity_java or 'outRect.left = horizontalSpacing;' not in activity_java:
+        failures.append("Videos subject grid must retain source 6dp vertical / 4dp horizontal offsets")
+
     if failures:
         print("\nSOURCE-BOUND LAYOUT VALIDATION: FAIL")
         for failure in failures:
