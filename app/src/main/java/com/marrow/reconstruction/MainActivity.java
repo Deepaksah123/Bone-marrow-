@@ -287,35 +287,23 @@ public final class MainActivity extends FragmentActivity {
                 });
             }
 
-            // These controls are bound by the original VideoLandingFragment view binding.
-            // The original close action dispatches a dedicated banner-dismiss event.
-            View internModeBanner = root.findViewById(R.id.clInternModeBanner);
+            // The original VideoLandingFragment dispatches these controls into its ViewModel.
+            // That event/state observer is not integrated here; do not substitute local visibility
+            // mutations for the original banner-dismiss and tooltip state transitions.
             View closeInternModeBanner = root.findViewById(R.id.btnCloseInternModeBanner);
-            if (internModeBanner != null && closeInternModeBanner != null) {
-                closeInternModeBanner.setOnClickListener(v ->
-                        internModeBanner.setVisibility(View.GONE));
-            }
-
-            // The original second ImageButton (ibTooltip) dispatches the event that opens
-            // InternModeTooltipState. The current-edition flag is not data-bound in this replica,
-            // so keep the verified default tooltip text and do not invent the ED6 Learn More state.
-            View internModeTooltip = root.findViewById(R.id.tooltipInternModeInfo);
             View internModeTooltipTrigger = root.findViewById(R.id.ibTooltip);
-            if (internModeTooltip != null && internModeTooltipTrigger != null) {
-                internModeTooltipTrigger.setOnClickListener(v -> {
-                    TextView tooltipBody = root.findViewById(R.id.txtToolTipBody);
-                    View learnMore = root.findViewById(R.id.tvLearnMore);
-                    if (tooltipBody != null) {
-                        tooltipBody.setText(R.string.text_concise_tooltip_description);
-                    }
-                    if (learnMore != null) learnMore.setVisibility(View.GONE);
-                    internModeTooltip.setVisibility(View.VISIBLE);
-                });
-                View doneInternModeTooltip = root.findViewById(R.id.btnInternModeToolTipDone);
-                if (doneInternModeTooltip != null) {
-                    doneInternModeTooltip.setOnClickListener(v ->
-                            internModeTooltip.setVisibility(View.GONE));
-                }
+            View doneInternModeTooltip = root.findViewById(R.id.btnInternModeToolTipDone);
+            if (closeInternModeBanner != null) {
+                closeInternModeBanner.setClickable(false);
+                closeInternModeBanner.setFocusable(false);
+            }
+            if (internModeTooltipTrigger != null) {
+                internModeTooltipTrigger.setClickable(false);
+                internModeTooltipTrigger.setFocusable(false);
+            }
+            if (doneInternModeTooltip != null) {
+                doneInternModeTooltip.setClickable(false);
+                doneInternModeTooltip.setFocusable(false);
             }
         }
         return root;
