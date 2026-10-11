@@ -47,4 +47,5 @@
     <color name="index_color">#3c8090</color>
     <color name="black">#000000</color>
     <color name="light_yellow_bg">#ffe066</color>
+    <color name="darkGrey">#4a4d4e</color>
 </resources>

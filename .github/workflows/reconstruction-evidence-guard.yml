@@ -273,6 +273,8 @@ jobs:
           grep -Fq 'android:text="@string/concise_mode"' app/src/main/res/layout/fragment_video_landing_replica.xml
 
           # Batch 66: original theme attributes used by the Video NEW badge.
+          grep -Fq '<color name="darkGrey">#4a4d4e</color>' app/src/main/res/values/colors.xml
+
           grep -Fq '<attr name="onSurfaceSepia" format="color" />' app/src/main/res/values/attrs.xml
           grep -Fq '<attr name="onTag" format="color" />' app/src/main/res/values/attrs.xml
           grep -Fq '<item name="onSurfaceSepia">@color/sepia85</item>' app/src/main/res/values/styles.xml

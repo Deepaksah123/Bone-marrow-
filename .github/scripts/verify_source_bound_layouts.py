@@ -182,6 +182,9 @@ def main() -> int:
         failures.append("Videos banner: header has a non-source end constraint")
     if not (ROOT / "app/src/main/res/drawable/bg_yellow_rounded_2_corner.xml").is_file():
         failures.append("Videos banner: missing original NEW badge background drawable")
+    colors_xml = (VALUES / "colors.xml").read_text(encoding="utf-8")
+    if '<color name="darkGrey">#4a4d4e</color>' not in colors_xml:
+        failures.append("Videos banner: missing original darkGrey theme color")
     if 'configureInternModeSwitch(root);' not in (ROOT / "app/src/main/java/com/marrow/reconstruction/MainActivity.java").read_text(encoding="utf-8"):
         failures.append("Videos: original Intern Mode OFF/ON visual state binding is missing")
 
