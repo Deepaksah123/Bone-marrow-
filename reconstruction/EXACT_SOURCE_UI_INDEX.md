@@ -446,3 +446,8 @@ The following fingerprints were calculated from the uploaded original decompiler
 | `sources/kotlin/Allocator.java` | 5149 | `e90d821bb1775baedf5432240985f29b1b7fc07bfd83909656f80f460f589884` |
 | `sources/kotlin/getPlatform.java` | 6455 | `716d77e8ca930276b2014049b9a0489ddda35c50ad71421c761f90c56cb890a2` |
 
+
+
+## Batch 68 — original VideoLandingViewModel factory wiring
+
+The original ViewModel factory is `sources/kotlin/cloneWithUpdatedTimeline.java:2066`, case 103. It constructs `VideoLandingViewModel` from seven source-backed providers, in constructor order: `this.write.removeOnUserLeaveHintListener()`, `this.write.MediaBrowserCompatMediaItem.get()`, `this.write.setPositiveButton.get()`, `this.write.isEnabled.get()`, `removeEmbeddedStyling.AudioAttributesCompatParcelizer()`, `this.write.setSessionImpl.get()`, and `updateViewStates.IconCompatParcelizer()`. The archive implementations of the first four interfaces are `isMediaStoreExternalContentUri`, `w`, `getIntegerCodeForString`, and `areEqual`; the fifth provider delegates through `AppModule` to `RtspHeadersBuilder`, the sixth is the original `Allocator` state container, and the seventh delegates through `CoroutinesDispatchersModule`. The full app-wide provider graph and original ViewModel factory are not integrated locally. Batch 68 records the exact factory boundary; it does not replace it with a hand-built local dependency graph.
