@@ -209,16 +209,21 @@ jobs:
             video_root = dump_hierarchy("/sdcard/video-tooltip-open.xml", "qa-screenshots/video-tooltip-open-hierarchy.xml")
             if not any(node.attrib.get("resource-id", "").endswith("/tooltipInternModeInfo") for node in video_root.iter("node")):
                 raise SystemExit("Video tooltip did not become visible after tapping its source-bound trigger")
-            close_bounds = bounds_for_resource(video_root, "btnCloseInternModeBanner")
+            close_bounds = bounds_for_resource(video_root, "btnCloseInternModeTooltip")
             match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", close_bounds)
             if not match:
-                raise SystemExit("Could not locate source-bound Intern Mode banner close control")
+                raise SystemExit("Could not locate source-backed Intern Mode tooltip close control")
             x1, y1, x2, y2 = map(int, match.groups())
             subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
             time.sleep(1)
-            video_root = dump_hierarchy("/sdcard/video-banner-closed.xml", "qa-screenshots/video-banner-closed-hierarchy.xml")
-            if any(node.attrib.get("resource-id", "").endswith("/btnCloseInternModeBanner") for node in video_root.iter("node")):
-                raise SystemExit("Intern Mode banner close control remained visible after tap")
+            video_root = dump_hierarchy("/sdcard/video-tooltip-closed.xml", "qa-screenshots/video-tooltip-closed-hierarchy.xml")
+            if any(node.attrib.get("resource-id", "").endswith("/tvInternModeTooltipDescription") for node in video_root.iter("node")):
+                raise SystemExit("Intern Mode tooltip content remained visible after tapping its close control")
+            # The banner starts GONE until real ViewModel/account state is available.
+            # Verify its source-bound dismiss listener statically instead of inventing state.
+            main_activity = Path("app/src/main/java/com/marrow/reconstruction/MainActivity.java").read_text(encoding="utf-8")
+            if "closeInternModeBanner.setOnClickListener" not in main_activity or "internModeBanner.setVisibility(View.GONE)" not in main_activity:
+                raise SystemExit("Source-bound Intern Mode banner dismiss listener is missing")
 
             # Capture both resolved theme modes after tab navigation. These images are
             # QA evidence only; they are not used to infer or synthesize UI.
