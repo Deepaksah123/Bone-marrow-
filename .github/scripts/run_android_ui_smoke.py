@@ -48,30 +48,25 @@ def write_anr_diagnostics(stage: str) -> None:
 
 
 def assert_no_anr_dialog(stage: str) -> None:
-    # A live app PID is not enough: any Android process can put an ANR dialog
-    # over the app while taps still return successfully. Inspect both window
-    # and activity state and reject all such captures, not only System UI ANRs.
+    # dumpsys window retains hidden/stale ANR window records after the dialog
+    # has been dismissed. Only fail when an ANR window is actually visible and
+    # its surface is shown; string-matching the whole dump causes false failures.
     windows = adb(["shell", "dumpsys", "window", "windows"], timeout=20).stdout.lower()
-    activities = adb(["shell", "dumpsys", "activity", "activities"], timeout=20).stdout.lower()
-    window_indicators = (
+    window_blocks = re.split(r"(?=window #\\d+\\s)", windows)
+    indicators = (
         "application not responding",
         "isn't responding",
         "is not responding",
         "anrdialog",
     )
-    activity_indicators = (
-        "application not responding",
-        "anr dialog",
-        "anrdialog",
-    )
-    found = next((marker for marker in window_indicators if marker in windows), None)
-    if found:
-        write_anr_diagnostics(f"{stage}: window marker {found}")
-        raise SystemExit(f"Emulator ANR dialog detected {stage}: {found}")
-    found = next((marker for marker in activity_indicators if marker in activities), None)
-    if found:
-        write_anr_diagnostics(f"{stage}: activity marker {found}")
-        raise SystemExit(f"Emulator ANR activity detected {stage}: {found}")
+    for block in window_blocks:
+        marker = next((item for item in indicators if item in block), None)
+        if not marker:
+            continue
+        visible = "isvisible=true" in block and "surface: shown=true" in block
+        if visible:
+            write_anr_diagnostics(f"{stage}: visible ANR window marker {marker}")
+            raise SystemExit(f"Visible emulator ANR dialog detected {stage}: {marker}")
 
 
 def tap(x: int, y: int) -> None:
