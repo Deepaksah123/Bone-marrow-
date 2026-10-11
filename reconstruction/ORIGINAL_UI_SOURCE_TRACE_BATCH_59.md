@@ -50,3 +50,12 @@ The original tooltip layout's default body string is text_concise_tooltip_descri
 ## Result
 
 Core layout/resource references cross-check successfully. Tooltip IDs, hierarchy, text resources, dimensions, and arrow asset have been aligned to the genuine source evidence. Runtime verification remains pending.
+
+## Follow-up source fidelity and CI guard — Batch 60
+
+- Parsed the original binary XML attributes for `tooltip_intern_mode_info`, including its resource-map attribute names and resolved `R.java` symbols, rather than relying only on the layout's tag names.
+- Corrected the replica root attributes to match the original: `enabled=true`, `focusable=true`, `focusableInTouchMode=true`, visible state, clickable root, match-parent dimensions, and `margin_50` horizontal padding. Removed the unsupported `fitsSystemWindows` attribute.
+- Restored the original non-interactive `container` frame flags, CardView enabled state, nested action-row `gravity=end`, and the Learn More end margin. The arrow vector was compared with the archive's actual `tooltip_arrow_v1.xml` and matches its original path.
+- Added `.github/scripts/verify_source_bound_layouts.py` and wired it before the Android build. It checks source-bound IDs for Home/QBank/Tests/Videos/shell/tab item/tooltip, explicit Pro exclusions, XML well-formedness, and tooltip string/dimension/drawable references.
+- Independent content-level checks against the current GitHub files report all expected required IDs present, no excluded IDs reintroduced, and no unresolved tooltip strings or dimensions.
+- The static regression check is now part of CI. The actual Android build/emulator job still needs to finish successfully before runtime QA can be called PASS.
