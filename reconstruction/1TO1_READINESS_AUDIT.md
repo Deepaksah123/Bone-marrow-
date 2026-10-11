@@ -379,3 +379,9 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Runtime interaction testing actually completed and produced 12 screenshots, but the emulator action's own post-script wrapper failed with `exit: Illegal number:` because the script enabled nounset (`set -u`) and the action expects its own `status` variable to remain unset until it captures the script exit.
 - Removed nounset and made the Python return code explicit with `status=$?`, then print the captured log and return that code. This preserves real test failures without breaking the action wrapper.
 - Important evidence boundary: interaction checks for tabs, drawer, search, Intern Mode ON/OFF, tooltip and theme captures ran, but the overall run remains failed due to wrapper status handling. Captures show several content screens are still skeleton/blank states, so runtime interaction success alone is not 1:1 visual fidelity.
+
+
+## Smoke status regex escaping correction — Batch 96 (2026-10-11)
+
+- The next CI attempt exposed a regex parsing bug in the guard itself: the literal shell line `status=$?` was being compiled as a regular expression, where `?` is invalid after an unescaped dollar anchor.
+- Escaped both shell metacharacters in the assertion. This is a guard-only correction; the workflow's smoke return-code handling remains explicit.
