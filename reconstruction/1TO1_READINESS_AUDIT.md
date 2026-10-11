@@ -127,3 +127,10 @@ The original `activity_home_revamp` binary XML (`0x7f0d0033`, obfuscated APK ent
 - Hardened `.github/workflows/android-ui-smoke.yml`: job timeout is 30 minutes, tab taps are constrained to the bottom-navigation screen region, and tooltip smoke checks use original source IDs.
 - **Still not 1:1:** Home/QBank/Tests/Videos data-bound content and complete behavior remain incomplete. Original resource layout entries are binary XML; a verified symbol map is not a pixel comparison.
 - **QA gate:** the workflow definition is updated, but the latest run's result and screenshots/hierarchy artifacts must be inspected before marking emulator QA passed.
+
+## Source-bound layout guard and binary-XML correction — Batch 60 (2026-10-11)
+
+- Decoded the original tooltip binary XML's attribute resource map and aligned the replica root, overlay container, CardView, action row, and Learn More margin to those original attributes. The vector arrow was byte-content inspected as a decoded XML entry and matches the replica.
+- Added `.github/scripts/verify_source_bound_layouts.py` to check required original binding IDs, scope-excluded Pro/upsell IDs, XML parsing, and tooltip resource references. The Android UI smoke workflow now runs this guard before `:app:assembleDebug`.
+- Content-level comparison of the checked-in layouts passes: Home 17/17 in-scope IDs, QBank 2/2, Tests 9/9, Videos 43/43, shell 22/22 in-scope IDs, bottom tab 3/3, tooltip 7/7 binding IDs. Excluded Home/shell Pro IDs remain explicitly out of scope.
+- This is static source/markup validation, not a Gradle or emulator result. The latest workflow status and uploaded screenshots/hierarchies remain unverified; do not mark runtime QA or full 1:1 parity as passed.
