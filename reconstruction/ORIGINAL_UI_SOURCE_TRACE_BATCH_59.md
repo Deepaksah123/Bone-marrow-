@@ -93,3 +93,13 @@ Core layout/resource references cross-check successfully. Tooltip IDs, hierarchy
 - The smoke runner now force-stops and disables the optional `com.google.android.apps.wellbeing` package in the disposable API 31 emulator when present, preventing that unrelated system process from covering the app under test.
 - The ANR guard now checks both `dumpsys window windows` and `dumpsys activity activities` for generic ANR-dialog indicators before and after every screenshot. Any detected ANR fails the run instead of uploading a misleading artifact.
 - This change affects only disposable CI-emulator setup; it does not alter the reconstructed app or claim original-APK parity. Review the next run's actual artifact before accepting runtime QA.
+
+
+## Intern Mode switch event boundary — Batch 68
+
+- The original video layout declares `switchInternMode` with `android:checked="false"` and theme-bound OFF track/thumb colors. The existing replica additionally attached a local listener that only changed the status label and local colors; it did not reproduce the original edition/state transition.
+- The verified trace covers the ON/OFF color branches in `sources/kotlin/setScrollPosition.java`, but the current evidence set does not yet connect the switch event through the original ViewModel/observer flow and its side effects.
+- Removed the local-only fake toggle. The replica now renders the verified XML default state and original `concise_mode` label, while keeping the switch non-actionable until its actual source event/state path is traced. This is an explicit unresolved behavior, not a parity claim.
+- Updated emulator QA to stop tapping the unverified switch or accepting synthetic ON/OFF screenshots. It still checks the verified OFF default, captures that state, and tests the independently source-traced tooltip open/Done flow.
+- The source-bound verifier now fails if a local-only `setOnCheckedChangeListener`/visual-state imitation is reintroduced.
+- Remaining for this control: trace the exact original listener/event, ViewModel state mutation, observer-to-binding updates, persisted/default state, and transition side effects before enabling it.
