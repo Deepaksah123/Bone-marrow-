@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/backgroundColor">
+>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/tvModuleGenerated"
@@ -11,9 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_20dp"
         android:visibility="gone"
-        app:cardBackgroundColor="@color/shell_surface"
+        app:cardBackgroundColor="?attr/colorSurfaceVariant19"
         app:cardCornerRadius="100dp"
         app:cardElevation="4dp"
+        app:strokeColor="?attr/onSurfaceBgOutline4"
+        app:strokeWidth="?attr/cardViewStrokeWidth"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -24,28 +26,31 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="8dp">
+            android:paddingHorizontal="19dp"
+            android:paddingVertical="6dp">
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:contentDescription="@null"
+                android:layout_marginEnd="@dimen/margin_4dp"
                 android:src="@drawable/ic_magic_module_complete_icon" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/margin_6dp"
                 android:text="@string/label_magic_module_new_module"
-                android:textColor="@color/shell_text"
-                android:textSize="14sp" />
+                android:textColor="?attr/colorOnSurface"
+                style="?attr/subtext2" />
 
             <ImageView
                 android:layout_width="10dp"
                 android:layout_height="7dp"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="@dimen/margin_6dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_arrow_down" />
+                android:src="@drawable/ic_arrow_down"
+                android:tint="?attr/onBackgroundSurface3" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
