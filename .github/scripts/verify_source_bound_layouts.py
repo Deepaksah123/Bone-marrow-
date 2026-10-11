@@ -116,6 +116,7 @@ def main() -> int:
         'android:paddingHorizontal="19dp"',
         'android:paddingVertical="6dp"',
         'android:layout_marginEnd="@dimen/margin_4dp"',
+        'android:layout_marginHorizontal="@dimen/margin_6dp"',
         'android:layout_marginStart="@dimen/margin_6dp"',
         'style="?attr/subtext2"',
         'android:tint="?attr/onBackgroundSurface3"',
