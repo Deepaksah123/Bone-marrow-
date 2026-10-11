@@ -391,3 +391,20 @@ Intern Mode switch pipeline source evidence
 
 
 Source file `sources/kotlin/TransformationChildLayout.java` declares the runtime type `com.marrow2.ui.video.landing.model.VideoLandingUIState` in Kotlin metadata. Verified fields: `editionSwitchBannerText`, `isInternModeEnabled`, `isInternModeOn`, `showPytBanner`, `sortOrder`, `showInternModeSnackBar`. The two Intern Mode booleans have distinct meanings; constructor defaults do not substitute for loaded course/account state.
+
+
+## Intern Mode dependency source fingerprints — Batch 66
+
+SHA-256 fingerprints calculated directly from the genuine `base.apk_Decompiler.com.zip` entries:
+
+| Original decompiler archive entry | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/kotlin/setScrollPosition.java` | 226054 | `55f60c96dcde612b1e13108ce4ba85133d03525e676d3b3705bfca375d488615` |
+| `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java` | 199604 | `a57ae71953d5ca86534f5fbe8083930f38028891d9ace152b9ae22a8454a29cd` |
+| `sources/kotlin/TransformationChildLayout.java` | 8042 | `3fb57e84c3c9b43ca35f3b704a08935cbfa8bb85adf20060066ea8780ef0c7de` |
+| `sources/kotlin/isMediaStoreExternalContentUri.java` | 56476 | `040bc15050bf66bbc0c16316deae5784f26a72cf62ac110181c00a87120ab704` |
+| `sources/kotlin/removeStaleSpans.java` | 180449 | `bb786f0422625f9fbb5fccd02f803c8ab058add818fde7cdebd2b1cd8f9a2647` |
+| `sources/kotlin/ExpandableTransformationBehavior.java` | 4104 | `e8418abb8185b50d5fb1628a395f1c2294bbc8ad711161d929d3770fedf16b8c` |
+| `sources/kotlin/isEncodingHighResolutionPcm.java` | 1873 | `d69352518811462df0194843fb2eed3ecefc5e3137f447a68222d688bbde3d26` |
+| `sources/kotlin/unlockFolder.java` | 12255 | `cebf57a747d83bfdff0c5fbb423315aadddbb9b840b1772ce94ac0757ffebf65` |
+
