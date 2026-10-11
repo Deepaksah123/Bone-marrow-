@@ -362,3 +362,10 @@ The original `InternModelLoadedUIData` model (`ExpandableTransformationBehavior.
 Batch 69 restored the four original transition strings verbatim from `resources/res/values/strings.xml`. Regression tests verify those values, both tooltip descriptions and `concise_mode`. The local loading overlay and tooltip include remain hidden because their original state observers are not integrated; the message field remains unpopulated rather than inventing state.
 
 The nine existing Intern Mode strings checked against the original archive matched exactly. The four transition strings were missing local resource entries and are now present verbatim.
+
+
+## Batch 70 — original drawer event boundary
+
+The original `HomeUIActivityViewModel` source confirms these ViewModel-level drawer actions: About Us emits `https://www.neurogliahealth.com/` / `About Us`; FAQs emits `https://www.marrow.com/home/faq` / `FAQs`; Report Video Piracy emits `https://medengageclinical.firebaseapp.com/reportpiracy.html` / `Report Video Piracy`; Terms emits `https://www.marrow.com/home/terms` / `Terms`. Know More, Marrow Notes, Rate Us, and Share the App emit typed singleton effect events instead of URL/title payloads. Source: `sources/com/marrow2/ui/main/viewmodel/HomeUIActivityViewModel.java` methods around lines 766–860 and `sources/kotlin/onDataRangeChanged.java` event definitions.
+
+This is not a complete UI binding map. Original host `zabz.onCreate(Bundle)` is decompiler-skipped, the drawer row-to-handler mapping is not fully recovered, account/course visibility predicates are unresolved, and the final effect consumer is not integrated. Therefore the local drawer must not wire these handlers or hard-code the destinations yet. See [Drawer ViewModel Event Trace — Batch 70](DRAWER_VIEWMODEL_EVENT_TRACE_BATCH_70.md).
