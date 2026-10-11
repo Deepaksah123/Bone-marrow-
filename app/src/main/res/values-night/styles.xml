@@ -22,6 +22,9 @@
         <item name="colorSurfaceVariant13">@color/brown13</item>
         <item name="colorSurfaceVariant5">@color/n_80</item>
         <item name="colorSurfaceVariant16">@color/mb_50_a_20</item>
+        <item name="colorSurfaceVariant19">@color/n_80</item>
+        <item name="onSurfaceBgOutline4">@color/c_988d58</item>
+        <item name="cardViewStrokeWidth">1dp</item>
         <item name="colorPrimary">@color/mb_50</item>
         <item name="colorSurface">@color/n_80</item>
         <item name="backdrop50">@color/n_00_o_50</item>
