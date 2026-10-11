@@ -76,7 +76,7 @@ jobs:
           grep -Fq 'android:paddingTop="4dp"' app/src/main/res/layout/fragment_home_test_replica.xml
           grep -Fq 'android:paddingBottom="6dp"' app/src/main/res/layout/fragment_home_test_replica.xml
           grep -Fq 'app:expandedTitleMarginStart="@dimen/home_test_toolbar_horizontal_margin"' app/src/main/res/layout/fragment_home_test_replica.xml
-          grep -Fq 'android:paddingBottom="@dimen/margin_10dp"' app/src/main/res/layout/fragment_home_test_replica.xml
+          grep -Fq 'android:layout_marginBottom="@dimen/margin_10dp"' app/src/main/res/layout/fragment_home_test_replica.xml
           grep -Fq 'style="?attr/heading4"' app/src/main/res/layout/test_tab_toolbar_replica.xml
           grep -Fq 'android:background="?attr/colorSurfaceVariant5"' app/src/main/res/layout/test_tab_toolbar_replica.xml
           grep -Fq '<color name="mb_50">#62c8df</color>' app/src/main/res/values/colors.xml
