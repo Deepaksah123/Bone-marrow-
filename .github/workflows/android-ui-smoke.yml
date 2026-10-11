@@ -88,11 +88,14 @@ jobs:
             hierarchy = Path("qa-screenshots/launch-hierarchy.xml")
             root = ET.parse(hierarchy).getroot()
             targets = ["QBank", "Tests", "Videos", "Home"]
+            # UIAutomator omits GONE views. Check stable, source-backed views that
+            # should exist in each tab's initial visible hierarchy, not loading proxies
+            # whose visibility depends on asynchronous ViewModel state.
             expected_root_ids = {
-                "QBank": "progressLoadList",
-                "Tests": "loadingContainer",
-                "Videos": "tvInternModeStatus",
-                "Home": "shimmerMain",
+                "QBank": "rvSubjectList",
+                "Tests": "tabs",
+                "Videos": "rootScrollView",
+                "Home": "nestedScrollView",
             }
             screen_height = 0
             for node in root.iter("node"):
