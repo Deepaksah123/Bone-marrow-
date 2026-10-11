@@ -403,7 +403,7 @@ def validate_png_capture(image_path: Path, *, minimum_width: int = 320, minimum_
 
 
 def main() -> None:
-    # A cold API 30 emulator can report boot-complete while core phone/System UI
+    # A cold API 35 emulator can report boot-complete while core phone/System UI
     # services are still under heavy startup load. Recent evidence showed ANRs in
     # com.android.phone and com.android.systemui before any replica-app ANR; allow
     # the emulator to settle before installing and interacting with the app.
@@ -474,16 +474,13 @@ def main() -> None:
     hierarchy = wait_for_tabs(timeout=30)
     ensure_app()
 
-    # Intern Mode OFF/ON state and source-traced tooltip open/Done flow.
+    # Keep the verified XML default state visible, but do not claim the original
+    # Intern Mode event/ViewModel transition works until its source path is traced.
+    # The switch remains deliberately non-actionable rather than faking ON/OFF UI.
     hierarchy = tap_tab("Videos")
-    hierarchy = tap_view("switchInternMode")
-    assert_switch_checked(hierarchy, "switchInternMode", True)
-    assert_text(hierarchy, "tvInternModeStatus", "Intern Mode : ON")
-    screenshot("video-switch-on")
-    hierarchy = tap_view("switchInternMode")
     assert_switch_checked(hierarchy, "switchInternMode", False)
     assert_text(hierarchy, "tvInternModeStatus", "Intern Mode : OFF")
-    screenshot("video-switch-off")
+    screenshot("videos-intern-mode-unbound")
     hierarchy = tap_view("ibTooltip")
     assert_resource_visibility(hierarchy, "tooltipInternModeInfo", True)
     screenshot("video-tooltip-open")
@@ -506,7 +503,7 @@ def main() -> None:
     # screen/state capture is absent, corrupt, or has an invalid PNG header.
     required_captures = (
         "home", "qbank", "tests", "videos", "drawer-open", "search-open",
-        "video-switch-on", "video-switch-off", "video-tooltip-open",
+        "videos-intern-mode-unbound", "video-tooltip-open",
         "video-tooltip-closed", "video-dark", "home-dark",
     )
     manifest = []
