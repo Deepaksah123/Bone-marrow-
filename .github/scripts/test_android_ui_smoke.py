@@ -10,7 +10,7 @@ from unittest.mock import patch
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-from run_android_ui_smoke import assert_text, find_node, node_center, tab_is_selected, tap, validate_png_capture, visible_anr_marker, visible_system_ui_anr, wait_button_center
+from run_android_ui_smoke import assert_switch_interaction_deferred, assert_text, find_node, node_center, tab_is_selected, tap, validate_png_capture, visible_anr_marker, visible_system_ui_anr, wait_button_center
 
 
 class VisibleAnrMarkerTests(unittest.TestCase):
@@ -155,6 +155,21 @@ class AccessibilityParserTests(unittest.TestCase):
         self.assertIn("modeSwitch.setClickable(false);", method)
         self.assertIn("modeSwitch.setFocusable(false);", method)
         self.assertNotIn("setOnCheckedChangeListener", method)
+
+    def test_deferred_intern_mode_switch_requires_non_clickable_and_non_focusable_node(self) -> None:
+        root = ET.fromstring(
+            '<hierarchy><node resource-id="com.marrow.reconstruction.replica:id/switchInternMode" '
+            'clickable="false" focusable="false" checked="false" /></hierarchy>'
+        )
+        assert_switch_interaction_deferred(root, "switchInternMode")
+
+    def test_deferred_intern_mode_switch_rejects_clickable_node(self) -> None:
+        root = ET.fromstring(
+            '<hierarchy><node resource-id="com.marrow.reconstruction.replica:id/switchInternMode" '
+            'clickable="true" focusable="false" checked="false" /></hierarchy>'
+        )
+        with self.assertRaises(SystemExit):
+            assert_switch_interaction_deferred(root, "switchInternMode")
 
     def test_source_bound_text_assertion_matches_exact_intern_mode_label(self) -> None:
         root = ET.fromstring(
