@@ -406,10 +406,10 @@ Source file `sources/kotlin/TransformationChildLayout.java` declares the runtime
 | `btnCloseInternModeBanner` | `IconCompatParcelizer` | `TransformationChildCard.write.INSTANCE` |
 | `ibTooltip` | `MediaMetadataCompat` | `TransformationChildCard.AudioAttributesCompatParcelizer.INSTANCE` |
 | `btnInternModeToolTipDone` | `onPrepareFromUri.IconCompatParcelizer` | `TransformationChildCard.AudioAttributesImplApi21Parcelizer.INSTANCE` |
+| `tvLearnMore` | `onPrepareFromUri.RemoteActionCompatParcelizer` | `TransformationChildCard.AudioAttributesImplApi26Parcelizer.INSTANCE` |
 | `switchInternMode` | `onPlayFromSearch` | `TransformationChildCard.MediaBrowserCompatItemReceiver(checked)` |
 
-Evidence: `sources/kotlin/setScrollPosition.java:2816–2853`, `sources/kotlin/buildAndPrepareSampleStreamWrappers.java:24–60, 129–140`, and `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java:2011–2038`. The first two event coroutine bodies are not fully decompiled; the local app leaves these controls deferred instead of approximating their state effects.
-
+Evidence: `sources/kotlin/setScrollPosition.java:2794–2853`, `sources/kotlin/buildAndPrepareSampleStreamWrappers.java:24–60, 129–140`, and `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java:2011–2038`. The first two event coroutine bodies and Learn More destination are not fully decompiled; the local app leaves these controls deferred instead of approximating their state effects.
 
 ## Batch 66 — Intern Mode dependency source fingerprints
 
