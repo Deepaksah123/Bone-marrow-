@@ -427,8 +427,8 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 
 - Re-opened the exact decompiler archive and checked original manifest declarations against the local manifest and actual decompiled class files.
 - Confirmed original Application `com.marrow.TrainingApplication`; its `onCreate()` decompilation is skipped (6,474 instruction units), so startup initialization cannot be faithfully inferred from the available Java dump.
-- Confirmed original AppComponentFactory `kotlin._coerceBooleanFromInt` exists at `sources/kotlin/_coerceBooleanFromInt.java`, extends Android `AppComponentFactory`, and overrides instantiation for Activity/Application/receiver/provider/service, including an instance-replacement hook. The local manifest declares neither the original Application nor the factory.
-- Confirmed the original launcher is `com.marrow.ui.activities.onboarding.splash.SplashActivity` with `singleTask`, portrait and `SplashTheme`; the original main host is `kotlin.zadb` with `singleTop` and `@style/Marrow2`. The local launcher remains `.MainActivity`.
+- Confirmed from the raw original APK manifest that AppComponentFactory is `o._coerceBooleanFromInt`; its decompiler alias is `sources/kotlin/_coerceBooleanFromInt.java` (`package kotlin`). It extends Android `AppComponentFactory` and overrides Activity/Application/receiver/provider/service instantiation, including an instance-replacement hook. The local manifest declares neither the original Application nor the factory.
+- Confirmed the original launcher is `com.marrow.ui.activities.onboarding.splash.SplashActivity` with `singleTask`, portrait and `SplashTheme`; the raw original main host is `o.zadb` with `singleTop` and `@style/Marrow2` (decompiler alias `kotlin.zadb`). The local launcher remains `.MainActivity`.
 - Cross-checked the source-native Fragment transaction helper `sources/kotlin/copyToBuffer.java:163–192`: original tags use `Home_ + Class.getName()`, existing `Home_` fragments are removed, and the selected original class is instantiated into `R.id.upperContainer`. Local wrapper tags/cleanup now match this convention; local wrapper classes are still not the original fragments.
 - Explicitly retained the startup boundary: `SplashActivity.onCreate`, `TrainingApplication.onCreate`, `zabr.onCreate`, and `zaO.onCreate` are incomplete in the decompiler output; `zadb.onCreate` also contains incomplete/decompiler-stub regions. Directly swapping the launcher manifest to these classes is not a verified integration and was not done.
 - Updated `reconstruction/SOURCE_TO_SCREEN_MAP.md` with this source-backed bootstrap gap. No screenshot material, placeholder content, or unrelated assets were introduced.
@@ -460,3 +460,11 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - The reconstruction keeps those title fields unpopulated because it has not integrated the original course-config/ViewModel flow. A source-layout guard now rejects reintroduction of the screenshot-derived static title strings and verifies the source app label `Marrow`.
 - The bytecode call references are direct DEX evidence; this does not establish what strings a particular user/account receives at runtime, nor does it make the original ViewModel runnable in the current app.
 
+
+
+## Raw DEX package-name correction — Batch 65 (2026-10-11)
+
+- The decompiler Java archive remaps many original `o.*` runtime classes into source paths declared as `package kotlin`. The decoded decompiler manifest therefore showed aliases `kotlin.zadb` and `kotlin._coerceBooleanFromInt`, but the raw original APK binary manifest strings are `o.zadb` and `o._coerceBooleanFromInt`; raw DEX class descriptors confirm the `Lo/...` package.
+- The four tab Fragment runtime descriptors are `Lo/makeGooglePlayServicesAvailable;`, `Lo/ResidentKeyRequirementUnsupportedResidentKeyRequirementException;`, `Lo/WalletConstantsCardNetwork;`, and `Lo/setScrollPosition;`. The original helper uses `"Home_" + cls.getName()`, so exact runtime tags use `Home_o.*`, not `Home_kotlin.*`.
+- Corrected the local shell's four destination tags and added a guard that rejects decompiler package aliases in runtime tags. The Fragment objects themselves are still local wrappers; no original class has been claimed as integrated.
+- This correction supersedes earlier documentation that described the decompiler package aliases as original runtime class names. Raw APK manifest strings and DEX descriptors are now the authority for runtime identity.
