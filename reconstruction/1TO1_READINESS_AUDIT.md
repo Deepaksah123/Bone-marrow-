@@ -385,3 +385,8 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 
 - The next CI attempt exposed a regex parsing bug in the guard itself: the literal shell line `status=$?` was being compiled as a regular expression, where `?` is invalid after an unescaped dollar anchor.
 - Escaped both shell metacharacters in the assertion. This is a guard-only correction; the workflow's smoke return-code handling remains explicit.
+
+
+## Literal shell token matcher hardening — Batch 97 (2026-10-11)
+
+- Simplified the workflow guard to match the shell status assignment with regex character classes (`[$]` and `[?]`) rather than escape sequences, avoiding Python-string/regex ambiguity.
