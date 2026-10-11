@@ -478,6 +478,12 @@ def main() -> None:
     assert_switch_checked(hierarchy, "switchInternMode", False)
     assert_switch_interaction_deferred(hierarchy, "switchInternMode")
     assert_text(hierarchy, "tvInternModeStatus", "Intern Mode : OFF")
+    # Loading copy depends on the original InternModelLoadedUIData state stream.
+    # Until that stream is integrated, no loading overlay or invented message may appear.
+    assert_resource_visibility(hierarchy, "internModeSwitchOverlay", False)
+    assert_resource_visibility(hierarchy, "llInternModeSwitchView", False)
+    assert_resource_visibility(hierarchy, "groupInternModeSwitch", False)
+    assert_resource_visibility(hierarchy, "tvInternModeSwitchMsg", False)
     screenshot("videos-intern-mode-unbound")
     # Original tooltip open/dismiss actions dispatch ViewModel events. The local
     # ViewModel is absent, so verify the controls are deliberately non-actionable.
