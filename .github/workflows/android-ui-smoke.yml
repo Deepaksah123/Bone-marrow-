@@ -219,7 +219,7 @@ jobs:
                 return ""
             # Source-traced Intern Mode switch updates the status string and resolved colors.
             switch_bounds = bounds_for_resource(video_root, "switchInternMode")
-            match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", switch_bounds)
+            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", switch_bounds)
             if not match:
                 raise SystemExit("Could not locate source-bound Intern Mode switch")
             x1, y1, x2, y2 = map(int, match.groups())
@@ -231,7 +231,7 @@ jobs:
             subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/video-switch-on.png"], check=True, timeout=30)
             subprocess.run(["adb", "pull", "/sdcard/video-switch-on.png", "qa-screenshots/video-switch-on.png"], check=True, stdout=subprocess.DEVNULL, timeout=30)
             switch_bounds = bounds_for_resource(video_root, "switchInternMode")
-            match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", switch_bounds)
+            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", switch_bounds)
             if not match:
                 raise SystemExit("Could not locate Intern Mode switch after ON state")
             x1, y1, x2, y2 = map(int, match.groups())
