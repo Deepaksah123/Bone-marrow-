@@ -62,7 +62,7 @@ def main() -> int:
         if present_excluded:
             failures.append(f"{surface}: excluded monetization IDs present: {', '.join(present_excluded)}")
         print(f"- {surface}: {len(expected & actual)}/{len(expected)} traced IDs")
-    if not (ROOT / "reconstruction/ORIGINAL_SOURCE_UI_TRACE_BATCH_59.md").is_file():
+    if not (ROOT / "reconstruction/EXACT_SOURCE_UI_INDEX.md").is_file():
         failures.append("Missing original-source trace record")
     if failures:
         print("SOURCE-BOUND LAYOUT CHECK: FAIL")
