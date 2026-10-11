@@ -372,3 +372,10 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 
 - The latest CI run exposed a test-harness issue: the workflow contract checker treated the dollar sign in `exit "$status"` as a regular-expression anchor, so it falsely failed before app build/emulator steps.
 - Escaped the dollar sign in the checker pattern so it validates the intended literal shell variable expansion. The workflow itself was already using POSIX-safe syntax; this commit fixes the guard rather than weakening the contract.
+
+
+## Emulator action exit-status compatibility correction — Batch 95 (2026-10-11)
+
+- Runtime interaction testing actually completed and produced 12 screenshots, but the emulator action's own post-script wrapper failed with `exit: Illegal number:` because the script enabled nounset (`set -u`) and the action expects its own `status` variable to remain unset until it captures the script exit.
+- Removed nounset and made the Python return code explicit with `status=$?`, then print the captured log and return that code. This preserves real test failures without breaking the action wrapper.
+- Important evidence boundary: interaction checks for tabs, drawer, search, Intern Mode ON/OFF, tooltip and theme captures ran, but the overall run remains failed due to wrapper status handling. Captures show several content screens are still skeleton/blank states, so runtime interaction success alone is not 1:1 visual fidelity.

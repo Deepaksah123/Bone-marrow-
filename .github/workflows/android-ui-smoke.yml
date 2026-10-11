@@ -91,9 +91,8 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio -memory 2048 -cores 2
           script: |
-            set -eu
-            status=0
-            python3 .github/scripts/run_android_ui_smoke.py > qa-screenshots/smoke-run.log 2>&1 || status=$?
+            python3 .github/scripts/run_android_ui_smoke.py > qa-screenshots/smoke-run.log 2>&1
+            status=$?
             cat qa-screenshots/smoke-run.log
             exit "$status"
 

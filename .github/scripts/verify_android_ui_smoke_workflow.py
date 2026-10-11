@@ -17,7 +17,7 @@ def main() -> int:
         "pre-emulator evidence directory": "name: Prepare QA evidence directory before emulator startup",
         "run context records invocation state": "emulator_script_invoked=false",
         "smoke stdout retained in artifact": "python3 .github/scripts/run_android_ui_smoke.py > qa-screenshots/smoke-run.log 2>&1",
-        "POSIX shell mode": "set -eu",
+        "smoke status captured after runner": "status=$?",
         "smoke exit status propagated": r'exit "\$status"',
         "unconditional evidence upload": r"name: Upload UI smoke screenshots, interaction captures, and failure diagnostics\s*\n\s+if:\s*always\(\)",
         "missing evidence fails the upload": r"if-no-files-found:\s*error",
