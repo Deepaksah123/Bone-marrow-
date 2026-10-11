@@ -38,9 +38,7 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/tabs"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbarGTa"
@@ -79,23 +77,17 @@
 
         <include
             android:id="@+id/emptyLayout"
-            layout="@layout/loader_empty_layout_replica"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
+            layout="@layout/loader_empty_layout_replica" />
 
         <include
             android:id="@+id/loadingContainer"
-            layout="@layout/loading_layout_replica"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
+            layout="@layout/loading_layout_replica" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMainList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/margin_10dp"
+            android:layout_marginBottom="@dimen/margin_10dp"
             android:clipToPadding="false"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
