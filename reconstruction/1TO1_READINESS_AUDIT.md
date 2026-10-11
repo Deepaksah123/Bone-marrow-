@@ -294,3 +294,9 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Added `.github/scripts/verify_android_ui_smoke_workflow.py` to check the emulator workflow's explicit resource and evidence-retention invariants: 30-minute job ceiling, 18-minute emulator-step timeout, 2048 MB/2-core emulator profile, non-cancelling concurrency, unconditional artifact upload, failure on missing artifacts, and 14-day retention.
 - Wired the contract check into the workflow before source-bound layout validation and included the script in path filters so future edits run the gate.
 - This prevents the CI resource profile from silently drifting away from the documented runner investigation. It does not test app fidelity or replace screenshot/hierarchy review; emulator runtime QA and full 1:1 parity remain unverified.
+
+
+## CI path-filter completeness — Batch 83 (2026-10-11)
+
+- Verified the new smoke-workflow contract script is listed under both push and pull-request path filters, so edits to the contract guard itself trigger the intended QA workflow rather than relying on an unrelated workflow-file edit.
+- This is trigger coverage only; the new contract check must pass in CI and runtime screenshot artifacts still require inspection.
