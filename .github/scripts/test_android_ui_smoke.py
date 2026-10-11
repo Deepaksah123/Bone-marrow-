@@ -166,7 +166,7 @@ class AccessibilityParserTests(unittest.TestCase):
         start = source.index("View closeInternModeBanner = root.findViewById")
         end = source.index("\n        }\n        return root;", start)
         block = source[start:end]
-        for control in ("closeInternModeBanner", "internModeTooltipTrigger", "doneInternModeTooltip"):
+        for control in ("closeInternModeBanner", "internModeTooltipTrigger", "doneInternModeTooltip", "learnMoreInternMode"):
             with self.subTest(control=control):
                 self.assertIn(f"{control}.setClickable(false);", block)
                 self.assertIn(f"{control}.setFocusable(false);", block)
