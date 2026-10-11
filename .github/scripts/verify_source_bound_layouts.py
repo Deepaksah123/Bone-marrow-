@@ -117,7 +117,7 @@ def main() -> int:
             )
             try:
                 start = activity_java.index("View closeInternModeBanner = root.findViewById")
-                end = activity_java.index("\\n        }\\n        return root;", start)
+                end = activity_java.index("\n        }\n        return root;", start)
                 event_block = activity_java[start:end]
                 for control in video_event_controls:
                     if f"{control}.setClickable(false);" not in event_block:
