@@ -76,7 +76,7 @@ def main() -> int:
         required = set(spec["required"])
         missing = sorted(required - found)
         excluded_present = sorted(set(spec["excluded"]) & found)
-        unexpected = sorted(found - required)
+        unexpected = sorted(found - required - set(spec["excluded"]))
         if missing:
             failures.append(f"{surface}: missing original IDs: {', '.join(missing)}")
         if excluded_present:
