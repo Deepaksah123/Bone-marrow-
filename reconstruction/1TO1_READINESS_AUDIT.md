@@ -450,3 +450,13 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Smoke QA only checks the source-derived title-view visibility states, not screenshot-derived title text. Static validation/build must be rerun on the batch commit; runtime QA must be evaluated separately.
 - This correction supersedes the historical Batch 98 note that described screenshot-transcribed titles as an implementation change. Screenshots remain QA/reference material only; they are no longer used as the source of those strings.
 
+
+
+## Course-config title setter recovered from original DEX — Batch 64 (2026-10-11)
+
+- Inspected the original APK's `classes.dex` directly after the decompiler skipped `HomeUIActivityViewModel.read.invokeSuspend` (306 instruction units).
+- Recovered three direct invoke-virtual references to the original `DataBuffer.read(String)` setter inside `Lcom/marrow2/ui/main/viewmodel/HomeUIActivityViewModel$read;->invokeSuspend`.
+- Each setter call follows a source method reference to `CourseConfigV2.CourseStrings.getQbankHeaderTitle()`, `getTestHeaderTitle()`, or `getVideoHeaderTitle()`. The title strings are therefore course-configuration values, not fixed static labels inferred from screenshots.
+- The reconstruction keeps those title fields unpopulated because it has not integrated the original course-config/ViewModel flow. A source-layout guard now rejects reintroduction of the screenshot-derived static title strings and verifies the source app label `Marrow`.
+- The bytecode call references are direct DEX evidence; this does not establish what strings a particular user/account receives at runtime, nor does it make the original ViewModel runnable in the current app.
+
