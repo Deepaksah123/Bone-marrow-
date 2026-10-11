@@ -7,10 +7,11 @@ This batch traces the original drawer-facing event model and the source ViewMode
 ## Verified source chain
 
 - The original host is `sources/kotlin/zabz.java` (runtime DEX class `o.zabz`). Its `onCreate(Bundle)` body is decompiler-skipped, so its full listener-to-event wiring cannot be asserted from this Java output.
-- The original host does expose many concrete click-listener registrations in the recovered source around lines 2206–2337, and a tab-state/render method around lines 2522–2595. Those fragments do not by themselves establish a complete drawer row-to-listener map.
+- The original host exposes concrete click-listener registrations around lines 2206–2337, tab rendering around lines 2522–2595, and the ViewModel event-effect collector around lines 1419–1508. The collector is recovered; the full drawer row-to-listener map is still incomplete.
 - `sources/com/marrow2/ui/main/viewmodel/HomeUIActivityViewModel.java` consumes `onDataRangeChanged` events in its recovered event-dispatch coroutine (around lines 620–650) and translates them into navigation/effect state. Its state/effect consumer is not integrated into the reconstruction.
 - `sources/kotlin/onDataRangeChanged.java` defines the original event variants, including URL/title payload events and singleton effects. These are typed ViewModel events, not permission to map arbitrary local rows directly to destinations.
-- The drawer item model uses source types including `CourseConfigV2NavDrawerItemFreeExtension`, `CourseConfigV2NavDrawerItemRateUs`, and `CourseConfigV2NavDrawerItems`; some selection/filtering logic in `getNavDrawerItems.java` and `getNavDrawerKey.java` is decompiler-skipped.
+- The drawer item model uses source types including `CourseConfigV2NavDrawerItemFreeExtension`, `CourseConfigV2NavDrawerItemRateUs`, and `CourseConfigV2NavDrawerItems`; selection/filtering logic in `getNavDrawerItems.java` and `getNavDrawerKey.java` is decompiler-skipped.
+- The original host event collector in `zabz.java:1419–1508` confirms effect consumption: URL/title payloads are sent to `CmcdConfigurationRequestConfig.write(...)`; the Share App event checks connectivity and starts the original share flow; Know More starts the original `PlanActivity` intent; Marrow Notes, Rate Us, Terms, Report Piracy, and other singleton events dispatch to original host helpers/activities. This identifies the original consumer path but does not integrate that path into the local reconstruction.
 
 ## Explicitly recovered ViewModel actions
 
@@ -25,13 +26,13 @@ This batch traces the original drawer-facing event model and the source ViewMode
 | `onPause()` | Analytics key `click_t_c`; emits URL/title `https://www.marrow.com/home/terms`, `Terms` |
 | `onCommand()` | Analytics key `click_sharetheapp`; emits singleton `onDataRangeChanged.onCustomAction` |
 
-These are verified ViewModel-level actions only. They do **not** establish which current reconstructed drawer view ID maps to each handler, row visibility predicates for the active account/course, or the final effect handling (browser, in-app web view, share sheet, rating flow, etc.). Those connections remain unresolved.
+These are verified ViewModel-level actions plus the corresponding original host effect consumer. They still do **not** establish which current reconstructed drawer view ID maps to each handler, nor row visibility predicates for the active account/course. The consumer is source-recovered but not integrated into the local reconstruction.
 
 ## Source fingerprints (from original decompiler archive)
 
 - `sources/com/marrow2/ui/main/viewmodel/HomeUIActivityViewModel.java`: 95,459 bytes; SHA-256 `8bde2c019f605b480d45baad87e12105db5f3bdb15460ea6b360b9470ca55936`
 - `sources/kotlin/zadb.java`: 71,238 bytes; SHA-256 `4fc68899a3857dad490acc5102fc55c0bda58952162b599d080e14f977ce1bbc`
-- `sources/kotlin/zabz.java`: 210,323 bytes; SHA-256 `6ef9ba909d81f653770ac4d86ecf34b07f3dc3dc0af5df8248ac2f37bea58676`
+- `sources/kotlin/zabz.java`: 210,323 bytes; SHA-256 `6ef9ba909d81f653770ac4d86ecf34b07f3dc3dc0af5df8248ac2f37bea58676` (effect collector around lines 1419–1508)
 - `sources/kotlin/onDataRangeChanged.java`: 15,764 bytes; SHA-256 `<escape>not recorded in this pass</escape>`
 - `sources/kotlin/getNavDrawerItems.java`: 5,649 bytes; SHA-256 `4e3a20d61587f1c268a9c91a49dbbafe0cf542ffced5babbc7b040822b36709e`
 - `sources/kotlin/CourseConfigV2NavDrawerItems.java`: 811 bytes; SHA-256 `aceee54924cc0938269fde03b937ef82e8efdd5abb210addf170259e29287599`
