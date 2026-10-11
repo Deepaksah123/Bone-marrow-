@@ -279,3 +279,44 @@ The binding constructor and click listeners now support a more exact event map:
 | `switchInternMode` | `buildAndPrepareSampleStreamWrappers.onPlayFromSearch` | `setScrollPosition.java:2816–2821` | `TransformationChildCard.MediaBrowserCompatItemReceiver(checked)` |
 
 The ViewModel handles these distinct events in `VideoLandingViewModel.java:2011–2038`: `write.INSTANCE` resets portions of `VideoLandingUIState` and launches a coroutine; `AudioAttributesCompatParcelizer.INSTANCE` launches a separate coroutine; `AudioAttributesImplApi21Parcelizer.INSTANCE` updates the `ExpandableBehavior` state to false; `AudioAttributesImplApi26Parcelizer.INSTANCE` resets the current `IntegrityManager` state. The exact downstream effects of the first two coroutine bodies and the Learn More destination are not fully recoverable from this decompiler output, so this table records the proven event path without inventing a local state transition. Batch 67 keeps these controls non-actionable rather than substituting direct visibility/navigation changes.
+
+
+## Batch 68 — original VideoLandingViewModel factory and injected dependency trace
+
+## Verified original dependency construction
+
+The genuine decompiler archive contains the application ViewModel factory at `sources/kotlin/cloneWithUpdatedTimeline.java`. Its `read()` switch constructs the original `VideoLandingViewModel` at line 2066 (case 103) with these seven constructor arguments, in order:
+
+| Constructor position | Exact factory argument | Original type / source evidence | Status in local replica |
+|---:|---|---|---|
+| 1 | `this.write.removeOnUserLeaveHintListener()` | Returns `isMediaStoreExternalContentUri`, the sole archive class implementing `isEncodingHighResolutionPcm`; its constructor takes original use-case/repository dependencies | Not integrated |
+| 2 | `this.write.MediaBrowserCompatMediaItem.get()` | Factory provider supplies the original `LogLogLevel` implementation; archive class `kotlin.w` implements that interface | Not integrated |
+| 3 | `this.write.setPositiveButton.get()` | Original `getDisplaySizeV17` implementation is `kotlin.getIntegerCodeForString` | Not integrated |
+| 4 | `this.write.isEnabled.get()` | Original `binarySearchCeil` implementation is `kotlin.areEqual` | Not integrated |
+| 5 | `removeEmbeddedStyling.AudioAttributesCompatParcelizer()` | `removeEmbeddedStyling` delegates to `AppModule.INSTANCE.IconCompatParcelizer()`; the module source delegates to `RtspHeadersBuilder.IconCompatParcelizer()`, returning `isSeekPending` | Not integrated |
+| 6 | `this.write.setSessionImpl.get()` | Provider for the original `kotlin.Allocator` state container | Not integrated |
+| 7 | `updateViewStates.IconCompatParcelizer()` | Delegates to `CoroutinesDispatchersModule.INSTANCE.read()`, returning the original coroutine dispatcher/context abstraction `getPlatform` | Not integrated |
+
+The implementation class identities above are verified by scanning the supplied archive for `implements` declarations. The provider expressions are from the original factory source; this is not an inferred replacement graph. This factory is part of a broad app-wide dependency container and depends on numerous original providers and application repositories. The replica does not include that graph or the corresponding original ViewModelStore/factory wiring, so creating a standalone ViewModel or substituting locally written preferences would not be an exact integration.
+
+### State/event implications
+
+The original constructor initializes a state stream for `TransformationChildLayout` with defaults `null, false, false, false, 0, false` and a separate `ExpandableTransformationBehavior` stream. These constructor defaults are not evidence of the account/course-loaded state. In the original event dispatcher, `MediaBrowserCompatItemReceiver(checked)` updates the Intern Mode state and launches a coroutine; `write.INSTANCE` clears the banner-related state and launches another coroutine; `AudioAttributesCompatParcelizer.INSTANCE` launches a tooltip coroutine; `AudioAttributesImplApi21Parcelizer.INSTANCE` writes the tooltip state false; and `AudioAttributesImplApi26Parcelizer.INSTANCE` resets the Learn More-related state. Coroutine bodies that the decompiler explicitly omits remain unresolved. Batch 68 records the exact construction path but deliberately does not introduce a speculative local ViewModel.
+
+### Original source fingerprints
+
+Fingerprints were computed directly from entries in the uploaded `base.apk_Decompiler.com.zip`:
+
+| Archive source | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/kotlin/cloneWithUpdatedTimeline.java` | 384455 | `b8229271dbc27ff545421e4dc9ef67c66a96288089065269af14b5d9d63b928d` |
+| `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java` | 199604 | `a57ae71953d5ca86534f5fbe8083930f38028891d9ace152b9ae22a8454a29cd` |
+| `sources/kotlin/isMediaStoreExternalContentUri.java` | 56476 | `040bc15050bf66bbc0c16316deae5784f26a72cf62ac110181c00a87120ab704` |
+| `sources/kotlin/w.java` | 60263 | `1be9120abacf8f0a160bfae38191f4f5941f2ad8875fe788e4032efc005cfbce` |
+| `sources/kotlin/getIntegerCodeForString.java` | 135584 | `53f11363569cf03b444f973d4245eeabac47a33731c5983cbfcaeb31c7149e7a` |
+| `sources/kotlin/areEqual.java` | 10985 | `67e781d5ba57f40ee662a06814fe31a3d70ba7b7c12ce70879caf2e805b1348d` |
+| `sources/kotlin/maybeSetupTracks.java` | 10556 | `e15f9a28071ddab88c89b981ffb373dc09b3095715c6814fac7cb9cf77b37d41` |
+| `sources/kotlin/Allocator.java` | 5149 | `e90d821bb1775baedf5432240985f29b1b7fc07bfd83909656f80f460f589884` |
+| `sources/kotlin/getPlatform.java` | 6455 | `716d77e8ca930276b2014049b9a0489ddda35c50ad71421c761f90c56cb890a2` |
+
+
