@@ -52,7 +52,7 @@ def assert_no_anr_dialog(stage: str) -> None:
     # has been dismissed. Only fail when an ANR window is actually visible and
     # its surface is shown; string-matching the whole dump causes false failures.
     windows = adb(["shell", "dumpsys", "window", "windows"], timeout=20).stdout.lower()
-    window_blocks = re.split(r"(?=window #\\d+\\s)", windows)
+    window_blocks = re.split(r"(?=window #\d+\s)", windows)
     indicators = (
         "application not responding",
         "isn't responding",
