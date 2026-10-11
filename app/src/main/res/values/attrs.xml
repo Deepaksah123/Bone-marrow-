@@ -48,4 +48,6 @@
     <attr name="heading7" format="reference" />
     <attr name="textAppearanceHeadline2" format="reference" />
     <attr name="onSurfaceGreen2" format="color" />
+    <attr name="onSurfaceSepia" format="color" />
+    <attr name="onTag" format="color" />
 </resources>

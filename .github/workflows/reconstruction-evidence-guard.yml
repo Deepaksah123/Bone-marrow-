@@ -272,6 +272,14 @@ jobs:
           grep -Fq 'configureInternModeSwitch(root);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'android:text="@string/concise_mode"' app/src/main/res/layout/fragment_video_landing_replica.xml
 
+          # Batch 66: original theme attributes used by the Video NEW badge.
+          grep -Fq '<attr name="onSurfaceSepia" format="color" />' app/src/main/res/values/attrs.xml
+          grep -Fq '<attr name="onTag" format="color" />' app/src/main/res/values/attrs.xml
+          grep -Fq '<item name="onSurfaceSepia">@color/sepia85</item>' app/src/main/res/values/styles.xml
+          grep -Fq '<item name="onSurfaceSepia">@color/sepia85</item>' app/src/main/res/values-night/styles.xml
+          grep -Fq '<item name="onTag">@color/darkGrey</item>' app/src/main/res/values/styles.xml
+          grep -Fq '<item name="onTag">@color/darkGrey</item>' app/src/main/res/values-night/styles.xml
+
           # Batch 65: exact Video edition row and Intern Mode banner badge assets.
           grep -A8 -F 'android:id="@+id/clSwitchEdition"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'android:paddingHorizontal="@dimen/margin_16dp"'
           grep -Fq 'android:layout_marginEnd="@dimen/margin_10dp"' app/src/main/res/layout/fragment_video_landing_replica.xml

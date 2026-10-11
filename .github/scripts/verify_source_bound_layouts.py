@@ -132,11 +132,15 @@ def main() -> int:
             "colorSurfaceVariant19": "@color/sepia05",
             "onSurfaceBgOutline4": "@color/n_00",
             "cardViewStrokeWidth": "0dp",
+            "onSurfaceSepia": "@color/sepia85",
+            "onTag": "@color/darkGrey",
         }),
         (ROOT / "app/src/main/res/values-night/styles.xml", {
             "colorSurfaceVariant19": "@color/n_80",
             "onSurfaceBgOutline4": "@color/c_988d58",
             "cardViewStrokeWidth": "1dp",
+            "onSurfaceSepia": "@color/sepia85",
+            "onTag": "@color/darkGrey",
         }),
     ):
         style_text = style_path.read_text(encoding="utf-8")
