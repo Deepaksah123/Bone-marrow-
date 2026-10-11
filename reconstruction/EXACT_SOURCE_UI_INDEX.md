@@ -426,3 +426,8 @@ SHA-256 fingerprints calculated directly from the genuine `base.apk_Decompiler.c
 | `sources/kotlin/isEncodingHighResolutionPcm.java` | 1873 | `d69352518811462df0194843fb2eed3ecefc5e3137f447a68222d688bbde3d26` |
 | `sources/kotlin/unlockFolder.java` | 12255 | `cebf57a747d83bfdff0c5fbb423315aadddbb9b840b1772ce94ac0757ffebf65` |
 
+
+
+## VideoLandingViewModel constructor dependency boundary — verified source
+
+The original constructor at `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java:344–359` takes seven injected arguments: `isEncodingHighResolutionPcm`, `LogLogLevel`, `getDisplaySizeV17`, `binarySearchCeil`, `isSeekPending`, `Allocator`, and `getPlatform`. The source archive contains each original interface/class; their current local app equivalents and injection wiring are not present as an integrated original graph. These are not safely replaceable by a single local boolean or a newly written preference listener. The first five include data/use-case or event-sink contracts, `Allocator` initializes state streams, and `getPlatform` supplies the coroutine context base. Full implementation-specific bindings still require tracing their genuine providers/repositories.
