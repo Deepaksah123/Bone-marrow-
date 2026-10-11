@@ -121,7 +121,9 @@ def main() -> None:
     back()
     ensure_app()
 
-    # Intern Mode OFF/ON visual state and the source-bound tooltip affordance.
+    # Intern Mode OFF/ON visual state and source-traced banner dismissal.
+    # The original ibTooltip click dispatches the event that clears showPytBanner;
+    # it is not a verified tooltip-open action.
     tap(tab_x[2], tab_y)
     time.sleep(2)
     switch_x = width - round(40 * scale)
@@ -134,10 +136,7 @@ def main() -> None:
     screenshot("video-switch-off")
     tap(round(140 * scale), row_y)
     time.sleep(1)
-    screenshot("video-tooltip-open")
-    tap(round(292 * scale), round(400 * scale))
-    time.sleep(1)
-    screenshot("video-tooltip-closed")
+    screenshot("video-banner-dismissed")
     ensure_app()
 
     # Light/dark theme captures.
