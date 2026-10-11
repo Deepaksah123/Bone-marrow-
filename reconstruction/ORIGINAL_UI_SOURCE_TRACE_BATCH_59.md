@@ -60,3 +60,11 @@ Core layout/resource references cross-check successfully. Tooltip IDs, hierarchy
 - Independent content-level checks against the current GitHub files report all expected required IDs present, no excluded IDs reintroduced, and no unresolved tooltip strings or dimensions.
 - Further binary-XML comparisons restored the original Video root ID `parentFrame`, added QBank's original 16dp horizontal RecyclerView margins, aligned the Tests root background/orientation, layout gravity and parent width, and restored the original bottom-tab clipping flags and FrameLayout layout gravity.
 - The static regression check is now part of CI. The actual Android build/emulator job still needs to finish successfully before runtime QA can be called PASS.
+
+
+## Intern Mode fallback colors — Batch 64
+
+- Compared the Intern Mode OFF/ON state branches in the original `sources/kotlin/setScrollPosition.java` against the canonical decompiler archive's `resources/res/values/colors.xml`.
+- Original OFF background uses `?attr/backgroundColor`, falling back to `@color/bg_no_guess` (`#f5f5f5`); ON uses `?attr/colorSurfaceVariant13`, falling back to `@color/sepia80` (`#fce795`).
+- Restored those exact fallback resources and used them in `MainActivity.updateInternModeVisualState` instead of transparent fallback values. Added a regression assertion to the source-bound verifier.
+- This is a narrowly scoped source-evidence correction, not a claim of complete 1:1 parity. Runtime screenshot verification and remaining screen/data/interactions are still outstanding.
