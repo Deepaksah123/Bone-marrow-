@@ -8,7 +8,7 @@
     android:focusableInTouchMode="true"
     android:visibility="visible"
     android:clickable="true"
-    android:fitsSystemWindows="true"
+    android:enabled="true"
     android:paddingHorizontal="@dimen/margin_50">
 
     <View
@@ -23,6 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="?attr/actionBarSize"
+        android:clickable="false"
+        android:focusable="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -30,7 +32,7 @@
             android:id="@+id/cardInternModeTooltip"
             android:layout_width="@dimen/tooltip_height_340dp"
             android:layout_height="wrap_content"
-            android:clickable="true"
+            android:enabled="true"
             android:layout_marginHorizontal="@dimen/margin_16dp"
             android:layout_marginTop="-18dp"
             app:cardBackgroundColor="?attr/colorSurface"
@@ -58,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/padding_10"
-                    android:layout_gravity="end"
+                    android:gravity="end"
                     android:orientation="horizontal">
 
                     <TextView
@@ -68,7 +70,8 @@
                         android:layout_height="match_parent"
                         android:gravity="center_vertical"
                         android:text="@string/nav_learn_more"
-                        android:textColor="?attr/onSurfaceBgLinks" />
+                        android:textColor="?attr/onSurfaceBgLinks"
+                        android:layout_marginEnd="@dimen/margin_20dp" />
 
                     <Button
                         android:id="@+id/btnInternModeToolTipDone"
