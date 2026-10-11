@@ -213,3 +213,10 @@
 - [x] Verified original state observer owns ON/OFF label, checked state, theme tints, banners, and transition/loading labels; the behavior is not a cosmetic toggle.
 - [x] Kept the local switch non-clickable/non-focusable because the original ViewModel/repository/use-case graph is not integrated. Updated smoke comments and added a regression test to reject a local listener before source integration.
 - [ ] Full original Videos ViewModel and data/repository dependency integration remains unresolved; this batch does not claim Intern Mode parity.
+
+
+## Batch 67 — VideoLanding event fidelity boundary
+
+- [x] Removed locally invented direct visibility changes for the Intern Mode banner dismiss and tooltip trigger/dismiss controls.
+- [x] Updated emulator smoke expectations and regression tests to require these controls to stay non-actionable until the original ViewModel event/state pipeline is integrated.
+- [ ] Integrate the original VideoLanding ViewModel, event classes, observer, and injected dependencies before enabling these actions. Do not claim tooltip/banner interaction parity yet.
