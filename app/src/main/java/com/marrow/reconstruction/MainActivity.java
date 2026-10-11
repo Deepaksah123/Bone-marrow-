@@ -110,20 +110,10 @@ public final class MainActivity extends FragmentActivity {
         }
         textBranding.setVisibility(View.GONE);
         textPageTitle.setVisibility(View.VISIBLE);
-        switch (index) {
-            case 1:
-                textPageTitle.setText(R.string.replica_tab_title_qbank_edition_85);
-                break;
-            case 2:
-                textPageTitle.setText(R.string.replica_tab_title_tests);
-                break;
-            case 3:
-                textPageTitle.setText(R.string.replica_tab_title_videos_edition_85);
-                break;
-            default:
-                textBranding.setVisibility(View.VISIBLE);
-                textPageTitle.setVisibility(View.GONE);
-        }
+        // Original zabz.read(int) binds this field from DataBuffer.getRemoteActionCompatParcelizer().
+        // DataBuffer initializes that mutable title to an empty string; its edition/configuration
+        // update path is not reconstructed here. Do not substitute screenshot-transcribed labels.
+        textPageTitle.setText("");
     }
 
     private void updateTabAppearance(TabLayout.Tab tab, boolean selected) {
