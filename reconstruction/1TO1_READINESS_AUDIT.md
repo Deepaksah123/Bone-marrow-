@@ -421,3 +421,21 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - These assertions validate already implemented source-grounded behavior; they do not populate missing server-backed educational data.
 - The source-evidence guard and Android build were triggered for this batch. Emulator screenshot QA remains a separate gate and is not considered passed until its artifact includes completed navigation captures and no ANR.
 - Parallel implementation work remains split by acceptance gates: source-bound structure and initial state, toolbar/interaction regression checks, and emulator/runtime evidence. No external repositories or unrelated assets were introduced.
+
+
+## Original runtime bootstrap trace — Batch 62 (2026-10-11)
+
+- Re-opened the exact decompiler archive and checked original manifest declarations against the local manifest and actual decompiled class files.
+- Confirmed original Application `com.marrow.TrainingApplication`; its `onCreate()` decompilation is skipped (6,474 instruction units), so startup initialization cannot be faithfully inferred from the available Java dump.
+- Confirmed original AppComponentFactory `kotlin._coerceBooleanFromInt` exists at `sources/kotlin/_coerceBooleanFromInt.java`, extends Android `AppComponentFactory`, and overrides instantiation for Activity/Application/receiver/provider/service, including an instance-replacement hook. The local manifest declares neither the original Application nor the factory.
+- Confirmed the original launcher is `com.marrow.ui.activities.onboarding.splash.SplashActivity` with `singleTask`, portrait and `SplashTheme`; the original main host is `kotlin.zadb` with `singleTop` and `@style/Marrow2`. The local launcher remains `.MainActivity`.
+- Cross-checked the source-native Fragment transaction helper `sources/kotlin/copyToBuffer.java:163–192`: original tags use `Home_ + Class.getName()`, existing `Home_` fragments are removed, and the selected original class is instantiated into `R.id.upperContainer`. Local wrapper tags/cleanup now match this convention; local wrapper classes are still not the original fragments.
+- Explicitly retained the startup boundary: `SplashActivity.onCreate`, `TrainingApplication.onCreate`, `zabr.onCreate`, and `zaO.onCreate` are incomplete in the decompiler output; `zadb.onCreate` also contains incomplete/decompiler-stub regions. Directly swapping the launcher manifest to these classes is not a verified integration and was not done.
+- Updated `reconstruction/SOURCE_TO_SCREEN_MAP.md` with this source-backed bootstrap gap. No screenshot material, placeholder content, or unrelated assets were introduced.
+
+### Batch 62 validation boundary
+
+- Android debug build on commit `4ee071990c0505f677f60af7f1e7f1211483308a`: PASS (workflow run `38163159752`).
+- Evidence guard on that commit: PASS (workflow run `38163159691`).
+- Emulator smoke QA on that commit: was still in progress at the last check (run `38163159756`); do not treat it as passed until completed captures and diagnostics are inspected.
+- Full original startup parity remains **UNRESOLVED**. This batch improves source evidence and prevents an unsafe manifest-only switch; it does not complete the actual original Activity/Application integration.
