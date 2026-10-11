@@ -214,3 +214,25 @@ Raw DEX control flow at code-unit offsets 9811–9849 in `SplashActivity.onCreat
 
 **Still unresolved:** `SplashActivity.onCreate` is a 12,952-code-unit method whose decompiler output is skipped. Its recovered callback implementations establish the destinations, but do not establish which callback is selected for a particular session, account state, deep link, or startup condition. Do not choose one callback as the unconditional launcher path without recovering that decision logic.
 
+
+
+Intern Mode switch source trace — event, state, observer, and unresolved dependency boundary (Batch 66)
+
+## Intern Mode switch source trace — event, state, observer, and unresolved dependency boundary (Batch 66)
+
+The original Videos fragment is `sources/kotlin/setScrollPosition.java` (runtime DEX class `o.setScrollPosition`); its ViewModel is `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java`.
+
+**Verified original event chain**
+1. `setScrollPosition.onViewCreated()` installs the source listener on the original binding's `onPlayFromSearch` SwitchMaterial.
+2. The listener receives the real checked boolean and calls `setScrollPosition.RemoteActionCompatParcelizer(fragment, checked)`.
+3. That handler dispatches `new TransformationChildCard.MediaBrowserCompatItemReceiver(checked)` to `VideoLandingViewModel.IconCompatParcelizer(event)`.
+4. The ViewModel compares the event boolean to its current state `TransformationChildLayout.getIconCompatParcelizer()`. If changed, it writes a new state carrying that boolean. If enabling Intern Mode while the existing state indicates the related condition, it clears a separate state flag before launching the next coroutine.
+5. The ViewModel launches its `onFastForward` coroutine for the state transition. The fragment collects the resulting `ExpandableTransformationBehavior` state and updates the real switch, OFF/ON text, theme-derived track/thumb colors, Intern Mode banners, and loading/transition labels. This is model/observer-driven; it is not merely a cosmetic label toggle.
+
+**What remains unresolved**
+- The current local app does not integrate `VideoLandingViewModel`, its repositories/use cases, or the original event/state flow. Some relevant ViewModel coroutine bodies are decompiler-skipped. Wiring the local switch to a made-up boolean or changing only label/colors would be fabricated behavior.
+- Therefore the local switch remains non-clickable and non-focusable until the source ViewModel/state/repository dependency chain is integrated. Do not mark the interaction as implemented because the original event shape is known.
+- The original ViewModel's checked state is data-bound; do not infer that every account/course always starts OFF solely from the local reconstruction's initial XML state.
+
+The relevant source evidence is in `setScrollPosition.java:265–276, 2816–2821, 3038–3040`, `VideoLandingViewModel.java:1897–2000`, and `ExpandableTransformationBehavior.java`. The raw runtime class is `o.setScrollPosition`; the decompiler's source package alias is `kotlin.setScrollPosition`.
+
