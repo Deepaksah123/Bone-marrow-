@@ -24,7 +24,7 @@ permissions:
 
 concurrency:
   group: android-ui-smoke-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   ui-smoke:
@@ -65,6 +65,7 @@ jobs:
         run: gradle --no-daemon :app:assembleDebug
 
       - name: Launch emulator, verify tab navigation, capture screenshots
+        timeout-minutes: 18
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 30

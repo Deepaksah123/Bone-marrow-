@@ -271,3 +271,11 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - The job-log endpoint returns `BlobNotFound`, so the running emulator step's live output cannot currently be inspected through the connected GitHub API. This is an infrastructure/observability blocker, not evidence of a pass or of app failure.
 - The same commit's Android build and source-bound layout evidence guard both completed successfully. The newer audit-only commit `bd5c3b0` also passed its build and evidence-guard jobs; its UI smoke run was cancelled by concurrency because the same branch already had the prior smoke job in progress.
 - Do not interpret the stuck run as successful runtime QA. A fresh runtime acceptance result still needs a completed emulator job and its screenshot artifact. No 1:1 parity claim is made.
+
+
+## Bounded emulator-runner execution and non-destructive CI concurrency — Batch 80 (2026-10-11)
+
+- The latest run on `dc0192593f84762e9764ff33ec9a64330c61ea80` passed source-bound layout validation, the ANR/accessibility parser unit tests, and debug APK assembly, but remained in the emulator interaction step without uploaded artifacts. This is not a runtime pass.
+- The workflow previously allowed a new commit on the same branch to cancel the in-progress smoke run, which can erase the very emulator evidence needed to diagnose the failure. Changed the concurrency policy to let an active run finish rather than cancel it when another run arrives.
+- Added an explicit 18-minute timeout to the emulator step while retaining the job-level 30-minute ceiling and unconditional artifact-upload step. This creates a bounded failure path so a stuck emulator action can hand off to screenshot/diagnostic artifact collection instead of occupying the entire job until the outer timeout.
+- This is CI execution/observability hardening only. It does not change application UI or assert a fix for the emulator issue. The next run must finish and its screenshots/hierarchy/diagnostics must be reviewed before accepting runtime QA. Genuine-source data binding and full pixel-level 1:1 parity remain unverified.
