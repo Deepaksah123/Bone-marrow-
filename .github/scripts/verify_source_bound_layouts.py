@@ -301,6 +301,29 @@ def main() -> int:
     if 'drawerLayout.isDrawerOpen(android.view.Gravity.START)' not in activity_java or 'drawerLayout.closeDrawer(android.view.Gravity.START)' not in activity_java:
         failures.append("Shell navigation: BACK must close the open drawer before delegating")
 
+    # QBank's original item_qbank_subject binding is represented as a UI-only row shell.
+    # It must remain content-free until the user supplies real subject data.
+    qbank_item_path = LAYOUT / "item_qbank_subject_replica.xml"
+    if not qbank_item_path.exists():
+        failures.append("QBank: source-bound subject row layout shell is missing")
+    else:
+        qbank_item = ET.parse(qbank_item_path).getroot()
+        qbank_item_ids = {node.attrib.get("{http://schemas.android.com/apk/res/android}id", "").replace("@+id/", "")
+                          for node in qbank_item.iter()}
+        for required_id in (
+            "clMain", "dvSubjectImage", "glBottom", "glEnd", "glStart", "glTop",
+            "ivCompleted", "ivSubject", "llSubjectIcon", "pbSubject",
+            "tvSubjectProgress", "tvSubjectTitle",
+        ):
+            if required_id not in qbank_item_ids:
+                failures.append(f"QBank row: original binding ID {required_id} is missing")
+        for node in qbank_item.iter():
+            if node.tag.rsplit("}", 1)[-1] == "TextView":
+                value = node.attrib.get("{http://schemas.android.com/apk/res/android}text", "")
+                if value.strip():
+                    failures.append("QBank row: do not hardcode subject or progress content before user data is supplied")
+                    break
+
     # Source-backed first-frame loading state must not regress into a visible empty list.
     # The real original adapters/ViewModels are not present, so these placeholders are intentional.
     if 'cards.setVisibility(View.GONE)' not in activity_java or 'shimmer.setVisibility(View.VISIBLE)' not in activity_java:
