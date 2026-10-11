@@ -14,6 +14,8 @@
     <string name="intern_mode_v2_header">Intern Mode 2.0 with PYTs!</string>
     <string name="new_text">new</string>
     <string name="pyt_desc">Intern Mode marks the videos that contain Previous Years’ Topics (PYTs) from NEET PG and INI-CET exams.</string>
+    <string name="text_concise_mode_only">INTERN MODE</string>
+    <string name="text_concise_tooltip_description_updated">Intern Mode marks the videos that contain Previous Years’ Topics (PYTs) from NEET PG and INI-CET exams.</string>
     <string name="pyt_turn_on">Turn On</string>
     <string name="nav_learn_more">Learn More</string>
     <string name="text_watch_next">Watch Next</string>
