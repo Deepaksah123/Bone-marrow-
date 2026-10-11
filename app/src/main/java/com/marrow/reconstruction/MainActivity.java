@@ -293,6 +293,7 @@ public final class MainActivity extends FragmentActivity {
             View closeInternModeBanner = root.findViewById(R.id.btnCloseInternModeBanner);
             View internModeTooltipTrigger = root.findViewById(R.id.ibTooltip);
             View doneInternModeTooltip = root.findViewById(R.id.btnInternModeToolTipDone);
+            View learnMoreInternMode = root.findViewById(R.id.tvLearnMore);
             if (closeInternModeBanner != null) {
                 closeInternModeBanner.setClickable(false);
                 closeInternModeBanner.setFocusable(false);
@@ -304,6 +305,10 @@ public final class MainActivity extends FragmentActivity {
             if (doneInternModeTooltip != null) {
                 doneInternModeTooltip.setClickable(false);
                 doneInternModeTooltip.setFocusable(false);
+            }
+            if (learnMoreInternMode != null) {
+                learnMoreInternMode.setClickable(false);
+                learnMoreInternMode.setFocusable(false);
             }
         }
         return root;
