@@ -155,18 +155,29 @@ def main() -> int:
     video_source = (LAYOUT / "fragment_video_landing_replica.xml").read_text(encoding="utf-8")
     for expected in (
         'android:background="?attr/backgroundVariant2"',
-        'android:paddingStart="@dimen/margin_16dp"',
+        'android:paddingHorizontal="@dimen/margin_16dp"',
         'style="?attr/heading7"',
         'android:paddingVertical="@dimen/pad_normal"',
         'android:layout_width="20dp"',
         'android:layout_height="20dp"',
         'android:padding="4dp"',
+        'android:layout_marginEnd="@dimen/margin_10dp"',
+        'android:text="@string/new_text"',
+        'android:background="@drawable/bg_yellow_rounded_2_corner"',
+        'app:backgroundTint="?attr/onSurfaceSepia"',
         'android:text="@string/concise_mode"',
         'app:layout_constraintStart_toEndOf="@id/tvInternModeStatus"',
         'android:background="?attr/onSurfaceBgDivider"',
     ):
         if expected not in video_source:
             failures.append(f"Videos: missing source-derived attribute {expected}")
+    banner_header = re.search(r'<TextView\\s+android:id="@\\+id/tvHeaderInternModeBanner"(?:(?!/>).)*?/>', video_source, re.S)
+    if not banner_header or 'style="?attr/heading6"' not in banner_header.group(0) or 'android:textColor="?attr/colorOnSurfaceVariant"' not in banner_header.group(0) or 'android:layout_width="wrap_content"' not in banner_header.group(0):
+        failures.append("Videos banner: header style, color, or wrap-content width differs from original")
+    if 'app:layout_constraintEnd_toStartOf="@id/btnCloseInternModeBanner"' in (banner_header.group(0) if banner_header else ""):
+        failures.append("Videos banner: header has a non-source end constraint")
+    if not (ROOT / "app/src/main/res/drawable/bg_yellow_rounded_2_corner.xml").is_file():
+        failures.append("Videos banner: missing original NEW badge background drawable")
     if 'configureInternModeSwitch(root);' not in (ROOT / "app/src/main/java/com/marrow/reconstruction/MainActivity.java").read_text(encoding="utf-8"):
         failures.append("Videos: original Intern Mode OFF/ON visual state binding is missing")
 

@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/backgroundVariant2"
-                android:paddingStart="@dimen/margin_16dp"
+                android:paddingHorizontal="@dimen/margin_16dp"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/composeViewAnnouncementBanner"
                 app:layout_constraintStart_toStartOf="parent"
@@ -95,7 +95,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:padding="4dp"
-                    android:layout_marginStart="@dimen/margin_10dp"
+                    android:layout_marginEnd="@dimen/margin_10dp"
                     app:srcCompat="@drawable/chevron_right"
                     app:tint="?attr/colorOnPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -176,24 +176,39 @@
 
                 <TextView
                     android:id="@+id/tvHeaderInternModeBanner"
-                    android:layout_width="0dp"
+                    style="?attr/heading6"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:layout_marginEnd="@dimen/margin_16dp"
                     android:text="@string/intern_mode_v2_header"
-                    android:textColor="@color/shell_text"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
+                    android:textColor="?attr/colorOnSurfaceVariant"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toStartOf="@id/btnCloseInternModeBanner"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_yellow_rounded_2_corner"
+                    android:layout_marginEnd="@dimen/margin_8dp"
+                    android:paddingHorizontal="@dimen/margin_6dp"
+                    android:text="@string/new_text"
+                    android:textColor="?attr/onTag"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:backgroundTint="?attr/onSurfaceSepia"
+                    app:layout_constraintStart_toEndOf="@id/tvHeaderInternModeBanner"
+                    app:layout_constraintTop_toTopOf="@id/tvHeaderInternModeBanner"
+                    app:layout_constraintBottom_toBottomOf="@id/tvHeaderInternModeBanner" />
 
                 <ImageButton
                     android:id="@+id/btnCloseInternModeBanner"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:layout_margin="16dp"
                     android:background="@android:color/transparent"
-                    android:contentDescription="Close"
-                    android:src="@drawable/ic_close_gopro"
-                    android:tint="@color/shell_text"
+                    app:srcCompat="@drawable/ic_close_gopro"
+                    app:tint="?attr/colorOnSurfaceVariant"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
