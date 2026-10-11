@@ -84,6 +84,17 @@ def main() -> int:
             failures.append("App label must match the verified original string: Marrow")
         if 'textPageTitle.setText("");' not in activity_java:
             failures.append("Unbound toolbar title must remain empty until original config binding is integrated")
+        original_dex_tags = (
+            "Home_o.makeGooglePlayServicesAvailable",
+            "Home_o.ResidentKeyRequirementUnsupportedResidentKeyRequirementException",
+            "Home_o.WalletConstantsCardNetwork",
+            "Home_o.setScrollPosition",
+        )
+        for tag in original_dex_tags:
+            if tag not in activity_java:
+                failures.append(f"Missing raw-DEX source destination tag: {tag}")
+        if "Home_kotlin." in activity_java:
+            failures.append("Decompiler package aliases must not be used as runtime Fragment tags")
     except OSError as exc:
         failures.append(f"Could not validate source-bound toolbar strings: {exc}")
     if failures:
