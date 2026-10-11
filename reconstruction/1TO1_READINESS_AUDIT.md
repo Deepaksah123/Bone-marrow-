@@ -150,3 +150,10 @@ The original `activity_home_revamp` binary XML (`0x7f0d0033`, obfuscated APK ent
 - Extended `.github/scripts/verify_source_bound_layouts.py` to guard the source-decoded Tests attributes in addition to source ID coverage. Corrected regex escaping in the source-layout guard after its checks exposed that the previous attribute patterns did not reliably inspect the intended XML elements.
 - Updated the evidence guard's Tests assertion to check the original bottom-margin attribute instead of the removed bottom-padding override.
 - Current API 31 UI smoke run [38111711766](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38111711766) has passed source-bound layout validation and debug APK assembly; emulator tab navigation and screenshot/hierarchy artifact upload are still in progress. This remains a runtime QA gate, not a 1:1 parity pass.
+
+## Emulator artifact review and QA false-positive correction — Batch 63 (2026-10-11)
+
+- Reviewed the uploaded screenshots from smoke run [38117308229](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38117308229). Although the workflow returned success, multiple captures were obscured by Android's “System UI isn't responding” dialog; some later captures also contained the one-time immersive-mode notice. Therefore that run is **not accepted as valid visual/runtime QA**.
+- Updated `.github/scripts/run_android_ui_smoke.py` in commit [d0ef80f](https://github.com/Deepaksah123/Bone-marrow-/commit/d0ef80ff084fd75f00b38bf162734a8c57e030f2) to suppress the one-time immersive confirmation and inspect the active window state before and after every screenshot, failing when a System UI ANR is detected.
+- The corrected smoke workflow is [run 38119313874](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38119313874). Its final result and screenshots must be reviewed before runtime QA can be accepted.
+- This correction does not change replica UI or prove 1:1 parity. Home/QBank/Tests/Videos data-bound content, complete behavior, and source-grounded visual comparison remain incomplete.
