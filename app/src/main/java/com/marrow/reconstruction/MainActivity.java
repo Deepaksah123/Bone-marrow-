@@ -252,8 +252,8 @@ public final class MainActivity extends FragmentActivity {
                             ? View.GONE : View.VISIBLE;
                     internModeTooltip.setVisibility(nextVisibility);
                 });
-                View closeInternModeTooltip = root.findViewById(R.id.btnInternModeToolTipDone);
-                if (closeInternModeTooltip != null) {
+                View doneInternModeTooltip = root.findViewById(R.id.btnInternModeToolTipDone);
+                if (doneInternModeTooltip != null) {
                     closeInternModeTooltip.setOnClickListener(v ->
                             internModeTooltip.setVisibility(View.GONE));
                 }
