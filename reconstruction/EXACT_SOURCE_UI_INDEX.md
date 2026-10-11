@@ -375,3 +375,12 @@ Intern Mode switch pipeline source evidence
 - Original Videos fragment: `sources/kotlin/setScrollPosition.java` (runtime DEX `o.setScrollPosition`). Its binding listener forwards the checked boolean to the fragment handler, which dispatches `TransformationChildCard.MediaBrowserCompatItemReceiver(checked)` to `VideoLandingViewModel.IconCompatParcelizer(event)`.
 - Original ViewModel: `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java:1992–2000`. The handler compares against `VideoLandingUIState.isInternModeOn`, updates that state when changed, conditionally clears `showPytBanner`, and launches a coroutine that invokes the injected `isEncodingHighResolutionPcm` use case between state-load and refresh calls. The coroutine body is decompiler-skipped, so repository/network side effects are not fully verified. The fragment's observer drives switch/status/tint/banner/progress UI.
 - Original source has explicit ON and OFF render paths; UI behavior is not just text or tint changes. The full backend/state dependency graph is not integrated locally, so the local switch remains disabled until that path can be integrated from verified source.
+
+
+## VideoLandingUIState verified field names
+
+
+
+### VideoLandingUIState — original data-class metadata
+
+Source file `sources/kotlin/TransformationChildLayout.java` declares the runtime type `com.marrow2.ui.video.landing.model.VideoLandingUIState` in Kotlin metadata. Verified fields: `editionSwitchBannerText`, `isInternModeEnabled`, `isInternModeOn`, `showPytBanner`, `sortOrder`, `showInternModeSnackBar`. The two Intern Mode booleans have distinct meanings; constructor defaults do not substitute for loaded course/account state.
