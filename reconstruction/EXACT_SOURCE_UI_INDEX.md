@@ -93,6 +93,28 @@ These names are exact source paths or class names from `sources/com/marrow2/ui/`
 
 Other source domains include bookmark, custom module, settings/KYC, profile, pearl, theme, feedback, search, recent updates, onboarding, signup, schema, and internal web. Use the archive paths themselves as the authority; do not infer screens from package names alone.
 
+## Verified source/resource fingerprints for the main UI batch
+
+These SHA-256 digests were computed directly from the uploaded decompiler ZIP `base.apk_Decompiler.com.zip` (archive SHA-256: `92fa24c6d91faafa61e3317adcb5c7c10384eea437fa6b7f99c09ac372ab8685`). They provide reproducible provenance for the exact source and binary-layout entries inspected.
+
+| Archive entry | Bytes | SHA-256 |
+|---|---:|---|
+| `resources/AndroidManifest.xml` | 44,772 | `157d0b595579a62a871dcbe8018b1a2598a4cc068eef9e784c9734e6833792a7` |
+| `sources/com/marrow/ui/activities/onboarding/splash/SplashActivity.java` | 93,933 | `7df38b5f2dcb3bd0c35bedea75e8ce7e1c4aebc43a581a0e733726201655e1bb` |
+| `sources/kotlin/zadb.java` | 71,238 | `4fc68899a3857dad490acc5102fc55c0bda58952162b599d080e14f977ce1bbc` |
+| `sources/kotlin/DataBuffer.java` | 9,069 | `8837a7e00063721fb2f1cb951bc56e43663917b6ff1f7107b2347e04e6828db2` |
+| `sources/kotlin/copyToBuffer.java` | 18,341 | `7022891e7cb305c76afbb7a3c94a9b88a9d5f125394a4fe1e927013271b2d1cd` |
+| `sources/kotlin/zabz.java` | 210,323 | `6ef9ba909d81f653770ac4d86ecf34b07f3dc3dc0af5df8248ac2f37bea58676` |
+| `sources/kotlin/parsePeriod.java` | 15,342 | `344b465dcf1dde1ac61abcdf485dfd25fd66021ade36a063feddaf1ea96fbd58` |
+| `resources/res/layout/activity_home_revamp` | 7,056 | `d93aae6f7dd945240def31a99eccd2b50e01f1006e97ca0c78ba8c340b53a93c` |
+| `resources/res/layout/custom_home_tab` | 1,392 | `415b259b0690331fc854d34bec3ba9dbd70f0c647311677998f483e6817558b9` |
+| `resources/res/layout/fragment_home` | 10,084 | `8868c7a68754639fe156b044ce3fe274304248ae5db82504b4771f6132683032` |
+| `resources/res/layout/fragment_qbank_landing` | 1,200 | `c62f50c11e35bdc0c904982b372ec95264e2f9aacc73c4fe9fbe04410097867f` |
+| `resources/res/layout/fragment_home_test` | 3,068 | `6efa92d7a34a78bc0694f2bfd8ea4b134f01f27e87c50eabc6d7e24734220711` |
+| `resources/res/layout/fragment_video_landing` | 12,400 | `6f3a84568feb3e759e0cafa1bc5352031758a0face9ae8d97f5476c64dbbe601` |
+
+The source confirms the `Home_` tag prefix: `copyToBuffer.write(Class)` constructs `"Home_" + cls.getName()`, removes fragments tagged with that prefix, then instantiates the original Fragment class when needed. The reconstruction shell has been corrected to match that tag/cleanup convention; the local wrapper class mismatch remains unresolved.
+
 ## Exactness requirements for the next phase
 
 1. Parse the existing `resources/res/layout/` and related resource files from the dump; separately obtain/inspect the original APK's `resources.arsc` and binary XML if absent from the dump.
