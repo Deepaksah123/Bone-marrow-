@@ -45,16 +45,16 @@ Direct source evidence: `DataBuffer.java` lines 107 and 113–115 instantiate ea
 
 ### Consequence for reconstruction
 
-The local app's `app/src/main/AndroidManifest.xml` currently launches the self-authored `.MainActivity` and does not declare the original `SplashActivity` or `kotlin.zadb`. Its wrapper Fragments inflate local `*_replica.xml` files. Therefore this is not yet a faithful original Activity/navigation reconstruction. Do not “fix” that by simply changing the launcher to an obfuscated class: its original superclass, Hilt/application setup, base layout, and dependencies must be integrated from the genuine source together. Until that integration is feasible and validated, preserve this mismatch as an explicit unresolved gap rather than implying 1:1 parity.
+The local app's `app/src/main/AndroidManifest.xml` currently launches the self-authored `.MainActivity` and does not declare the original `SplashActivity` or raw runtime host `o.zadb` (the decompiler Java alias is `kotlin.zadb`). Its wrapper Fragments inflate local `*_replica.xml` files. Therefore this is not yet a faithful original Activity/navigation reconstruction. Do not “fix” that by simply changing the launcher to an obfuscated class: its original superclass, Hilt/application setup, base layout, and dependencies must be integrated from the genuine source together. Until that integration is feasible and validated, preserve this mismatch as an explicit unresolved gap rather than implying 1:1 parity.
 
 ## Main host class hierarchy and tab behavior — additional source trace
 
-The main host is not merely the class name `kotlin.zadb`; its inheritance chain is explicit in the decompiler Java:
+The main host's runtime identity comes from the raw APK manifest/DEX, not the decompiler's package aliases. The decompiler source path `sources/kotlin/zadb.java` corresponds to runtime class `o.zadb`; its raw DEX inheritance chain is:
 
-`kotlin.zadb` → `kotlin.zaaz` → `kotlin.zaay` → `kotlin.zabz` → `kotlin.zaO` → `kotlin.zabr` → `kotlin.addObserverForBackInvoker`.
+`o.zadb` → `o.zaaz` → `o.zaay` → `o.zabz` → `o.zaO` → `o.zabr` → `o.addObserverForBackInvoker`.
 
 Evidence:
-- `resources/AndroidManifest.xml` declares `kotlin.zadb` as a non-exported Activity with `@style/Marrow2` and `singleTop`; it is not the launcher.
+- The decompiler's `resources/AndroidManifest.xml` remaps the runtime class name to `kotlin.zadb`; the original APK binary `AndroidManifest.xml` contains `o.zadb` as a non-exported Activity with `@style/Marrow2` and `singleTop`; it is not the launcher.
 - `sources/kotlin/zadb.java` declares `public final class zadb extends zaaz`, owns a `RevampHomeActivityViewModel` delegate, and calls `super.onCreate(p0)` before continuing its own initialization.
 - `sources/kotlin/zaaz.java` declares `zaaz extends zaay`; `sources/kotlin/zaay.java` declares `zaay extends zabz`; `sources/kotlin/zabz.java` declares `zabz extends zaO`; `sources/kotlin/zaO.java` declares `zaO extends zabr`.
 - `sources/kotlin/zabr.java` owns the generated `parsePeriod` activity binding field/accessor. `sources/kotlin/parsePeriod.java` explicitly inflates `R.layout.activity_home_revamp`. This ties the original main shell binding to the original home-revamp layout, but the precise call chain attaching that binding is not recovered from the decompiler's skipped/obfuscated `onCreate` bodies.
@@ -95,9 +95,9 @@ The launcher-to-host trace has a second, independent prerequisite: the original 
 | Concern | Original archive evidence | Reconstruction difference / boundary |
 |---|---|---|
 | Application | Manifest declares `com.marrow.TrainingApplication`; `sources/com/marrow/TrainingApplication.java` is the class source. | Local manifest has no `android:name`. Original `TrainingApplication.onCreate()` is explicitly emitted as “Method dump skipped” (6,474 instruction units) and ends in a decompiler stub; its initialization cannot be recreated safely from this dump alone. |
-| App component factory | Manifest declares `kotlin._coerceBooleanFromInt`; exact class exists at `sources/kotlin/_coerceBooleanFromInt.java` and extends Android `AppComponentFactory`. It overrides instantiation of Activities, Application, receivers, providers, and services, and may replace an instance when it implements the nested factory interface. | Local manifest does not declare the factory. This is a real runtime-identity/instantiation gap, not just a UI setting. Do not add a guessed replacement factory. |
+| App component factory | Manifest declares `o._coerceBooleanFromInt` in the original APK manifest; its decompiler alias is in `sources/kotlin/_coerceBooleanFromInt.java` and extends Android `AppComponentFactory`. It overrides instantiation of Activities, Application, receivers, providers, and services, and may replace an instance when it implements the nested factory interface. | Local manifest does not declare the factory. This is a real runtime-identity/instantiation gap, not just a UI setting. Do not add a guessed replacement factory. |
 | Launcher | Original manifest declares `com.marrow.ui.activities.onboarding.splash.SplashActivity` as MAIN/LAUNCHER, exported, `singleTask`, portrait, `SplashTheme`. | Local launcher is `.MainActivity`; direct replacement is unsafe until Application/factory, superclass initialization, original resources, and dependencies are integrated. |
-| Main host | Original manifest declares `kotlin.zadb`, non-exported, `singleTop`, theme `@style/Marrow2`; it owns `RevampHomeActivityViewModel` and inherits the obfuscated host chain already recorded above. | `zadb.onCreate` contains decompiler-skipped instructions and explicit stubs. Multiple inherited lifecycle methods are also not recovered. |
+| Main host | Original APK manifest declares `o.zadb`, non-exported, `singleTop`, theme `@style/Marrow2` (decompiler alias `kotlin.zadb`); it owns `RevampHomeActivityViewModel` and inherits the obfuscated host chain already recorded above. | `zadb.onCreate` contains decompiler-skipped instructions and explicit stubs. Multiple inherited lifecycle methods are also not recovered. |
 
 **Source completeness check:** `SplashActivity.onCreate` is a decompiler stub; `TrainingApplication.onCreate` is skipped; `zabr.onCreate` is skipped; `zaO.onCreate` is an explicit “Method not decompiled” stub. The `zadb.onCreate` body contains large recovered regions but is not a complete, trustworthy lifecycle implementation. These gaps must remain unresolved until stronger original artifacts (complete decompilation/bytecode evidence and exact dependencies) close them.
 
@@ -120,7 +120,7 @@ These are generated binding/inflater methods containing explicit `R.layout` refe
 | `activity_home_test` | `sources/kotlin/parseLabel.java` | `LayoutInflater.inflate(R.layout.activity_home_test, (ViewGroup) null, false)` |
 | `fragment_video_landing` | `sources/kotlin/buildAndPrepareSampleStreamWrappers.java` | `LayoutInflater.inflate(R.layout.fragment_video_landing, viewGroup, false)` |
 
-The referenced layout files exist in `resources/res/layout/` as binary XML. `reconstruction/VERIFIED_BINARY_LAYOUT_BATCH_3.md` records a successful structural decode of 616 layout resources, including root widget types, direct view IDs, and included-layout names. The source trace now also establishes the launcher manifest, `SplashActivity.onPlay()` → `kotlin.zadb` handoff, main Activity inheritance chain, and DataBuffer tab-to-Fragment mapping. Still unresolved: full attribute/style/theme/dimension resolution against the original `resources.arsc`, configuration variants, and the conditions in `SplashActivity.onCreate()` plus inherited lifecycle methods explicitly marked not decompiled. Those source gaps prevent claiming a complete runnable 1:1 reconstruction. Screenshots remain QA only; no XML or tree will be fabricated.
+The referenced layout files exist in `resources/res/layout/` as binary XML. `reconstruction/VERIFIED_BINARY_LAYOUT_BATCH_3.md` records a successful structural decode of 616 layout resources, including root widget types, direct view IDs, and included-layout names. The source trace now also establishes the launcher manifest, `SplashActivity.onPlay()` → runtime `o.zadb` handoff (decompiler alias `kotlin.zadb`), main Activity inheritance chain, and DataBuffer tab-to-Fragment mapping. Still unresolved: full attribute/style/theme/dimension resolution against the original `resources.arsc`, configuration variants, and the conditions in `SplashActivity.onCreate()` plus inherited lifecycle methods explicitly marked not decompiled. Those source gaps prevent claiming a complete runnable 1:1 reconstruction. Screenshots remain QA only; no XML or tree will be fabricated.
 
 ## Reconstruction order
 
@@ -180,4 +180,22 @@ The original source does not establish the static strings previously copied into
 The former local strings `QBank Edition 8.5`, `Tests`, and `Videos Edition 8.5` were explicitly transcribed from screenshots, not established as the original source-bound toolbar values. They have been removed from `strings.xml`; `MainActivity.updateToolbarTitle` now keeps the non-Home title view visible but empty until its original data-binding path is recovered. This is an intentional unresolved binding, not a claim that the original app's title is always empty.
 
 The installed app label is now `Marrow`, matching the original manifest's `@string/app_name` and the original `resources/res/values/strings.xml`. The separate application ID remains distinct to avoid replacing the installed original app.
+
+## Raw APK package identity versus decompiler aliases — correction (Batch 65)
+
+The decompiler archive's Java package declarations are not always the runtime class names. Raw original APK binary `AndroidManifest.xml` and DEX type descriptors were checked directly:
+
+| Runtime identity in APK | Decompiled source path/alias |
+|---|---|
+| `o.zadb` | `sources/kotlin/zadb.java` / `kotlin.zadb` |
+| `o.zaaz`, `o.zaay`, `o.zabz`, `o.zaO`, `o.zabr`, `o.addObserverForBackInvoker` | Corresponding `sources/kotlin/*.java` aliases |
+| `o.DataBuffer` | `sources/kotlin/DataBuffer.java` / `kotlin.DataBuffer` |
+| `o.copyToBuffer` | `sources/kotlin/copyToBuffer.java` / `kotlin.copyToBuffer` |
+| `o._coerceBooleanFromInt` | `sources/kotlin/_coerceBooleanFromInt.java` / `kotlin._coerceBooleanFromInt` |
+| `o.makeGooglePlayServicesAvailable` | `sources/kotlin/makeGooglePlayServicesAvailable.java` / `kotlin.makeGooglePlayServicesAvailable` |
+| `o.ResidentKeyRequirementUnsupportedResidentKeyRequirementException` | `sources/kotlin/ResidentKeyRequirementUnsupportedResidentKeyRequirementException.java` / decompiler alias |
+| `o.WalletConstantsCardNetwork` | `sources/kotlin/WalletConstantsCardNetwork.java` / decompiler alias |
+| `o.setScrollPosition` | `sources/kotlin/setScrollPosition.java` / decompiler alias |
+
+The raw APK manifest contains `o.zadb` and `o._coerceBooleanFromInt`; the decoded decompiler manifest writes `kotlin.zadb` and `kotlin._coerceBooleanFromInt`. This is a decompiler package remapping, not a runtime package rename. The local shell's original-tag convention has therefore been corrected to use `Home_o.*`, matching the actual `Class.getName()` values used by the original `o.copyToBuffer.write(Class)`. The local Fragments remain wrappers, so tag identity is now corrected but Fragment implementation parity remains unresolved.
 
