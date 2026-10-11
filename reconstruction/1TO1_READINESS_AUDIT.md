@@ -169,3 +169,8 @@ The original toolbar bookmark view is source-backed in the shell binding. An exa
 The original binding distinguishes `btnCloseInternModeBanner` from `ibTooltip`. The former clears `showPytBanner` and dismisses `clInternModeBanner`; the latter emits the ViewModel event that opens `InternModeTooltipState`. The replica now preserves those separate actions. The current-edition-dependent tooltip variant is not data-bound, so only the original default description is shown and Learn More remains hidden until that state is traced.
 
 Run `38120225475` reported success, but its screenshots contain Android “isn't responding” dialogs. The smoke guard now rejects generic ANR dialogs, and the replacement run's screenshots must be reviewed before runtime QA can pass.
+
+
+## Screenshot QA isolation — Batch 67
+
+The earlier screenshot artifact contained an Android “Digital Wellbeing isn't responding” dialog. Batch 67 disables the optional Digital Wellbeing package in the disposable emulator and strengthens the screenshot gate to inspect both window and activity state for ANR dialogs. This is QA harness isolation only; a new successful run and artifact review are still required for runtime QA.
