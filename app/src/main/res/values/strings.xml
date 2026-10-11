@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Marrow Reconstruction</string>
+    <string name="app_name">Marrow</string>
     <string name="tab_home">Home</string>
     <string name="tab_qbank">QBank</string>
     <string name="tab_tests">Tests</string>
@@ -36,8 +36,4 @@
     <string name="text_concise_tooltip_description">Activating this Mode will show you only the most critical Videos, and some of the other classes would be replaced with relevant QBank modules. This is to help you focus &amp; cover more content in less time.</string>
     <string name="got_it">got it</string>
     <string name="concise_mode">Intern Mode : %s</string>
-    <!-- Titles transcribed from the supplied original-app screen captures. -->
-    <string name="replica_tab_title_qbank_edition_85">QBank Edition 8.5</string>
-    <string name="replica_tab_title_tests">Tests</string>
-    <string name="replica_tab_title_videos_edition_85">Videos Edition 8.5</string>
 </resources>
