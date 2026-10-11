@@ -47,13 +47,13 @@
         android:id="@+id/rootScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="false">
+        android:fillViewport="false"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clMain"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/backgroundColor">
+            android:layout_height="wrap_content">
 
             <androidx.compose.ui.platform.ComposeView
                 android:id="@+id/composeViewAnnouncementBanner"
