@@ -78,8 +78,7 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio -memory 4096 -cores 4
           script: |
-            set -o pipefail
-            python3 .github/scripts/run_android_ui_smoke.py 2>&1 | tee qa-screenshots/smoke-run.log
+            bash -o pipefail -c 'python3 .github/scripts/run_android_ui_smoke.py 2>&1 | tee qa-screenshots/smoke-run.log'
 
       - name: Upload QA evidence
         if: always()
