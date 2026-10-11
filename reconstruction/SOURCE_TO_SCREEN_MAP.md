@@ -19,6 +19,23 @@ Generated from the uploaded original APK/decompiler workspace. This is a prelimi
 | Video | `VideoLandingViewModel`, `VideoLessonListViewModel`, `VideoLessonListActivityViewModel`, `DownloadedVideoListViewModel`, `VideoRevisionListViewModel`, `RevisionCompletedViewModel`, `VideoNotesViewModel`, `SampleVideosViewModel` | `fragment_video_landing`, `fragment_video_lesson_list`, `fragment_video`, `activity_lesson_video`, `fragment_downloaded_video_list`, `fragment_video_notes`, revision/sample video resources |
 | Supporting | Bookmark, Custom Module, Pearl, Settings/Profile, Search, Feedback, Theme, Recent Updates | Corresponding verified package/resource candidates in decompiler dump |
 
+## Runtime tab mapping verified from original source
+
+The earlier `sources/com/marrow2/ui/...` package inventory was not sufficient to establish tab routes. Direct inspection of `sources/kotlin/DataBuffer.java` now verifies the four enum entries and their exact Fragment class values:
+
+| Tab enum | Index | Original Fragment class | Layout binding used by that Fragment |
+|---|---:|---|---|
+| `HOME` | 0 | `kotlin.makeGooglePlayServicesAvailable` | `kotlin/getNextSegmentHolder.java` inflates `R.layout.fragment_home` |
+| `QBANK` | 1 | `kotlin.ResidentKeyRequirementUnsupportedResidentKeyRequirementException` | `kotlin/HlsMediaChunk.java` inflates `R.layout.fragment_qbank_landing` |
+| `TESTS` | 2 | `kotlin.WalletConstantsCardNetwork` | `kotlin/getNextMediaSequenceAndPartIndex.java` inflates `R.layout.fragment_home_test` |
+| `VIDEOS` | 3 | `kotlin.setScrollPosition` | `kotlin/buildAndPrepareSampleStreamWrappers.java` inflates `R.layout.fragment_video_landing` |
+
+Direct source evidence: `DataBuffer.java` lines 107 and 113–115 instantiate each `DataBuffer` with its enum name, index, tab string/drawable, and Fragment class. The named Fragment classes are present and extend Fragment-derived bases; QBank, Tests, and Video `onCreateView` methods invoke their generated binding classes. This establishes source class/layout ownership more strongly than package-name inference.
+
+**Correction to local shell:** `MainActivity.java` previously manufactured tags with a `Home_` prefix (for example, `Home_kotlin.makeGooglePlayServicesAvailable`); those strings do not occur in the decompiler source. The tags now use the verified original class names and inactive-tab cleanup matches only those four known tab tags. This fixes a fabricated identifier without asserting that the local wrapper Fragment is the original Fragment implementation.
+
+**Still unresolved:** the original launcher component is `com.marrow.ui.activities.onboarding.splash.SplashActivity`, not the local `MainActivity`. The original activity/fragment transition through splash, onboarding, and the main host has not yet been fully traced. The reconstructed app's local wrapper architecture therefore remains non-parity code until that runtime route and genuine dependencies are integrated.
+
 ## Resource evidence — corrected boundary
 
 The inspected `base.apk_Decompiler.com.zip` contains 26,825 entries, including `resources/res/layout/` (578), `resources/res/layout-land/` (16), `resources/res/layout-sw600dp/` (7), `resources/res/drawable/` (2,210), `resources/res/color/` (216), and `resources/res/font/` (7). These counts are directly verified against the ZIP. The decompiler ZIP does not contain a file named `resources.arsc`; however, the separately uploaded original `/mnt/data/base.apk` does contain `resources.arsc` (3,327,896 bytes), verified from its ZIP directory. Resource-ID resolution therefore remains a tooling/decoding step, not an absence of the original resource table.
@@ -85,4 +102,4 @@ Bookmark, custom module, pearl, profile/settings, search, feedback, recent updat
 
 ## Current execution state
 
-Source inventory and six explicit generated inflater-to-layout references are verified. The original APK's `resources.arsc` is present, but this environment has no `aapt`, `aapt2`, `apktool`, or `jadx` executable, and external package installation is unavailable. Do **not** claim the exact screen tree is resolved or change runtime UI based on guesses. Next gate: use an available Android resource decoder against the checksum-verified APK, resolve binary XML/resource IDs, then trace the genuine launcher/navigation path to Home before any UI integration.
+Source inventory, six explicit generated inflater-to-layout references, and all four original DataBuffer tab-to-Fragment mappings are verified. The original APK's `resources.arsc` is present, but this environment has no `aapt`, `aapt2`, `apktool`, or `jadx` executable, and external package installation is unavailable. Do **not** claim the exact screen tree is resolved or change runtime UI based on guesses. Next gate: use an available Android resource decoder against the checksum-verified APK, resolve binary XML/resource IDs, then trace the genuine launcher/navigation path to Home before any UI integration.
