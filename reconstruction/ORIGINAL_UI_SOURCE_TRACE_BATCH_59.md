@@ -78,10 +78,10 @@ Core layout/resource references cross-check successfully. Tooltip IDs, hierarchy
 - This is a source-evidence boundary, not proof that the original app has no bookmark behavior; obfuscated or indirect binding paths may require further tracing.
 
 
-## Intern Mode banner event reconciliation — Batch 66
+## Intern Mode tooltip and banner event reconciliation — Batch 66
 
-- Traced the original Video landing listener in `sources/kotlin/setScrollPosition.java`: the `ibTooltip` view dispatches `TransformationChildCard.write.INSTANCE`.
-- Traced that event in `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java`: it preserves the Intern Mode flags and clears `showPytBanner`. The source state observer in `sources/kotlin/setScrollPosition.java` applies that state to the bound `clInternModeBanner` view.
-- Corrected the replica so `ibTooltip` dismisses `clInternModeBanner` rather than inventing a tooltip-toggle action. The smoke test now checks this source-traced banner dismissal and no longer claims that tapping `ibTooltip` opens the tooltip.
-- The tooltip include and Done control remain present, but its exact opening/visibility flow is still unverified. No guessed trigger was added.
-- Artifact review of run `38120225475` also found Android ANR dialogs in the screenshots despite the job's green conclusion. Batch 66 expanded the QA guard to reject generic ANR dialogs, and the next run must be reviewed before runtime QA is considered valid.
+- Traced the generated Video binding field order in `sources/kotlin/buildAndPrepareSampleStreamWrappers.java`: the first ImageButton is `btnCloseInternModeBanner`; the later ImageButton field `MediaMetadataCompat` is `ibTooltip`. They dispatch different events.
+- `btnCloseInternModeBanner` dispatches `TransformationChildCard.write.INSTANCE`. The VideoLandingViewModel clears `showPytBanner`, and the source observer applies that state to `clInternModeBanner`.
+- `ibTooltip` dispatches `TransformationChildCard.AudioAttributesCompatParcelizer.INSTANCE`. The VideoLandingViewModel emits `InternModeTooltipState(showTooltip=true, isCurrentEd6=...)`; the source observer shows the tooltip, chooses the default or updated description based on the current-edition flag, and handles dismissal separately.
+- Corrected the replica to keep banner dismissal on `btnCloseInternModeBanner` and make `ibTooltip` open the tooltip. Since the current-edition flag is not yet data-bound, the replica uses the original default description and hides Learn More instead of fabricating the ED6 variant. Done dismisses the tooltip. The current-edition-dependent branch and exact fade/touch behavior remain incomplete.
+- Artifact review of run `38120225475` found Android ANR dialogs despite its green conclusion. The smoke guard now rejects generic ANR dialogs; the replacement run and its artifact must be reviewed before runtime QA is considered valid.
