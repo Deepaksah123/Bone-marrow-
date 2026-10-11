@@ -85,3 +85,11 @@ Core layout/resource references cross-check successfully. Tooltip IDs, hierarchy
 - `ibTooltip` dispatches `TransformationChildCard.AudioAttributesCompatParcelizer.INSTANCE`. The VideoLandingViewModel emits `InternModeTooltipState(showTooltip=true, isCurrentEd6=...)`; the source observer shows the tooltip, chooses the default or updated description based on the current-edition flag, and handles dismissal separately.
 - Corrected the replica to keep banner dismissal on `btnCloseInternModeBanner` and make `ibTooltip` open the tooltip. Since the current-edition flag is not yet data-bound, the replica uses the original default description and hides Learn More instead of fabricating the ED6 variant. Done dismisses the tooltip. The current-edition-dependent branch and exact fade/touch behavior remain incomplete.
 - Artifact review of run `38120225475` found Android ANR dialogs despite its green conclusion. The smoke guard now rejects generic ANR dialogs; the replacement run and its artifact must be reviewed before runtime QA is considered valid.
+
+
+## Emulator screenshot isolation — Batch 67
+
+- The previous QA artifact's Home screenshot showed the Android system dialog “Digital Wellbeing isn't responding” over the app, so the prior green workflow was not valid visual evidence.
+- The smoke runner now force-stops and disables the optional `com.google.android.apps.wellbeing` package in the disposable API 31 emulator when present, preventing that unrelated system process from covering the app under test.
+- The ANR guard now checks both `dumpsys window windows` and `dumpsys activity activities` for generic ANR-dialog indicators before and after every screenshot. Any detected ANR fails the run instead of uploading a misleading artifact.
+- This change affects only disposable CI-emulator setup; it does not alter the reconstructed app or claim original-APK parity. Review the next run's actual artifact before accepting runtime QA.
