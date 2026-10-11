@@ -458,7 +458,7 @@ def main() -> None:
     ensure_app()
 
     # Keep the verified XML default state visible, but do not claim the original
-    # Intern Mode event/ViewModel transition works until its source path is traced.
+    # Source event/state path is traced, but the original VideoLandingViewModel and its dependencies are not integrated locally. Verify the switch remains in the unresolved unchecked state; do not infer interaction parity.
     # The switch remains deliberately non-actionable rather than faking ON/OFF UI.
     hierarchy = tap_tab("Videos")
     assert_switch_checked(hierarchy, "switchInternMode", False)
