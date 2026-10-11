@@ -210,7 +210,7 @@ The source confirms that `SplashActivity.onCreate()` is incomplete, but its dist
 | `onCustomAction()` | Calls `createFloatList.Companion.RemoteActionCompatParcelizer(this)`, starts its Intent, then finishes | Raw DEX class `o.createFloatList` (decompiler alias `kotlin.createFloatList`) |
 | `onCommand()` | Calls `getAnchorU.Companion.IconCompatParcelizer(this)`, adds `key_override_transition=false`, starts its Intent, then finishes | Raw DEX class `o.getAnchorU` (decompiler alias `kotlin.getAnchorU`) |
 
-Raw DEX inspection also recovered a duplicate-launch guard in `SplashActivity.onCreate`: the code checks task-root state and the incoming Intent's launcher category/action before the `finish()` path. This is not the callback-selection logic and should not be conflated with the main-host handoff.
+Raw DEX control flow at code-unit offsets 9811–9849 in `SplashActivity.onCreate` recovers this duplicate-launch guard: when `isTaskRoot()` is false, the incoming Intent has category `android.intent.category.LAUNCHER`, and its action equals `android.intent.action.MAIN`, the Activity calls `finish()`. The branch targets and boolean inversion were read from the original `classes.dex`; this guard is separate from the callback-selection logic and should not be conflated with the main-host handoff.
 
 **Still unresolved:** `SplashActivity.onCreate` is a 12,952-code-unit method whose decompiler output is skipped. Its recovered callback implementations establish the destinations, but do not establish which callback is selected for a particular session, account state, deep link, or startup condition. Do not choose one callback as the unconditional launcher path without recovering that decision logic.
 
