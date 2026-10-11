@@ -505,3 +505,8 @@ The original use-case/repository path is now traced one layer deeper: `isMediaSt
 - Removed local direct-visibility listeners for `btnCloseInternModeBanner`, `ibTooltip`, and `btnInternModeToolTipDone`. The original binding routes these controls into `VideoLandingViewModel` events; direct `View.GONE` mutations and a hard-coded tooltip body were not source-equivalent behavior.
 - Those controls now remain non-clickable/non-focusable until the original state/event observer path is integrated. Emulator smoke coverage now asserts the deferred boundary rather than treating the local tooltip overlay as original behavior.
 - This is a correctness guard, not a completion claim. Exact state transitions for these event classes, the original ViewModel dependencies, and full runtime parity remain unresolved.
+
+
+## VideoLandingViewModel injected dependency inventory
+
+The original `VideoLandingViewModel` constructor accepts seven dependencies: `isEncodingHighResolutionPcm`, `LogLogLevel`, `getDisplaySizeV17`, `binarySearchCeil`, `isSeekPending`, `Allocator`, and `getPlatform` (`VideoLandingViewModel.java:344–359`). Their interface/class source files exist in the genuine decompiler archive, but the local replica has not integrated their provider/repository graph. This is why event controls remain deferred: the original behavior cannot be reproduced by adding isolated click listeners or substituting a local preference flag.
