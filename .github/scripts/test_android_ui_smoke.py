@@ -144,6 +144,18 @@ class AccessibilityParserTests(unittest.TestCase):
         self.assertIsNotNone(node)
         self.assertEqual(node_center(node), (1040, 140))
 
+    def test_intern_mode_switch_remains_disabled_without_original_viewmodel(self) -> None:
+        from pathlib import Path
+
+        root = Path(__file__).resolve().parents[2]
+        source = (root / "app/src/main/java/com/marrow/reconstruction/MainActivity.java").read_text(encoding="utf-8")
+        method_start = source.index("private void configureInternModeSwitch")
+        method_end = source.index("\n    private ", method_start + 1)
+        method = source[method_start:method_end]
+        self.assertIn("modeSwitch.setClickable(false);", method)
+        self.assertIn("modeSwitch.setFocusable(false);", method)
+        self.assertNotIn("setOnCheckedChangeListener", method)
+
     def test_source_bound_text_assertion_matches_exact_intern_mode_label(self) -> None:
         root = ET.fromstring(
             '<hierarchy><node resource-id="com.marrow.reconstruction.replica:id/tvInternModeStatus" '
