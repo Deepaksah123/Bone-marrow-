@@ -294,6 +294,16 @@ def main() -> int:
     if 'outRect.top = verticalSpacing;' not in activity_java or 'outRect.left = horizontalSpacing;' not in activity_java:
         failures.append("Videos subject grid must retain source 6dp vertical / 4dp horizontal offsets")
 
+    # Source-bound Videos affordances must remain wired to their own verified targets.
+    if 'closeInternModeBanner.setOnClickListener' not in activity_java or 'internModeBanner.setVisibility(View.GONE)' not in activity_java:
+        failures.append("Videos Intern Mode close action must dismiss clInternModeBanner")
+    if 'internModeTooltipTrigger.setOnClickListener' not in activity_java or 'internModeTooltip.setVisibility(View.VISIBLE)' not in activity_java:
+        failures.append("Videos tooltip trigger must reveal tooltipInternModeInfo")
+    if 'doneInternModeTooltip.setOnClickListener' not in activity_java or 'internModeTooltip.setVisibility(View.GONE)' not in activity_java:
+        failures.append("Videos tooltip Done action must dismiss tooltipInternModeInfo")
+    if 'R.string.text_concise_tooltip_description' not in activity_java:
+        failures.append("Videos tooltip must use the verified default original body string")
+
     if failures:
         print("\nSOURCE-BOUND LAYOUT VALIDATION: FAIL")
         for failure in failures:
