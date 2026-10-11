@@ -41,10 +41,10 @@ def write_anr_diagnostics(stage: str) -> None:
     ):
         try:
             result = adb(args, timeout=30, check=False)
-            chunks.append(f"\\n===== {label} (rc={result.returncode}) =====\\n{result.stdout}")
+            chunks.append(f"\n===== {label} (rc={result.returncode}) =====\n{result.stdout}")
         except Exception as exc:
-            chunks.append(f"\\n===== {label}: collection failed: {exc} =====\\n")
-    (OUT / "anr-diagnostics.txt").write_text("\\n".join(chunks), encoding="utf-8")
+            chunks.append(f"\n===== {label}: collection failed: {exc} =====\n")
+    (OUT / "anr-diagnostics.txt").write_text("\n".join(chunks), encoding="utf-8")
 
 
 def assert_no_anr_dialog(stage: str) -> None:
