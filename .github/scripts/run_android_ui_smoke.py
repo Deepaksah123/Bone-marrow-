@@ -211,10 +211,12 @@ def assert_no_anr_dialog(stage: str) -> None:
 
 
 def find_node(root: ET.Element, *, resource_id: str | None = None,
-              content_desc: str | None = None) -> ET.Element | None:
+              content_desc: str | None = None, clickable_only: bool = False) -> ET.Element | None:
     for node in root.iter("node"):
         attrs = node.attrib
         if attrs.get("visible-to-user", "true").lower() == "false":
+            continue
+        if clickable_only and attrs.get("clickable", "false").lower() != "true":
             continue
         if resource_id is not None and not attrs.get("resource-id", "").endswith(f"/{resource_id}"):
             continue
@@ -278,7 +280,7 @@ def tap_view(resource_id: str, *, content_desc_fallback: str | None = None) -> E
     if node is None and content_desc_fallback is not None:
         # Some Android accessibility providers omit the resource ID on an
         # ImageView but preserve its exact source-declared contentDescription.
-        node = find_node(root, content_desc=content_desc_fallback)
+        node = find_node(root, content_desc=content_desc_fallback, clickable_only=True)
     if node is None:
         # Keep the exact hierarchy that explains a missing source-bound target.
         (OUT / f"missing-view-{resource_id}-hierarchy.xml").write_text(
@@ -376,7 +378,9 @@ def main() -> None:
 
     tap_view("iconSearch", content_desc_fallback="Search")
     screenshot("search-open")
-    back()
+    # BACK first dismisses the soft keyboard on API 30, leaving the overlay in
+    # place. Use its actual source-bound toolbar Back control to close the route.
+    tap_view("ivBack")
     ensure_app()
 
     # Intern Mode OFF/ON state and source-traced tooltip open/Done flow.

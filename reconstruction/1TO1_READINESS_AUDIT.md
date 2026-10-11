@@ -231,3 +231,11 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - The original `activity_main.xml` declares the same Search ImageView with the exact accessibility description `Search`. The runner now uses that source-declared description only as a fallback when the resource ID is absent, and still taps the live bounds reported by accessibility. It does not use guessed coordinates.
 - On any future missing target, the exact hierarchy XML is retained in the QA artifact to avoid another blind diagnostic cycle.
 - This batch is a targeted runtime-test correction; the latest run is not a runtime pass. A fresh smoke run and artifact review are required, and full pixel-level 1:1 parity remains unverified.
+
+
+## Runtime search target and overlay exit correction — Batch 75 (2026-10-11)
+
+- Reviewed smoke run [38134550913](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38134550913) and artifact [11700568147](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38134550913/artifacts/11700568147). The Search screenshot showed Android's external Google search/voice UI, not the in-app Better Search overlay. The previous fallback had matched a non-clickable accessibility container whose description was `Search`, tapped its center, and then BACK only dismissed the keyboard; the subsequent Videos tab lookup correctly failed because the overlay remained.
+- Tightened content-description fallback to require a visible, clickable accessibility node. Added a regression test with a non-clickable parent and a clickable Search control, asserting the latter's reported bounds are used.
+- After capturing the in-app Search state, the smoke runner now taps the actual source-bound `ivBack` control to leave the overlay, rather than sending a single system BACK event that only hides the soft keyboard.
+- The prior run remains **failed runtime QA**; screenshots from the external Google UI are not accepted as Search parity evidence. New smoke run and artifact review are required. No pixel-level 1:1 completion claim is made.

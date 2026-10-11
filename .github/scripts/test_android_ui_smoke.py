@@ -128,6 +128,17 @@ class AccessibilityParserTests(unittest.TestCase):
         self.assertIsNotNone(node)
         self.assertEqual(node_center(node), (530, 130))
 
+    def test_content_description_fallback_requires_clickable_exact_target(self) -> None:
+        root = ET.fromstring(
+            '<hierarchy>'
+            '<node content-desc="Search" clickable="false" bounds="[0,180][1080,264]" />'
+            '<node content-desc="Search" clickable="true" bounds="[1000,100][1080,180]" />'
+            '</hierarchy>'
+        )
+        node = find_node(root, content_desc="Search", clickable_only=True)
+        self.assertIsNotNone(node)
+        self.assertEqual(node_center(node), (1040, 140))
+
     def test_selected_tab_state_is_read_from_hierarchy(self) -> None:
         self.assertTrue(tab_is_selected(self.root, "Home"))
         self.assertFalse(tab_is_selected(self.root, "QBank"))
