@@ -14,6 +14,7 @@ def main() -> int:
         "bounded 18-minute emulator step": r"name: Launch emulator, verify tab navigation, capture screenshots\s*\n\s+timeout-minutes:\s*18",
         "bounded emulator memory": r"emulator-options:.*?-memory\s+2048(?:\s|$)",
         "bounded emulator CPU allocation": r"emulator-options:.*?-cores\s+2(?:\s|$)",
+        "pre-emulator evidence directory": r"name: Prepare QA evidence directory before emulator startup\\s*\\n\\s+run: \\|",
         "unconditional evidence upload": r"name: Upload UI smoke screenshots, interaction captures, and failure diagnostics\s*\n\s+if:\s*always\(\)",
         "missing evidence fails the upload": r"if-no-files-found:\s*error",
         "QA artifact retention": r"retention-days:\s*14",

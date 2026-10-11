@@ -327,3 +327,11 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - The smoke run on commit `dc0192593f84762e9764ff33ec9a64330c61ea80` remained in progress with no status/log/artifact updates since its start at 12:44 UTC, while newer smoke runs were repeatedly left pending or cancelled by the branch-scoped concurrency group.
 - Changed the concurrency key to include the GitHub Actions run ID. This allows the latest bounded smoke workflow to execute on its own hosted runner instead of waiting behind the stale emulator job; `cancel-in-progress: false` still preserves each run's evidence rather than cancelling active work.
 - This is an execution-isolation measure, not a runtime pass. The latest run must complete and its screenshots/diagnostics must be reviewed. Resource limits remain 2048 MB, 2 cores, 18 minutes per emulator step, and 30 minutes per job.
+
+
+## Pre-emulator evidence preservation — Batch 88 (2026-10-11)
+
+- Added a host-runner step before emulator startup to create the QA artifact directory and record the commit, run ID, workflow name, and an explicit `emulator_script_invoked=false` marker.
+- This ensures that if emulator boot or the emulator action fails before Python smoke code starts, the unconditional artifact step can still preserve a traceable artifact instead of losing all evidence because the directory never existed.
+- A context-only artifact is **not** screenshot QA and does not change the pass criteria. The emulator step must succeed and actual screenshots/hierarchy/diagnostics must be reviewed before runtime acceptance.
+- Extended the workflow contract guard to enforce the pre-emulator evidence step.

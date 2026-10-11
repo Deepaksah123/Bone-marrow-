@@ -70,6 +70,16 @@ jobs:
       - name: Build debug APK
         run: gradle --no-daemon :app:assembleDebug
 
+      - name: Prepare QA evidence directory before emulator startup
+        run: |
+          mkdir -p qa-screenshots
+          {
+            echo "commit=$GITHUB_SHA"
+            echo "run_id=$GITHUB_RUN_ID"
+            echo "workflow=$GITHUB_WORKFLOW"
+            echo "emulator_script_invoked=false"
+          } > qa-screenshots/run-context.txt
+
       - name: Launch emulator, verify tab navigation, capture screenshots
         timeout-minutes: 18
         uses: reactivecircus/android-emulator-runner@v2
