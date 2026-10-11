@@ -140,7 +140,7 @@ jobs:
             # Exercise the source-backed toolbar menu action and record the drawer surface.
             menu_bounds = None
             for node in root.iter("node"):
-                if node.attrib.get("content-desc", "") == "Open navigation drawer":
+                if node.attrib.get("resource-id", "").endswith("/iconMenu"):
                     menu_bounds = node.attrib.get("bounds", "")
                     break
             match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", menu_bounds or "")
@@ -217,6 +217,29 @@ jobs:
                     if node.attrib.get("resource-id", "").endswith("/" + suffix):
                         return node.attrib.get("bounds", "")
                 return ""
+            # Source-traced Intern Mode switch updates the status string and resolved colors.
+            switch_bounds = bounds_for_resource(video_root, "switchInternMode")
+            match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", switch_bounds)
+            if not match:
+                raise SystemExit("Could not locate source-bound Intern Mode switch")
+            x1, y1, x2, y2 = map(int, match.groups())
+            subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
+            time.sleep(1)
+            video_root = dump_hierarchy("/sdcard/video-switch-on.xml", "qa-screenshots/video-switch-on-hierarchy.xml")
+            if not any(node.attrib.get("text", "") == "Intern Mode : ON" for node in video_root.iter("node")):
+                raise SystemExit("Intern Mode switch did not expose the source-backed ON state")
+            subprocess.run(["adb", "shell", "screencap", "-p", "/sdcard/video-switch-on.png"], check=True, timeout=30)
+            subprocess.run(["adb", "pull", "/sdcard/video-switch-on.png", "qa-screenshots/video-switch-on.png"], check=True, stdout=subprocess.DEVNULL, timeout=30)
+            switch_bounds = bounds_for_resource(video_root, "switchInternMode")
+            match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", switch_bounds)
+            if not match:
+                raise SystemExit("Could not locate Intern Mode switch after ON state")
+            x1, y1, x2, y2 = map(int, match.groups())
+            subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
+            time.sleep(1)
+            video_root = dump_hierarchy("/sdcard/video-switch-off.xml", "qa-screenshots/video-switch-off-hierarchy.xml")
+            if not any(node.attrib.get("text", "") == "Intern Mode : OFF" for node in video_root.iter("node")):
+                raise SystemExit("Intern Mode switch did not restore the source-backed OFF state")
             tooltip_bounds = bounds_for_resource(video_root, "ibTooltip")
             match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", tooltip_bounds)
             if not match:
