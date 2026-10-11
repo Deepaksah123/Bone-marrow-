@@ -375,6 +375,9 @@ def main() -> None:
     tap_view("iconMenu")
     screenshot("drawer-open")
     back()
+    # BACK must close the drawer and leave the app shell on screen; a live PID
+    # alone is insufficient because the Activity could have finished.
+    hierarchy = wait_for_tabs(timeout=30)
 
     tap_view("iconSearch", content_desc_fallback="Search")
     screenshot("search-open")

@@ -239,3 +239,11 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Tightened content-description fallback to require a visible, clickable accessibility node. Added a regression test with a non-clickable parent and a clickable Search control, asserting the latter's reported bounds are used.
 - After capturing the in-app Search state, the smoke runner now taps the actual source-bound `ivBack` control to leave the overlay, rather than sending a single system BACK event that only hides the soft keyboard.
 - The prior run remains **failed runtime QA**; screenshots from the external Google UI are not accepted as Search parity evidence. New smoke run and artifact review are required. No pixel-level 1:1 completion claim is made.
+
+
+## Drawer Back behavior and foreground-shell assertion — Batch 76 (2026-10-11)
+
+- Artifact [11701495250](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38135599347/artifacts/11701495250) showed the app's drawer correctly opened, but one Android BACK event left the launcher foregrounded before Search targeting. The captured hierarchy proved the subsequent `Search` description belonged to the launcher search widget, not the app.
+- Added a source-shell Back handler in `MainActivity`: when the start drawer is open, BACK closes it and returns without finishing the activity; other Back events continue through `FragmentActivity` so the Search fragment back stack is preserved.
+- The smoke runner now requires all four app tabs to be visible again after closing the drawer. This prevents a live process ID or launcher search widget from being mistaken for the app's foreground screen.
+- Build, evidence guard, and a fresh emulator smoke run are required before accepting this batch. Full pixel-level parity remains unverified.

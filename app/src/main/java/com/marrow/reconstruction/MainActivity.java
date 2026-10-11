@@ -21,6 +21,7 @@ import java.util.Locale;
 public final class MainActivity extends FragmentActivity {
     private TabLayout tabLayout;
     private ImageView bookmarkIcon;
+    private androidx.drawerlayout.widget.DrawerLayout drawerLayout;
     private static final int[] ICONS = { R.drawable.ic_home_tab_home, R.drawable.ic_home_tab_qbank, R.drawable.ic_home_tab_tests, R.drawable.ic_home_tab_videos };
     private static final int[] LABELS = { R.string.tab_home, R.string.tab_qbank, R.string.tab_tests, R.string.tab_video };
     private int selectedTab = 0;
@@ -51,7 +52,7 @@ public final class MainActivity extends FragmentActivity {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
         ImageView menuIcon = findViewById(R.id.iconMenu);
-        androidx.drawerlayout.widget.DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
+        drawerLayout = findViewById(R.id.drawerLayout);
         menuIcon.setOnClickListener(v -> drawerLayout.openDrawer(android.view.Gravity.START));
         ImageView searchIcon = findViewById(R.id.iconSearch);
         searchIcon.setOnClickListener(v -> {
@@ -338,6 +339,18 @@ public final class MainActivity extends FragmentActivity {
     public static final class QBankTabFragment extends TabContentFragment { }
     public static final class TestsTabFragment extends TabContentFragment { }
     public static final class VideosTabFragment extends TabContentFragment { }
+
+    @Override public void onBackPressed() {
+        // Preserve the original shell when Android BACK is pressed over the
+        // navigation drawer. FragmentActivity handles the Search back stack
+        // after the drawer is closed.
+        if (drawerLayout != null
+                && drawerLayout.isDrawerOpen(android.view.Gravity.START)) {
+            drawerLayout.closeDrawer(android.view.Gravity.START);
+            return;
+        }
+        super.onBackPressed();
+    }
 
     @Override protected void onSaveInstanceState(Bundle out) {
         out.putInt("selected_home_tab",selectedTab); super.onSaveInstanceState(out);
