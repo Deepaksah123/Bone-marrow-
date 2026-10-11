@@ -344,3 +344,12 @@ Additional archive fingerprints: `AppModule.java` 15089 bytes, SHA-256 `b5f42447
 - Learn More: `VideoLandingViewModel.java:2061–2067` resets the current `IntegrityManager` state. This branch alone does not establish a destination/navigation contract.
 
 Evidence also includes original listeners at `setScrollPosition.java:2794–2853`. This closes the event-source trace only. The original provider/repository graph, ViewModel lifecycle and event collection are not integrated locally; these controls remain disabled rather than being replaced with guessed listeners or local preference writes.
+
+
+## Batch 69 — exact Intern Mode loading and tooltip state bindings
+
+The original `InternModelLoadedUIData` model (`ExpandableTransformationBehavior.java`) has `showLoader`, `isEd6`, and `isInternModeChecked`. The fragment observer at `setScrollPosition.java:1151–1246` uses these fields to show/hide the original loading overlay and Group, set the transition message, and apply the window flag. The message is selected exactly as follows: `isEd6 && isInternModeChecked` → `text_mapping_pyt`; `isEd6 && !isInternModeChecked` → `text_turning_off_intern_mode`; `!isEd6 && isInternModeChecked` → `text_reducing_video_hrs`; otherwise `text_original_video_hrs`. The tooltip model `InternModeTooltipState` has `showTooltip` and `isCurrentEd6`; `setScrollPosition.java:1039–1105` hides the tooltip when closed and selects `text_concise_tooltip_description_updated` or `text_concise_tooltip_description` according to that state.
+
+Batch 69 restored the four original transition strings verbatim from `resources/res/values/strings.xml`. A regression test now verifies those values plus the two original tooltip descriptions and `concise_mode`. The local loading overlay and tooltip include remain hidden because their source state observers are not integrated; their message field remains unpopulated rather than inventing a state.
+
+Verified local string parity: the nine existing Intern Mode strings checked against the original archive matched exactly. Original values include `Intern Mode : %s`, the updated and legacy tooltip descriptions, banner copy, Learn More and Got it labels. The four transition strings were the missing resource entries and are now present verbatim.
