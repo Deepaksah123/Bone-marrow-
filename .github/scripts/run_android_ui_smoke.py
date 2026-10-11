@@ -50,7 +50,7 @@ def write_anr_diagnostics(stage: str) -> None:
 
 def visible_anr_marker(window_dump: str) -> str | None:
     """Return an ANR marker only when its own window is visibly rendered."""
-    blocks = re.split(r"(?=window #\\d+\\s)", window_dump.lower())
+    blocks = re.split(r"(?=window #\d+\s)", window_dump.lower())
     indicators = (
         "application not responding",
         "isn't responding",
@@ -90,7 +90,7 @@ def find_node(root: ET.Element, *, resource_id: str | None = None,
 
 
 def node_center(node: ET.Element) -> tuple[int, int]:
-    match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", node.attrib.get("bounds", ""))
+    match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", node.attrib.get("bounds", ""))
     if not match:
         raise ValueError(f"Invalid or missing accessibility bounds: {node.attrib.get('bounds')!r}")
     left, top, right, bottom = map(int, match.groups())
