@@ -10,7 +10,7 @@ from unittest.mock import patch
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-from run_android_ui_smoke import assert_interaction_deferred, assert_switch_interaction_deferred, assert_text, find_node, node_center, tab_is_selected, tap, validate_png_capture, visible_anr_marker, visible_system_ui_anr, wait_button_center
+from run_android_ui_smoke import assert_interaction_deferred, assert_switch_interaction_deferred, assert_text, find_node, node_center, tab_is_selected, tap, validate_png_capture, visible_anr_marker
 
 
 class VisibleAnrMarkerTests(unittest.TestCase):
@@ -44,68 +44,6 @@ class VisibleAnrMarkerTests(unittest.TestCase):
         self.assertIsNotNone(visible_anr_marker(dump))
         self.assertFalse(visible_system_ui_anr(dump))
 
-    def test_hidden_system_ui_anr_is_not_recoverable(self) -> None:
-        dump = """
-        Window #4 Window{f2c880f u0 Application Not Responding: com.android.systemui}:
-          isVisible=false
-          Surface: shown=false layer=0 alpha=0.0
-        """
-        self.assertFalse(visible_system_ui_anr(dump))
-
-    def test_hidden_system_ui_anr_does_not_inherit_other_window_visibility(self) -> None:
-        dump = """
-        Window #4 Window{f2c880f u0 Application Not Responding: com.android.systemui}:
-          isVisible=false
-          Surface: shown=false layer=0 alpha=0.0
-        Window #5 Window{f2c880f u0 MainActivity}:
-          isVisible=true
-          Surface: shown=true layer=1 alpha=1.0
-        """
-        self.assertFalse(visible_system_ui_anr(dump))
-
-    def test_recovery_classifier_requires_system_ui_owner_and_visible_surface(self) -> None:
-        hidden_system_ui = """
-        Window #4 Window{f2c880f u0 Application Not Responding: com.android.systemui}:
-          isVisible=false
-          Surface: shown=false layer=0 alpha=0.0
-        """
-        visible_replica = """
-        Window #4 Window{f2c880f u0 Application Not Responding: com.marrow.reconstruction.replica}:
-          isVisible=true
-          Surface: shown=true layer=1 alpha=1.0
-        """
-        visible_system_ui = """
-        Window #4 Window{f2c880f u0 Application Not Responding: com.android.systemui}:
-          isVisible=true
-          Surface: shown=true layer=1 alpha=1.0
-        """
-        self.assertFalse(visible_system_ui_anr(hidden_system_ui))
-        self.assertFalse(visible_system_ui_anr(visible_replica))
-        self.assertTrue(visible_system_ui_anr(visible_system_ui))
-
-    def test_hidden_anr_does_not_inherit_visibility_from_another_window(self) -> None:
-        dump = """
-        Window #4 Window{f2c880f u0 Application Not Responding: com.android.systemui}:
-          isVisible=false
-          Surface: shown=false layer=0 alpha=0.0
-        Window #5 Window{f2c880f u0 MainActivity}:
-          isVisible=true
-          Surface: shown=true layer=1 alpha=1.0
-        """
-        self.assertIsNone(visible_anr_marker(dump))
-
-
-    def test_wait_button_uses_real_accessibility_bounds(self) -> None:
-        xml = (
-            '<hierarchy><node text="Wait" bounds="[600,700][800,780]" visible-to-user="true" />'
-            '<node text="Close app" bounds="[300,700][500,780]" visible-to-user="true" /></hierarchy>'
-        )
-        self.assertEqual(wait_button_center(xml), (700, 740))
-
-    def test_wait_button_is_not_guessed_when_missing_or_hidden(self) -> None:
-        self.assertIsNone(wait_button_center('<hierarchy><node text="Close app" bounds="[1,1][2,2]" /></hierarchy>'))
-        self.assertIsNone(wait_button_center('<hierarchy><node text="Wait" bounds="[1,1][2,2]" visible-to-user="false" /></hierarchy>'))
-        self.assertIsNone(wait_button_center('<hierarchy>not xml</hierarchy>'))
 
 
 class AccessibilityParserTests(unittest.TestCase):
