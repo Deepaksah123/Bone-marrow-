@@ -288,15 +288,18 @@ public final class MainActivity extends FragmentActivity {
                         internModeBanner.setVisibility(View.GONE));
             }
 
-            // The source tooltip trigger and tooltip include are both part of the original binding.
+            // Original setScrollPosition wires ibTooltip to the VideoLandingViewModel
+            // event that clears showPytBanner; the corresponding bound view is clInternModeBanner.
+            // Do not reinterpret this source control as a tooltip toggle.
             View internModeTooltip = root.findViewById(R.id.tooltipInternModeInfo);
             View internModeTooltipTrigger = root.findViewById(R.id.ibTooltip);
-            if (internModeTooltip != null && internModeTooltipTrigger != null) {
-                internModeTooltipTrigger.setOnClickListener(v -> {
-                    int nextVisibility = internModeTooltip.getVisibility() == View.VISIBLE
-                            ? View.GONE : View.VISIBLE;
-                    internModeTooltip.setVisibility(nextVisibility);
-                });
+            if (internModeBanner != null && internModeTooltipTrigger != null) {
+                internModeTooltipTrigger.setOnClickListener(v ->
+                        internModeBanner.setVisibility(View.GONE));
+            }
+            // The tooltip Done control dismisses its own include; its opening flow remains
+            // unbound until the original tooltip visibility trigger is fully traced.
+            if (internModeTooltip != null) {
                 View doneInternModeTooltip = root.findViewById(R.id.btnInternModeToolTipDone);
                 if (doneInternModeTooltip != null) {
                     doneInternModeTooltip.setOnClickListener(v ->
