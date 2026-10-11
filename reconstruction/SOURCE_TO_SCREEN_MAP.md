@@ -47,6 +47,22 @@ Direct source evidence: `DataBuffer.java` lines 107 and 113–115 instantiate ea
 
 The local app's `app/src/main/AndroidManifest.xml` currently launches the self-authored `.MainActivity` and does not declare the original `SplashActivity` or `kotlin.zadb`. Its wrapper Fragments inflate local `*_replica.xml` files. Therefore this is not yet a faithful original Activity/navigation reconstruction. Do not “fix” that by simply changing the launcher to an obfuscated class: its original superclass, Hilt/application setup, base layout, and dependencies must be integrated from the genuine source together. Until that integration is feasible and validated, preserve this mismatch as an explicit unresolved gap rather than implying 1:1 parity.
 
+## Main host class hierarchy and tab behavior — additional source trace
+
+The main host is not merely the class name `kotlin.zadb`; its inheritance chain is explicit in the decompiler Java:
+
+`kotlin.zadb` → `kotlin.zaaz` → `kotlin.zaay` → `kotlin.zabz` → `kotlin.zaO` → `kotlin.zabr` → `kotlin.addObserverForBackInvoker`.
+
+Evidence:
+- `resources/AndroidManifest.xml` declares `kotlin.zadb` as a non-exported Activity with `@style/Marrow2` and `singleTop`; it is not the launcher.
+- `sources/kotlin/zadb.java` declares `public final class zadb extends zaaz`, owns a `RevampHomeActivityViewModel` delegate, and calls `super.onCreate(p0)` before continuing its own initialization.
+- `sources/kotlin/zaaz.java` declares `zaaz extends zaay`; `sources/kotlin/zaay.java` declares `zaay extends zabz`; `sources/kotlin/zabz.java` declares `zabz extends zaO`; `sources/kotlin/zaO.java` declares `zaO extends zabr`.
+- `sources/kotlin/zabr.java` owns the generated `parsePeriod` activity binding field/accessor. `sources/kotlin/parsePeriod.java` explicitly inflates `R.layout.activity_home_revamp`. This ties the original main shell binding to the original home-revamp layout, but the precise call chain attaching that binding is not recovered from the decompiler's skipped/obfuscated `onCreate` bodies.
+- `sources/kotlin/zabz.java` contains source-backed tab behavior: it populates the Material `TabLayout` from a `List<DataBuffer>`, obtains each tab's custom view, checks the selected `DataBuffer`, updates the toolbar/bookmark state, and invokes tab-specific behavior. Around source lines 2419–2593, this behavior uses the four exact `DataBuffer` values and iterates the tab widgets.
+- The original `DataBuffer` values map indices 0–3 to `makeGooglePlayServicesAvailable`, `ResidentKeyRequirementUnsupportedResidentKeyRequirementException`, `WalletConstantsCardNetwork`, and `setScrollPosition`, as recorded in the table above.
+
+**Important boundary:** Several lifecycle methods (`SplashActivity.onCreate`, `zabr.onCreate`, `zaO.onCreate`, `zaay.onCreate`) are explicitly emitted as `Method not decompiled`. Their bodies must not be reverse-invented from neighboring methods. The evidence now identifies the original launcher, main Activity, class hierarchy, main layout binding, and tab mapping; it does not yet prove a full runnable integration into the reconstruction project.
+
 ## Resource evidence — corrected boundary
 
 The inspected `base.apk_Decompiler.com.zip` contains 26,825 entries, including `resources/res/layout/` (578), `resources/res/layout-land/` (16), `resources/res/layout-sw600dp/` (7), `resources/res/drawable/` (2,210), `resources/res/color/` (216), and `resources/res/font/` (7). These counts are directly verified against the ZIP. The decompiler ZIP does not contain a file named `resources.arsc`; however, the separately uploaded original `/mnt/data/base.apk` does contain `resources.arsc` (3,327,896 bytes), verified from its ZIP directory. Resource-ID resolution therefore remains a tooling/decoding step, not an absence of the original resource table.
