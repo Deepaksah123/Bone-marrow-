@@ -347,3 +347,9 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 
 - Updated the smoke runner to rewrite `qa-screenshots/run-context.txt` as soon as Python starts, preserving the actual GitHub commit/run/workflow values and changing `emulator_script_invoked` to `true`.
 - If emulator startup fails before Python is invoked, the pre-created artifact retains `false`; if the runner starts, the artifact records `true`. This distinguishes emulator-action startup failure from a failure inside the smoke script without treating either metadata state as a runtime pass.
+
+
+## QA context newline serialization fix — Batch 91 (2026-10-11)
+
+- Corrected the context artifact writer to emit actual newline-separated fields, rather than literal backslash-n text, so the run ID and invocation state remain readable in uploaded diagnostics.
+- This is a metadata serialization fix only; app behavior and QA acceptance criteria are unchanged.

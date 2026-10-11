@@ -14,12 +14,12 @@ ACTIVITY = f"{PACKAGE}/com.marrow.reconstruction.MainActivity"
 OUT = Path("qa-screenshots")
 OUT.mkdir(parents=True, exist_ok=True)
 (OUT / "run-context.txt").write_text(
-    "\\n".join((
+    "\n".join((
         f"commit={os.environ.get('GITHUB_SHA', 'unknown')}",
         f"run_id={os.environ.get('GITHUB_RUN_ID', 'local')}",
         f"workflow={os.environ.get('GITHUB_WORKFLOW', 'local')}",
         "emulator_script_invoked=true",
-    )) + "\\n",
+    )) + "\n",
     encoding="utf-8",
 )
 SYSTEM_UI_ANR_RECOVERY_ATTEMPTS = 0
