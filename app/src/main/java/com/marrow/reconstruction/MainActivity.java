@@ -233,6 +233,28 @@ public final class MainActivity extends FragmentActivity {
                     }
                 });
             }
+
+            // These controls are bound by the original VideoLandingFragment view binding.
+            // The original close action dispatches a dedicated banner-dismiss event.
+            View internModeBanner = root.findViewById(R.id.clInternModeBanner);
+            View closeInternModeBanner = root.findViewById(R.id.btnCloseInternModeBanner);
+            if (internModeBanner != null && closeInternModeBanner != null) {
+                closeInternModeBanner.setOnClickListener(v ->
+                        internModeBanner.setVisibility(View.GONE));
+            }
+
+            // The source tooltip trigger and tooltip include are both part of the original binding.
+            View internModeTooltip = root.findViewById(R.id.tooltipInternModeInfo);
+            View internModeTooltipTrigger = root.findViewById(R.id.ibTooltip);
+            if (internModeTooltip != null && internModeTooltipTrigger != null) {
+                internModeTooltipTrigger.setOnClickListener(v -> {
+                    int nextVisibility = internModeTooltip.getVisibility() == View.VISIBLE
+                            ? View.GONE : View.VISIBLE;
+                    internModeTooltip.setVisibility(nextVisibility);
+                });
+                internModeTooltip.setOnClickListener(v ->
+                        internModeTooltip.setVisibility(View.GONE));
+            }
         }
         return root;
     }
