@@ -320,3 +320,16 @@ Fingerprints were computed directly from entries in the uploaded `base.apk_Decom
 | `sources/kotlin/getPlatform.java` | 6455 | `716d77e8ca930276b2014049b9a0489ddda35c50ad71421c761f90c56cb890a2` |
 
 
+
+
+## Batch 68 — second-level provider trace
+
+The first factory argument, `isMediaStoreExternalContentUri`, has an eight-argument constructor at `sources/kotlin/isMediaStoreExternalContentUri.java:167`: `unlockFolder`, `createEGLSurface`, `closeCurrentOutputStream`, `getPlayerStateString`, `iterationFinished`, `r8lambdaPCVErwyXpSEovkAdoO9nP03HIVc`, `notifySpanRemoved`, and `getPlatform`. The other original implementations `w`, `getIntegerCodeForString`, and `areEqual` also have injected dependencies. The top-level ViewModel constructor is therefore not a self-contained integration boundary.
+
+Verified provider routes:
+- `removeEmbeddedStyling.AudioAttributesCompatParcelizer()` → `AppModule.INSTANCE.IconCompatParcelizer()` → `RtspHeadersBuilder.IconCompatParcelizer()` → `isSeekPending`.
+- `updateViewStates.IconCompatParcelizer()` → `CoroutinesDispatchersModule.INSTANCE.read()` → `setMbbsVerificationYear.write()` → `getPlatform`.
+
+The original app-scoped graph and repository implementations are not integrated in the replica. No isolated replacement ViewModel was added.
+
+Additional archive fingerprints: `AppModule.java` 15089 bytes, SHA-256 `b5f42447ded44ef1e240474fffdba5418c13f8375c663d4de92b82f0e9760e49`; `CoroutinesDispatchersModule.java` 1583 bytes, SHA-256 `2227d1ae4e7670aa1030cad802e274aed053e7f32206857473d60f862f692ed9`; `removeEmbeddedStyling.java` 625 bytes, SHA-256 `7f91939fa45914d72d696cb95eb5fd0fee411977b3f8374942e7d0f468b3a4c9`; `updateViewStates.java` 574 bytes, SHA-256 `62e368297d42ad280dd3f310d7a621727352c3b39f6b2234318b88709d81504d`; `RtspHeadersBuilder.java` 1885 bytes, SHA-256 `9358d402f5a99be7dec9e8f7aaa9a2a370b4941467d9c8e16827169fd802aca3`.
