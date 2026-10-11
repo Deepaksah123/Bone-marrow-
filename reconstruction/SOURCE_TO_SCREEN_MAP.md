@@ -170,3 +170,14 @@ Bookmark, custom module, pearl, profile/settings, search, feedback, recent updat
 ## Current execution state
 
 Source inventory, six explicit generated inflater-to-layout references, and all four original DataBuffer tab-to-Fragment mappings are verified. The original APK's `resources.arsc` is present, but this environment has no `aapt`, `aapt2`, `apktool`, or `jadx` executable, and external package installation is unavailable. Do **not** claim the exact screen tree is resolved or change runtime UI based on guesses. Next gate: use an available Android resource decoder against the checksum-verified APK, resolve binary XML/resource IDs, then trace the genuine launcher/navigation path to Home before any UI integration.
+## Toolbar page-title binding — screenshot-only strings removed (Batch 63)
+
+The original source does not establish the static strings previously copied into the reconstruction:
+- `sources/kotlin/zabz.java:2563–2567` sets the non-Home toolbar title from `dataBuffer.getRemoteActionCompatParcelizer()`.
+- `sources/kotlin/DataBuffer.java:43–51, 63–70, 105–115` initializes that mutable title field to `""` for all four enum entries and exposes a setter. The Home tab takes a separate branch that hides the page title and restores the Home toolbar region.
+- `sources/com/marrow2/ui/main/viewmodel/HomeUIActivityViewModel.java` uses the source tab selection/configuration state, but the exact end-to-end update that supplies the mutable toolbar-title string has not yet been traced.
+
+The former local strings `QBank Edition 8.5`, `Tests`, and `Videos Edition 8.5` were explicitly transcribed from screenshots, not established as the original source-bound toolbar values. They have been removed from `strings.xml`; `MainActivity.updateToolbarTitle` now keeps the non-Home title view visible but empty until its original data-binding path is recovered. This is an intentional unresolved binding, not a claim that the original app's title is always empty.
+
+The installed app label is now `Marrow`, matching the original manifest's `@string/app_name` and the original `resources/res/values/strings.xml`. The separate application ID remains distinct to avoid replacing the installed original app.
+
