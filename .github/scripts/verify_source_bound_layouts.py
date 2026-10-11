@@ -144,6 +144,30 @@ def main() -> int:
             if f'<item name="{name}">{value}</item>' not in style_text:
                 failures.append(f"Home completion chip: {style_path.name} missing {name}={value}")
 
+    # Source-decoded layout attributes beyond ID coverage.
+    if 'android:fillViewport="true"' in home_xml:
+        failures.append("Home: original NestedScrollView does not declare fillViewport=true")
+    ed6 = re.search(r'<View\s+android:id="@\\+id/ivEd6background"(?:(?!/>).)*?/>', home_xml, re.S)
+    if not ed6 or 'android:background="?attr/colorSurfaceVariant14"' not in ed6.group(0):
+        failures.append("Home: ED6 background View is missing its original theme background")
+    progress = re.search(r'<ProgressBar\s+android:id="@\\+id/pbModuleCompletion"(?:(?!/>).)*?/>', home_xml, re.S)
+    if not progress or 'android:layout_gravity="center"' not in progress.group(0) or 'android:rotation="90"' not in progress.group(0):
+        failures.append("Home: completion ProgressBar is missing original center gravity or 90-degree rotation")
+    subtext = re.search(r'<TextView\s+android:id="@\\+id/tvModuleCompletionSubText"(?:(?!/>).)*?/>', home_xml, re.S)
+    if not subtext or 'android:layout_gravity="center"' not in subtext.group(0) or 'android:gravity="center"' in subtext.group(0):
+        failures.append("Home: completion subtitle must use the original layout_gravity, not android:gravity")
+    qbank_xml = (LAYOUT / "fragment_qbank_landing_replica.xml").read_text(encoding="utf-8")
+    qbank_list = re.search(r'<androidx\\.recyclerview\\.widget\\.RecyclerView\\s+android:id="@\\+id/rvSubjectList"(?:(?!/>).)*?/>', qbank_xml, re.S)
+    if not qbank_list or 'android:clipToPadding=' in qbank_list.group(0):
+        failures.append("QBank: remove the non-source clipToPadding override from rvSubjectList")
+    video_xml = (LAYOUT / "fragment_video_landing_replica.xml").read_text(encoding="utf-8")
+    video_progress = re.search(r'<ProgressBar\\s+android:id="@\\+id/progressBar"(?:(?!/>).)*?/>', video_xml, re.S)
+    if not video_progress or 'android:layout_marginEnd="2dp"' not in video_progress.group(0):
+        failures.append("Videos: progressBar is missing original 2dp end margin")
+    video_scroll = re.search(r'<androidx\\.core\\.widget\\.NestedScrollView\\s+android:id="@\\+id/rootScrollView"(?:(?!/>).)*?>', video_xml, re.S)
+    if not video_scroll or 'android:clipToPadding=' in video_scroll.group(0):
+        failures.append("Videos: remove the non-source clipToPadding override from rootScrollView")
+
     if failures:
         print("\nSOURCE-BOUND LAYOUT VALIDATION: FAIL")
         for failure in failures:
