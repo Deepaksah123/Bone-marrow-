@@ -58,6 +58,7 @@ jobs:
           arch: x86_64
           profile: pixel_2
           disable-animations: true
+          emulator-options: -no-snapshot -no-window -gpu swiftshader_indirect -noaudio -memory 2048
           script: |
             set -eu
             mkdir -p qa-screenshots
@@ -102,7 +103,7 @@ jobs:
                 x, y = candidates[-1]
                 subprocess.run(["adb", "shell", "input", "tap", str(x), str(y)], check=True, timeout=10)
                 time.sleep(2)
-                subprocess.run(["adb", "shell", "uiautomator", "dump", "/sdcard/current.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
+                subprocess.run(["adb", "shell", "uiautomator", "dump", "--compressed", "/sdcard/current.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
                 hierarchy_path = f"qa-screenshots/{target.lower()}-hierarchy.xml"
                 subprocess.run(["adb", "pull", "/sdcard/current.xml", hierarchy_path], check=True, stdout=subprocess.DEVNULL, timeout=30)
                 hierarchy_text = Path(hierarchy_path).read_text(encoding="utf-8")
@@ -127,7 +128,7 @@ jobs:
             x1, y1, x2, y2 = map(int, match.groups())
             subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
             time.sleep(1)
-            subprocess.run(["adb", "shell", "uiautomator", "dump", "/sdcard/drawer-open.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
+            subprocess.run(["adb", "shell", "uiautomator", "dump", "--compressed", "/sdcard/drawer-open.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
             subprocess.run(["adb", "pull", "/sdcard/drawer-open.xml", "qa-screenshots/drawer-open-hierarchy.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
             drawer_hierarchy = Path("qa-screenshots/drawer-open-hierarchy.xml").read_text(encoding="utf-8")
             if "Your Course" not in drawer_hierarchy or "Settings" not in drawer_hierarchy:
@@ -149,7 +150,7 @@ jobs:
             x1, y1, x2, y2 = map(int, match.groups())
             subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
             time.sleep(1)
-            subprocess.run(["adb", "shell", "uiautomator", "dump", "/sdcard/search-open.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
+            subprocess.run(["adb", "shell", "uiautomator", "dump", "--compressed", "/sdcard/search-open.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
             subprocess.run(["adb", "pull", "/sdcard/search-open.xml", "qa-screenshots/search-open-hierarchy.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
             search_hierarchy = Path("qa-screenshots/search-open-hierarchy.xml").read_text(encoding="utf-8")
             if "etSearch" not in search_hierarchy or "tvInitMessage" not in search_hierarchy or "Search MCQ IDs" not in search_hierarchy:
@@ -168,7 +169,7 @@ jobs:
             x1, y1, x2, y2 = map(int, match.groups())
             subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
             time.sleep(1)
-            subprocess.run(["adb", "shell", "uiautomator", "dump", "/sdcard/search-back.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
+            subprocess.run(["adb", "shell", "uiautomator", "dump", "--compressed", "/sdcard/search-back.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
             subprocess.run(["adb", "pull", "/sdcard/search-back.xml", "qa-screenshots/search-back-hierarchy.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
             if "shimmerMain" not in Path("qa-screenshots/search-back-hierarchy.xml").read_text(encoding="utf-8"):
                 raise SystemExit("Better Search back action did not return to the source-backed Home loading state")
