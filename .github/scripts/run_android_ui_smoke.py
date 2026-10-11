@@ -358,6 +358,12 @@ def screenshot(name: str) -> None:
 
 
 def main() -> None:
+    # A cold API 30 emulator can report boot-complete while core phone/System UI
+    # services are still under heavy startup load. Recent evidence showed ANRs in
+    # com.android.phone and com.android.systemui before any replica-app ANR; allow
+    # the emulator to settle before installing and interacting with the app.
+    print("Allowing cold-emulator system services to settle for 30 seconds.", flush=True)
+    time.sleep(30)
     adb(["install", "app/build/outputs/apk/debug/app-debug.apk"], timeout=120)
     adb(["shell", "am", "force-stop", PACKAGE], timeout=15)
     # Suppress Android's one-time immersive-mode confirmation so it cannot
