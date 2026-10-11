@@ -47,6 +47,17 @@ class VisibleAnrMarkerTests(unittest.TestCase):
         """
         self.assertFalse(visible_system_ui_anr(dump))
 
+    def test_hidden_system_ui_anr_does_not_inherit_other_window_visibility(self) -> None:
+        dump = """
+        Window #4 Window{f2c880f u0 Application Not Responding: com.android.systemui}:
+          isVisible=false
+          Surface: shown=false layer=0 alpha=0.0
+        Window #5 Window{f2c880f u0 MainActivity}:
+          isVisible=true
+          Surface: shown=true layer=1 alpha=1.0
+        """
+        self.assertFalse(visible_system_ui_anr(dump))
+
     def test_hidden_anr_does_not_inherit_visibility_from_another_window(self) -> None:
         dump = """
         Window #4 Window{f2c880f u0 Application Not Responding: com.android.systemui}:

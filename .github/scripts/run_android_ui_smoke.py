@@ -67,7 +67,7 @@ def visible_anr_marker(window_dump: str) -> str | None:
 
 def visible_system_ui_anr(window_dump: str) -> bool:
     """Identify a visible ANR owned by System UI, not by the replica app."""
-    blocks = re.split(r"(?=window #\\d+\\s)", window_dump.lower())
+    blocks = re.split(r"(?=window #\d+\s)", window_dump.lower())
     indicators = ("application not responding", "isn't responding", "is not responding", "anrdialog")
     return any(
         any(marker in block for marker in indicators)
