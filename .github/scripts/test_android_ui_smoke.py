@@ -177,7 +177,7 @@ class ScreenshotEvidenceTests(unittest.TestCase):
     @staticmethod
     def fake_png(width: int = 1080, height: int = 1920) -> bytes:
         # Minimal byte sequence sufficient to exercise PNG signature + IHDR parsing.
-        return bytes((137, 80, 78, 71, 13, 10, 26, 10)) + bytes(8) + struct.pack(">II", width, height)
+        return bytes((137, 80, 78, 71, 13, 10, 26, 10)) + struct.pack(">I", 13) + b"IHDR" + struct.pack(">II", width, height)
 
     def test_valid_png_manifest_entry_reports_size_and_dimensions(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
