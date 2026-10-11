@@ -233,3 +233,12 @@
 - [x] Preserved source fingerprints for the factory, ViewModel, and dependency implementations.
 - [ ] Integrate the original application provider graph and ViewModel lifecycle before enabling VideoLanding event controls; several coroutine bodies remain decompiler-unresolved.
 - [ ] Re-run build, evidence guard, layout/unit tests, and emulator smoke QA on the final PR head. Prior emulator smoke run was cancelled when branch commits advanced.
+
+
+## Batch 69 — transition resources and state binding
+
+- [x] Restored the four source-backed Intern Mode transition strings verbatim from the original archive.
+- [x] Added regression tests for exact transition and tooltip resource values.
+- [x] Recorded original loading-state message selection and tooltip-copy selection from the original fragment observer.
+- [x] Kept the loading overlay and tooltip hidden until their original state streams are integrated; the state-dependent message remains unpopulated.
+- [ ] Integrate the original app-scoped ViewModel/provider graph and lifecycle/observer collection. Several decompiler bodies remain unresolved.

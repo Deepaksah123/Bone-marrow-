@@ -451,3 +451,18 @@ The following fingerprints were calculated from the uploaded original decompiler
 ## Batch 68 — original VideoLandingViewModel factory wiring
 
 The original ViewModel factory is `sources/kotlin/cloneWithUpdatedTimeline.java:2066`, case 103. It constructs `VideoLandingViewModel` from seven source-backed providers, in constructor order: `this.write.removeOnUserLeaveHintListener()`, `this.write.MediaBrowserCompatMediaItem.get()`, `this.write.setPositiveButton.get()`, `this.write.isEnabled.get()`, `removeEmbeddedStyling.AudioAttributesCompatParcelizer()`, `this.write.setSessionImpl.get()`, and `updateViewStates.IconCompatParcelizer()`. The archive implementations of the first four interfaces are `isMediaStoreExternalContentUri`, `w`, `getIntegerCodeForString`, and `areEqual`; the fifth provider delegates through `AppModule` to `RtspHeadersBuilder`, the sixth is the original `Allocator` state container, and the seventh delegates through `CoroutinesDispatchersModule`. The full app-wide provider graph and original ViewModel factory are not integrated locally. Batch 68 records the exact factory boundary; it does not replace it with a hand-built local dependency graph.
+
+
+## Batch 69 — source fingerprints for Intern Mode state and resources
+
+| Original archive entry | Bytes | SHA-256 |
+|---|---:|---|
+| `sources/kotlin/buildAndPrepareSampleStreamWrappers.java` | 36998 | `69ce6eff7adb93e2b0b12b7c296ccff17976177be4cae77b32c51326a9a31cfe` |
+| `sources/kotlin/TransformationChildLayout.java` | 8042 | `3fb57e84c3c9b43ca35f3b704a08935cbfa8bb85adf20060066ea8780ef0c7de` |
+| `sources/kotlin/ExpandableBehavior.java` | 3177 | `f23da3783afddab6745d9798498bbf1354dda58d016159bc97d5a0d169192022` |
+| `sources/kotlin/ExpandableTransformationBehavior.java` | 4104 | `e8418abb8185b50d5fb1628a395f1c2294bbc8ad711161d929d3770fedf16b8c` |
+| `resources/res/values/strings.xml` | 160329 | `bc570d7274d79024444e3e1d7ac9274b7ad2eda6d39d97443835abb17e70efa1` |
+| `resources/res/layout/fragment_video_landing` | 12400 | `6f3a84568feb3e759e0cafa1bc5352031758a0face9ae8d97f5476c64dbbe601` |
+| `resources/res/layout/tooltip_intern_mode_info` | 3176 | `b818b2a91d4d2faaa820548e6f986dcadf4d15aca9bf76563b6a1bd6c1fdd5a6` |
+
+The `VideoLandingUIState` fields are `editionSwitchBannerText`, `isInternModeEnabled`, `isInternModeOn`, `showPytBanner`, `sortOrder`, and `showInternModeSnackBar`. The separate `InternModeTooltipState` fields are `showTooltip` and `isCurrentEd6`; `InternModelLoadedUIData` fields are `showLoader`, `isEd6`, and `isInternModeChecked`. These are separate state models, not interchangeable booleans.

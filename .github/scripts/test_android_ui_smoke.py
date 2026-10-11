@@ -235,6 +235,38 @@ class AccessibilityParserTests(unittest.TestCase):
         self.assertIsNone(find_node(root, content_desc="Videos"))
 
 
+class InternModeResourceParityTests(unittest.TestCase):
+    def test_original_transition_strings_are_present_verbatim(self) -> None:
+        root = Path(__file__).resolve().parents[2]
+        resources = ET.parse(root / "app/src/main/res/values/strings.xml").getroot()
+        values = {item.attrib.get("name"): item.text or "" for item in resources.findall("string")}
+        expected = {
+            "text_mapping_pyt": "Mapping PYTs",
+            "text_turning_off_intern_mode": "Turning off Intern Mode",
+            "text_reducing_video_hrs": "Reducing video hours",
+            "text_original_video_hrs": "Original video hours",
+            "text_concise_tooltip_description": "Activating this Mode will show you only the most critical Videos, and some of the other classes would be replaced with relevant QBank modules. This is to help you focus & cover more content in less time.",
+            "text_concise_tooltip_description_updated": "Intern Mode marks the videos that contain Previous Years’ Topics (PYTs) from NEET PG and INI-CET exams.",
+            "concise_mode": "Intern Mode : %s",
+        }
+        for key, value in expected.items():
+            with self.subTest(resource=key):
+                self.assertEqual(values.get(key), value)
+
+    def test_intern_mode_overlay_and_tooltip_remain_state_bound_and_hidden(self) -> None:
+        root = Path(__file__).resolve().parents[2]
+        layout = ET.parse(root / "app/src/main/res/layout/fragment_video_landing_replica.xml").getroot()
+        by_id = {node.attrib.get("{http://schemas.android.com/apk/res/android}id"): node for node in layout.iter()}
+        for resource_id in ("internModeSwitchOverlay", "llInternModeSwitchView", "groupInternModeSwitch", "tooltipInternModeInfo"):
+            with self.subTest(resource=resource_id):
+                node = next((item for item in layout.iter() if item.attrib.get("{http://schemas.android.com/apk/res/android}id", "").endswith("/" + resource_id)), None)
+                self.assertIsNotNone(node)
+                self.assertEqual(node.attrib.get("{http://schemas.android.com/apk/res/android}visibility"), "gone")
+        message = next((item for item in layout.iter() if item.attrib.get("{http://schemas.android.com/apk/res/android}id", "").endswith("/tvInternModeSwitchMsg")), None)
+        self.assertIsNotNone(message)
+        self.assertNotIn("{http://schemas.android.com/apk/res/android}text", message.attrib)
+
+
 class ScreenshotEvidenceTests(unittest.TestCase):
     @staticmethod
     def fake_png(width: int = 1080, height: int = 1920) -> bytes:
