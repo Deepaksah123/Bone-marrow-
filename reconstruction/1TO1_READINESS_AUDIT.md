@@ -107,3 +107,9 @@ The original `activity_home_revamp` binary XML (`0x7f0d0033`, obfuscated APK ent
 - Inspected the failed API 31 smoke run and found the three Video interaction bounds checks used over-escaped raw-string regexes, unlike the already-working shell/search checks. They could not parse normal Android bounds such as `[x1,y1][x2,y2]`.
 - Corrected the Video tab, tooltip trigger, and tooltip close-control bounds regexes in `.github/workflows/android-ui-smoke.yml` in commit [`dbf3245`](https://github.com/Deepaksah123/Bone-marrow-/commit/dbf3245aae661f42583e257f37c03d01cb88b1ea).
 - This is a QA harness correction only; it does not add UI, educational data, or behavior and does not prove the UI is 1:1. Await the workflow triggered by the correction and inspect its screenshots/hierarchies before marking runtime QA passed.
+
+## Emulator smoke stability correction — Batch 58 (2026-10-11)
+
+- Reviewed the failed API 31 job log for run `38086133823`. Emulator boot completed, but app launch/smoke was terminated with exit code 137 while emulator graphics reported ColorBuffer bind errors; the failure did not establish whether the app's UI passed.
+- Updated `.github/workflows/android-ui-smoke.yml` in commit [`d841120`](https://github.com/Deepaksah123/Bone-marrow-/commit/d841120a9dd7401a8b0c78624f514244261a9c66): reduced emulator memory reservation from 3072 MB to 2048 MB to reduce runner pressure, disabled boot animation, and increased initial app-launch command timeout from 15 seconds to 45 seconds. The script continues to require the app process, source-backed view IDs, navigation checks, and screenshots.
+- Together with Batch 57's corrected Video bounds regexes, the smoke harness now has both fixes committed. **A new successful CI run and artifact review are still required**; no runtime pass or full 1:1 parity is claimed until then.
