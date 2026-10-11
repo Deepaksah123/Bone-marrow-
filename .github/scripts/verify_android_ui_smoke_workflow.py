@@ -16,6 +16,8 @@ def main() -> int:
         "bounded emulator CPU allocation": r"emulator-options:.*?-cores\s+2(?:\s|$)",
         "pre-emulator evidence directory": "name: Prepare QA evidence directory before emulator startup",
         "run context records invocation state": "emulator_script_invoked=false",
+        "smoke stdout retained in artifact": "tee qa-screenshots/smoke-run.log",
+        "pipeline failure propagated": "set -o pipefail",
         "unconditional evidence upload": r"name: Upload UI smoke screenshots, interaction captures, and failure diagnostics\s*\n\s+if:\s*always\(\)",
         "missing evidence fails the upload": r"if-no-files-found:\s*error",
         "QA artifact retention": r"retention-days:\s*14",

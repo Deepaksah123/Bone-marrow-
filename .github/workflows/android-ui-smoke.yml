@@ -91,7 +91,8 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio -memory 2048 -cores 2
           script: |
-            python3 .github/scripts/run_android_ui_smoke.py
+            set -o pipefail
+            python3 .github/scripts/run_android_ui_smoke.py 2>&1 | tee qa-screenshots/smoke-run.log
 
       - name: Upload UI smoke screenshots, interaction captures, and failure diagnostics
         if: always()

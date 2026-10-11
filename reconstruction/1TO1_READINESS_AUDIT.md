@@ -353,3 +353,10 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 
 - Corrected the context artifact writer to emit actual newline-separated fields, rather than literal backslash-n text, so the run ID and invocation state remain readable in uploaded diagnostics.
 - This is a metadata serialization fix only; app behavior and QA acceptance criteria are unchanged.
+
+
+## Smoke stdout retention in QA artifact — Batch 92 (2026-10-11)
+
+- Routed emulator smoke stdout/stderr through `tee qa-screenshots/smoke-run.log` and enabled shell `pipefail`, so the Python smoke script's exit code remains the step result while its detailed interaction trace is also uploaded with screenshots and diagnostics.
+- Added the log-retention and pipeline-failure requirements to the workflow contract guard.
+- This addresses the recurring GitHub job-log `BlobNotFound` observability issue. A captured script log or metadata-only artifact helps diagnose failure but never substitutes for successful runtime checks and screenshot review.
