@@ -2,10 +2,12 @@
 """Unit tests for the Android smoke gate's ANR and accessibility parsers."""
 from __future__ import annotations
 
+import subprocess
 import unittest
+from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
-from run_android_ui_smoke import find_node, node_center, tab_is_selected, visible_anr_marker, visible_system_ui_anr, wait_button_center
+from run_android_ui_smoke import find_node, node_center, tab_is_selected, tap, visible_anr_marker, visible_system_ui_anr, wait_button_center
 
 
 class VisibleAnrMarkerTests(unittest.TestCase):
@@ -149,6 +151,23 @@ class AccessibilityParserTests(unittest.TestCase):
             'bounds="[10,10][90,90]" visible-to-user="false" /></hierarchy>'
         )
         self.assertIsNone(find_node(root, content_desc="Videos"))
+
+
+class TapTimeoutTests(unittest.TestCase):
+    def test_timed_out_tap_collects_diagnostics_and_is_not_retried(self) -> None:
+        with patch(
+            "run_android_ui_smoke.adb",
+            side_effect=subprocess.TimeoutExpired(cmd=["adb", "shell", "input", "tap"], timeout=30),
+        ) as adb_mock, patch("run_android_ui_smoke.write_anr_diagnostics") as diagnostics:
+            with self.assertRaisesRegex(SystemExit, "tap was not retried"):
+                tap(514, 1720)
+
+        adb_mock.assert_called_once_with(
+            ["shell", "input", "tap", "514", "1720"], timeout=30
+        )
+        diagnostics.assert_called_once_with(
+            "ADB input tap timed out at source-derived bounds (514, 1720)"
+        )
 
 
 if __name__ == "__main__":
