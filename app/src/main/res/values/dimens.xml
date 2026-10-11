@@ -33,4 +33,6 @@
     <dimen name="margin_28dp">28dp</dimen>
     <dimen name="padding_24">24dp</dimen>
     <dimen name="margin_12dp">12dp</dimen>
+    <dimen name="margin_50">50dp</dimen>
+    <dimen name="tooltip_height_340dp">340dp</dimen>
 </resources>
