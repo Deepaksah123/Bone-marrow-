@@ -187,9 +187,11 @@ public final class MainActivity extends FragmentActivity {
             View modeContainer, TextView modeStatus, boolean enabled) {
         modeStatus.setText(String.format(Locale.ROOT,
                 getString(R.string.concise_mode), enabled ? "ON" : "OFF"));
+        // The original setScrollPosition fragment falls back to sepia80 (ON) and
+        // bg_no_guess (OFF) when these theme attributes are not defined.
         modeContainer.setBackgroundColor(resolveThemeColor(
                 enabled ? R.attr.colorSurfaceVariant13 : R.attr.backgroundColor,
-                android.graphics.Color.TRANSPARENT));
+                enabled ? color(R.color.sepia80) : color(R.color.bg_no_guess)));
         modeSwitch.setTrackTintList(ColorStateList.valueOf(resolveThemeColor(
                 enabled ? R.attr.onBackgroundVariant2 : R.attr.onSurfaceBgOutline,
                 android.graphics.Color.TRANSPARENT)));
