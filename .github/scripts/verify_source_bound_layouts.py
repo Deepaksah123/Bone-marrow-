@@ -171,7 +171,7 @@ def main() -> int:
     ):
         if expected not in video_source:
             failures.append(f"Videos: missing source-derived attribute {expected}")
-    banner_header = re.search(r'<TextView\\s+android:id="@\\+id/tvHeaderInternModeBanner"(?:(?!/>).)*?/>', video_source, re.S)
+    banner_header = re.search(r'<TextView\s+android:id="@\+id/tvHeaderInternModeBanner"(?:(?!/>).)*?/>', video_source, re.S)
     if not banner_header or 'style="?attr/heading6"' not in banner_header.group(0) or 'android:textColor="?attr/colorOnSurfaceVariant"' not in banner_header.group(0) or 'android:layout_width="wrap_content"' not in banner_header.group(0):
         failures.append("Videos banner: header style, color, or wrap-content width differs from original")
     if 'app:layout_constraintEnd_toStartOf="@id/btnCloseInternModeBanner"' in (banner_header.group(0) if banner_header else ""):
