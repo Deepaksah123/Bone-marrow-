@@ -6,11 +6,14 @@ on:
     paths:
       - "app/**"
       - ".github/scripts/verify_source_bound_layouts.py"
+      - ".github/scripts/run_android_ui_smoke.py"
       - ".github/workflows/android-ui-smoke.yml"
   pull_request:
     branches: [main]
     paths:
       - "app/**"
+      - ".github/scripts/verify_source_bound_layouts.py"
+      - ".github/scripts/run_android_ui_smoke.py"
       - ".github/workflows/android-ui-smoke.yml"
   workflow_dispatch:
 
