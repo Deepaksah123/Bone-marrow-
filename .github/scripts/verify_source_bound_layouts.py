@@ -281,6 +281,26 @@ def main() -> int:
     if "textBranding.setVisibility(View.VISIBLE)" not in activity_java or "textPageTitle.setVisibility(View.GONE)" not in activity_java:
         failures.append("Home toolbar must retain branding and hide the centered page title")
 
+    # Shell navigation state must survive Activity recreation and retain source destination identities.
+    if 'state.getInt("selected_home_tab", 0)' not in activity_java or 'out.putInt("selected_home_tab",selectedTab)' not in activity_java:
+        failures.append("Shell navigation: selected home tab must be saved and restored across Activity recreation")
+    if 'selectedTab = Math.max(0, Math.min(selectedTab, 3))' not in activity_java:
+        failures.append("Shell navigation: restored tab index must be clamped to the four source tabs")
+    if 'tabLayout.selectTab(tabLayout.getTabAt(selectedTab))' not in activity_java:
+        failures.append("Shell navigation: restored selected tab must be reselected after recreation")
+    for source_tag in (
+        "Home_kotlin.ResidentKeyRequirementUnsupportedResidentKeyRequirementException",
+        "Home_kotlin.WalletConstantsCardNetwork",
+        "Home_kotlin.setScrollPosition",
+        "Home_kotlin.makeGooglePlayServicesAvailable",
+    ):
+        if source_tag not in activity_java:
+            failures.append(f"Shell navigation: source-verified destination tag missing {source_tag}")
+    if 'bookmarkIcon.setVisibility(selectedTab == 0 ? View.VISIBLE : View.GONE)' not in activity_java:
+        failures.append("Shell navigation: bookmark action must remain Home-only")
+    if 'drawerLayout.isDrawerOpen(android.view.Gravity.START)' not in activity_java or 'drawerLayout.closeDrawer(android.view.Gravity.START)' not in activity_java:
+        failures.append("Shell navigation: BACK must close the open drawer before delegating")
+
     # Source-backed first-frame loading state must not regress into a visible empty list.
     # The real original adapters/ViewModels are not present, so these placeholders are intentional.
     if 'cards.setVisibility(View.GONE)' not in activity_java or 'shimmer.setVisibility(View.VISIBLE)' not in activity_java:
