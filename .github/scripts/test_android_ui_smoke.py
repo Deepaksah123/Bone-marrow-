@@ -158,14 +158,14 @@ class AccessibilityParserTests(unittest.TestCase):
 
     def test_deferred_intern_mode_switch_requires_non_clickable_and_non_focusable_node(self) -> None:
         root = ET.fromstring(
-            '<hierarchy><node resource-id="com.marrow.reconstruction.replica:id/switchInternMode" '
+            '<hierarchy><node resource-id="pkg/switchInternMode" visible-to-user="true" '
             'clickable="false" focusable="false" checked="false" /></hierarchy>'
         )
         assert_switch_interaction_deferred(root, "switchInternMode")
 
     def test_deferred_intern_mode_switch_rejects_clickable_node(self) -> None:
         root = ET.fromstring(
-            '<hierarchy><node resource-id="com.marrow.reconstruction.replica:id/switchInternMode" '
+            '<hierarchy><node resource-id="pkg/switchInternMode" visible-to-user="true" '
             'clickable="true" focusable="false" checked="false" /></hierarchy>'
         )
         with self.assertRaises(SystemExit):
