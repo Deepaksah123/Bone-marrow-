@@ -95,6 +95,19 @@ def main() -> int:
                 failures.append(f"Missing raw-DEX source destination tag: {tag}")
         if "Home_kotlin." in activity_java:
             failures.append("Decompiler package aliases must not be used as runtime Fragment tags")
+        # The original Intern Mode interaction requires its ViewModel/state pipeline.
+        # Until those dependencies are source-integrated, never permit a cosmetic local toggle.
+        intern_switch_layout = ROOT / "app/src/main/res/layout/fragment_video_landing_replica.xml"
+        try:
+            video_xml = intern_switch_layout.read_text(encoding="utf-8")
+            if 'modeSwitch.setClickable(false);' not in activity_java:
+                failures.append("Intern Mode switch must remain non-clickable until original ViewModel integration")
+            if 'modeSwitch.setFocusable(false);' not in activity_java:
+                failures.append("Intern Mode switch must remain non-focusable until original ViewModel integration")
+            if "VideoLandingViewModel" not in video_xml and "switchInternMode" not in video_xml:
+                failures.append("Intern Mode source-bound switch ID missing from Videos layout")
+        except OSError as exc:
+            failures.append(f"Could not validate deferred Intern Mode interaction: {exc}")
     except OSError as exc:
         failures.append(f"Could not validate source-bound toolbar strings: {exc}")
     if failures:
