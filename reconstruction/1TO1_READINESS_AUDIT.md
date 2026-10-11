@@ -279,3 +279,11 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - The workflow previously allowed a new commit on the same branch to cancel the in-progress smoke run, which can erase the very emulator evidence needed to diagnose the failure. Changed the concurrency policy to let an active run finish rather than cancel it when another run arrives.
 - Added an explicit 18-minute timeout to the emulator step while retaining the job-level 30-minute ceiling and unconditional artifact-upload step. This creates a bounded failure path so a stuck emulator action can hand off to screenshot/diagnostic artifact collection instead of occupying the entire job until the outer timeout.
 - This is CI execution/observability hardening only. It does not change application UI or assert a fix for the emulator issue. The next run must finish and its screenshots/hierarchy/diagnostics must be reviewed before accepting runtime QA. Genuine-source data binding and full pixel-level 1:1 parity remain unverified.
+
+
+## Emulator resource-pressure correction — Batch 81 (2026-10-11)
+
+- Reconciled the current workflow configuration with the earlier runner investigation: the workflow had drifted back to `-memory 4096 -cores 4`, despite Batch 58 documenting that the API emulator run exited with code 137 under runner pressure and reducing its memory reservation to 2048 MB.
+- Restored the bounded emulator profile to 2048 MB and 2 virtual CPU cores. This avoids reserving most of a standard hosted runner for the emulator and reduces competition with Gradle, ADB, UIAutomator, and artifact collection.
+- Kept the 18-minute emulator-step timeout, 30-minute job ceiling, non-cancelling concurrency, and unconditional evidence upload. This is CI resource tuning only; it changes no app UI, source-bound resource, or interaction behavior.
+- Acceptance remains evidence-driven: a completed smoke job and reviewable screenshots/hierarchy/diagnostics are required. Build and static guard success alone do not establish runtime QA or 1:1 parity.
