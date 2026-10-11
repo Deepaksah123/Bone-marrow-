@@ -33,7 +33,7 @@ Every listed layout symbol exists in sources/com/marrow/R.java and resources/res
 - Tests binding source: sources/kotlin/getNextMediaSequenceAndPartIndex.java references 9 IDs. The current Tests replica contains 9/9: appbarGTa, collapsing_toolbar, composeGta, emptyLayout, loadingContainer, parent, rvMainList, tabs, and toolbar.
 - Videos binding source: sources/kotlin/buildAndPrepareSampleStreamWrappers.java references 43 IDs. The current Videos replica contains 43/43 source IDs, including bottomNudgeContainer, clInternModeBanner, btnCloseInternModeBanner, ibTooltip, switchInternMode, tooltipInternModeInfo, and tvInternModeStatus. The extra non-source parentFrame ID was removed.
 - Shell binding source: sources/kotlin/parsePeriod.java references 24 IDs. The current shell contains 22/24; the omitted proCard and tvGoPro IDs are the excluded Pro/upsell surface. The extra non-source shell_root ID was removed.
-- Bottom tab item: sources/kotlin/zabz.java references icon, indicator, title, and upperContainer across its use sites; the custom tab item layout's own binding IDs icon, indicator, and title match the original custom_home_tab layout.
+- Bottom tab item: the original custom_home_tab layout and its inflation/binding references agree on icon, indicator, and title. The separate upperContainer ID belongs to the shell layout, not the tab item.
 
 ## Tooltip correction grounded in source
 
