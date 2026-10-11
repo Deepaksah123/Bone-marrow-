@@ -216,8 +216,6 @@ Raw DEX control flow at code-unit offsets 9811–9849 in `SplashActivity.onCreat
 
 
 
-Intern Mode switch source trace — event, state, observer, and unresolved dependency boundary (Batch 66)
-
 ## Intern Mode switch source trace — event, state, observer, and unresolved dependency boundary (Batch 66)
 
 The original Videos fragment is `sources/kotlin/setScrollPosition.java` (runtime DEX class `o.setScrollPosition`); its ViewModel is `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java`.
