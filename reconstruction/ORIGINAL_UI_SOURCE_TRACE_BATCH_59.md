@@ -76,3 +76,12 @@ Core layout/resource references cross-check successfully. Tooltip IDs, hierarchy
 - The only Java/Kotlin occurrences of `iconBookmark` are in `sources/kotlin/parsePeriod.java` (the generated `activity_home_revamp` view-binding class) and the resource symbol declaration in `sources/com/marrow/R.java`. No separate Java/Kotlin click-listener reference to this toolbar view was found by that exact-symbol scan.
 - Therefore, the toolbar bookmark's click destination/behavior remains **unverified**. Keep its source-backed visual control, but do not invent a destination, overlay, or navigation action. A broader call-path trace is required before wiring behavior.
 - This is a source-evidence boundary, not proof that the original app has no bookmark behavior; obfuscated or indirect binding paths may require further tracing.
+
+
+## Intern Mode banner event reconciliation — Batch 66
+
+- Traced the original Video landing listener in `sources/kotlin/setScrollPosition.java`: the `ibTooltip` view dispatches `TransformationChildCard.write.INSTANCE`.
+- Traced that event in `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java`: it preserves the Intern Mode flags and clears `showPytBanner`. The source state observer in `sources/kotlin/setScrollPosition.java` applies that state to the bound `clInternModeBanner` view.
+- Corrected the replica so `ibTooltip` dismisses `clInternModeBanner` rather than inventing a tooltip-toggle action. The smoke test now checks this source-traced banner dismissal and no longer claims that tapping `ibTooltip` opens the tooltip.
+- The tooltip include and Done control remain present, but its exact opening/visibility flow is still unverified. No guessed trigger was added.
+- Artifact review of run `38120225475` also found Android ANR dialogs in the screenshots despite the job's green conclusion. Batch 66 expanded the QA guard to reject generic ANR dialogs, and the next run must be reviewed before runtime QA is considered valid.
