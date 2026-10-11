@@ -218,5 +218,9 @@
 ## Batch 67 — VideoLanding event fidelity boundary
 
 - [x] Removed locally invented direct visibility changes for the Intern Mode banner dismiss and tooltip trigger/dismiss controls.
-- [x] Updated emulator smoke expectations and regression tests to require these controls to stay non-actionable until the original ViewModel event/state pipeline is integrated.
+- [x] Verified original binding-to-event mapping for banner dismiss, tooltip open, tooltip Done, Learn More, and the Intern Mode switch from `setScrollPosition.java`, `buildAndPrepareSampleStreamWrappers.java`, and `VideoLandingViewModel.java`.
+- [x] Kept banner dismiss, tooltip open/Done, Learn More, and switch controls non-clickable/non-focusable until the original ViewModel event/state pipeline is integrated.
+- [x] Updated emulator smoke expectations, source-evidence guard, and regression tests to reject local direct visibility/navigation substitutes.
+- [x] Recomputed the SHA-256 fingerprints for eight original Intern Mode source/dependency files directly from the supplied decompiler archive.
 - [ ] Integrate the original VideoLanding ViewModel, event classes, observer, and injected dependencies before enabling these actions. Do not claim tooltip/banner interaction parity yet.
+- [ ] Latest Android build and emulator smoke results must be checked on the final batch commit; earlier smoke runs were cancelled when the branch was advanced.
