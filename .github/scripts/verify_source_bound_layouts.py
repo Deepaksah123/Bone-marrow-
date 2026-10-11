@@ -18,7 +18,7 @@ LAYOUT = ROOT / "app/src/main/res/layout"
 # Excluded monetization IDs are kept explicit so they cannot silently reappear.
 SURFACES = {
     "Home": ("fragment_home_replica.xml",
-        "barrier clMainInfo ed8Zen footerGroup groupEd6Views heartMarrow ivEd6background layoutDynamicZenArea llShare nestedScrollView pbModuleCompletion rvHomeCard shimmerMain tvModuleCompletionNumber tvModuleCompletionSubText zenAreaContainer".split(),
+        "barrier clMainInfo ed8Zen footerGroup groupEd6Views heartMarrow ivEd6background layoutDynamicZenArea llShare nestedScrollView pbModuleCompletion rvHomeCard shimmerMain tvModuleCompletionNumber tvModuleCompletionSubText tvModuleGenerated zenAreaContainer".split(),
         "cvGoPro goProEd5Ed6 shimmerGoPro spacePro tvGoPro".split()),
     "QBank": ("fragment_qbank_landing_replica.xml",
         "progressLoadList rvSubjectList".split(), []),
