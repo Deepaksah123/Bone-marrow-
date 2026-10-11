@@ -334,3 +334,12 @@ Several activity lifecycle methods are absent from decompiler output; complete e
 - The QBank introduction activity remains a verified unresolved resource gap: ID `0x7f0d0051` is referenced in source but the same-named layout file is missing from this dump.
 - Details: [Source-to-layout audit report](SOURCE_TO_LAYOUT_AUDIT_BATCH_18.md).
 - The audit tool has unit tests and a dedicated GitHub Actions workflow. This validates the audit tooling only, not Android UI/build correctness.
+
+
+## Dynamic toolbar title — raw DEX call-site evidence (Batch 64)
+
+- Original enum: `sources/kotlin/DataBuffer.java:43–51, 63–70, 105–115`; its mutable title field starts as `""`, has a setter named `read(String)`, and is populated for QBank/Tests/Videos from course configuration.
+- Original toolbar binding: `sources/kotlin/zabz.java:2522–2568`; the non-Home branch assigns `DataBuffer.getRemoteActionCompatParcelizer()` to the bound toolbar title view. Home takes a separate branch and hides that title.
+- Original bytecode: `classes.dex`, `Lcom/marrow2/ui/main/viewmodel/HomeUIActivityViewModel$read;->invokeSuspend` contains calls to `CourseConfigV2.CourseStrings.getQbankHeaderTitle()`, `getTestHeaderTitle()`, and `getVideoHeaderTitle()`, each followed by `DataBuffer.read(String)`. The Java coroutine body is decompiler-skipped, so this call-site evidence is the stronger recovered boundary.
+- The actual title values are course-config data; do not replace them with fixed labels transcribed from screenshots. Until the original configuration/ViewModel path is integrated, the reconstruction leaves the title text empty.
+- Original app label: manifest references `@string/app_name`; `resources/res/values/strings.xml` defines it as `Marrow`.
