@@ -338,7 +338,7 @@ Additional archive fingerprints: `AppModule.java` 15089 bytes, SHA-256 `b5f42447
 ## Batch 69 — verified Intern Mode event effects
 
 - Switch event: `VideoLandingViewModel.java:1992–2009` updates `isInternModeOn`, can clear `showPytBanner`, then launches the original coroutine. Its use case writes preference key `is_concise_mode_on` via `removeStaleSpans.java:2276–2279`.
-- Banner dismiss: `VideoLandingViewModel.java:2011–2020` clears banner-related state and launches a coroutine. The use case calls `unlockFolder.addOnContextAvailableListener()`; the original implementation writes `concise_banner_shown=true` (`removeStaleSpans.java:2281–2285`).
+- Banner dismiss: `VideoLandingViewModel.java:2011–2020` specifically clears `showPytBanner` while preserving the other `VideoLandingUIState` fields, then launches a coroutine. The use case calls `unlockFolder.addOnContextAvailableListener()`; the original implementation writes `concise_banner_shown=true` (`removeStaleSpans.java:2281–2285`).
 - Tooltip open: `VideoLandingViewModel.java:2026–2034` launches a coroutine which calls `getDisplaySizeV17.onRemoveQueueItem()`, then writes `ExpandableBehavior(true, returnedBoolean)`. The boolean's semantics remain unresolved because the underlying method is decompiler-skipped.
 - Tooltip Done: `VideoLandingViewModel.java:2035–2039` writes `ExpandableBehavior(false, existing.write)`, preserving the second state field.
 - Learn More: `VideoLandingViewModel.java:2061–2067` resets the current `IntegrityManager` state. This branch alone does not establish a destination/navigation contract.
