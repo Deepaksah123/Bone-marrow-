@@ -8,7 +8,6 @@ validated by their own jobs.
 from __future__ import annotations
 
 import re
-import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -50,7 +49,7 @@ def main() -> int:
         except (OSError, ET.ParseError) as exc:
             failures.append(f"{surface}: invalid or unreadable XML: {exc}")
             continue
-        actual = set(re.findall(r"@\\+id/([A-Za-z0-9_]+)", xml))
+        actual = set(re.findall(r"@\+id/([A-Za-z0-9_]+)", xml))
         expected = set(expected_ids)
         excluded = set(excluded_ids)
         missing = sorted(expected - actual)
