@@ -106,6 +106,32 @@ def main() -> int:
                 failures.append("Intern Mode switch must remain non-focusable until original ViewModel integration")
             if "VideoLandingViewModel" not in video_xml and "switchInternMode" not in video_xml:
                 failures.append("Intern Mode source-bound switch ID missing from Videos layout")
+            # Banner/tooltip actions dispatch original ViewModel events. Until that
+            # state/event graph is integrated, reject local click listeners or direct
+            # visibility mutations that would fabricate the source behavior.
+            video_event_controls = (
+                "closeInternModeBanner",
+                "internModeTooltipTrigger",
+                "doneInternModeTooltip",
+                "learnMoreInternMode",
+            )
+            try:
+                start = activity_java.index("View closeInternModeBanner = root.findViewById")
+                end = activity_java.index("\\n        }\\n        return root;", start)
+                event_block = activity_java[start:end]
+                for control in video_event_controls:
+                    if f"{control}.setClickable(false);" not in event_block:
+                        failures.append(f"Video event control must remain non-clickable until source integration: {control}")
+                    if f"{control}.setFocusable(false);" not in event_block:
+                        failures.append(f"Video event control must remain non-focusable until source integration: {control}")
+                if "setOnClickListener" in event_block:
+                    failures.append("Local VideoLanding event substitute listener reintroduced")
+                if "setVisibility(View.GONE)" in event_block or "setVisibility(View.VISIBLE)" in event_block:
+                    failures.append("Direct VideoLanding visibility mutation reintroduced instead of original ViewModel event")
+                if 'android:id="@+id/tooltipInternModeInfo"' not in video_xml or 'android:visibility="gone"' not in video_xml[video_xml.find('android:id="@+id/tooltipInternModeInfo"'):video_xml.find('android:id="@+id/tooltipInternModeInfo"')+450]:
+                    failures.append("Tooltip must retain verified hidden XML default while original state binding is absent")
+            except ValueError as exc:
+                failures.append(f"Could not inspect deferred VideoLanding event block: {exc}")
         except OSError as exc:
             failures.append(f"Could not validate deferred Intern Mode interaction: {exc}")
     except OSError as exc:
