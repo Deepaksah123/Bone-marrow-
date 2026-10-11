@@ -390,3 +390,10 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 ## Literal shell token matcher hardening — Batch 97 (2026-10-11)
 
 - Simplified the workflow guard to match the shell status assignment with regex character classes (`[$]` and `[?]`) rather than escape sequences, avoiding Python-string/regex ambiguity.
+
+
+## Source-screenshot toolbar title correction — Batch 98 (2026-10-11)
+
+- Runtime captures showed the shell branding remained “Marrow” on all tabs. The supplied original screen-capture PDF shows the Home branding on Home, “QBank Edition 8.5” on QBank, “Tests” on Tests, and “Videos Edition 8.5” on Videos.
+- Bound the existing source-shaped centered `textPageTitle` and left `textBranding` views to those captured tab states. The exact displayed strings are transcribed from the supplied original screenshots; no lesson/content rows were fabricated.
+- Added emulator assertions for title text and branding/page-title visibility on every tab. This is a specific shell fidelity correction, not a full 1:1 claim; populated data screens and pixel comparison remain outstanding.

@@ -21,6 +21,8 @@ import java.util.Locale;
 public final class MainActivity extends FragmentActivity {
     private TabLayout tabLayout;
     private ImageView bookmarkIcon;
+    private TextView textBranding;
+    private TextView textPageTitle;
     private androidx.drawerlayout.widget.DrawerLayout drawerLayout;
     private static final int[] ICONS = { R.drawable.ic_home_tab_home, R.drawable.ic_home_tab_qbank, R.drawable.ic_home_tab_tests, R.drawable.ic_home_tab_videos };
     private static final int[] LABELS = { R.string.tab_home, R.string.tab_qbank, R.string.tab_tests, R.string.tab_video };
@@ -69,6 +71,8 @@ public final class MainActivity extends FragmentActivity {
         // The drawer's source-backed non-monetization hierarchy is reconstructed.
         // Keep account data and row destinations unbound until their original flows are traced.
         bookmarkIcon = findViewById(R.id.iconBookmark);
+        textBranding = findViewById(R.id.textBranding);
+        textPageTitle = findViewById(R.id.textPageTitle);
         byte[] menuIconBytes = Base64.decode(getString(R.string.source_menu_icon_png_base64), Base64.DEFAULT);
         menuIcon.setImageBitmap(BitmapFactory.decodeByteArray(menuIconBytes, 0, menuIconBytes.length));
         tabLayout = findViewById(R.id.bottomNavigation);
@@ -97,6 +101,31 @@ public final class MainActivity extends FragmentActivity {
         tabLayout.selectTab(tabLayout.getTabAt(selectedTab));
     }
 
+    private void updateToolbarTitle(int index) {
+        if (textBranding == null || textPageTitle == null) return;
+        if (index == 0) {
+            textBranding.setVisibility(View.VISIBLE);
+            textPageTitle.setVisibility(View.GONE);
+            return;
+        }
+        textBranding.setVisibility(View.GONE);
+        textPageTitle.setVisibility(View.VISIBLE);
+        switch (index) {
+            case 1:
+                textPageTitle.setText(R.string.replica_tab_title_qbank_edition_85);
+                break;
+            case 2:
+                textPageTitle.setText(R.string.replica_tab_title_tests);
+                break;
+            case 3:
+                textPageTitle.setText(R.string.replica_tab_title_videos_edition_85);
+                break;
+            default:
+                textBranding.setVisibility(View.VISIBLE);
+                textPageTitle.setVisibility(View.GONE);
+        }
+    }
+
     private void updateTabAppearance(TabLayout.Tab tab, boolean selected) {
         if (tab == null || tab.getCustomView() == null) return;
         View custom=tab.getCustomView();
@@ -112,6 +141,7 @@ public final class MainActivity extends FragmentActivity {
 
     private void renderTab(int index) {
         selectedTab = Math.max(0, Math.min(index, 3));
+        updateToolbarTitle(selectedTab);
         // The source DataBuffer exposes the bookmark action on HOME only.
         if (bookmarkIcon != null) {
             bookmarkIcon.setVisibility(selectedTab == 0 ? View.VISIBLE : View.GONE);
