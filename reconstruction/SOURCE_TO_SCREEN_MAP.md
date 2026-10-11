@@ -251,3 +251,11 @@ The original `sources/kotlin/TransformationChildLayout.java` carries Kotlin meta
 
 The zero-argument data-class constructor defaults these fields to null/false/false/false/0/false, but this is only the data class's default construction—not proof that every account/course remains in this state after repository/configuration loading. The separate loaded-state model `InternModelLoadedUIData` tracks loading and the checked/on values used during transition rendering. These state distinctions must be preserved if the original ViewModel is integrated; do not collapse feature availability and checked/on state into one local boolean.
 
+## Intern Mode preference persistence — source-traced boundary
+
+The transition coroutine's injected use case is `sources/kotlin/isMediaStoreExternalContentUri.java`, implementing `isEncodingHighResolutionPcm`. Its `IconCompatParcelizer(boolean, continuation)` overload delegates to `unlockFolder.write(boolean, continuation)`. The concrete repository is `sources/kotlin/removeStaleSpans.java`; its corresponding method writes the boolean under preference key `is_concise_mode_on` through its injected storage dependency. The same repository's `addOnContextAvailableListener()` stores `concise_banner_shown`, and `write(int, continuation)` stores sort order under `sort_video_subject`.
+
+This proves a persistence step exists in the original event chain, but not that the switch is only a preference toggle: the coroutine also performs state loading, a separate transition call, and a refresh. The repository's injected storage implementation and remaining ViewModel/use-case dependencies are not integrated in the local app. Do not replace them with an independently written SharedPreferences handler and call it source-native parity.
+
+
+
