@@ -316,7 +316,22 @@ def assert_switch_checked(root: ET.Element, resource_id: str, expected: bool) ->
 
 
 def tap(x: int, y: int) -> None:
-    adb(["shell", "input", "tap", str(x), str(y)], timeout=10)
+    # UIAutomator captures and cold-emulator System UI recovery can leave the
+    # ADB shell briefly busy. A 10-second timeout caused the latest smoke run
+    # to abort during a source-bound Tests-tab tap before ANR diagnostics ran.
+    # Do not retry a timed-out tap: it may already have been delivered, and a
+    # duplicate could trigger a second state transition.
+    try:
+        adb(["shell", "input", "tap", str(x), str(y)], timeout=30)
+    except subprocess.TimeoutExpired as exc:
+        try:
+            write_anr_diagnostics(f"ADB input tap timed out at source-derived bounds ({x}, {y})")
+        except Exception as diagnostic_error:
+            print(f"Failed to collect timeout diagnostics: {diagnostic_error}", flush=True)
+        raise SystemExit(
+            f"ADB input tap timed out after 30 seconds at source-derived bounds ({x}, {y}); "
+            "tap was not retried because its delivery state is unknown"
+        ) from exc
 
 
 def back() -> None:
