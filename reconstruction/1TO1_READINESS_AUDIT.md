@@ -201,3 +201,11 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Changed recovery from one attempt to a bounded maximum of two System UI-owned ANR recoveries, with diagnostics retained before each attempt and a 12-second clean-window stability check after dismissal. Any replica-owned ANR or a third/recurrent visible ANR remains a hard failure; the script never captures a screenshot while an ANR window is visible.
 - Switched headless graphics to the emulator runner's `swiftshader_indirect` mode. Source-layout validation and parser regression tests run before the emulator step.
 - Runtime QA remains pending until the new run completes and screenshot artifacts are reviewed. Full 1:1 parity and data-bound Home/QBank/Tests/Videos states remain unverified.
+
+
+## Disposable emulator System UI restart fallback — Batch 71 (2026-10-11)
+
+- Reviewed smoke artifact [11699532960](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38132099637/artifacts/11699532960). API 30 System UI repeatedly recreated its visible ANR dialog after two BACK recoveries; the replica Activity was eventually displayed, but captures remained correctly blocked.
+- Added a final emulator-only recovery: after preserving diagnostics and exhausting two BACK attempts, restart the unresponsive `com.android.systemui` process, then require its process to return and the ANR window to remain absent through a 12-second stability interval. The replica app process is not force-stopped or modified by this recovery.
+- A replica-owned ANR, failed System UI restart, or any still-visible/recurrent ANR remains fatal. No screenshot is accepted while an ANR window is visible.
+- This is QA-environment recovery only. Runtime QA must still pass and the screenshot artifact must be reviewed; pixel-level 1:1 parity and original data-bound screen states remain unverified.

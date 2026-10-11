@@ -116,6 +116,40 @@ def assert_no_anr_dialog(stage: str) -> None:
             )
             return
 
+    if marker and visible_system_ui_anr(windows):
+        # The disposable API 30 image repeatedly re-created the same System UI
+        # ANR dialog even after BACK cleared it twice. Preserve evidence, restart
+        # only the emulator's System UI process, and continue only if the ANR
+        # window disappears and remains absent through another stability window.
+        write_anr_diagnostics(f"{stage}: restarting unresponsive emulator System UI after bounded BACK recovery")
+        pids = adb(["shell", "pidof", "com.android.systemui"], timeout=15, check=False).stdout.split()
+        for pid in pids:
+            if pid.isdigit():
+                adb(["shell", "kill", "-9", pid], timeout=10, check=False)
+        deadline = time.monotonic() + 45
+        while time.monotonic() < deadline:
+            time.sleep(3)
+            restarted = adb(["shell", "pidof", "com.android.systemui"], timeout=15, check=False)
+            if restarted.returncode == 0 and restarted.stdout.strip():
+                break
+        else:
+            write_anr_diagnostics(f"{stage}: System UI did not restart after bounded recovery")
+            raise SystemExit("Emulator System UI did not restart after its visible ANR")
+
+        time.sleep(10)
+        windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
+        marker = visible_anr_marker(windows)
+        if not marker:
+            time.sleep(12)
+            windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
+            marker = visible_anr_marker(windows)
+            if not marker:
+                print(
+                    "Emulator System UI restarted; ANR window stayed absent through the stability window.",
+                    flush=True,
+                )
+                return
+
     if marker:
         write_anr_diagnostics(f"{stage}: unrecovered visible ANR window marker {marker}")
         raise SystemExit(f"Visible emulator ANR dialog detected {stage}: {marker}")
