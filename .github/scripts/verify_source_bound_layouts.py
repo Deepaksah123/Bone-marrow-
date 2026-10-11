@@ -294,6 +294,17 @@ def main() -> int:
     if 'outRect.top = verticalSpacing;' not in activity_java or 'outRect.left = horizontalSpacing;' not in activity_java:
         failures.append("Videos subject grid must retain source 6dp vertical / 4dp horizontal offsets")
 
+    # Do not present a local-only switch animation as the original Intern Mode state flow.
+    intern_method_start = activity_java.find("private void configureInternModeSwitch")
+    intern_method_end = activity_java.find("private int resolveThemeColor", intern_method_start)
+    intern_method = activity_java[intern_method_start:intern_method_end] if intern_method_start >= 0 and intern_method_end > intern_method_start else ""
+    if not intern_method or "modeSwitch.setClickable(false)" not in intern_method or "modeSwitch.setFocusable(false)" not in intern_method:
+        failures.append("Intern Mode switch must remain non-actionable until its original state/event flow is traced")
+    if "setOnCheckedChangeListener" in intern_method or "updateInternModeVisualState" in activity_java:
+        failures.append("Intern Mode must not fake an ON/OFF state transition without the original ViewModel/observer flow")
+    if 'modeSwitch.isChecked() ? "ON" : "OFF"' not in intern_method:
+        failures.append("Intern Mode status must reflect the source XML's existing checked state without inventing a transition")
+
     # Source-bound Videos affordances must remain wired to their own verified targets.
     if 'closeInternModeBanner.setOnClickListener' not in activity_java or 'internModeBanner.setVisibility(View.GONE)' not in activity_java:
         failures.append("Videos Intern Mode close action must dismiss clInternModeBanner")
@@ -309,7 +320,7 @@ def main() -> int:
     smoke_script = (ROOT / ".github/scripts/run_android_ui_smoke.py").read_text(encoding="utf-8")
     for capture in (
         "home", "qbank", "tests", "videos", "drawer-open", "search-open",
-        "video-switch-on", "video-switch-off", "video-tooltip-open",
+        "videos-intern-mode-unbound", "video-tooltip-open",
         "video-tooltip-closed", "video-dark", "home-dark",
     ):
         if f'"{capture}"' not in smoke_script:
