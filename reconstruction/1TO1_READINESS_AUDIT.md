@@ -482,3 +482,14 @@ Intern Mode source event pipeline recovered; local interaction remains deferred
 - Verified the fragment has separate ON/OFF render paths that update switch checked state, formatted status text, theme-derived track/thumb tints, background colors, and loading/transition text; the state observer also controls banner/progress visibility. This is not equivalent to a local label-only toggle.
 - The local app does not contain the original VideoLandingViewModel, repository/use-case graph, or state observer pipeline. Some original coroutine bodies are decompiler-skipped. The local switch is therefore intentionally non-clickable and non-focusable; no substitute state transition is fabricated.
 - This batch records source evidence and guards against accidentally re-enabling the local switch without the verified original binding path. It does not claim Intern Mode behavior parity.
+
+
+## Distinguish Intern Mode availability from checked state
+
+
+
+### Original VideoLandingUIState field map — Batch 66
+
+- Original data class source: `sources/kotlin/TransformationChildLayout.java`; Kotlin metadata names its runtime type `com.marrow2.ui.video.landing.model.VideoLandingUIState`.
+- Verified fields: `editionSwitchBannerText`, `isInternModeEnabled`, `isInternModeOn`, `showPytBanner`, `sortOrder`, and `showInternModeSnackBar`. Feature availability and checked/on state are separate booleans and must not be collapsed into one local state variable.
+- The data class's default constructor values are null/false/false/false/0/false; that default alone does not establish the state loaded for any specific course/account. The local switch stays deferred because the full state-loading and ViewModel path is not integrated.
