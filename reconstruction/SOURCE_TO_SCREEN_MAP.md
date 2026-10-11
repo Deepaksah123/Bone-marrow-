@@ -333,3 +333,14 @@ Verified provider routes:
 The original app-scoped graph and repository implementations are not integrated in the replica. No isolated replacement ViewModel was added.
 
 Additional archive fingerprints: `AppModule.java` 15089 bytes, SHA-256 `b5f42447ded44ef1e240474fffdba5418c13f8375c663d4de92b82f0e9760e49`; `CoroutinesDispatchersModule.java` 1583 bytes, SHA-256 `2227d1ae4e7670aa1030cad802e274aed053e7f32206857473d60f862f692ed9`; `removeEmbeddedStyling.java` 625 bytes, SHA-256 `7f91939fa45914d72d696cb95eb5fd0fee411977b3f8374942e7d0f468b3a4c9`; `updateViewStates.java` 574 bytes, SHA-256 `62e368297d42ad280dd3f310d7a621727352c3b39f6b2234318b88709d81504d`; `RtspHeadersBuilder.java` 1885 bytes, SHA-256 `9358d402f5a99be7dec9e8f7aaa9a2a370b4941467d9c8e16827169fd802aca3`.
+
+
+## Batch 69 — verified Intern Mode event effects
+
+- Switch event: `VideoLandingViewModel.java:1992–2009` updates `isInternModeOn`, can clear `showPytBanner`, then launches the original coroutine. Its use case writes preference key `is_concise_mode_on` via `removeStaleSpans.java:2276–2279`.
+- Banner dismiss: `VideoLandingViewModel.java:2011–2020` clears banner-related state and launches a coroutine. The use case calls `unlockFolder.addOnContextAvailableListener()`; the original implementation writes `concise_banner_shown=true` (`removeStaleSpans.java:2281–2285`).
+- Tooltip open: `VideoLandingViewModel.java:2026–2034` launches a coroutine which calls `getDisplaySizeV17.onRemoveQueueItem()`, then writes `ExpandableBehavior(true, returnedBoolean)`. The boolean's semantics remain unresolved because the underlying method is decompiler-skipped.
+- Tooltip Done: `VideoLandingViewModel.java:2035–2039` writes `ExpandableBehavior(false, existing.write)`, preserving the second state field.
+- Learn More: `VideoLandingViewModel.java:2061–2067` resets the current `IntegrityManager` state. This branch alone does not establish a destination/navigation contract.
+
+Evidence also includes original listeners at `setScrollPosition.java:2794–2853`. This closes the event-source trace only. The original provider/repository graph, ViewModel lifecycle and event collection are not integrated locally; these controls remain disabled rather than being replaced with guessed listeners or local preference writes.
