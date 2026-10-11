@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "app/**"
+      - ".github/scripts/verify_source_bound_layouts.py"
       - ".github/workflows/android-ui-smoke.yml"
   pull_request:
     branches: [main]
