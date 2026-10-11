@@ -160,6 +160,8 @@ def main() -> int:
     qbank_list = re.search(r'<androidx\.recyclerview\.widget\.RecyclerView\s+android:id="@\+id/rvSubjectList"(?:(?!/>).)*?/>', qbank_xml, re.S)
     if not qbank_list or 'android:clipToPadding=' in qbank_list.group(0):
         failures.append("QBank: remove the non-source clipToPadding override from rvSubjectList")
+    elif any(attr in qbank_list.group(0) for attr in ('app:layout_constraintStart_toStartOf=', 'app:layout_constraintEnd_toEndOf=')):
+        failures.append("QBank: rvSubjectList has non-source horizontal constraints")
     video_xml = (LAYOUT / "fragment_video_landing_replica.xml").read_text(encoding="utf-8")
     video_progress = re.search(r'<ProgressBar\s+android:id="@\+id/progressBar"(?:(?!/>).)*?/>', video_xml, re.S)
     if not video_progress or 'android:layout_marginEnd="2dp"' not in video_progress.group(0):
@@ -167,6 +169,11 @@ def main() -> int:
     video_scroll = re.search(r'<androidx\.core\.widget\.NestedScrollView\s+android:id="@\+id/rootScrollView"(?:(?!/>).)*?>', video_xml, re.S)
     if not video_scroll or 'android:clipToPadding=' in video_scroll.group(0):
         failures.append("Videos: remove the non-source clipToPadding override from rootScrollView")
+    elif 'app:layout_constraintTop_toTopOf="parent"' not in video_scroll.group(0):
+        failures.append("Videos: rootScrollView is missing the original top constraint")
+    cl_main = re.search(r'<androidx\\.constraintlayout\\.widget\\.ConstraintLayout\\s+android:id="@\\+id/clMain"(?:(?!>).)*?>', video_xml, re.S)
+    if not cl_main or 'android:background=' in cl_main.group(0):
+        failures.append("Videos: clMain must not add a non-source explicit background")
 
     # Source-decoded Tests attributes from the original fragment_home_test binary XML.
     tests_xml = (LAYOUT / "fragment_home_test_replica.xml").read_text(encoding="utf-8")
@@ -201,8 +208,8 @@ def main() -> int:
     appbar = re.search(r'<com\.google\.android\.material\.appbar\.AppBarLayout\s+android:id="@\+id/appbarGTa"(?:(?!>).)*?>', tests_xml, re.S)
     if not appbar or 'android:paddingTop="4dp"' not in appbar.group(0) or 'android:paddingBottom="6dp"' not in appbar.group(0):
         failures.append("Tests: AppBarLayout is missing original 4dp/6dp vertical padding")
-    elif 'app:layout_constraintTop_toTopOf="parent"' in appbar.group(0):
-        failures.append("Tests: AppBarLayout has a non-source ConstraintLayout attribute")
+    elif 'app:layout_constraintTop_toTopOf="parent"' not in appbar.group(0):
+        failures.append("Tests: AppBarLayout is missing the original top constraint")
 
     if failures:
         print("\nSOURCE-BOUND LAYOUT VALIDATION: FAIL")
