@@ -63,6 +63,16 @@ Evidence:
 
 **Important boundary:** Several lifecycle methods (`SplashActivity.onCreate`, `zabr.onCreate`, `zaO.onCreate`, `zaay.onCreate`) are explicitly emitted as `Method not decompiled`. Their bodies must not be reverse-invented from neighboring methods. The evidence now identifies the original launcher, main Activity, class hierarchy, main layout binding, and tab mapping; it does not yet prove a full runnable integration into the reconstruction project.
 
+## Tab selection → original Fragment transaction (verified code path)
+
+The tab controller's selection handler does not just assign labels. In `sources/kotlin/zabz.java`:
+- `RemoteActionCompatParcelizer(List<? extends DataBuffer>)` (lines 2419–2449) clears/rebuilds the tab layout and inflates `R.layout.custom_home_tab`, binding each `DataBuffer`'s icon, title, and enum object to the custom tab.
+- `read(int)` (lines 2522–2614) reads the selected tab's stored `DataBuffer`, applies Home-only toolbar/bookmark behavior, and updates tab colors/indicator visibility.
+- `read(DataBuffer)` (lines 2616–2634) passes `dataBuffer.write()` (the exact original Fragment class) to `copyToBuffer.write(Class)`. This is the source-backed class-selection/fragment-transaction entry point; it does not instantiate a hand-written wrapper.
+- The original `DataBuffer` enum declares HOME index 0 and QBANK/TESTS/VIDEOS indices 1/2/3 with the original classes and route keys (`KEY_HOME`, `qbank`, `test`, `video`). The selected item is carried as the actual `DataBuffer` object in each custom tab.
+
+This verifies that the reconstruction's `newTabFragment(index)` wrapper mechanism is not a 1:1 implementation of the original transaction path, even though its tags now match the verified class names. No wrapper change is being presented as full parity. The source-native integration target is the original `zadb` Activity/base hierarchy plus its `parsePeriod` binding and `copyToBuffer` fragment host, with their genuine dependencies/resources intact.
+
 ## Resource evidence — corrected boundary
 
 The inspected `base.apk_Decompiler.com.zip` contains 26,825 entries, including `resources/res/layout/` (578), `resources/res/layout-land/` (16), `resources/res/layout-sw600dp/` (7), `resources/res/drawable/` (2,210), `resources/res/color/` (216), and `resources/res/font/` (7). These counts are directly verified against the ZIP. The decompiler ZIP does not contain a file named `resources.arsc`; however, the separately uploaded original `/mnt/data/base.apk` does contain `resources.arsc` (3,327,896 bytes), verified from its ZIP directory. Resource-ID resolution therefore remains a tooling/decoding step, not an absence of the original resource table.
