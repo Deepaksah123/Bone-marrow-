@@ -155,8 +155,8 @@ public final class MainActivity extends FragmentActivity {
         Fragment destination = manager.findFragmentByTag(destinationTag);
         androidx.fragment.app.FragmentTransaction transaction = manager.beginTransaction();
 
-        // Match the verified source helper: remove inactive Home_ destinations, preserve the
-        // selected instance if present, then add it if absent or show it if already managed.
+        // Remove only the four source-mapped tab destinations, preserve the selected instance,
+        // then add it if absent or show it if already managed.
         for (Fragment fragment : manager.getFragments()) {
             if (fragment != null && fragment.isAdded()
                     && fragment.getTag() != null
