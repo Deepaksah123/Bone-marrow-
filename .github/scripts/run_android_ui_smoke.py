@@ -28,6 +28,25 @@ def ensure_app() -> None:
         raise SystemExit("Reconstruction app process exited during interaction QA")
 
 
+def write_anr_diagnostics(stage: str) -> None:
+    # Preserve evidence even when UI smoke fails; the artifact upload step runs
+    # with always(), so the next pass can distinguish app ANR from emulator/system UI.
+    OUT.mkdir(parents=True, exist_ok=True)
+    chunks = [f"ANR detected at: {stage}\n"]
+    for label, args in (
+        ("window", ["shell", "dumpsys", "window", "windows"]),
+        ("activity", ["shell", "dumpsys", "activity", "activities"]),
+        ("processes", ["shell", "ps", "-A"]),
+        ("recent logcat", ["logcat", "-d", "-t", "2500"]),
+    ):
+        try:
+            result = adb(args, timeout=30, check=False)
+            chunks.append(f"\\n===== {label} (rc={result.returncode}) =====\\n{result.stdout}")
+        except Exception as exc:
+            chunks.append(f"\\n===== {label}: collection failed: {exc} =====\\n")
+    (OUT / "anr-diagnostics.txt").write_text("\\n".join(chunks), encoding="utf-8")
+
+
 def assert_no_anr_dialog(stage: str) -> None:
     # A live app PID is not enough: any Android process can put an ANR dialog
     # over the app while taps still return successfully. Inspect both window
@@ -47,9 +66,11 @@ def assert_no_anr_dialog(stage: str) -> None:
     )
     found = next((marker for marker in window_indicators if marker in windows), None)
     if found:
+        write_anr_diagnostics(f"{stage}: window marker {found}")
         raise SystemExit(f"Emulator ANR dialog detected {stage}: {found}")
     found = next((marker for marker in activity_indicators if marker in activities), None)
     if found:
+        write_anr_diagnostics(f"{stage}: activity marker {found}")
         raise SystemExit(f"Emulator ANR activity detected {stage}: {found}")
 
 
