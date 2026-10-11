@@ -61,12 +61,12 @@ jobs:
       - name: Launch emulator, verify tab navigation, capture screenshots
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 31
-          target: google_apis
+          api-level: 30
+          target: default
           arch: x86_64
           profile: pixel_2
           disable-animations: true
-          emulator-options: -no-window -no-boot-anim -no-snapshot -no-snapshot-save -gpu swiftshader_indirect -noaudio -memory 4096 -cores 4
+          emulator-options: -no-window -no-boot-anim -no-snapshot -no-snapshot-save -gpu swiftshader -noaudio -memory 4096 -cores 4
           script: |
             python3 .github/scripts/run_android_ui_smoke.py
 
