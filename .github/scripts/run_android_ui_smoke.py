@@ -24,9 +24,6 @@ OUT.mkdir(parents=True, exist_ok=True)
     )) + "\n",
     encoding="utf-8",
 )
-SYSTEM_UI_ANR_RECOVERY_ATTEMPTS = 0
-MAX_SYSTEM_UI_ANR_RECOVERY_ATTEMPTS = 2
-
 
 def adb(args: list[str], timeout: int = 20, check: bool = True) -> subprocess.CompletedProcess[str]:
     cmd = ["adb", *args]
@@ -78,147 +75,12 @@ def visible_anr_marker(window_dump: str) -> str | None:
     return None
 
 
-def visible_system_ui_anr(window_dump: str) -> bool:
-    """Identify a visible ANR owned by System UI, not by the replica app."""
-    blocks = re.split(r"(?=window #\d+\s)", window_dump.lower())
-    indicators = ("application not responding", "isn't responding", "is not responding", "anrdialog")
-    return any(
-        any(marker in block for marker in indicators)
-        and "com.android.systemui" in block
-        and "isvisible=true" in block
-        and "surface: shown=true" in block
-        for block in blocks
-    )
-
-
-def wait_button_center(hierarchy_xml: str) -> tuple[int, int] | None:
-    """Find the explicit Wait action in Android's ANR dialog without guessed taps."""
-    try:
-        root = ET.fromstring(hierarchy_xml)
-    except ET.ParseError:
-        return None
-    for node in root.iter("node"):
-        if node.attrib.get("visible-to-user", "true").lower() == "false":
-            continue
-        label = " ".join((node.attrib.get("text", ""), node.attrib.get("content-desc", ""))).strip().lower()
-        if label in {"wait", "wait for app", "wait for app to respond"} and node.attrib.get("bounds"):
-            try:
-                return node_center(node)
-            except ValueError:
-                return None
-    return None
-
-
-def try_wait_on_system_ui_anr(stage: str) -> bool:
-    """Use the dialog's actual accessibility bounds; never guess a screen coordinate."""
-    path = "/sdcard/marrow-system-anr-hierarchy.xml"
-    result = adb(["shell", "uiautomator", "dump", path], timeout=30, check=False)
-    if "dumped to" not in result.stdout.lower():
-        write_anr_diagnostics(f"{stage}: unable to dump ANR dialog hierarchy for Wait action")
-        return False
-    xml = adb(["shell", "cat", path], timeout=10, check=False).stdout
-    center = wait_button_center(xml)
-    if center is None:
-        write_anr_diagnostics(f"{stage}: visible ANR dialog has no accessible Wait button")
-        return False
-    write_anr_diagnostics(f"{stage}: tapping Android ANR dialog's accessible Wait action at {center}")
-    adb(["shell", "input", "tap", str(center[0]), str(center[1])], timeout=15, check=False)
-    time.sleep(5)
-    windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
-    if visible_anr_marker(windows):
-        return False
-    time.sleep(12)
-    windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
-    return not visible_anr_marker(windows)
-
-
 def assert_no_anr_dialog(stage: str) -> None:
-    # Never capture while any ANR dialog is visible. Cold boot can briefly overload
-    # System UI while the replica's first Activity is being displayed. Preserve
-    # diagnostics before each bounded recovery, then require a 12-second clean
-    # window interval. Replica-owned ANRs and a third/recurrent system ANR are fatal.
-    global SYSTEM_UI_ANR_RECOVERY_ATTEMPTS
+    """Fail closed on any visibly rendered ANR and preserve diagnostics."""
     windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
     marker = visible_anr_marker(windows)
-    if not marker:
-        return
-
-    while marker and visible_system_ui_anr(windows) and SYSTEM_UI_ANR_RECOVERY_ATTEMPTS < MAX_SYSTEM_UI_ANR_RECOVERY_ATTEMPTS:
-        SYSTEM_UI_ANR_RECOVERY_ATTEMPTS += 1
-        write_anr_diagnostics(
-            f"{stage}: visible System UI ANR recovery "
-            f"{SYSTEM_UI_ANR_RECOVERY_ATTEMPTS}/{MAX_SYSTEM_UI_ANR_RECOVERY_ATTEMPTS}"
-        )
-        adb(["shell", "input", "keyevent", "4"], timeout=15, check=False)
-        time.sleep(5)
-        windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
-        marker = visible_anr_marker(windows)
-        if marker:
-            continue
-
-        # A single absent dump was insufficient in run 38131372105: the same
-        # System UI dialog reappeared before UIAutomator could read the app tree.
-        time.sleep(12)
-        windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
-        marker = visible_anr_marker(windows)
-        if not marker:
-            print(
-                "System UI ANR dialog cleared and stayed absent through the stability window; "
-                "no screenshot is taken unless subsequent checks also remain clear.",
-                flush=True,
-            )
-            return
-
-    if marker and visible_system_ui_anr(windows):
-        # The disposable API 30 image repeatedly re-created the same System UI
-        # ANR dialog even after BACK cleared it twice. Preserve evidence, restart
-        # only the emulator's System UI process, and continue only if the ANR
-        # window disappears and remains absent through another stability window.
-        write_anr_diagnostics(f"{stage}: restarting unresponsive emulator System UI after bounded BACK recovery")
-        pids = adb(["shell", "pidof", "com.android.systemui"], timeout=15, check=False).stdout.split()
-        for pid in pids:
-            if pid.isdigit():
-                adb(["shell", "kill", "-9", pid], timeout=10, check=False)
-        deadline = time.monotonic() + 45
-        while time.monotonic() < deadline:
-            time.sleep(3)
-            restarted = adb(["shell", "pidof", "com.android.systemui"], timeout=15, check=False)
-            if restarted.returncode == 0 and restarted.stdout.strip():
-                break
-        else:
-            write_anr_diagnostics(f"{stage}: System UI did not restart after bounded recovery")
-            raise SystemExit("Emulator System UI did not restart after its visible ANR")
-
-        # The ANR dialog is a system_server-owned alert window even though its
-        # title names System UI. Restarting System UI alone does not dismiss it;
-        # send BACK after the process returns, then verify a clean stability window.
-        time.sleep(5)
-        adb(["shell", "input", "keyevent", "4"], timeout=15, check=False)
-        time.sleep(5)
-        windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
-        marker = visible_anr_marker(windows)
-        if not marker:
-            time.sleep(12)
-            windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
-            marker = visible_anr_marker(windows)
-            if not marker:
-                print(
-                    "Emulator System UI restarted; ANR window stayed absent through the stability window.",
-                    flush=True,
-                )
-                return
-
-    if marker and visible_system_ui_anr(windows):
-        # The alert is system_server-owned even though its title names System UI.
-        # If BACK and process restart cannot clear it, use the actual accessible
-        # Wait-button bounds rather than a guessed screen coordinate.
-        if try_wait_on_system_ui_anr(stage):
-            print("Visible System UI ANR cleared through its accessible Wait action.", flush=True)
-            return
-        windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
-        marker = visible_anr_marker(windows)
     if marker:
-        write_anr_diagnostics(f"{stage}: unrecovered visible ANR window marker {marker}")
+        write_anr_diagnostics(f"{stage}: visible ANR window marker {marker}")
         raise SystemExit(f"Visible emulator ANR dialog detected {stage}: {marker}")
 
 
