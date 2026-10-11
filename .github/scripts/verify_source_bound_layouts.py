@@ -64,6 +64,28 @@ def main() -> int:
         print(f"- {surface}: {len(expected & actual)}/{len(expected)} traced IDs")
     if not (ROOT / "reconstruction/EXACT_SOURCE_UI_INDEX.md").is_file():
         failures.append("Missing original-source trace record")
+
+    # The original toolbar title is configuration-bound, not screenshot-derived.
+    # Guard against reintroducing the static values removed in source-fidelity Batch 63.
+    strings_path = ROOT / "app/src/main/res/values/strings.xml"
+    activity_path = ROOT / "app/src/main/java/com/marrow/reconstruction/MainActivity.java"
+    try:
+        strings_xml = strings_path.read_text(encoding="utf-8")
+        activity_java = activity_path.read_text(encoding="utf-8")
+        forbidden_title_tokens = (
+            "replica_tab_title_qbank_edition_85",
+            "replica_tab_title_tests",
+            "replica_tab_title_videos_edition_85",
+        )
+        for token in forbidden_title_tokens:
+            if token in strings_xml or token in activity_java:
+                failures.append(f"Screenshot-derived toolbar title token reintroduced: {token}")
+        if '<string name="app_name">Marrow</string>' not in strings_xml:
+            failures.append("App label must match the verified original string: Marrow")
+        if 'textPageTitle.setText("");' not in activity_java:
+            failures.append("Unbound toolbar title must remain empty until original config binding is integrated")
+    except OSError as exc:
+        failures.append(f"Could not validate source-bound toolbar strings: {exc}")
     if failures:
         print("SOURCE-BOUND LAYOUT CHECK: FAIL")
         for failure in failures:
