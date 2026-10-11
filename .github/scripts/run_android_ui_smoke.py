@@ -306,6 +306,14 @@ def tap_tab(label: str, root: ET.Element | None = None) -> ET.Element:
     return after
 
 
+def assert_resource_visibility(root: ET.Element, resource_id: str, expected: bool) -> None:
+    node = find_node(root, resource_id=resource_id)
+    if (node is not None) != expected:
+        state = "visible" if node is not None else "not visible"
+        wanted = "visible" if expected else "not visible"
+        raise SystemExit(f"Source-bound view {resource_id} is {state}; expected {wanted}")
+
+
 def assert_switch_checked(root: ET.Element, resource_id: str, expected: bool) -> None:
     node = find_node(root, resource_id=resource_id)
     if node is None:
@@ -385,17 +393,23 @@ def main() -> None:
     # Wait for the app's actual accessibility tree, not merely a live PID or splash screen.
     hierarchy = wait_for_tabs(timeout=120)
     hierarchy = tap_tab("Home", hierarchy)
+    assert_resource_visibility(hierarchy, "iconBookmark", True)
     screenshot("home")
     for label in ("QBank", "Tests", "Videos", "Home"):
         hierarchy = tap_tab(label)
+        assert_resource_visibility(hierarchy, "iconBookmark", label == "Home")
         time.sleep(1)
         ensure_app()
         screenshot(label.lower())
 
-    # Drawer and Better Search actions use live source-bound view bounds.
-    tap_view("iconMenu")
+    # Verify the drawer actually exposes its recovered original source row, not
+    # merely that tapping the menu icon leaves the Activity alive.
+    hierarchy = tap_view("iconMenu")
+    assert_resource_visibility(hierarchy, "navYourCourse", True)
     screenshot("drawer-open")
     back()
+    hierarchy = wait_for_tabs(timeout=30)
+    assert_resource_visibility(hierarchy, "navYourCourse", False)
     # BACK must close the drawer and leave the app shell on screen; a live PID
     # alone is insufficient because the Activity could have finished.
     hierarchy = wait_for_tabs(timeout=30)
