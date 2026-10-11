@@ -216,3 +216,10 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Inspected artifact [11700091640](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38132812697/artifacts/11700091640) at the window-record level. The visible alert's title names `com.android.systemui`, but its actual window owner is the Android system process (`package=android`); restarting the System UI process alone does not remove that already-created alert window.
 - The bounded fallback now sends BACK after System UI has restarted, then rechecks the window dump and requires a 12-second clean stability window. The gate still rejects any visible ANR dialog and never treats a covered screenshot as valid.
 - This is a QA-harness-only correction. A fresh successful smoke run and screenshot review are still required; 1:1 parity and data-bound screen states are not yet certified.
+
+
+## Accessibility-grounded ANR dialog recovery — Batch 73 (2026-10-11)
+
+- The latest runtime artifact shows the visible ANR alert is owned by the Android system process (`package=android`) although its title names `com.android.systemui`; restarting System UI alone does not reliably remove the alert.
+- Added a final recovery that dumps the live dialog hierarchy, locates the explicit **Wait** action, taps its reported accessibility bounds, and requires the ANR window to stay absent through a 12-second stability check. No coordinates are guessed. If the dialog hierarchy or Wait button cannot be verified, the test fails closed and retains diagnostics.
+- Added unit coverage for actual Wait-button bounds, hidden/missing Wait actions, and malformed hierarchy XML. Runtime QA and screenshot review remain pending; this change does not certify full pixel-level 1:1 parity.

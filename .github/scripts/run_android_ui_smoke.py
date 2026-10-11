@@ -79,6 +79,47 @@ def visible_system_ui_anr(window_dump: str) -> bool:
     )
 
 
+def wait_button_center(hierarchy_xml: str) -> tuple[int, int] | None:
+    """Find the explicit Wait action in Android's ANR dialog without guessed taps."""
+    try:
+        root = ET.fromstring(hierarchy_xml)
+    except ET.ParseError:
+        return None
+    for node in root.iter("node"):
+        if node.attrib.get("visible-to-user", "true").lower() == "false":
+            continue
+        label = " ".join((node.attrib.get("text", ""), node.attrib.get("content-desc", ""))).strip().lower()
+        if label in {"wait", "wait for app", "wait for app to respond"} and node.attrib.get("bounds"):
+            try:
+                return node_center(node)
+            except ValueError:
+                return None
+    return None
+
+
+def try_wait_on_system_ui_anr(stage: str) -> bool:
+    """Use the dialog's actual accessibility bounds; never guess a screen coordinate."""
+    path = "/sdcard/marrow-system-anr-hierarchy.xml"
+    result = adb(["shell", "uiautomator", "dump", path], timeout=30, check=False)
+    if "dumped to" not in result.stdout.lower():
+        write_anr_diagnostics(f"{stage}: unable to dump ANR dialog hierarchy for Wait action")
+        return False
+    xml = adb(["shell", "cat", path], timeout=10, check=False).stdout
+    center = wait_button_center(xml)
+    if center is None:
+        write_anr_diagnostics(f"{stage}: visible ANR dialog has no accessible Wait button")
+        return False
+    write_anr_diagnostics(f"{stage}: tapping Android ANR dialog's accessible Wait action at {center}")
+    adb(["shell", "input", "tap", str(center[0]), str(center[1])], timeout=15, check=False)
+    time.sleep(5)
+    windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
+    if visible_anr_marker(windows):
+        return False
+    time.sleep(12)
+    windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
+    return not visible_anr_marker(windows)
+
+
 def assert_no_anr_dialog(stage: str) -> None:
     # Never capture while any ANR dialog is visible. Cold boot can briefly overload
     # System UI while the replica's first Activity is being displayed. Preserve
@@ -155,6 +196,15 @@ def assert_no_anr_dialog(stage: str) -> None:
                 )
                 return
 
+    if marker and visible_system_ui_anr(windows):
+        # The alert is system_server-owned even though its title names System UI.
+        # If BACK and process restart cannot clear it, use the actual accessible
+        # Wait-button bounds rather than a guessed screen coordinate.
+        if try_wait_on_system_ui_anr(stage):
+            print("Visible System UI ANR cleared through its accessible Wait action.", flush=True)
+            return
+        windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
+        marker = visible_anr_marker(windows)
     if marker:
         write_anr_diagnostics(f"{stage}: unrecovered visible ANR window marker {marker}")
         raise SystemExit(f"Visible emulator ANR dialog detected {stage}: {marker}")

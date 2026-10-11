@@ -5,7 +5,7 @@ from __future__ import annotations
 import unittest
 import xml.etree.ElementTree as ET
 
-from run_android_ui_smoke import find_node, node_center, tab_is_selected, visible_anr_marker, visible_system_ui_anr
+from run_android_ui_smoke import find_node, node_center, tab_is_selected, visible_anr_marker, visible_system_ui_anr, wait_button_center
 
 
 class VisibleAnrMarkerTests(unittest.TestCase):
@@ -88,6 +88,19 @@ class VisibleAnrMarkerTests(unittest.TestCase):
           Surface: shown=true layer=1 alpha=1.0
         """
         self.assertIsNone(visible_anr_marker(dump))
+
+
+    def test_wait_button_uses_real_accessibility_bounds(self) -> None:
+        xml = (
+            '<hierarchy><node text="Wait" bounds="[600,700][800,780]" visible-to-user="true" />'
+            '<node text="Close app" bounds="[300,700][500,780]" visible-to-user="true" /></hierarchy>'
+        )
+        self.assertEqual(wait_button_center(xml), (700, 740))
+
+    def test_wait_button_is_not_guessed_when_missing_or_hidden(self) -> None:
+        self.assertIsNone(wait_button_center('<hierarchy><node text="Close app" bounds="[1,1][2,2]" /></hierarchy>'))
+        self.assertIsNone(wait_button_center('<hierarchy><node text="Wait" bounds="[1,1][2,2]" visible-to-user="false" /></hierarchy>'))
+        self.assertIsNone(wait_button_center('<hierarchy>not xml</hierarchy>'))
 
 
 class AccessibilityParserTests(unittest.TestCase):
