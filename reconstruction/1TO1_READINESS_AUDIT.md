@@ -341,3 +341,9 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 
 - Simplified the new pre-emulator-step contract check to direct source-text assertions. This avoids over-escaped regular-expression syntax in the Python checker and verifies both the step name and its explicit invocation-state marker.
 - The checker is validated by the same CI smoke job before emulator startup; no application code or visual UI changed.
+
+
+## QA invocation marker completion — Batch 90 (2026-10-11)
+
+- Updated the smoke runner to rewrite `qa-screenshots/run-context.txt` as soon as Python starts, preserving the actual GitHub commit/run/workflow values and changing `emulator_script_invoked` to `true`.
+- If emulator startup fails before Python is invoked, the pre-created artifact retains `false`; if the runner starts, the artifact records `true`. This distinguishes emulator-action startup failure from a failure inside the smoke script without treating either metadata state as a runtime pass.

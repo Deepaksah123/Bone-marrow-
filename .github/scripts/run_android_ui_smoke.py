@@ -2,6 +2,7 @@
 """Source-bound Android UI smoke checks with verified accessibility targeting."""
 from __future__ import annotations
 
+import os
 import re
 import subprocess
 import time
@@ -12,6 +13,15 @@ PACKAGE = "com.marrow.reconstruction.replica"
 ACTIVITY = f"{PACKAGE}/com.marrow.reconstruction.MainActivity"
 OUT = Path("qa-screenshots")
 OUT.mkdir(parents=True, exist_ok=True)
+(OUT / "run-context.txt").write_text(
+    "\\n".join((
+        f"commit={os.environ.get('GITHUB_SHA', 'unknown')}",
+        f"run_id={os.environ.get('GITHUB_RUN_ID', 'local')}",
+        f"workflow={os.environ.get('GITHUB_WORKFLOW', 'local')}",
+        "emulator_script_invoked=true",
+    )) + "\\n",
+    encoding="utf-8",
+)
 SYSTEM_UI_ANR_RECOVERY_ATTEMPTS = 0
 MAX_SYSTEM_UI_ANR_RECOVERY_ATTEMPTS = 2
 
