@@ -162,3 +162,10 @@ The original `activity_home_revamp` binary XML (`0x7f0d0033`, obfuscated APK ent
 ## Toolbar bookmark action — Batch 65
 
 The original toolbar bookmark view is source-backed in the shell binding. An exact-symbol scan of the canonical decompiler archive found no separate Java/Kotlin click-listener reference to `iconBookmark` beyond the generated shell binding and resource declaration. Its click behavior remains unresolved; the replica must not attach a guessed destination. This is a tracked evidence gap, not a claim that the original app's bookmark feature is absent.
+
+
+## Intern Mode event + QA artifact correction — Batch 66
+
+The original `ibTooltip` listener dispatches `TransformationChildCard.write.INSTANCE`; the VideoLandingViewModel clears `showPytBanner`, which the source observer applies to `clInternModeBanner`. The replica now dismisses that banner instead of using the control as a guessed tooltip toggle. The tooltip's true opening flow remains unresolved and is not claimed complete.
+
+Run `38120225475` reported success, but its screenshots contain Android “isn't responding” dialogs. The smoke guard now rejects generic ANR dialogs, and its next artifact must be visually reviewed before runtime QA can pass.
