@@ -2,8 +2,10 @@
 """Source-bound Android UI smoke checks with verified accessibility targeting."""
 from __future__ import annotations
 
+import json
 import os
 import re
+import struct
 import subprocess
 import time
 import xml.etree.ElementTree as ET
@@ -486,7 +488,33 @@ def main() -> None:
     adb(["shell", "cmd", "uimode", "night", "no"], timeout=20)
     time.sleep(1)
     ensure_app()
-    print("Screenshot interaction QA completed.", flush=True)
+    # Make the uploaded evidence self-describing and fail closed if any required
+    # screen/state capture is absent, corrupt, or has an invalid PNG header.
+    required_captures = (
+        "home", "qbank", "tests", "videos", "drawer-open", "search-open",
+        "video-switch-on", "video-switch-off", "video-tooltip-open",
+        "video-tooltip-closed", "video-dark", "home-dark",
+    )
+    manifest = []
+    for name in required_captures:
+        image_path = OUT / f"{name}.png"
+        if not image_path.is_file():
+            raise SystemExit(f"Required screenshot evidence missing: {image_path}")
+        image_bytes = image_path.read_bytes()
+        if len(image_bytes) < 24 or not image_bytes.startswith(bytes((137, 80, 78, 71, 13, 10, 26, 10))):
+            raise SystemExit(f"Required screenshot is not a valid PNG: {image_path}")
+        width, height = struct.unpack(">II", image_bytes[16:24])
+        if width < 320 or height < 480:
+            raise SystemExit(f"Required screenshot has implausible dimensions {width}x{height}: {image_path}")
+        manifest.append({"file": image_path.name, "bytes": len(image_bytes), "width": width, "height": height})
+    manifest_path = OUT / "screenshot-manifest.json"
+    manifest_path.write_text(json.dumps({
+        "commit": os.environ.get("GITHUB_SHA", "unknown"),
+        "run_id": os.environ.get("GITHUB_RUN_ID", "local"),
+        "required_capture_count": len(required_captures),
+        "captures": manifest,
+    }, indent=2) + "\\n", encoding="utf-8")
+    print(f"Screenshot interaction QA completed; validated {len(manifest)} required captures and wrote {manifest_path}.", flush=True)
 
 
 if __name__ == "__main__":
