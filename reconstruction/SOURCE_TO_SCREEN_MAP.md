@@ -353,3 +353,12 @@ The original `InternModelLoadedUIData` model (`ExpandableTransformationBehavior.
 Batch 69 restored the four original transition strings verbatim from `resources/res/values/strings.xml`. A regression test now verifies those values plus the two original tooltip descriptions and `concise_mode`. The local loading overlay and tooltip include remain hidden because their source state observers are not integrated; their message field remains unpopulated rather than inventing a state.
 
 Verified local string parity: the nine existing Intern Mode strings checked against the original archive matched exactly. Original values include `Intern Mode : %s`, the updated and legacy tooltip descriptions, banner copy, Learn More and Got it labels. The four transition strings were the missing resource entries and are now present verbatim.
+
+
+## Batch 69 — Intern Mode loading and tooltip state bindings
+
+The original `InternModelLoadedUIData` model (`ExpandableTransformationBehavior.java`) has `showLoader`, `isEd6`, and `isInternModeChecked`. The fragment observer at `setScrollPosition.java:1151–1246` uses these fields to show or hide the loading overlay and Group and select the transition message: `isEd6 && isInternModeChecked` selects `text_mapping_pyt`; `isEd6 && !isInternModeChecked` selects `text_turning_off_intern_mode`; `!isEd6 && isInternModeChecked` selects `text_reducing_video_hrs`; otherwise it selects `text_original_video_hrs`. The tooltip model `InternModeTooltipState` has `showTooltip` and `isCurrentEd6`; `setScrollPosition.java:1039–1105` hides the tooltip when closed and selects the updated or legacy tooltip description according to that state.
+
+Batch 69 restored the four original transition strings verbatim from `resources/res/values/strings.xml`. Regression tests verify those values, both tooltip descriptions and `concise_mode`. The local loading overlay and tooltip include remain hidden because their original state observers are not integrated; the message field remains unpopulated rather than inventing state.
+
+The nine existing Intern Mode strings checked against the original archive matched exactly. The four transition strings were missing local resource entries and are now present verbatim.
