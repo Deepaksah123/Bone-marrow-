@@ -25,7 +25,7 @@ jobs:
           test -f reconstruction/EXACT_SOURCE_UI_INDEX.md
           grep -Fq '`resources/res/layout/` direct entries: **578**' reconstruction/EXACT_SOURCE_UI_INDEX.md
           grep -Fq 'directly verified against the ZIP' reconstruction/SOURCE_TO_SCREEN_MAP.md
-          grep -Fq 'PARTIAL, NOT RESOLVED' reconstruction/1TO1_READINESS_AUDIT.md
+          grep -Fq 'Source-to-screen/behavior map — **PARTIAL**.' reconstruction/1TO1_READINESS_AUDIT.md
           # Exact-source asset checks: fail closed if any restored binary/text asset is altered.
           echo '7c72ee056690ed4f695e3a7bb656b2fa7d669ff2235ae8a0701485384eb32b93  app/src/main/assets/lottie/practical_corner_zen_area_pulse_anim.json' | sha256sum --check
           echo '956dc7df0fa49e7065da2a41ae00637f258abc0f15f28707eacf43484ce464e7  app/src/main/res/drawable-mdpi/ic_pc_circle_including_logo.webp' | sha256sum --check
