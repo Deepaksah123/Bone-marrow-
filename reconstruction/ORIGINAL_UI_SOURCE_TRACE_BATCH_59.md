@@ -26,12 +26,14 @@ This is a source-evidence report for the existing Bone-marrow- reconstruction. I
 
 Every listed layout symbol exists in sources/com/marrow/R.java and resources/res/values/public.xml with the same ID, and its binary layout entry exists under resources/res/layout/.
 
-## Source-bound IDs for the four tab surfaces
+## Source-bound ID reconciliation
 
-- Home binding source: sources/kotlin/getNextSegmentHolder.java. It references 22 IDs, including rvHomeCard, shimmerMain, shimmerGoPro, layoutDynamicZenArea, pbModuleCompletion, and zenAreaContainer.
-- QBank binding source: sources/kotlin/HlsMediaChunk.java. It references rvSubjectList (0x7f0a0759) and progressLoadList (0x7f0a06d6).
-- Tests binding source: sources/kotlin/getNextMediaSequenceAndPartIndex.java. It references appbarGTa, collapsing_toolbar, composeGta, emptyLayout, loadingContainer, rvMainList, tabs, and toolbar.
-- Videos binding source: sources/kotlin/buildAndPrepareSampleStreamWrappers.java. It references 43 IDs, including bottomNudgeContainer, clInternModeBanner, btnCloseInternModeBanner, ibTooltip, switchInternMode, tooltipInternModeInfo, and tvInternModeStatus.
+- Home binding source: sources/kotlin/getNextSegmentHolder.java references 22 IDs. The current Home replica contains 17/22. The five omitted IDs are cvGoPro, goProEd5Ed6, shimmerGoPro, spacePro, and tvGoPro; their names identify the Pro/upsell surface, which remains intentionally excluded by the frozen scope. The core Home IDs (rvHomeCard, shimmerMain, layoutDynamicZenArea, pbModuleCompletion, zenAreaContainer, etc.) are present.
+- QBank binding source: sources/kotlin/HlsMediaChunk.java references 2 IDs. The current QBank replica contains 2/2: rvSubjectList (0x7f0a0759) and progressLoadList (0x7f0a06d6).
+- Tests binding source: sources/kotlin/getNextMediaSequenceAndPartIndex.java references 9 IDs. The current Tests replica contains 9/9: appbarGTa, collapsing_toolbar, composeGta, emptyLayout, loadingContainer, parent, rvMainList, tabs, and toolbar.
+- Videos binding source: sources/kotlin/buildAndPrepareSampleStreamWrappers.java references 43 IDs. The current Videos replica contains 43/43 source IDs, including bottomNudgeContainer, clInternModeBanner, btnCloseInternModeBanner, ibTooltip, switchInternMode, tooltipInternModeInfo, and tvInternModeStatus. The extra non-source parentFrame ID was removed.
+- Shell binding source: sources/kotlin/parsePeriod.java references 24 IDs. The current shell contains 22/24; the omitted proCard and tvGoPro IDs are the excluded Pro/upsell surface. The extra non-source shell_root ID was removed.
+- Bottom tab item: sources/kotlin/zabz.java references icon, indicator, title, and upperContainer across its use sites; the custom tab item layout's own binding IDs icon, indicator, and title match the original custom_home_tab layout.
 
 ## Tooltip correction grounded in source
 
