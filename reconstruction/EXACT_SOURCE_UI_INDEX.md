@@ -383,4 +383,11 @@ Intern Mode switch pipeline source evidence
 
 ### VideoLandingUIState — original data-class metadata
 
+## Intern Mode preference persistence references
+
+- Use case: `sources/kotlin/isMediaStoreExternalContentUri.java`, `IconCompatParcelizer(boolean, continuation)` delegates to the `unlockFolder.write(boolean)` contract.
+- Concrete repository: `sources/kotlin/removeStaleSpans.java:2276–2279` writes the boolean to `is_concise_mode_on`; related methods write `concise_banner_shown` and `sort_video_subject`.
+- This storage step does not replace the complete original ViewModel transition/refresh chain; local toggle interaction remains deferred until genuine dependencies are integrated.
+
+
 Source file `sources/kotlin/TransformationChildLayout.java` declares the runtime type `com.marrow2.ui.video.landing.model.VideoLandingUIState` in Kotlin metadata. Verified fields: `editionSwitchBannerText`, `isInternModeEnabled`, `isInternModeOn`, `showPytBanner`, `sortOrder`, `showInternModeSnackBar`. The two Intern Mode booleans have distinct meanings; constructor defaults do not substitute for loaded course/account state.
