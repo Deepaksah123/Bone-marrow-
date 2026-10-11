@@ -498,3 +498,10 @@ The original use-case/repository path is now traced one layer deeper: `isMediaSt
 - Original data class source: `sources/kotlin/TransformationChildLayout.java`; Kotlin metadata names its runtime type `com.marrow2.ui.video.landing.model.VideoLandingUIState`.
 - Verified fields: `editionSwitchBannerText`, `isInternModeEnabled`, `isInternModeOn`, `showPytBanner`, `sortOrder`, and `showInternModeSnackBar`. Feature availability and checked/on state are separate booleans and must not be collapsed into one local state variable.
 - The data class's default constructor values are null/false/false/false/0/false; that default alone does not establish the state loaded for any specific course/account. The local switch stays deferred because the full state-loading and ViewModel path is not integrated.
+
+
+## Batch 67 — remove speculative video event substitutes
+
+- Removed local direct-visibility listeners for `btnCloseInternModeBanner`, `ibTooltip`, and `btnInternModeToolTipDone`. The original binding routes these controls into `VideoLandingViewModel` events; direct `View.GONE` mutations and a hard-coded tooltip body were not source-equivalent behavior.
+- Those controls now remain non-clickable/non-focusable until the original state/event observer path is integrated. Emulator smoke coverage now asserts the deferred boundary rather than treating the local tooltip overlay as original behavior.
+- This is a correctness guard, not a completion claim. Exact state transitions for these event classes, the original ViewModel dependencies, and full runtime parity remain unresolved.
