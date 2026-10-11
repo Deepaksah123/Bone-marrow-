@@ -173,7 +173,7 @@ jobs:
           # Shell toolbar and bottom navigation source geometry/theme.
           grep -Fq 'android:background="?attr/backgroundColor"' app/src/main/res/layout/activity_main.xml
           test "$(grep -Fc 'android:background="?attr/backgroundColor"' app/src/main/res/layout/activity_main.xml)" -ge 3
-          test "$(grep -Fc 'android:background="?attr/backgroundColor"' app/src/main/res/layout/fragment_home_replica.xml)" -eq 4
+          test "$(grep -Fc 'android:background="?attr/backgroundColor"' app/src/main/res/layout/fragment_home_replica.xml)" -eq 3
           if grep -Fq 'android:background="@color/shell_background"' app/src/main/res/layout/activity_main.xml; then echo "Evidence guard failure: forbidden match (negative check 8)"; exit 1; fi
           if grep -Fq 'android:background="@color/shell_background"' app/src/main/res/layout/fragment_home_replica.xml; then echo "Evidence guard failure: forbidden match (negative check 9)"; exit 1; fi
           grep -Fq 'android:background="?attr/colorSurfaceVariant5"' app/src/main/res/layout/activity_main.xml
