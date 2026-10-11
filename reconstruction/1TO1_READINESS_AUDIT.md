@@ -39,7 +39,7 @@ Source boundary: `Deepaksah123/Bone-marrow-` only.
 
 ## Current state
 
-The project contains a native Android app module and CI workflow. The shell uses a Material `TabLayout`, custom tab views, and source-derived IDs `fullContainer`, `bottomNavigation`, `cvBottomNavigationContainer`, and `homeAppBar`. The four tab order/icon/string resource mapping is grounded in `DataBuffer.java` and the batch-7 source trace. Home/QBank/Test/Video body implementations remain incomplete and are not yet 1:1. The toolbar search route is now traced to the original Better Search fragment and a source-shaped initial overlay is implemented; query/results/history data binding remains incomplete. Android build/evidence-guard results from earlier commits are historical only. A successful API 31 emulator run and artifact review are not yet confirmed for the latest source-bound tooltip correction; no runtime pass is claimed.
+The project contains a native Android app module and CI workflow. The shell uses a Material `TabLayout`, custom tab views, and source-derived IDs `fullContainer`, `bottomNavigation`, `cvBottomNavigationContainer`, and `homeAppBar`. The four tab order/icon/string resource mapping is grounded in `DataBuffer.java` and the batch-7 source trace. Home/QBank/Test/Video body implementations remain incomplete and are not yet 1:1. The toolbar search route is now traced to the original Better Search fragment and a source-shaped initial overlay is implemented; query/results/history data binding remains incomplete. Android build/evidence-guard results from earlier commits are historical only. The current API 30 emulator run and its screenshot artifact must be reviewed before runtime QA is accepted; no runtime pass or full 1:1 parity is claimed.
 
 Completed in this phase:
 - verified original APK/decompiler inputs;
@@ -174,3 +174,13 @@ Run `38120225475` reported success, but its screenshots contain Android “isn't
 ## Screenshot QA isolation — Batch 67
 
 The earlier screenshot artifact contained an Android “Digital Wellbeing isn't responding” dialog. Batch 67 disables the optional Digital Wellbeing package in the disposable emulator and strengthens the screenshot gate to inspect both window and activity state for ANR dialogs. This is QA harness isolation only; a new successful run and artifact review are still required for runtime QA.
+
+
+## Emulator smoke gate hardening — Batch 68 (2026-10-11)
+
+- Reviewed preserved ANR diagnostics from run [38127175232](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38127175232). The `Application Not Responding: com.android.systemui` window record had `isVisible=false` and `Surface: shown=false`; the previous whole-dump substring check treated this hidden/stale record as a live dialog and failed before the Home screenshot.
+- Changed the smoke gate to fail only when an ANR window's own record is both visible and has a shown surface. Added unit tests for hidden/stale ANR records, genuinely visible ANR windows, and cross-window visibility isolation.
+- Reviewed prior screenshot artifact [11694863778](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38120225475/artifacts/11694863778). Captures were obscured by a Digital Wellbeing ANR dialog, so that green run is not accepted as runtime evidence.
+- Identified that the smoke script used equal-quarter x coordinates even though the original shell uses a scrollable `TabLayout` with horizontal margins. Replaced guessed coordinates for tabs, toolbar actions, the Intern Mode switch, tooltip trigger, and Done button with live accessibility-node bounds. The gate now checks selected-tab and switch checked state instead of assuming taps succeeded.
+- Added a first-render wait that requires all four source-backed tab accessibility labels before the initial screenshot. The workflow runs parser/targeting unit tests before APK build and emulator startup.
+- These are QA harness changes only; no replica UI, educational content, paid UI, or guessed destinations were added. Runtime QA still requires a successful new run and inspection of its screenshot artifact. Home/QBank/Tests/Videos data-bound content, remaining behavior, and pixel-level 1:1 comparison remain incomplete.

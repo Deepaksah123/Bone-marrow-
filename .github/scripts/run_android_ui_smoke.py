@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Screenshot-based Android UI smoke test; avoids flaky UIAutomator hierarchy dumps."""
+"""Source-bound Android UI smoke checks with verified accessibility targeting."""
 from __future__ import annotations
 
 import re
 import subprocess
 import time
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 PACKAGE = "com.marrow.reconstruction.replica"
@@ -47,26 +48,125 @@ def write_anr_diagnostics(stage: str) -> None:
     (OUT / "anr-diagnostics.txt").write_text("\n".join(chunks), encoding="utf-8")
 
 
-def assert_no_anr_dialog(stage: str) -> None:
-    # dumpsys window retains hidden/stale ANR window records after the dialog
-    # has been dismissed. Only fail when an ANR window is actually visible and
-    # its surface is shown; string-matching the whole dump causes false failures.
-    windows = adb(["shell", "dumpsys", "window", "windows"], timeout=20).stdout.lower()
-    window_blocks = re.split(r"(?=window #\d+\s)", windows)
+def visible_anr_marker(window_dump: str) -> str | None:
+    """Return an ANR marker only when its own window is visibly rendered."""
+    blocks = re.split(r"(?=window #\\d+\\s)", window_dump.lower())
     indicators = (
         "application not responding",
         "isn't responding",
         "is not responding",
         "anrdialog",
     )
-    for block in window_blocks:
+    for block in blocks:
         marker = next((item for item in indicators if item in block), None)
-        if not marker:
+        if marker and "isvisible=true" in block and "surface: shown=true" in block:
+            return marker
+    return None
+
+
+def assert_no_anr_dialog(stage: str) -> None:
+    # dumpsys retains hidden/stale ANR window records after dismissal. Reject only
+    # a window whose own record says it is visible and its surface is shown.
+    windows = adb(["shell", "dumpsys", "window", "windows"], timeout=20).stdout
+    marker = visible_anr_marker(windows)
+    if marker:
+        write_anr_diagnostics(f"{stage}: visible ANR window marker {marker}")
+        raise SystemExit(f"Visible emulator ANR dialog detected {stage}: {marker}")
+
+
+def find_node(root: ET.Element, *, resource_id: str | None = None,
+              content_desc: str | None = None) -> ET.Element | None:
+    for node in root.iter("node"):
+        attrs = node.attrib
+        if attrs.get("visible-to-user", "true").lower() == "false":
             continue
-        visible = "isvisible=true" in block and "surface: shown=true" in block
-        if visible:
-            write_anr_diagnostics(f"{stage}: visible ANR window marker {marker}")
-            raise SystemExit(f"Visible emulator ANR dialog detected {stage}: {marker}")
+        if resource_id is not None and not attrs.get("resource-id", "").endswith(f"/{resource_id}"):
+            continue
+        if content_desc is not None and attrs.get("content-desc") != content_desc:
+            continue
+        if attrs.get("bounds"):
+            return node
+    return None
+
+
+def node_center(node: ET.Element) -> tuple[int, int]:
+    match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", node.attrib.get("bounds", ""))
+    if not match:
+        raise ValueError(f"Invalid or missing accessibility bounds: {node.attrib.get('bounds')!r}")
+    left, top, right, bottom = map(int, match.groups())
+    if right <= left or bottom <= top:
+        raise ValueError(f"Empty accessibility bounds: {node.attrib.get('bounds')!r}")
+    return (left + right) // 2, (top + bottom) // 2
+
+
+def tab_is_selected(root: ET.Element, label: str) -> bool:
+    return any(
+        node.attrib.get("selected", "").lower() == "true"
+        for node in root.iter("node")
+        if node.attrib.get("content-desc") == label
+    )
+
+
+def read_hierarchy() -> ET.Element:
+    assert_no_anr_dialog("before accessibility hierarchy dump")
+    path = "/sdcard/marrow-ui-hierarchy.xml"
+    adb(["shell", "rm", "-f", path], timeout=10, check=False)
+    dump = adb(["shell", "uiautomator", "dump", path], timeout=30)
+    if "dumped to" not in dump.stdout.lower():
+        raise RuntimeError(f"UIAutomator did not confirm a hierarchy dump: {dump.stdout[-500:]}")
+    xml = adb(["shell", "cat", path], timeout=10).stdout
+    root = ET.fromstring(xml)
+    assert_no_anr_dialog("after accessibility hierarchy dump")
+    return root
+
+
+def wait_for_tabs(timeout: int = 60) -> ET.Element:
+    labels = ("Home", "QBank", "Tests", "Videos")
+    deadline = time.monotonic() + timeout
+    last_error = "tab labels not present yet"
+    while time.monotonic() < deadline:
+        try:
+            root = read_hierarchy()
+            if all(find_node(root, content_desc=label) is not None for label in labels):
+                return root
+        except (RuntimeError, subprocess.SubprocessError, ET.ParseError, ValueError) as exc:
+            last_error = str(exc)
+        time.sleep(2)
+    write_anr_diagnostics(f"source-bound tabs did not render within {timeout}s: {last_error}")
+    raise SystemExit(f"App did not render all source-bound tabs within {timeout}s: {last_error}")
+
+
+def tap_view(resource_id: str) -> ET.Element:
+    root = read_hierarchy()
+    node = find_node(root, resource_id=resource_id)
+    if node is None:
+        raise SystemExit(f"Visible source-bound view not found: {resource_id}")
+    tap(*node_center(node))
+    time.sleep(1)
+    return read_hierarchy()
+
+
+def tap_tab(label: str, root: ET.Element | None = None) -> ET.Element:
+    if root is None:
+        root = read_hierarchy()
+    node = find_node(root, content_desc=label)
+    if node is None:
+        raise SystemExit(f"Visible source-bound tab not found: {label}")
+    tap(*node_center(node))
+    time.sleep(1)
+    after = read_hierarchy()
+    if not tab_is_selected(after, label):
+        raise SystemExit(f"Tab selection did not change to {label}")
+    return after
+
+
+def assert_switch_checked(root: ET.Element, resource_id: str, expected: bool) -> None:
+    node = find_node(root, resource_id=resource_id)
+    if node is None:
+        raise SystemExit(f"Visible source-bound switch not found: {resource_id}")
+    actual = node.attrib.get("checked", "").lower() == "true"
+    if actual != expected:
+        raise SystemExit(f"Switch state mismatch for {resource_id}: expected checked={expected}, got {node.attrib.get('checked')!r}")
 
 
 def tap(x: int, y: int) -> None:
@@ -115,56 +215,37 @@ def main() -> None:
         time.sleep(1)
     else:
         raise SystemExit("App process did not start")
-    time.sleep(2)
-
-    size_text = adb(["shell", "wm", "size"], timeout=10).stdout
-    density_text = adb(["shell", "wm", "density"], timeout=10).stdout
-    size_match = re.search(r"(\d+)x(\d+)", size_text)
-    density_match = re.search(r"(\d+)", density_text)
-    if not size_match or not density_match:
-        raise SystemExit(f"Could not resolve emulator geometry: {size_text!r}; {density_text!r}")
-    width, height = map(int, size_match.groups())
-    scale = int(density_match.group(1)) / 160.0
-    toolbar_y = round(52 * scale)
-    nav_bar_height = round(24 * scale)
-    tab_y = height - nav_bar_height - round(28 * scale)
-    tab_x = [round(width * (i + 0.5) / 4) for i in range(4)]
-
+    # Wait for the app's actual accessibility tree, not merely a live PID or splash screen.
+    hierarchy = wait_for_tabs(timeout=60)
+    hierarchy = tap_tab("Home", hierarchy)
     screenshot("home")
-    for name, index in (("qbank", 0), ("tests", 1), ("videos", 2), ("home", 3)):
-        tap(tab_x[index], tab_y)
-        time.sleep(2)
+    for label in ("QBank", "Tests", "Videos", "Home"):
+        hierarchy = tap_tab(label)
+        time.sleep(1)
         ensure_app()
-        screenshot(name)
+        screenshot(label.lower())
 
-    # Drawer and Better Search toolbar actions.
-    tap(round(24 * scale), toolbar_y)
-    time.sleep(1)
+    # Drawer and Better Search actions use live source-bound view bounds.
+    tap_view("iconMenu")
     screenshot("drawer-open")
     back()
 
-    tap(width - round(24 * scale), toolbar_y)
-    time.sleep(1)
+    tap_view("iconSearch")
     screenshot("search-open")
     back()
     ensure_app()
 
-    # Intern Mode OFF/ON state and the source-traced tooltip open/Done flow.
-    tap(tab_x[2], tab_y)
-    time.sleep(2)
-    switch_x = width - round(40 * scale)
-    row_y = round(104 * scale)
-    tap(switch_x, row_y)
-    time.sleep(1)
+    # Intern Mode OFF/ON state and source-traced tooltip open/Done flow.
+    hierarchy = tap_tab("Videos")
+    hierarchy = tap_view("switchInternMode")
+    assert_switch_checked(hierarchy, "switchInternMode", True)
     screenshot("video-switch-on")
-    tap(switch_x, row_y)
-    time.sleep(1)
+    hierarchy = tap_view("switchInternMode")
+    assert_switch_checked(hierarchy, "switchInternMode", False)
     screenshot("video-switch-off")
-    tap(round(140 * scale), row_y)
-    time.sleep(1)
+    tap_view("ibTooltip")
     screenshot("video-tooltip-open")
-    tap(round(292 * scale), round(400 * scale))
-    time.sleep(1)
+    tap_view("btnInternModeToolTipDone")
     screenshot("video-tooltip-closed")
     ensure_app()
 
@@ -172,8 +253,8 @@ def main() -> None:
     adb(["shell", "cmd", "uimode", "night", "yes"], timeout=20)
     time.sleep(2)
     screenshot("video-dark")
-    tap(tab_x[3], tab_y)
-    time.sleep(2)
+    tap_tab("Home")
+    time.sleep(1)
     screenshot("home-dark")
     adb(["shell", "cmd", "uimode", "night", "no"], timeout=20)
     time.sleep(1)
