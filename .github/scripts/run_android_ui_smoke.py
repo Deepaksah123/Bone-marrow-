@@ -388,6 +388,19 @@ def screenshot(name: str) -> None:
     print(f"Captured screenshot: {name} ({len(result.stdout)} bytes)", flush=True)
 
 
+def validate_png_capture(image_path: Path, *, minimum_width: int = 320, minimum_height: int = 480) -> dict[str, int | str]:
+    """Validate a required screenshot's PNG signature, IHDR dimensions and byte count."""
+    if not image_path.is_file():
+        raise SystemExit(f"Required screenshot evidence missing: {image_path}")
+    image_bytes = image_path.read_bytes()
+    if len(image_bytes) < 24 or not image_bytes.startswith(bytes((137, 80, 78, 71, 13, 10, 26, 10))):
+        raise SystemExit(f"Required screenshot is not a valid PNG: {image_path}")
+    width, height = struct.unpack(">II", image_bytes[16:24])
+    if width < minimum_width or height < minimum_height:
+        raise SystemExit(f"Required screenshot has implausible dimensions {width}x{height}: {image_path}")
+    return {"file": image_path.name, "bytes": len(image_bytes), "width": width, "height": height}
+
+
 def main() -> None:
     # A cold API 30 emulator can report boot-complete while core phone/System UI
     # services are still under heavy startup load. Recent evidence showed ANRs in
@@ -498,15 +511,7 @@ def main() -> None:
     manifest = []
     for name in required_captures:
         image_path = OUT / f"{name}.png"
-        if not image_path.is_file():
-            raise SystemExit(f"Required screenshot evidence missing: {image_path}")
-        image_bytes = image_path.read_bytes()
-        if len(image_bytes) < 24 or not image_bytes.startswith(bytes((137, 80, 78, 71, 13, 10, 26, 10))):
-            raise SystemExit(f"Required screenshot is not a valid PNG: {image_path}")
-        width, height = struct.unpack(">II", image_bytes[16:24])
-        if width < 320 or height < 480:
-            raise SystemExit(f"Required screenshot has implausible dimensions {width}x{height}: {image_path}")
-        manifest.append({"file": image_path.name, "bytes": len(image_bytes), "width": width, "height": height})
+        manifest.append(validate_png_capture(image_path))
     manifest_path = OUT / "screenshot-manifest.json"
     manifest_path.write_text(json.dumps({
         "commit": os.environ.get("GITHUB_SHA", "unknown"),
