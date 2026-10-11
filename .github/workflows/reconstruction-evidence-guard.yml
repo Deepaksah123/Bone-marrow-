@@ -291,20 +291,21 @@ jobs:
           grep -Fq 'android:background="@drawable/bg_yellow_rounded_2_corner"' app/src/main/res/layout/fragment_video_landing_replica.xml
           test -f app/src/main/res/drawable/bg_yellow_rounded_2_corner.xml
 
-          # Batch 66: ibTooltip follows the original showPytBanner dismissal event; tooltip opening remains unresolved.
+          # Batch 66: source-traced tooltip event opens the default tooltip; current-edition variant is unbound.
           grep -Fq 'View internModeBanner = root.findViewById(R.id.clInternModeBanner);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'closeInternModeBanner.setOnClickListener(v ->' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'internModeBanner.setVisibility(View.GONE)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'View internModeTooltip = root.findViewById(R.id.tooltipInternModeInfo);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'View internModeTooltipTrigger = root.findViewById(R.id.ibTooltip);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
-          grep -Fq 'internModeTooltipTrigger.setOnClickListener(v ->' app/src/main/java/com/marrow/reconstruction/MainActivity.java
-          if grep -Fq 'internModeTooltip.setVisibility(nextVisibility);' app/src/main/java/com/marrow/reconstruction/MainActivity.java; then echo "Evidence guard failure: guessed ibTooltip-to-tooltip toggle"; exit 1; fi
+          grep -Fq 'internModeTooltip.setVisibility(View.VISIBLE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'tooltipBody.setText(R.string.text_concise_tooltip_description);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'learnMore.setVisibility(View.GONE)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'android:id="@+id/clInternModeBanner"' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -Fq 'android:id="@+id/btnCloseInternModeBanner"' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -Fq 'android:id="@+id/tooltipInternModeInfo"' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -Fq 'android:id="@+id/ibTooltip"' app/src/main/res/layout/fragment_video_landing_replica.xml
-          grep -Fq 'video-banner-dismissed' .github/scripts/run_android_ui_smoke.py
-          if grep -Fq 'video-tooltip-open' .github/scripts/run_android_ui_smoke.py; then echo "Evidence guard failure: unverified tooltip-open smoke claim"; exit 1; fi
+          grep -Fq 'video-tooltip-open' .github/scripts/run_android_ui_smoke.py
+          grep -Fq 'video-tooltip-closed' .github/scripts/run_android_ui_smoke.py
 
           # Batch 52: drawer hierarchy is reconstructed from the original APK binary XML.
           grep -Fq 'drawer_menu_empty_host_replica' app/src/main/res/layout/activity_main.xml
