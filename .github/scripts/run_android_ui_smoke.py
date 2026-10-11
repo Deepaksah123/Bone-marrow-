@@ -346,14 +346,18 @@ def assert_switch_checked(root: ET.Element, resource_id: str, expected: bool) ->
         raise SystemExit(f"Switch state mismatch for {resource_id}: expected checked={expected}, got {node.attrib.get('checked')!r}")
 
 
-def assert_switch_interaction_deferred(root: ET.Element, resource_id: str) -> None:
+def assert_interaction_deferred(root: ET.Element, resource_id: str, description: str) -> None:
     node = find_node(root, resource_id=resource_id)
     if node is None:
-        raise SystemExit(f"Visible source-bound switch not found: {resource_id}")
+        raise SystemExit(f"Visible source-bound control not found: {resource_id}")
     if node.attrib.get("clickable", "").lower() != "false":
-        raise SystemExit(f"Intern Mode switch must remain non-clickable until its original ViewModel is integrated: {resource_id}")
+        raise SystemExit(f"{description} must remain non-clickable until its original ViewModel is integrated: {resource_id}")
     if node.attrib.get("focusable", "").lower() != "false":
-        raise SystemExit(f"Intern Mode switch must remain non-focusable until its original ViewModel is integrated: {resource_id}")
+        raise SystemExit(f"{description} must remain non-focusable until its original ViewModel is integrated: {resource_id}")
+
+
+def assert_switch_interaction_deferred(root: ET.Element, resource_id: str) -> None:
+    assert_interaction_deferred(root, resource_id, "Intern Mode switch")
 
 
 def tap(x: int, y: int) -> None:
@@ -475,12 +479,15 @@ def main() -> None:
     assert_switch_interaction_deferred(hierarchy, "switchInternMode")
     assert_text(hierarchy, "tvInternModeStatus", "Intern Mode : OFF")
     screenshot("videos-intern-mode-unbound")
-    hierarchy = tap_view("ibTooltip")
-    assert_resource_visibility(hierarchy, "tooltipInternModeInfo", True)
-    screenshot("video-tooltip-open")
-    hierarchy = tap_view("btnInternModeToolTipDone")
+    # Original tooltip open/dismiss actions dispatch ViewModel events. The local
+    # ViewModel is absent, so verify the controls are deliberately non-actionable.
+    assert_interaction_deferred(hierarchy, "ibTooltip", "Intern Mode tooltip trigger")
     assert_resource_visibility(hierarchy, "tooltipInternModeInfo", False)
-    screenshot("video-tooltip-closed")
+    screenshot("video-tooltip-deferred")
+    hierarchy = wait_for_tabs(timeout=30)
+    assert_interaction_deferred(hierarchy, "btnCloseInternModeBanner", "Intern Mode banner dismiss")
+    assert_interaction_deferred(hierarchy, "btnInternModeToolTipDone", "Intern Mode tooltip dismiss")
+    screenshot("video-tooltip-dismiss-deferred")
     ensure_app()
 
     # Light/dark theme captures.
@@ -497,8 +504,8 @@ def main() -> None:
     # screen/state capture is absent, corrupt, or has an invalid PNG header.
     required_captures = (
         "home", "qbank", "tests", "videos", "drawer-open", "search-open",
-        "videos-intern-mode-unbound", "video-tooltip-open",
-        "video-tooltip-closed", "video-dark", "home-dark",
+        "videos-intern-mode-unbound", "video-tooltip-deferred",
+        "video-tooltip-dismiss-deferred", "video-dark", "home-dark",
     )
     manifest = []
     for name in required_captures:
