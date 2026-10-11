@@ -155,6 +155,8 @@ class AccessibilityParserTests(unittest.TestCase):
         self.assertIn("modeSwitch.setClickable(false);", method)
         self.assertIn("modeSwitch.setFocusable(false);", method)
         self.assertNotIn("setOnCheckedChangeListener", method)
+        self.assertIn("String.format(", method)
+        self.assertNotIn("Locale.ROOT", method)
 
     def test_deferred_intern_mode_switch_requires_non_clickable_and_non_focusable_node(self) -> None:
         root = ET.fromstring(
