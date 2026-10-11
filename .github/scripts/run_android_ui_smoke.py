@@ -30,20 +30,27 @@ def ensure_app() -> None:
 
 def assert_no_anr_dialog(stage: str) -> None:
     # A live app PID is not enough: any Android process can put an ANR dialog
-    # over the app while taps still return successfully. Inspect active window
-    # state and reject all such captures, not only System UI ANRs.
-    result = adb(["shell", "dumpsys", "window", "windows"], timeout=20)
-    window_state = result.stdout.lower()
-    indicators = (
+    # over the app while taps still return successfully. Inspect both window
+    # and activity state and reject all such captures, not only System UI ANRs.
+    windows = adb(["shell", "dumpsys", "window", "windows"], timeout=20).stdout.lower()
+    activities = adb(["shell", "dumpsys", "activity", "activities"], timeout=20).stdout.lower()
+    window_indicators = (
         "application not responding",
         "isn't responding",
         "is not responding",
-        "process system isn't responding",
-        "process system is not responding",
+        "anrdialog",
     )
-    found = next((marker for marker in indicators if marker in window_state), None)
+    activity_indicators = (
+        "application not responding",
+        "anr dialog",
+        "anrdialog",
+    )
+    found = next((marker for marker in window_indicators if marker in windows), None)
     if found:
         raise SystemExit(f"Emulator ANR dialog detected {stage}: {found}")
+    found = next((marker for marker in activity_indicators if marker in activities), None)
+    if found:
+        raise SystemExit(f"Emulator ANR activity detected {stage}: {found}")
 
 
 def tap(x: int, y: int) -> None:
@@ -79,6 +86,11 @@ def main() -> None:
     # Suppress Android's one-time immersive-mode confirmation so it cannot
     # cover the first source-screen capture or steal interaction taps.
     adb(["shell", "settings", "put", "secure", "immersive_mode_confirmations", "confirmed"], timeout=10)
+    # The Google APIs emulator can surface Digital Wellbeing's own ANR dialog
+    # over app screenshots. It is unrelated to this app's behavior; disable
+    # that optional system package when present so it cannot invalidate captures.
+    adb(["shell", "am", "force-stop", "com.google.android.apps.wellbeing"], timeout=10, check=False)
+    adb(["shell", "pm", "disable-user", "--user", "0", "com.google.android.apps.wellbeing"], timeout=10, check=False)
     adb(["shell", "am", "start", "-n", ACTIVITY], timeout=45)
     for _ in range(20):
         result = adb(["shell", "pidof", PACKAGE], timeout=8, check=False)
