@@ -68,3 +68,11 @@ Core layout/resource references cross-check successfully. Tooltip IDs, hierarchy
 - Original OFF background uses `?attr/backgroundColor`, falling back to `@color/bg_no_guess` (`#f5f5f5`); ON uses `?attr/colorSurfaceVariant13`, falling back to `@color/sepia80` (`#fce795`).
 - Restored those exact fallback resources and used them in `MainActivity.updateInternModeVisualState` instead of transparent fallback values. Added a regression assertion to the source-bound verifier.
 - This is a narrowly scoped source-evidence correction, not a claim of complete 1:1 parity. Runtime screenshot verification and remaining screen/data/interactions are still outstanding.
+
+
+## Toolbar bookmark action evidence boundary — Batch 65
+
+- Searched the canonical decompiler archive `base.apk_Decompiler.com.zip` for the exact symbols `iconBookmark` and `R.id.iconBookmark`.
+- The only Java/Kotlin occurrences of `iconBookmark` are in `sources/kotlin/parsePeriod.java` (the generated `activity_home_revamp` view-binding class) and the resource symbol declaration in `sources/com/marrow/R.java`. No separate Java/Kotlin click-listener reference to this toolbar view was found by that exact-symbol scan.
+- Therefore, the toolbar bookmark's click destination/behavior remains **unverified**. Keep its source-backed visual control, but do not invent a destination, overlay, or navigation action. A broader call-path trace is required before wiring behavior.
+- This is a source-evidence boundary, not proof that the original app has no bookmark behavior; obfuscated or indirect binding paths may require further tracing.
