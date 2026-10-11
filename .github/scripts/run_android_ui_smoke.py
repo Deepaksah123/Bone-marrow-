@@ -484,9 +484,9 @@ def main() -> None:
     assert_interaction_deferred(hierarchy, "ibTooltip", "Intern Mode tooltip trigger")
     assert_resource_visibility(hierarchy, "tooltipInternModeInfo", False)
     screenshot("video-tooltip-deferred")
-    hierarchy = wait_for_tabs(timeout=30)
-    assert_interaction_deferred(hierarchy, "btnCloseInternModeBanner", "Intern Mode banner dismiss")
-    assert_interaction_deferred(hierarchy, "btnInternModeToolTipDone", "Intern Mode tooltip dismiss")
+    # The banner and tooltip-dismiss buttons are inside source layouts whose
+    # verified default visibility is GONE, so UIAutomator cannot assert their node
+    # properties at runtime. Source-level regression tests verify their disabled state.
     screenshot("video-tooltip-dismiss-deferred")
     ensure_app()
 
