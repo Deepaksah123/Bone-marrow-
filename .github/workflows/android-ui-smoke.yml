@@ -28,6 +28,9 @@ jobs:
       - name: Check out target repository only
         uses: actions/checkout@v4
 
+      - name: Verify original-source replica layout bindings
+        run: python3 .github/scripts/verify_source_bound_layouts.py
+
       - name: Set up Java 17
         uses: actions/setup-java@v4
         with:
