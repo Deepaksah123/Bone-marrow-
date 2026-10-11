@@ -73,18 +73,24 @@ def main() -> int:
             failures.append(f"{surface}: missing layout {path.relative_to(ROOT)}")
             continue
         found = ids_in(path)
-        missing = sorted(set(spec["required"]) - found)
+        required = set(spec["required"])
+        missing = sorted(required - found)
         excluded_present = sorted(set(spec["excluded"]) & found)
+        unexpected = sorted(found - required)
         if missing:
             failures.append(f"{surface}: missing original IDs: {', '.join(missing)}")
         if excluded_present:
             failures.append(f"{surface}: scope-excluded IDs unexpectedly present: {', '.join(excluded_present)}")
-        state = "PASS" if not missing and not excluded_present else "FAIL"
-        print(f"- {surface}: {len(set(spec['required']) & found)}/{len(set(spec['required']))} required IDs — {state}")
+        if unexpected:
+            failures.append(f"{surface}: IDs absent from original source map: {', '.join(unexpected)}")
+        state = "PASS" if not missing and not excluded_present and not unexpected else "FAIL"
+        print(f"- {surface}: {len(required & found)}/{len(required)} original IDs; exact set — {state}")
         if missing:
             print(f"    missing: {', '.join(missing)}")
         if excluded_present:
             print(f"    excluded: {', '.join(excluded_present)}")
+        if unexpected:
+            print(f"    unexpected: {', '.join(unexpected)}")
 
     strings = resource_names(VALUES / "strings.xml", "string")
     dimens = resource_names(VALUES / "dimens.xml", "dimen")
