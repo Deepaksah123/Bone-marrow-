@@ -314,6 +314,17 @@ def assert_resource_visibility(root: ET.Element, resource_id: str, expected: boo
         raise SystemExit(f"Source-bound view {resource_id} is {state}; expected {wanted}")
 
 
+def assert_text(root: ET.Element, resource_id: str, expected: str) -> None:
+    node = find_node(root, resource_id=resource_id)
+    if node is None:
+        raise SystemExit(f"Visible source-bound text view not found: {resource_id}")
+    actual = node.attrib.get("text", "")
+    if actual != expected:
+        raise SystemExit(
+            f"Text mismatch for {resource_id}: expected {expected!r}, got {actual!r}"
+        )
+
+
 def assert_switch_checked(root: ET.Element, resource_id: str, expected: bool) -> None:
     node = find_node(root, resource_id=resource_id)
     if node is None:
@@ -425,9 +436,11 @@ def main() -> None:
     hierarchy = tap_tab("Videos")
     hierarchy = tap_view("switchInternMode")
     assert_switch_checked(hierarchy, "switchInternMode", True)
+    assert_text(hierarchy, "tvInternModeStatus", "Intern Mode : ON")
     screenshot("video-switch-on")
     hierarchy = tap_view("switchInternMode")
     assert_switch_checked(hierarchy, "switchInternMode", False)
+    assert_text(hierarchy, "tvInternModeStatus", "Intern Mode : OFF")
     screenshot("video-switch-off")
     tap_view("ibTooltip")
     screenshot("video-tooltip-open")

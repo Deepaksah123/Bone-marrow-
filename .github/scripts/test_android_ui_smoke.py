@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
-from run_android_ui_smoke import find_node, node_center, tab_is_selected, tap, visible_anr_marker, visible_system_ui_anr, wait_button_center
+from run_android_ui_smoke import assert_text, find_node, node_center, tab_is_selected, tap, visible_anr_marker, visible_system_ui_anr, wait_button_center
 
 
 class VisibleAnrMarkerTests(unittest.TestCase):
@@ -140,6 +140,23 @@ class AccessibilityParserTests(unittest.TestCase):
         node = find_node(root, content_desc="Search", clickable_only=True)
         self.assertIsNotNone(node)
         self.assertEqual(node_center(node), (1040, 140))
+
+    def test_source_bound_text_assertion_matches_exact_intern_mode_label(self) -> None:
+        root = ET.fromstring(
+            '<hierarchy><node resource-id="com.marrow.reconstruction.replica:id/tvInternModeStatus" '
+            'text="Intern Mode : ON" bounds="[20,100][220,140]" visible-to-user="true" /></hierarchy>'
+        )
+        assert_text(root, "tvInternModeStatus", "Intern Mode : ON")
+
+    def test_source_bound_text_assertion_rejects_wrong_or_missing_text(self) -> None:
+        root = ET.fromstring(
+            '<hierarchy><node resource-id="com.marrow.reconstruction.replica:id/tvInternModeStatus" '
+            'text="Intern Mode : OFF" bounds="[20,100][220,140]" visible-to-user="true" /></hierarchy>'
+        )
+        with self.assertRaisesRegex(SystemExit, "Text mismatch"):
+            assert_text(root, "tvInternModeStatus", "Intern Mode : ON")
+        with self.assertRaisesRegex(SystemExit, "text view not found"):
+            assert_text(root, "missingLabel", "Intern Mode : ON")
 
     def test_selected_tab_state_is_read_from_hierarchy(self) -> None:
         self.assertTrue(tab_is_selected(self.root, "Home"))

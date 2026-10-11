@@ -306,3 +306,10 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 
 - Removed a duplicate push path-filter entry for the smoke-workflow contract script found during post-commit validation. The script remains included exactly once in both push and pull-request path filters.
 - No runtime or UI behavior changed. The workflow guard and full smoke evidence still need their CI results.
+
+
+## Intern Mode visible-label regression coverage — Batch 85 (2026-10-11)
+
+- Extended the emulator smoke check beyond the switch's checked bit: after each OFF/ON transition it now validates the actual source-bound `tvInternModeStatus` accessibility text against the original string format, `Intern Mode : ON/OFF`.
+- Added unit coverage for exact label matching and for missing/wrong labels. This catches a switch that toggles internally while its visible status label fails to update.
+- The expected text is grounded in the reconstruction's source-backed `concise_mode` string (`Intern Mode : %s`); no new screen content or behavior was invented. Runtime evidence and pixel-level parity remain separate acceptance gates.
