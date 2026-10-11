@@ -118,6 +118,16 @@ class AccessibilityParserTests(unittest.TestCase):
         self.assertIsNotNone(node)
         self.assertEqual(node_center(node), (180, 150))
 
+    def test_source_content_description_can_locate_image_without_resource_id(self) -> None:
+        root = ET.fromstring(
+            '<hierarchy><node content-desc="Search" text="" bounds="[500,100][560,160]" '
+            'visible-to-user="true" /></hierarchy>'
+        )
+        self.assertIsNone(find_node(root, resource_id="iconSearch"))
+        node = find_node(root, content_desc="Search")
+        self.assertIsNotNone(node)
+        self.assertEqual(node_center(node), (530, 130))
+
     def test_selected_tab_state_is_read_from_hierarchy(self) -> None:
         self.assertTrue(tab_is_selected(self.root, "Home"))
         self.assertFalse(tab_is_selected(self.root, "QBank"))

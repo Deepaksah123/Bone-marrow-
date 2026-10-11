@@ -272,10 +272,18 @@ def wait_for_tabs(timeout: int = 120) -> ET.Element:
     raise SystemExit(f"App did not render all source-bound tabs within {timeout}s: {last_error}")
 
 
-def tap_view(resource_id: str) -> ET.Element:
+def tap_view(resource_id: str, *, content_desc_fallback: str | None = None) -> ET.Element:
     root = read_hierarchy()
     node = find_node(root, resource_id=resource_id)
+    if node is None and content_desc_fallback is not None:
+        # Some Android accessibility providers omit the resource ID on an
+        # ImageView but preserve its exact source-declared contentDescription.
+        node = find_node(root, content_desc=content_desc_fallback)
     if node is None:
+        # Keep the exact hierarchy that explains a missing source-bound target.
+        (OUT / f"missing-view-{resource_id}-hierarchy.xml").write_text(
+            ET.tostring(root, encoding="unicode"), encoding="utf-8"
+        )
         raise SystemExit(f"Visible source-bound view not found: {resource_id}")
     tap(*node_center(node))
     time.sleep(1)
@@ -366,7 +374,7 @@ def main() -> None:
     screenshot("drawer-open")
     back()
 
-    tap_view("iconSearch")
+    tap_view("iconSearch", content_desc_fallback="Search")
     screenshot("search-open")
     back()
     ensure_app()

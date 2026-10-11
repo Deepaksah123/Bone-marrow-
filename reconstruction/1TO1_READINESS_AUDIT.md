@@ -223,3 +223,11 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - The latest runtime artifact shows the visible ANR alert is owned by the Android system process (`package=android`) although its title names `com.android.systemui`; restarting System UI alone does not reliably remove the alert.
 - Added a final recovery that dumps the live dialog hierarchy, locates the explicit **Wait** action, taps its reported accessibility bounds, and requires the ANR window to stay absent through a 12-second stability check. No coordinates are guessed. If the dialog hierarchy or Wait button cannot be verified, the test fails closed and retains diagnostics.
 - Added unit coverage for actual Wait-button bounds, hidden/missing Wait actions, and malformed hierarchy XML. Runtime QA and screenshot review remain pending; this change does not certify full pixel-level 1:1 parity.
+
+
+## Search action accessibility fallback and failure capture — Batch 74 (2026-10-11)
+
+- The latest smoke run cleared the System UI ANR and captured the Home, tab-navigation, and drawer-open screens, then failed at the Search toolbar action because UIAutomator did not expose a visible node matching the source resource ID `iconSearch`.
+- The original `activity_main.xml` declares the same Search ImageView with the exact accessibility description `Search`. The runner now uses that source-declared description only as a fallback when the resource ID is absent, and still taps the live bounds reported by accessibility. It does not use guessed coordinates.
+- On any future missing target, the exact hierarchy XML is retained in the QA artifact to avoid another blind diagnostic cycle.
+- This batch is a targeted runtime-test correction; the latest run is not a runtime pass. A fresh smoke run and artifact review are required, and full pixel-level 1:1 parity remains unverified.
