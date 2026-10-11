@@ -72,7 +72,7 @@ jobs:
           arch: x86_64
           profile: pixel_2
           disable-animations: true
-          emulator-options: -no-window -no-boot-anim -gpu swiftshader -noaudio -memory 4096 -cores 4
+          emulator-options: -no-window -no-boot-anim -gpu swiftshader_indirect -noaudio -memory 4096 -cores 4
           script: |
             python3 .github/scripts/run_android_ui_smoke.py
 

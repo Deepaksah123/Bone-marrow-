@@ -193,3 +193,11 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Increased the first-render accessibility wait to 120 seconds and removed forced snapshot disabling from emulator launch options to allow the runner's normal boot path.
 - Added regression coverage that distinguishes a visible System UI ANR from a replica-owned ANR and from hidden/stale System UI records.
 - Runtime QA is still pending until a fresh run completes and its screenshots are reviewed. This batch does not claim pixel-level 1:1 parity; real Home/QBank/Tests/Videos data binding and unresolved source-traced actions remain outstanding.
+
+
+## Bounded System UI recovery and render stabilization — Batch 70 (2026-10-11)
+
+- Reviewed smoke artifact [11699346924](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38131372105/artifacts/11699346924) and the complete diagnostics. The first System UI ANR dialog cleared after a BACK event, but the same system-owned dialog reappeared before the next accessibility hierarchy read. The replica Activity was eventually displayed; this run is still **failed runtime QA** and no screenshots were accepted.
+- Changed recovery from one attempt to a bounded maximum of two System UI-owned ANR recoveries, with diagnostics retained before each attempt and a 12-second clean-window stability check after dismissal. Any replica-owned ANR or a third/recurrent visible ANR remains a hard failure; the script never captures a screenshot while an ANR window is visible.
+- Switched headless graphics to the emulator runner's `swiftshader_indirect` mode. Source-layout validation and parser regression tests run before the emulator step.
+- Runtime QA remains pending until the new run completes and screenshot artifacts are reviewed. Full 1:1 parity and data-bound Home/QBank/Tests/Videos states remain unverified.

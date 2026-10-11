@@ -12,7 +12,8 @@ PACKAGE = "com.marrow.reconstruction.replica"
 ACTIVITY = f"{PACKAGE}/com.marrow.reconstruction.MainActivity"
 OUT = Path("qa-screenshots")
 OUT.mkdir(parents=True, exist_ok=True)
-SYSTEM_UI_ANR_RECOVERY_USED = False
+SYSTEM_UI_ANR_RECOVERY_ATTEMPTS = 0
+MAX_SYSTEM_UI_ANR_RECOVERY_ATTEMPTS = 2
 
 
 def adb(args: list[str], timeout: int = 20, check: bool = True) -> subprocess.CompletedProcess[str]:
@@ -79,33 +80,45 @@ def visible_system_ui_anr(window_dump: str) -> bool:
 
 
 def assert_no_anr_dialog(stage: str) -> None:
-    # Never capture while any ANR dialog is visible. On this cold-boot emulator,
-    # System UI can transiently ANR during first app install/startup; preserve its
-    # diagnostics, dismiss that one system-owned dialog once, then re-check that
-    # the window is actually gone. App ANRs and repeat System UI ANRs remain fatal.
-    global SYSTEM_UI_ANR_RECOVERY_USED
+    # Never capture while any ANR dialog is visible. Cold boot can briefly overload
+    # System UI while the replica's first Activity is being displayed. Preserve
+    # diagnostics before each bounded recovery, then require a 12-second clean
+    # window interval. Replica-owned ANRs and a third/recurrent system ANR are fatal.
+    global SYSTEM_UI_ANR_RECOVERY_ATTEMPTS
     windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
     marker = visible_anr_marker(windows)
     if not marker:
         return
 
-    if visible_system_ui_anr(windows) and not SYSTEM_UI_ANR_RECOVERY_USED:
-        write_anr_diagnostics(f"{stage}: transient visible System UI ANR; diagnostics captured before recovery")
-        SYSTEM_UI_ANR_RECOVERY_USED = True
+    while marker and visible_system_ui_anr(windows) and SYSTEM_UI_ANR_RECOVERY_ATTEMPTS < MAX_SYSTEM_UI_ANR_RECOVERY_ATTEMPTS:
+        SYSTEM_UI_ANR_RECOVERY_ATTEMPTS += 1
+        write_anr_diagnostics(
+            f"{stage}: visible System UI ANR recovery "
+            f"{SYSTEM_UI_ANR_RECOVERY_ATTEMPTS}/{MAX_SYSTEM_UI_ANR_RECOVERY_ATTEMPTS}"
+        )
         adb(["shell", "input", "keyevent", "4"], timeout=15, check=False)
         time.sleep(5)
         windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
         marker = visible_anr_marker(windows)
+        if marker:
+            continue
+
+        # A single absent dump was insufficient in run 38131372105: the same
+        # System UI dialog reappeared before UIAutomator could read the app tree.
+        time.sleep(12)
+        windows = adb(["shell", "dumpsys", "window", "windows"], timeout=30).stdout
+        marker = visible_anr_marker(windows)
         if not marker:
             print(
-                "Transient System UI ANR dialog dismissed after diagnostics; "
-                "continuing only after verifying its window is no longer visible.",
+                "System UI ANR dialog cleared and stayed absent through the stability window; "
+                "no screenshot is taken unless subsequent checks also remain clear.",
                 flush=True,
             )
             return
 
-    write_anr_diagnostics(f"{stage}: visible ANR window marker {marker}")
-    raise SystemExit(f"Visible emulator ANR dialog detected {stage}: {marker}")
+    if marker:
+        write_anr_diagnostics(f"{stage}: unrecovered visible ANR window marker {marker}")
+        raise SystemExit(f"Visible emulator ANR dialog detected {stage}: {marker}")
 
 
 def find_node(root: ET.Element, *, resource_id: str | None = None,
