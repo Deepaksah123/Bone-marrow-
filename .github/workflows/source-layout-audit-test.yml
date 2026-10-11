@@ -1,4 +1,4 @@
-name: Source layout audit tool tests
+name: Source layout audit tests
 
 on:
   push:
@@ -20,11 +20,13 @@ jobs:
   unit-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Compile audit tool and tests
-        run: python -m py_compile tools/audit_source_layouts.py tools/test_audit_source_layouts.py
-      - name: Run audit tool unit tests
+
+      - name: Run source audit unit tests
         run: python -m unittest tools/test_audit_source_layouts.py -v
