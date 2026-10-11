@@ -183,7 +183,7 @@ jobs:
             for node in current_root.iter("node"):
                 if node.attrib.get("text", "") == "Videos" or node.attrib.get("content-desc", "") == "Videos":
                     video_bounds = node.attrib.get("bounds", "")
-            match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", video_bounds or "")
+            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", video_bounds or "")
             if not match:
                 raise SystemExit("Could not locate Videos tab for interaction QA")
             x1, y1, x2, y2 = map(int, match.groups())
@@ -200,7 +200,7 @@ jobs:
                         return node.attrib.get("bounds", "")
                 return ""
             tooltip_bounds = bounds_for_resource(video_root, "ibTooltip")
-            match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", tooltip_bounds)
+            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", tooltip_bounds)
             if not match:
                 raise SystemExit("Could not locate source-bound Video tooltip trigger")
             x1, y1, x2, y2 = map(int, match.groups())
@@ -210,7 +210,7 @@ jobs:
             if not any(node.attrib.get("resource-id", "").endswith("/tooltipInternModeInfo") for node in video_root.iter("node")):
                 raise SystemExit("Video tooltip did not become visible after tapping its source-bound trigger")
             close_bounds = bounds_for_resource(video_root, "btnCloseInternModeTooltip")
-            match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", close_bounds)
+            match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", close_bounds)
             if not match:
                 raise SystemExit("Could not locate source-backed Intern Mode tooltip close control")
             x1, y1, x2, y2 = map(int, match.groups())
