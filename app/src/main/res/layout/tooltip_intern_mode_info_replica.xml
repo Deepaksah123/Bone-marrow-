@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/pad_14"
+    android:layout_marginTop="@dimen/margin_8dp"
+    android:visibility="visible"
+    app:cardBackgroundColor="?attr/colorSurfaceVariant13"
+    app:cardCornerRadius="@dimen/radius_8dp"
+    app:cardElevation="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/pad_12dp">
+
+        <TextView
+            android:id="@+id/tvInternModeTooltipTitle"
+            style="?attr/subtext1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/text_concise_mode_only"
+            android:textColor="?attr/colorOnBackground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btnCloseInternModeTooltip"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btnCloseInternModeTooltip"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/close"
+            android:src="@drawable/ic_close_gopro"
+            android:tint="?attr/onBackgroundSurface3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvInternModeTooltipDescription"
+            style="?attr/body2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:text="@string/text_concise_tooltip_description_updated"
+            android:textColor="?attr/onBackgroundSurface3"
+            app:layout_constraintTop_toBottomOf="@id/tvInternModeTooltipTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
