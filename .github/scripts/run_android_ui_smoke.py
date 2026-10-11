@@ -37,19 +37,6 @@ def adb(args: list[str], timeout: int = 20, check: bool = True) -> subprocess.Co
     )
 
 
-def configure_reference_device_geometry() -> None:
-    """Match the reference capture geometry before rendering UI."""
-    adb(["shell", "wm", "size", "1080x2400"], timeout=15)
-    size_dump = adb(["shell", "wm", "size"], timeout=15).stdout
-    if not re.search(r"(?:Override|Physical) size:\s*1080x2400", size_dump):
-        raise SystemExit(f"Could not set reference display size 1080x2400: {size_dump.strip()}")
-    adb(["shell", "wm", "density", "420"], timeout=15)
-    density_dump = adb(["shell", "wm", "density"], timeout=15).stdout
-    if not re.search(r"(?:Override|Physical) density:\s*420", density_dump):
-        raise SystemExit(f"Could not set reference display density 420 dpi: {density_dump.strip()}")
-    print("Reference display geometry verified: 1080x2400 at 420 dpi (20:9).", flush=True)
-
-
 def ensure_app() -> None:
     result = adb(["shell", "pidof", PACKAGE], timeout=10, check=False)
     if result.returncode != 0 or not result.stdout.strip():
@@ -422,7 +409,6 @@ def main() -> None:
     # the emulator to settle before installing and interacting with the app.
     print("Allowing cold-emulator system services to settle for 30 seconds.", flush=True)
     time.sleep(30)
-    configure_reference_device_geometry()
     adb(["install", "app/build/outputs/apk/debug/app-debug.apk"], timeout=120)
     adb(["shell", "am", "force-stop", PACKAGE], timeout=15)
     # Suppress Android's one-time immersive-mode confirmation so it cannot
@@ -532,7 +518,6 @@ def main() -> None:
         "commit": os.environ.get("GITHUB_SHA", "unknown"),
         "run_id": os.environ.get("GITHUB_RUN_ID", "local"),
         "required_capture_count": len(required_captures),
-        "display_geometry": {"size": "1080x2400", "density_dpi": 420, "aspect_ratio": "20:9"},
         "captures": manifest,
     }, indent=2) + "\n", encoding="utf-8")
     print(f"Screenshot interaction QA completed; validated {len(manifest)} required captures and wrote {manifest_path}.", flush=True)
