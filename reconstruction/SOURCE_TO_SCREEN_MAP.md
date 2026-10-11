@@ -88,6 +88,21 @@ The current local `activity_main.xml` instead uses gone FrameLayout shells for t
 
 The original manifest also declares `com.marrow.TrainingApplication` as the Application class and `o._coerceBooleanFromInt` as `appComponentFactory`; the local manifest declares neither. The original package is `com.marrow`, version `12.0.0`, min SDK 29 and target SDK 35. The reconstruction module currently uses a different application ID and SDK levels. Changing those values alone would not restore the original Hilt/application/dependency graph, so they remain unresolved rather than being silently approximated.
 
+## Runtime bootstrap dependency trace — verified from the original archive
+
+The launcher-to-host trace has a second, independent prerequisite: the original application bootstrap is not equivalent to the reconstruction's default Application setup.
+
+| Concern | Original archive evidence | Reconstruction difference / boundary |
+|---|---|---|
+| Application | Manifest declares `com.marrow.TrainingApplication`; `sources/com/marrow/TrainingApplication.java` is the class source. | Local manifest has no `android:name`. Original `TrainingApplication.onCreate()` is explicitly emitted as “Method dump skipped” (6,474 instruction units) and ends in a decompiler stub; its initialization cannot be recreated safely from this dump alone. |
+| App component factory | Manifest declares `kotlin._coerceBooleanFromInt`; exact class exists at `sources/kotlin/_coerceBooleanFromInt.java` and extends Android `AppComponentFactory`. It overrides instantiation of Activities, Application, receivers, providers, and services, and may replace an instance when it implements the nested factory interface. | Local manifest does not declare the factory. This is a real runtime-identity/instantiation gap, not just a UI setting. Do not add a guessed replacement factory. |
+| Launcher | Original manifest declares `com.marrow.ui.activities.onboarding.splash.SplashActivity` as MAIN/LAUNCHER, exported, `singleTask`, portrait, `SplashTheme`. | Local launcher is `.MainActivity`; direct replacement is unsafe until Application/factory, superclass initialization, original resources, and dependencies are integrated. |
+| Main host | Original manifest declares `kotlin.zadb`, non-exported, `singleTop`, theme `@style/Marrow2`; it owns `RevampHomeActivityViewModel` and inherits the obfuscated host chain already recorded above. | `zadb.onCreate` contains decompiler-skipped instructions and explicit stubs. Multiple inherited lifecycle methods are also not recovered. |
+
+**Source completeness check:** `SplashActivity.onCreate` is a decompiler stub; `TrainingApplication.onCreate` is skipped; `zabr.onCreate` is skipped; `zaO.onCreate` is an explicit “Method not decompiled” stub. The `zadb.onCreate` body contains large recovered regions but is not a complete, trustworthy lifecycle implementation. These gaps must remain unresolved until stronger original artifacts (complete decompilation/bytecode evidence and exact dependencies) close them.
+
+**Decision:** Do not change the app manifest to point at original classes in isolation. That would create an unverified launch path and likely fail before the UI host is initialized. The current app is buildable, but its startup architecture is not yet source-native and 1:1 parity is not established.
+
 ## Resource evidence — corrected boundary
 
 The inspected `base.apk_Decompiler.com.zip` contains 26,825 entries, including `resources/res/layout/` (578), `resources/res/layout-land/` (16), `resources/res/layout-sw600dp/` (7), `resources/res/drawable/` (2,210), `resources/res/color/` (216), and `resources/res/font/` (7). These counts are directly verified against the ZIP. The decompiler ZIP does not contain a file named `resources.arsc`; however, the separately uploaded original `/mnt/data/base.apk` does contain `resources.arsc` (3,327,896 bytes), verified from its ZIP directory. Resource-ID resolution therefore remains a tooling/decoding step, not an absence of the original resource table.
