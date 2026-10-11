@@ -199,3 +199,18 @@ The decompiler archive's Java package declarations are not always the runtime cl
 
 The raw APK manifest contains `o.zadb` and `o._coerceBooleanFromInt`; the decoded decompiler manifest writes `kotlin.zadb` and `kotlin._coerceBooleanFromInt`. This is a decompiler package remapping, not a runtime package rename. The local shell's original-tag convention has therefore been corrected to use `Home_o.*`, matching the actual `Class.getName()` values used by the original `o.copyToBuffer.write(Class)`. The local Fragments remain wrappers, so tag identity is now corrected but Fragment implementation parity remains unresolved.
 
+## Splash callback routes recovered from source and raw DEX — Batch 66
+
+The source confirms that `SplashActivity.onCreate()` is incomplete, but its distinct callback methods and destinations are recovered:
+
+| Splash callback | Verified handoff in decompiler source | Runtime destination identity |
+|---|---|---|
+| `onPlayFromMediaId()` → private `onPlay()` | Calls `zadb.Companion.write(this)`, adds `key_override_transition=false`, starts the returned Intent, then finishes | Raw DEX Activity `o.zadb` |
+| `onMediaButtonEvent()` | Starts `com.marrow.kt.ui.activities.sync.SyncingActivity`, then finishes | Manifest-declared SyncingActivity |
+| `onCustomAction()` | Calls `createFloatList.Companion.RemoteActionCompatParcelizer(this)`, starts its Intent, then finishes | Raw DEX class `o.createFloatList` (decompiler alias `kotlin.createFloatList`) |
+| `onCommand()` | Calls `getAnchorU.Companion.IconCompatParcelizer(this)`, adds `key_override_transition=false`, starts its Intent, then finishes | Raw DEX class `o.getAnchorU` (decompiler alias `kotlin.getAnchorU`) |
+
+Raw DEX inspection also recovered a duplicate-launch guard in `SplashActivity.onCreate`: the code checks task-root state and the incoming Intent's launcher category/action before the `finish()` path. This is not the callback-selection logic and should not be conflated with the main-host handoff.
+
+**Still unresolved:** `SplashActivity.onCreate` is a 12,952-code-unit method whose decompiler output is skipped. Its recovered callback implementations establish the destinations, but do not establish which callback is selected for a particular session, account state, deep link, or startup condition. Do not choose one callback as the unconditional launcher path without recovering that decision logic.
+
