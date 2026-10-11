@@ -28,6 +28,22 @@ def ensure_app() -> None:
         raise SystemExit("Reconstruction app process exited during interaction QA")
 
 
+def assert_no_system_anr(stage: str) -> None:
+    # A live app PID is not enough: Android can display a System UI ANR dialog
+    # over screenshots while taps still return successfully. Inspect active
+    # window state and fail the QA gate rather than uploading false-positive QA.
+    result = adb(["shell", "dumpsys", "window", "windows"], timeout=20)
+    window_state = result.stdout.lower()
+    indicators = (
+        "application not responding: system ui",
+        "system ui is not responding",
+        "system ui isn't responding",
+    )
+    found = next((marker for marker in indicators if marker in window_state), None)
+    if found:
+        raise SystemExit(f"Emulator System UI ANR detected {stage}: {found}")
+
+
 def tap(x: int, y: int) -> None:
     adb(["shell", "input", "tap", str(x), str(y)], timeout=10)
 
@@ -38,6 +54,7 @@ def back() -> None:
 
 
 def screenshot(name: str) -> None:
+    assert_no_system_anr(f"before screenshot {name}")
     # Stream the framebuffer directly; remote-file screencap can fail on headless
     # SwiftShader emulators with an invalid ColorBuffer despite a healthy app.
     cmd = ["adb", "exec-out", "screencap", "-p"]
@@ -50,12 +67,16 @@ def screenshot(name: str) -> None:
             f"bytes={len(result.stdout)}"
         )
     (OUT / f"{name}.png").write_bytes(result.stdout)
+    assert_no_system_anr(f"after screenshot {name}")
     print(f"Captured screenshot: {name} ({len(result.stdout)} bytes)", flush=True)
 
 
 def main() -> None:
     adb(["install", "app/build/outputs/apk/debug/app-debug.apk"], timeout=120)
     adb(["shell", "am", "force-stop", PACKAGE], timeout=15)
+    # Suppress Android's one-time immersive-mode confirmation so it cannot
+    # cover the first source-screen capture or steal interaction taps.
+    adb(["shell", "settings", "put", "secure", "immersive_mode_confirmations", "confirmed"], timeout=10)
     adb(["shell", "am", "start", "-n", ACTIVITY], timeout=45)
     for _ in range(20):
         result = adb(["shell", "pidof", PACKAGE], timeout=8, check=False)
