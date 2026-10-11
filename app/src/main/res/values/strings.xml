@@ -33,4 +33,6 @@
     <string name="label_recent_search">Recently searched</string>
     <string name="label_clear_all">Clear all</string>
     <string name="label_bs_qbank_error">No results found in QBank</string>
+    <string name="text_concise_tooltip_description">Activating this Mode will show you only the most critical Videos, and some of the other classes would be replaced with relevant QBank modules. This is to help you focus &amp; cover more content in less time.</string>
+    <string name="got_it">got it</string>
 </resources>
