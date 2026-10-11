@@ -21,7 +21,7 @@ Generated from the uploaded original APK/decompiler workspace. This is a prelimi
 
 ## Runtime tab mapping verified from original source
 
-The earlier `sources/com/marrow2/ui/...` package inventory was not sufficient to establish tab routes. Direct inspection of `sources/kotlin/DataBuffer.java` now verifies the four enum entries and their exact Fragment class values:
+The earlier `sources/com/marrow2/ui/...` package inventory was not sufficient to establish tab routes. Direct inspection of `resources/AndroidManifest.xml`, `sources/com/marrow/ui/activities/onboarding/splash/SplashActivity.java`, `sources/kotlin/zadb.java`, and `sources/kotlin/DataBuffer.java` now verifies the launcher-to-main activity handoff and four tab enum class values:
 
 | Tab enum | Index | Original Fragment class | Layout binding used by that Fragment |
 |---|---:|---|---|
@@ -35,6 +35,17 @@ Direct source evidence: `DataBuffer.java` lines 107 and 113–115 instantiate ea
 **Correction to local shell:** `MainActivity.java` previously manufactured tags with a `Home_` prefix (for example, `Home_kotlin.makeGooglePlayServicesAvailable`); those strings do not occur in the decompiler source. The tags now use the verified original class names and inactive-tab cleanup matches only those four known tab tags. This fixes a fabricated identifier without asserting that the local wrapper Fragment is the original Fragment implementation.
 
 **Still unresolved:** the original launcher component is `com.marrow.ui.activities.onboarding.splash.SplashActivity`, not the local `MainActivity`. The original activity/fragment transition through splash, onboarding, and the main host has not yet been fully traced. The reconstructed app's local wrapper architecture therefore remains non-parity code until that runtime route and genuine dependencies are integrated.
+
+## Launcher → main host trace from the original decompiler archive
+
+1. `resources/AndroidManifest.xml` marks `com.marrow.ui.activities.onboarding.splash.SplashActivity` as the exported launcher (`MAIN` + `LAUNCHER` intent filter), with `SplashTheme`, `singleTask`, portrait orientation, and explicit configuration-change flags.
+2. `sources/com/marrow/ui/activities/onboarding/splash/SplashActivity.java` contains `onPlay()` (around line 462). It calls `zadb.Companion.write(this)`, adds `key_override_transition=false`, starts that Intent, and finishes the splash Activity. The same class has separate callbacks that launch `SyncingActivity`, `createFloatList`, or `getAnchorU`; those are conditional routes and must not be mistaken for the unconditional `onPlay()` handoff.
+3. `sources/kotlin/zadb.java` is the Activity targeted by `zadb.Companion.write(Context)`; that factory explicitly returns `new Intent(context, zadb.class)`. The Activity holds a `RevampHomeActivityViewModel` delegate. This establishes the splash-to-main Activity handoff from original source, while the decompiler's `SplashActivity.onCreate` body is marked “Method not decompiled”; its condition selecting `onPlay()` versus the other callbacks is therefore still unresolved.
+4. `sources/kotlin/DataBuffer.java` supplies HOME/QBANK/TESTS/VIDEOS in indices 0–3, including their original Fragment class, tab string/drawable, and route key. Each of the four named class bindings directly inflates its matching layout (the four rows in the table above).
+
+### Consequence for reconstruction
+
+The local app's `app/src/main/AndroidManifest.xml` currently launches the self-authored `.MainActivity` and does not declare the original `SplashActivity` or `kotlin.zadb`. Its wrapper Fragments inflate local `*_replica.xml` files. Therefore this is not yet a faithful original Activity/navigation reconstruction. Do not “fix” that by simply changing the launcher to an obfuscated class: its original superclass, Hilt/application setup, base layout, and dependencies must be integrated from the genuine source together. Until that integration is feasible and validated, preserve this mismatch as an explicit unresolved gap rather than implying 1:1 parity.
 
 ## Resource evidence — corrected boundary
 
