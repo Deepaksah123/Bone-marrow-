@@ -21,9 +21,22 @@ Generated from the uploaded original APK/decompiler workspace. This is a prelimi
 
 ## Resource evidence — corrected boundary
 
-The inspected `base.apk_Decompiler.com.zip` contains 26,825 entries, including `resources/res/layout/` (578), `resources/res/layout-land/` (16), `resources/res/layout-sw600dp/` (7), `resources/res/drawable/` (2,210), `resources/res/color/` (216), and `resources/res/font/` (7). These counts are directly verified against the ZIP. The archive does not contain a file named `resources.arsc`; exact resource-ID resolution and source-to-screen navigation still require tracing against the original APK/resource table.
+The inspected `base.apk_Decompiler.com.zip` contains 26,825 entries, including `resources/res/layout/` (578), `resources/res/layout-land/` (16), `resources/res/layout-sw600dp/` (7), `resources/res/drawable/` (2,210), `resources/res/color/` (216), and `resources/res/font/` (7). These counts are directly verified against the ZIP. The decompiler ZIP does not contain a file named `resources.arsc`; however, the separately uploaded original `/mnt/data/base.apk` does contain `resources.arsc` (3,327,896 bytes), verified from its ZIP directory. Resource-ID resolution therefore remains a tooling/decoding step, not an absence of the original resource table.
 
-Names in the domain table above are resource candidates, not yet confirmed as the layout selected by each screen. `reconstruction/EXACT_SOURCE_UI_INDEX.md` records the verified resource counts and source paths. The exact screen tree remains blocked on direct source/navigation references and resource-ID resolution. Screenshots are QA only; no XML or tree will be fabricated.
+## Direct source-to-layout references verified in decompiler Java
+
+These are generated binding/inflater methods containing explicit `R.layout` references, so they prove that the named layout is inflated by that generated class. They do not, by themselves, prove the runtime route or the owning activity/fragment.
+
+| Layout resource | Decompiled binding class | Direct evidence |
+|---|---|---|
+| `activity_home_revamp` | `sources/kotlin/parsePeriod.java` | `LayoutInflater.inflate(R.layout.activity_home_revamp, (ViewGroup) null, false)` |
+| `fragment_home` | `sources/kotlin/getNextSegmentHolder.java` | `LayoutInflater.inflate(R.layout.fragment_home, viewGroup, false)` |
+| `fragment_home_test` | `sources/kotlin/getNextMediaSequenceAndPartIndex.java` | `LayoutInflater.inflate(R.layout.fragment_home_test, viewGroup, false)` |
+| `fragment_qbank_landing` | `sources/kotlin/HlsMediaChunk.java` | `LayoutInflater.inflate(R.layout.fragment_qbank_landing, viewGroup, false)` |
+| `activity_home_test` | `sources/kotlin/parseLabel.java` | `LayoutInflater.inflate(R.layout.activity_home_test, (ViewGroup) null, false)` |
+| `fragment_video_landing` | `sources/kotlin/buildAndPrepareSampleStreamWrappers.java` | `LayoutInflater.inflate(R.layout.fragment_video_landing, viewGroup, false)` |
+
+The referenced layout files exist in `resources/res/layout/` in the decompiler archive, but they are binary XML rather than readable text XML in this dump. The uploaded original APK contains `resources.arsc`; decoding its resource table and binary XML is the next required gate. The current runtime route from the genuine launcher activity through these generated bindings is not yet proven. The exact screen tree remains unresolved until that trace is complete. Screenshots remain QA only; no XML or tree will be fabricated.
 
 ## Reconstruction order
 
@@ -72,4 +85,4 @@ Bookmark, custom module, pearl, profile/settings, search, feedback, recent updat
 
 ## Current execution state
 
-Source class inventory is available, but exact resource/layout evidence is not yet complete. Do **not** claim the exact screen tree is resolved or start fabricating UI. Next gate: decode and cross-reference original `resources.arsc`/binary XML; then trace shell/navigation and Home with source-line evidence before implementation.
+Source inventory and six explicit generated inflater-to-layout references are verified. The original APK's `resources.arsc` is present, but this environment has no `aapt`, `aapt2`, `apktool`, or `jadx` executable, and external package installation is unavailable. Do **not** claim the exact screen tree is resolved or change runtime UI based on guesses. Next gate: use an available Android resource decoder against the checksum-verified APK, resolve binary XML/resource IDs, then trace the genuine launcher/navigation path to Home before any UI integration.
