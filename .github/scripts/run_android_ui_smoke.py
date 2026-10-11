@@ -43,7 +43,7 @@ def screenshot(name: str) -> None:
     cmd = ["adb", "exec-out", "screencap", "-p"]
     print("$ " + " ".join(cmd), flush=True)
     result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=30)
-    if result.returncode != 0 or not result.stdout.startswith(b"\\x89PNG\\r\\n\\x1a\\n"):
+    if result.returncode != 0 or not result.stdout.startswith(bytes((137, 80, 78, 71, 13, 10, 26, 10))):
         raise SystemExit(
             f"Framebuffer capture failed for {name}: rc={result.returncode}; "
             f"stderr={result.stderr.decode(errors='replace')[-600:]}; "
