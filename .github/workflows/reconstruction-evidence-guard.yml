@@ -43,7 +43,7 @@ jobs:
           done
           grep -Fq 'android:src="@drawable/ic_pc_circle_including_logo"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           grep -Fq 'android:text="Practicals"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
-          ! grep -Fq '9/35 modules' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
+          if grep -Fq '9/35 modules' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml; then echo "Evidence guard failure: forbidden match (negative check 1)"; exit 1; fi
           grep -Fq 'android:paddingBottom="21dp"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           grep -Fq 'android:layout_marginTop="4dp"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
           grep -Fq 'app:layout_constraintBottom_toBottomOf="parent"' app/src/main/res/layout/layout_dynamic_zen_area_replica.xml
@@ -155,7 +155,7 @@ jobs:
           grep -Fq 'case 3: layout = R.layout.fragment_video_landing_replica;' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'default: layout = R.layout.fragment_home_replica;' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'transaction.remove(fragment);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
-          ! grep -Fq 'transaction.hide(fragment);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          if grep -Fq 'transaction.hide(fragment);' app/src/main/java/com/marrow/reconstruction/MainActivity.java; then echo "Evidence guard failure: forbidden match (negative check 2)"; exit 1; fi
           grep -Fq 'String destinationTag = sourceDestinationTagFor(selectedTab);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'transaction.add(R.id.upperContainer, destination, destinationTag);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'transaction.show(destination);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
@@ -164,17 +164,17 @@ jobs:
           grep -Fq 'return "Home_kotlin.WalletConstantsCardNetwork";' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'return "Home_kotlin.setScrollPosition";' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'View root = LayoutInflater.from(this).inflate(layout, parent, false);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
-          ! grep -Fq 'private View buildHome()' app/src/main/java/com/marrow/reconstruction/MainActivity.java
-          ! grep -Fq 'private View buildQbank()' app/src/main/java/com/marrow/reconstruction/MainActivity.java
-          ! grep -Fq 'private View buildTests()' app/src/main/java/com/marrow/reconstruction/MainActivity.java
-          ! grep -Fq 'private View buildVideos()' app/src/main/java/com/marrow/reconstruction/MainActivity.java
-          ! grep -Fq 'Module completion' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          if grep -Fq 'private View buildHome()' app/src/main/java/com/marrow/reconstruction/MainActivity.java; then echo "Evidence guard failure: forbidden match (negative check 3)"; exit 1; fi
+          if grep -Fq 'private View buildQbank()' app/src/main/java/com/marrow/reconstruction/MainActivity.java; then echo "Evidence guard failure: forbidden match (negative check 4)"; exit 1; fi
+          if grep -Fq 'private View buildTests()' app/src/main/java/com/marrow/reconstruction/MainActivity.java; then echo "Evidence guard failure: forbidden match (negative check 5)"; exit 1; fi
+          if grep -Fq 'private View buildVideos()' app/src/main/java/com/marrow/reconstruction/MainActivity.java; then echo "Evidence guard failure: forbidden match (negative check 6)"; exit 1; fi
+          if grep -Fq 'Module completion' app/src/main/java/com/marrow/reconstruction/MainActivity.java; then echo "Evidence guard failure: forbidden match (negative check 7)"; exit 1; fi
           # Shell toolbar and bottom navigation source geometry/theme.
           grep -Fq 'android:background="?attr/backgroundColor"' app/src/main/res/layout/activity_main.xml
           test "$(grep -Fc 'android:background="?attr/backgroundColor"' app/src/main/res/layout/activity_main.xml)" -ge 3
           test "$(grep -Fc 'android:background="?attr/backgroundColor"' app/src/main/res/layout/fragment_home_replica.xml)" -eq 4
-          ! grep -Fq 'android:background="@color/shell_background"' app/src/main/res/layout/activity_main.xml
-          ! grep -Fq 'android:background="@color/shell_background"' app/src/main/res/layout/fragment_home_replica.xml
+          if grep -Fq 'android:background="@color/shell_background"' app/src/main/res/layout/activity_main.xml; then echo "Evidence guard failure: forbidden match (negative check 8)"; exit 1; fi
+          if grep -Fq 'android:background="@color/shell_background"' app/src/main/res/layout/fragment_home_replica.xml; then echo "Evidence guard failure: forbidden match (negative check 9)"; exit 1; fi
           grep -Fq 'android:background="?attr/colorSurfaceVariant5"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'android:clickable="true"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'android:layout_height="?attr/actionBarSize"' app/src/main/res/layout/activity_main.xml
@@ -192,7 +192,7 @@ jobs:
           grep -Fq 'app:tabMode="scrollable"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'app:tabTextAppearance="?attr/smallText2"' app/src/main/res/layout/activity_main.xml
           grep -Fq 'tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
-          ! grep -Fq 'tabLayout.setTabMode(TabLayout.MODE_FIXED);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          if grep -Fq 'tabLayout.setTabMode(TabLayout.MODE_FIXED);' app/src/main/java/com/marrow/reconstruction/MainActivity.java; then echo "Evidence guard failure: forbidden match (negative check 10)"; exit 1; fi
           # Exact custom tab hierarchy and source icon/label IDs.
           echo '6b067450320cdd08f214798cfebee2c4644d3e28b0a3c40009ac3ffdefb00780  app/src/main/res/drawable/ic_home_indicator.xml' | sha256sum --check
           grep -Fq 'android:id="@+id/icon"' app/src/main/res/layout/item_home_tab.xml
@@ -202,11 +202,11 @@ jobs:
           grep -Fq 'android:layout_marginTop="@dimen/margin_3dp"' app/src/main/res/layout/item_home_tab.xml
           grep -Fq 'custom.findViewById(R.id.icon)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
           grep -Fq 'custom.findViewById(R.id.title)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
-          ! grep -Fq 'R.id.tab_icon' app/src/main/java/com/marrow/reconstruction/MainActivity.java
-          ! grep -Fq 'R.id.tab_label' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          if grep -Fq 'R.id.tab_icon' app/src/main/java/com/marrow/reconstruction/MainActivity.java; then echo "Evidence guard failure: forbidden match (negative check 11)"; exit 1; fi
+          if grep -Fq 'R.id.tab_label' app/src/main/java/com/marrow/reconstruction/MainActivity.java; then echo "Evidence guard failure: forbidden match (negative check 12)"; exit 1; fi
           grep -Fq 'app:tabSelectedTextColor="?attr/colorPrimary"' app/src/main/res/layout/activity_main.xml
           grep -A8 -F 'android:id="@+id/fullContainer"' app/src/main/res/layout/activity_main.xml | grep -Fq 'android:elevation="8dp"'
-          ! grep -A8 -F 'android:id="@+id/fullContainer"' app/src/main/res/layout/activity_main.xml | grep -Fq 'android:layout_margin="8dp"'
+          if grep -A8 -F 'android:id="@+id/fullContainer"' app/src/main/res/layout/activity_main.xml | grep -Fq 'android:layout_margin="8dp"'; then echo "Evidence guard failure: forbidden match (negative check 13)"; exit 1; fi
           grep -Fq 'android:id="@+id/ivVideoThumbnail"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           grep -Fq 'android:id="@+id/pbSuggestedVideo"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
           grep -Fq 'android:id="@+id/tvVideoRemainingDuratiom"' app/src/main/res/layout/layout_continue_watching_video_suggestion_card.xml
@@ -268,8 +268,8 @@ jobs:
           for id in navigation_recycler_view layoutProfilePicture tvProfileName yourCourseContainer navYourCourse tvSettings navAboutUs navFaq navInvite navContactUs navRateUs navReportCopyright navTerms navDownloadPdfNotes navAppVersion; do
             grep -Fq "android:id=\"@+id/$id\"" app/src/main/res/layout/drawer_menu_empty_host_replica.xml
           done
-          ! grep -Eq 'android:id="@\+id/(navMyPlan|navBuyNowContainer|navAddVideosContainer|navNotes|navReferalCoupon|navDeleteMcqParent|navExportDb|navLogout)"' app/src/main/res/layout/drawer_menu_empty_host_replica.xml
-          ! grep -Eiq 'go pro|buy notes|subscribe|upgrade plan|get free extension|renew plan|checkout|payment' app/src/main/res/layout/drawer_menu_empty_host_replica.xml
+          if grep -Eq 'android:id="@\+id/(navMyPlan|navBuyNowContainer|navAddVideosContainer|navNotes|navReferalCoupon|navDeleteMcqParent|navExportDb|navLogout)"' app/src/main/res/layout/drawer_menu_empty_host_replica.xml; then echo "Evidence guard failure: forbidden match (negative check 14)"; exit 1; fi
+          if grep -Eiq 'go pro|buy notes|subscribe|upgrade plan|get free extension|renew plan|checkout|payment' app/src/main/res/layout/drawer_menu_empty_host_replica.xml; then echo "Evidence guard failure: forbidden match (negative check 15)"; exit 1; fi
           grep -Fq 'menuIcon.setOnClickListener(v -> drawerLayout.openDrawer(android.view.Gravity.START));' app/src/main/java/com/marrow/reconstruction/MainActivity.java
 
           # Search route is source-traced to Better Search; paid controls remain excluded.
@@ -278,8 +278,8 @@ jobs:
           for id in llSearch ivBack ivSearch etSearch ivClose tvInitMessage tlFilters llRecentSearch rvResults llError imgError tvNoResult clProgress pbMain clEmpty tvClearAll; do
             grep -Fq "android:id=\"@+id/$id\"" app/src/main/res/layout/fragment_better_search_replica.xml
           done
-          ! grep -Fq 'android:id="@+id/clProMain"' app/src/main/res/layout/fragment_better_search_replica.xml
-          ! grep -Fq 'android:id="@+id/btViewPlans"' app/src/main/res/layout/fragment_better_search_replica.xml
+          if grep -Fq 'android:id="@+id/clProMain"' app/src/main/res/layout/fragment_better_search_replica.xml; then echo "Evidence guard failure: forbidden match (negative check 16)"; exit 1; fi
+          if grep -Fq 'android:id="@+id/btViewPlans"' app/src/main/res/layout/fragment_better_search_replica.xml; then echo "Evidence guard failure: forbidden match (negative check 17)"; exit 1; fi
           grep -Fq 'hint_better_search' app/src/main/res/layout/fragment_better_search_replica.xml
           grep -Fq 'label_bs_init' app/src/main/res/layout/fragment_better_search_replica.xml
           grep -Fq 'android:statusBarColor">?attr/colorPrimary</item>' app/src/main/res/values/styles.xml
