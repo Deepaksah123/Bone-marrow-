@@ -490,6 +490,11 @@ Intern Mode source event pipeline recovered; local interaction remains deferred
 
 ### Original VideoLandingUIState field map — Batch 66
 
+## Intern Mode preference write identified from original source
+
+The original use-case/repository path is now traced one layer deeper: `isMediaStoreExternalContentUri.IconCompatParcelizer(boolean)` delegates to `unlockFolder.write(boolean)`; concrete `removeStaleSpans.write(boolean)` stores the value under `is_concise_mode_on` using its injected storage dependency. Related original keys include `concise_banner_shown` and `sort_video_subject`. This is a verified persistence step, not proof that a local preference-only toggle reproduces the full state transition. The current app must not substitute a hand-written SharedPreferences handler for the missing original dependency graph.
+
+
 - Original data class source: `sources/kotlin/TransformationChildLayout.java`; Kotlin metadata names its runtime type `com.marrow2.ui.video.landing.model.VideoLandingUIState`.
 - Verified fields: `editionSwitchBannerText`, `isInternModeEnabled`, `isInternModeOn`, `showPytBanner`, `sortOrder`, and `showInternModeSnackBar`. Feature availability and checked/on state are separate booleans and must not be collapsed into one local state variable.
 - The data class's default constructor values are null/false/false/false/0/false; that default alone does not establish the state loaded for any specific course/account. The local switch stays deferred because the full state-loading and ViewModel path is not integrated.
