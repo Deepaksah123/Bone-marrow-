@@ -425,11 +425,15 @@ def main() -> None:
     # alone is insufficient because the Activity could have finished.
     hierarchy = wait_for_tabs(timeout=30)
 
-    tap_view("iconSearch", content_desc_fallback="Search")
+    hierarchy = tap_view("iconSearch", content_desc_fallback="Search")
+    assert_resource_visibility(hierarchy, "etSearch", True)
+    assert_resource_visibility(hierarchy, "tvInitMessage", True)
     screenshot("search-open")
     # BACK first dismisses the soft keyboard on API 30, leaving the overlay in
     # place. Use its actual source-bound toolbar Back control to close the route.
-    tap_view("ivBack")
+    hierarchy = tap_view("ivBack")
+    assert_resource_visibility(hierarchy, "etSearch", False)
+    hierarchy = wait_for_tabs(timeout=30)
     ensure_app()
 
     # Intern Mode OFF/ON state and source-traced tooltip open/Done flow.
@@ -442,9 +446,11 @@ def main() -> None:
     assert_switch_checked(hierarchy, "switchInternMode", False)
     assert_text(hierarchy, "tvInternModeStatus", "Intern Mode : OFF")
     screenshot("video-switch-off")
-    tap_view("ibTooltip")
+    hierarchy = tap_view("ibTooltip")
+    assert_resource_visibility(hierarchy, "tooltipInternModeInfo", True)
     screenshot("video-tooltip-open")
-    tap_view("btnInternModeToolTipDone")
+    hierarchy = tap_view("btnInternModeToolTipDone")
+    assert_resource_visibility(hierarchy, "tooltipInternModeInfo", False)
     screenshot("video-tooltip-closed")
     ensure_app()
 

@@ -313,3 +313,10 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Extended the emulator smoke check beyond the switch's checked bit: after each OFF/ON transition it now validates the actual source-bound `tvInternModeStatus` accessibility text against the original string format, `Intern Mode : ON/OFF`.
 - Added unit coverage for exact label matching and for missing/wrong labels. This catches a switch that toggles internally while its visible status label fails to update.
 - The expected text is grounded in the reconstruction's source-backed `concise_mode` string (`Intern Mode : %s`); no new screen content or behavior was invented. Runtime evidence and pixel-level parity remain separate acceptance gates.
+
+
+## Search and tooltip route-state assertions — Batch 86 (2026-10-11)
+
+- Hardened runtime checks for the Better Search route: smoke QA now requires the source-bound query field and initial message after opening, then requires the query field to be gone and the four-tab shell to be restored after the original toolbar Back action.
+- Added explicit visibility assertions around the Intern Mode tooltip trigger and Done action, rather than relying on screenshots alone to imply that the overlay opened and closed.
+- These checks use existing original-source IDs and do not add or fabricate UI. The next emulator run must pass and produce reviewable evidence; the replica is still not certified 1:1.
