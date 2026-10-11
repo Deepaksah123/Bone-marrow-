@@ -165,16 +165,16 @@ public final class MainActivity extends FragmentActivity {
         transaction.commit();
     }
 
-    // Source copyToBuffer.write(Class) uses "Home_" + Class.getName() as the tag,
+    // Original DEX classes are in package o; the decompiler aliases these classes under package kotlin.\n    // Source copyToBuffer.write(Class) uses "Home_" + Class.getName() as the tag,
     // removes prior Home_ destinations, and instantiates the selected source Fragment class.
     // This reconstruction retains the verified tag scheme, but its Fragment instances are
     // still local wrappers; exact source-native Fragment integration remains unresolved.
     private static String sourceDestinationTagFor(int index) {
         switch (index) {
-            case 1: return "Home_kotlin.ResidentKeyRequirementUnsupportedResidentKeyRequirementException";
-            case 2: return "Home_kotlin.WalletConstantsCardNetwork";
-            case 3: return "Home_kotlin.setScrollPosition";
-            default: return "Home_kotlin.makeGooglePlayServicesAvailable";
+            case 1: return "Home_o.ResidentKeyRequirementUnsupportedResidentKeyRequirementException";
+            case 2: return "Home_o.WalletConstantsCardNetwork";
+            case 3: return "Home_o.setScrollPosition";
+            default: return "Home_o.makeGooglePlayServicesAvailable";
         }
     }
 
