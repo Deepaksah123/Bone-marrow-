@@ -10,7 +10,30 @@ from unittest.mock import patch
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-from run_android_ui_smoke import assert_text, find_node, node_center, tab_is_selected, tap, validate_png_capture, visible_anr_marker, visible_system_ui_anr, wait_button_center
+from run_android_ui_smoke import assert_text, configure_reference_device_geometry, find_node, node_center, tab_is_selected, tap, validate_png_capture, visible_anr_marker, visible_system_ui_anr, wait_button_center
+
+
+class ReferenceDisplayGeometryTests(unittest.TestCase):
+    @patch("run_android_ui_smoke.adb")
+    def test_sets_and_verifies_reference_20_by_9_geometry(self, adb_mock) -> None:
+        adb_mock.side_effect = [
+            subprocess.CompletedProcess([], 0, "", ""),
+            subprocess.CompletedProcess([], 0, "Physical size: 1080x1920\nOverride size: 1080x2400\n", ""),
+            subprocess.CompletedProcess([], 0, "", ""),
+            subprocess.CompletedProcess([], 0, "Physical density: 420\nOverride density: 420\n", ""),
+        ]
+        configure_reference_device_geometry()
+        self.assertEqual(adb_mock.call_args_list[0].args[0], ["shell", "wm", "size", "1080x2400"])
+        self.assertEqual(adb_mock.call_args_list[2].args[0], ["shell", "wm", "density", "420"])
+
+    @patch("run_android_ui_smoke.adb")
+    def test_fails_closed_if_reference_geometry_is_not_applied(self, adb_mock) -> None:
+        adb_mock.side_effect = [
+            subprocess.CompletedProcess([], 0, "", ""),
+            subprocess.CompletedProcess([], 0, "Physical size: 1080x1920\n", ""),
+        ]
+        with self.assertRaises(SystemExit):
+            configure_reference_device_geometry()
 
 
 class VisibleAnrMarkerTests(unittest.TestCase):
