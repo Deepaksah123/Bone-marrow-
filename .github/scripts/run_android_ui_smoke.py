@@ -403,22 +403,11 @@ def validate_png_capture(image_path: Path, *, minimum_width: int = 320, minimum_
 
 
 def main() -> None:
-    # A cold API 35 emulator can report boot-complete while core phone/System UI
-    # services are still under heavy startup load. Recent evidence showed ANRs in
-    # com.android.phone and com.android.systemui before any replica-app ANR; allow
-    # the emulator to settle before installing and interacting with the app.
-    print("Allowing cold-emulator system services to settle for 30 seconds.", flush=True)
-    time.sleep(30)
+    # Do not alter unrelated emulator packages or secure settings to make QA pass.
+    # The normal accessibility wait below determines whether the app is ready;
+    # any visible ANR dialog remains a real test failure with diagnostics.
     adb(["install", "app/build/outputs/apk/debug/app-debug.apk"], timeout=120)
     adb(["shell", "am", "force-stop", PACKAGE], timeout=15)
-    # Suppress Android's one-time immersive-mode confirmation so it cannot
-    # cover the first source-screen capture or steal interaction taps.
-    adb(["shell", "settings", "put", "secure", "immersive_mode_confirmations", "confirmed"], timeout=10)
-    # The Google APIs emulator can surface Digital Wellbeing's own ANR dialog
-    # over app screenshots. It is unrelated to this app's behavior; disable
-    # that optional system package when present so it cannot invalidate captures.
-    adb(["shell", "am", "force-stop", "com.google.android.apps.wellbeing"], timeout=10, check=False)
-    adb(["shell", "pm", "disable-user", "--user", "0", "com.google.android.apps.wellbeing"], timeout=10, check=False)
     adb(["shell", "am", "start", "-n", ACTIVITY], timeout=45)
     for _ in range(20):
         result = adb(["shell", "pidof", PACKAGE], timeout=8, check=False)
