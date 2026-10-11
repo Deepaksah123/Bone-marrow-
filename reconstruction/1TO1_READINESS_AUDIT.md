@@ -21,7 +21,7 @@ Source boundary: `Deepaksah123/Bone-marrow-` only.
 2. ~~Verified decompiled Java/Kotlin unavailable~~ — **RESOLVED**; uploaded decompiler dump verified.
 3. ~~Verified Smali unavailable~~ — **RESOLVED**.
 4. ~~Resource evidence unavailable~~ — **RESOLVED**; original resource inventory and binary resource entries are available. Build-ready XML decoding is still an implementation prerequisite.
-5. Source-to-screen/behavior map — **PARTIAL, NOT RESOLVED**. Domain ViewModel source files are indexed, but candidate layout names exist in the archive but their screen-to-layout relationships are unverified; exact resource/navigation mapping remains blocked pending source cross-references and resource-table resolution.
+5. Source-to-screen/behavior map — **PARTIAL**. Batch 59 verified the core shell/Home/QBank/Tests/Videos layout symbols against the original R.java, public.xml, binary layout entries, and source binding classes. Full navigation behavior, all binary-XML attributes, data-bound states, and pixel parity remain unresolved.
 
 ## Scope exclusions
 
@@ -39,7 +39,7 @@ Source boundary: `Deepaksah123/Bone-marrow-` only.
 
 ## Current state
 
-The project contains a native Android app module and CI workflow. The shell uses a Material `TabLayout`, custom tab views, and source-derived IDs `fullContainer`, `bottomNavigation`, `cvBottomNavigationContainer`, and `homeAppBar`. The four tab order/icon/string resource mapping is grounded in `DataBuffer.java` and the batch-7 source trace. Home/QBank/Test/Video body implementations remain incomplete and are not yet 1:1. The toolbar search route is now traced to the original Better Search fragment and a source-shaped initial overlay is implemented; query/results/history data binding remains incomplete. Android build and evidence guard passed for the initial Search overlay commit; API 31 emulator screenshot/navigation QA is currently running for the follow-up commit, so no successful runtime QA claim is made yet.
+The project contains a native Android app module and CI workflow. The shell uses a Material `TabLayout`, custom tab views, and source-derived IDs `fullContainer`, `bottomNavigation`, `cvBottomNavigationContainer`, and `homeAppBar`. The four tab order/icon/string resource mapping is grounded in `DataBuffer.java` and the batch-7 source trace. Home/QBank/Test/Video body implementations remain incomplete and are not yet 1:1. The toolbar search route is now traced to the original Better Search fragment and a source-shaped initial overlay is implemented; query/results/history data binding remains incomplete. Android build/evidence-guard results from earlier commits are historical only. A successful API 31 emulator run and artifact review are not yet confirmed for the latest source-bound tooltip correction; no runtime pass is claimed.
 
 Completed in this phase:
 - verified original APK/decompiler inputs;
@@ -113,3 +113,16 @@ The original `activity_home_revamp` binary XML (`0x7f0d0033`, obfuscated APK ent
 - Reviewed the failed API 31 job log for run `38086133823`. Emulator boot completed, but app launch/smoke was terminated with exit code 137 while emulator graphics reported ColorBuffer bind errors; the failure did not establish whether the app's UI passed.
 - Updated `.github/workflows/android-ui-smoke.yml` in commit [`d841120`](https://github.com/Deepaksah123/Bone-marrow-/commit/d841120a9dd7401a8b0c78624f514244261a9c66): reduced emulator memory reservation from 3072 MB to 2048 MB to reduce runner pressure, disabled boot animation, and increased initial app-launch command timeout from 15 seconds to 45 seconds. The script continues to require the app process, source-backed view IDs, navigation checks, and screenshots.
 - Together with Batch 57's corrected Video bounds regexes, the smoke harness now has both fixes committed. **A new successful CI run and artifact review are still required**; no runtime pass or full 1:1 parity is claimed until then.
+
+
+## Frozen parallel reconstruction batch — Batch 59 (2026-10-11)
+
+- **Scope frozen for this batch:** source-verified shell plus Home, QBank, Tests, Videos, and the Intern Mode tooltip only. No educational content, account data, advertising, payments, checkout, subscriptions, or upsell screens.
+- Original APK SHA-256 rechecked: `e03a582c20eec102510509918315be53e45bb9fe90647207b2c956a0f55316a3`.
+- Decompiler ZIP SHA-256: `92fa24c6d91faafa61e3317adcb5c7c10384eea437fa6b7f99c09ac372ab8685`.
+- Added [original UI source trace](ORIGINAL_UI_SOURCE_TRACE_BATCH_59.md). It cross-checks seven core layout symbols against `sources/com/marrow/R.java`, `resources/res/values/public.xml`, source inflation references, and binary layout entries. It also records the source binding IDs for all four tabs.
+- Rebuilt `tooltip_intern_mode_info_replica.xml` from the original binding structure. The previous IDs `tvInternModeTooltipTitle`, `btnCloseInternModeTooltip`, and `tvInternModeTooltipDescription` were not in the original R.java. They were replaced with the verified IDs `cardInternModeTooltip`, `btnInternModeToolTipDone`, `container`, `ivTooltip`, `tvLearnMore`, and `txtToolTipBody`; the default body string, Done label, original dimensions, and arrow drawable are now source-backed.
+- Updated `MainActivity` to bind the original Done control rather than the fabricated close-button ID.
+- Hardened `.github/workflows/android-ui-smoke.yml`: job timeout is 30 minutes, tab taps are constrained to the bottom-navigation screen region, and tooltip smoke checks use original source IDs.
+- **Still not 1:1:** Home/QBank/Tests/Videos data-bound content and complete behavior remain incomplete. Original resource layout entries are binary XML; a verified symbol map is not a pixel comparison.
+- **QA gate:** the workflow definition is updated, but the latest run's result and screenshots/hierarchy artifacts must be inspected before marking emulator QA passed.
