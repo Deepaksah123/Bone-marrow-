@@ -70,7 +70,7 @@
                 android:contentDescription="@null"
                 android:scaleType="centerCrop"
                 android:visibility="invisible"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.Corner.Medium" />
+                />
         </LinearLayout>
 
         <View
@@ -93,7 +93,7 @@
             android:maxLines="2"
             android:textColor="?attr/colorOnSurface"
             android:textSize="14sp"
-            android:textStyle="medium"
+            android:fontFamily="sans-serif-medium"
             app:layout_constraintBottom_toTopOf="@id/tvSubjectProgress"
             app:layout_constraintEnd_toStartOf="@id/ivCompleted"
             app:layout_constraintStart_toEndOf="@id/llSubjectIcon"
