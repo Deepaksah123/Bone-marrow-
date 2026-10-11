@@ -21,7 +21,7 @@
 - [x] Test landing replica includes source-bound `test_tab_toolbar`, `loader_empty_layout`, and `loading_layout` containers.
 - [x] Video landing replica includes several source-bound view IDs, including `clMain`, `epoxyRVSubject`, and the documented deck/bookmark/sample-video containers.
 - [x] Navigation batch commit `7ff041d7c84a4d7b8a4cfc095e2322ad11c4296b` replaces the prior per-tab `replace()` flow with separate tagged tab fragments and add/show/hide behavior: [commit](https://github.com/Deepaksah123/Bone-marrow-/commit/7ff041d7c84a4d7b8a4cfc095e2322ad11c4296b).
-- [x] Navigation follow-up commit `1ef4db62408ad188f2a760eda92d5d2b4ba85f45` aligns Home tab fragment tags with the exact original destination class names recorded in `DataBuffer.java`; local wrapper fragment classes are still a reconstruction boundary, not the original fragment implementations.
+- [x] Navigation follow-up commit `1ef4db62408ad188f2a760eda92d5d2b4ba85f45` aligned tags with the decompiler's destination class aliases; Batch 65 corrects those runtime tags to raw DEX `o.*` names (`Home_o.*`) because `copyToBuffer.write(Class)` uses `Class.getName()`. Local wrapper Fragment classes remain a reconstruction boundary, not original implementations.
 - [x] Tests layout follow-up commits `871337b330bde3dc132f9c9587be9fe092cab08f`, `9b4b8102686733c4ce44d664bacfc60561b476aa`, and `7f5b27b778e77bdfc6c19ffccb06b1894d1103aa` align the app-bar ID to source-bound `appbarGTa`, repair its constraint references, and add source-bound `collapsing_toolbar`; wrapper class/attributes remain unverified.
 - [x] Recovered `base.apk` and `base.apk_Decompiler.com.zip` from the Library in this session; verified SHA-256 values against the original evidence record. The original APK contains `resources.arsc`; the decompiler ZIP still omits that table.
 - [x] Added `reconstruction/DECODED_CORE_LAYOUT_HIERARCHY_BATCH_20.md` with decoded IDs and include trees for Home, shell, Tests, QBank and Videos.
@@ -196,3 +196,12 @@
 - [x] Toolbar title/branding states are guarded against resource and Java-binding regressions.
 - [ ] Current-head emulator run must finish with screenshots/diagnostics uploaded before runtime QA can be marked PASS.
 - [ ] Reconstruct original ViewModel/adapter/data bindings and perform pixel comparison; do not fabricate rows to make loading states disappear.
+
+## Raw runtime class identity and title-binding cleanup — Batches 63–65
+
+- Removed the three static toolbar title strings previously transcribed from screenshots. Original DEX calls `CourseConfigV2.CourseStrings.getQbankHeaderTitle()`, `getTestHeaderTitle()`, and `getVideoHeaderTitle()` and passes those values to `DataBuffer.read(String)`. The local title stays blank until the original config/ViewModel flow is integrated.
+- Matched the local app label to original source string `Marrow` while retaining a separate application ID.
+- Corrected source-runtime package identity: raw APK manifest/DEX uses `o.zadb`, `o._coerceBooleanFromInt`, and tab Fragment classes in `o.*`; the decompiler archive remaps these to `kotlin.*`. Local source-tab tags now use `Home_o.*`, matching the original `Home_ + Class.getName()` convention.
+- Added source guard assertions against screenshot-title regressions and decompiler-alias runtime tags.
+- Validation on intermediate commit `f01bdaeb83eea470a224cab0fb6c2cbfddbb73c7`: Android build, evidence guard, and source layout audit tests passed. Emulator smoke QA was still running at that checkpoint; it must be inspected separately. The combined raw-package correction/guard commit still requires a fresh build and CI validation after it is pushed to the working branch.
+- Full source-native Fragment/Application/Activity integration and 1:1 parity remain incomplete; no manifest-only launcher swap was made.
