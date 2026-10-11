@@ -7,13 +7,13 @@
     android:layout_marginTop="@dimen/margin_8dp"
     android:visibility="visible"
     app:cardBackgroundColor="?attr/colorSurfaceVariant13"
-    app:cardCornerRadius="@dimen/radius_8dp"
+    app:cardCornerRadius="8dp"
     app:cardElevation="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/pad_12dp">
+        android:padding="@dimen/pad_8dp">
 
         <TextView
             android:id="@+id/tvInternModeTooltipTitle"
@@ -31,7 +31,7 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/close"
+            android:contentDescription="Close"
             android:src="@drawable/ic_close_gopro"
             android:tint="?attr/onBackgroundSurface3"
             app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/tvInternModeTooltipDescription"
-            style="?attr/body2"
+            style="?attr/subtext2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_8dp"
