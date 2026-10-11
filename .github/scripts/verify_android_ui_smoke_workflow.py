@@ -26,6 +26,14 @@ def main() -> int:
     }
     failures = [f"Missing workflow contract: {label}" for label, pattern in required.items()
                 if not re.search(pattern, workflow, re.MULTILINE | re.DOTALL)]
+    smoke_script = (ROOT / ".github/scripts/run_android_ui_smoke.py").read_text(encoding="utf-8")
+    if not re.search(r"def configure_reference_device_geometry\(\).*?1080x2400.*?420", smoke_script, re.DOTALL):
+        failures.append("Smoke script does not configure and verify the original 20:9 display geometry")
+    main_body = smoke_script.split("def main()", 1)[-1]
+    if "configure_reference_device_geometry()" not in main_body:
+        failures.append("Smoke script does not apply reference display geometry before app startup")
+    if '"display_geometry": {"size": "1080x2400", "density_dpi": 420, "aspect_ratio": "20:9"}' not in smoke_script:
+        failures.append("Screenshot manifest does not record reference display geometry")
     if failures:
         print("ANDROID UI SMOKE WORKFLOW CONTRACT: FAIL")
         print("\n".join(f"- {failure}" for failure in failures))
