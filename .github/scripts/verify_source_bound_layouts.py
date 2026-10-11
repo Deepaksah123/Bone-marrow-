@@ -171,7 +171,7 @@ def main() -> int:
         failures.append("Videos: remove the non-source clipToPadding override from rootScrollView")
     elif 'app:layout_constraintTop_toTopOf="parent"' not in video_scroll.group(0):
         failures.append("Videos: rootScrollView is missing the original top constraint")
-    cl_main = re.search(r'<androidx\\.constraintlayout\\.widget\\.ConstraintLayout\\s+android:id="@\\+id/clMain"(?:(?!>).)*?>', video_xml, re.S)
+    cl_main = re.search(r'<androidx\.constraintlayout\.widget\.ConstraintLayout\s+android:id="@\+id/clMain"(?:(?!>).)*?>', video_xml, re.S)
     if not cl_main or 'android:background=' in cl_main.group(0):
         failures.append("Videos: clMain must not add a non-source explicit background")
 
