@@ -256,3 +256,10 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Updated `.github/scripts/run_android_ui_smoke.py` to give ADB input taps a 30-second timeout and preserve ANR/window/process/logcat diagnostics if the command still times out. A timed-out tap is deliberately **not retried**, because the device may have received the tap even if the host-side command did not return; repeating it could cause an unintended second state transition.
 - Added a unit regression test proving that a timed-out tap requests diagnostics and is not retried.
 - This is QA-harness resilience only. It does not change the app UI or establish runtime QA. Wait for the new CI result, inspect its artifact, and continue only from observed evidence. Full pixel-level 1:1 parity remains unverified.
+
+
+## Cold-emulator system ANR isolation — Batch 78 (2026-10-11)
+
+- Inspected smoke run [38138721286](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38138721286) and artifact [11702054373](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38138721286/artifacts/11702054373). The run failed on a visible `Application Not Responding: com.android.systemui` window; the recorded foreground opaque window remained the reconstruction app's `MainActivity`, and logcat explicitly recorded an ANR in `com.android.phone` while starting `TelephonyDebugService`. The sampled system load included `system_server` at 118% CPU and System UI at 16% CPU. This evidence points to emulator/core-system startup contention, not a confirmed ANR in the reconstruction app.
+- Updated the smoke runner to wait 30 seconds after emulator boot and before APK installation, giving core phone/System UI services time to settle before interaction checks. This is a bounded harness-only stabilization, not an app UI change and not proof that the issue is resolved.
+- The failed run captured diagnostics only; it did not produce acceptable screenshot evidence for the remaining tab, drawer, Search, or Intern Mode checks. The next run must be reviewed from its own logs and artifact. Full pixel-level 1:1 parity remains unverified.
