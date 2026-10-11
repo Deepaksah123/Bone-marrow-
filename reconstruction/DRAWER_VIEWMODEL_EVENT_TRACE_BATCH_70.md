@@ -13,6 +13,33 @@ This batch traces the original drawer-facing event model and the source ViewMode
 - The drawer item model uses source types including `CourseConfigV2NavDrawerItemFreeExtension`, `CourseConfigV2NavDrawerItemRateUs`, and `CourseConfigV2NavDrawerItems`; selection/filtering logic in `getNavDrawerItems.java` and `getNavDrawerKey.java` is decompiler-skipped.
 - The original host event collector in `zabz.java:1419–1508` confirms effect consumption: URL/title payloads are sent to `CmcdConfigurationRequestConfig.write(...)`; the Share App event checks connectivity and starts the original share flow; Know More starts the original `PlanActivity` intent; Marrow Notes, Rate Us, Terms, Report Piracy, and other singleton events dispatch to original host helpers/activities. This identifies the original consumer path but does not integrate that path into the local reconstruction.
 
+## Verified original drawer binding IDs
+
+The generated binding `sources/kotlin/getSegmentIndex.java` (`getSegmentIndex`) directly resolves these source view IDs to host binding fields. The original host registers listeners on these fields in `zabz.java:2206–2337`.
+
+| Binding field | Original resource ID |
+| --- | --- |
+| `IconCompatParcelizer` | `navAboutUs` |
+| `RatingCompat` | `navFaq` |
+| `MediaDescriptionCompat` | `navLearnMore` |
+| `AudioAttributesImplApi26Parcelizer` | `navContactUs` |
+| `MediaBrowserCompatItemReceiver` | `navDownloadPdfNotes` |
+| `MediaBrowserCompatMediaItem` | `navExportDb` |
+| `MediaMetadataCompat` | `navInvite` |
+| `MediaBrowserCompatSearchResultReceiver` | `navLogout` |
+| `onCustomAction` | `navMyPlan` container |
+| `onCommand` | `navMyProfileView` |
+| `onAddQueueItem` | `navNotes` |
+| `handleMediaPlayPauseIfPendingOnHandler` | `navRateUs` |
+| `MediaControllerCompatMediaControllerImplApi21ExtraBinderRequestResultReceiver` | `navReferalCoupon` |
+| `onFastForward` | `navReportCopyright` |
+| `onPlayFromMediaId` | `navTerms` |
+| `onRemoveQueueItem` | `navYourCourse` |
+| `onPause` | `yourCourse` |
+| `onPrepare` | `yourCourseContainer` |
+
+The binding also contains purchase, debug, export, account/profile, and other rows. Their presence in the original binary is not authorization to reconstruct monetization/debug features. Some listener callback classes are not recovered as readable Java in this archive, so this table proves the binding IDs—not every row's final click target or visibility.
+
 ## Explicitly recovered ViewModel actions
 
 | Original handler | Verified effect/event |
@@ -35,6 +62,7 @@ These are verified ViewModel-level actions plus the corresponding original host 
 - `sources/kotlin/zabz.java`: 210,323 bytes; SHA-256 `6ef9ba909d81f653770ac4d86ecf34b07f3dc3dc0af5df8248ac2f37bea58676` (effect collector around lines 1419–1508)
 - `sources/kotlin/onDataRangeChanged.java`: 15,764 bytes; SHA-256 `<escape>not recorded in this pass</escape>`
 - `sources/kotlin/getNavDrawerItems.java`: 5,649 bytes; SHA-256 `4e3a20d61587f1c268a9c91a49dbbafe0cf542ffced5babbc7b040822b36709e`
+- `sources/kotlin/getSegmentIndex.java`: 26,425 bytes; SHA-256 `f13c8991bf16880394ce15ac8118ed8e7c86d4451010d078fa3a7e1d0aeb7f2d`
 - `sources/kotlin/CourseConfigV2NavDrawerItems.java`: 811 bytes; SHA-256 `aceee54924cc0938269fde03b937ef82e8efdd5abb210addf170259e29287599`
 
 ## Reconstruction decision
