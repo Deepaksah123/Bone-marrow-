@@ -9,7 +9,7 @@ WORKFLOW = ROOT / ".github/workflows/android-ui-smoke.yml"
 def main() -> int:
     workflow = WORKFLOW.read_text(encoding="utf-8")
     required = {
-        "non-destructive concurrency": r"cancel-in-progress:\s*false",
+        "single active emulator smoke per ref": r"group:\s*android-ui-smoke-\$\{\{ github\.ref \}\}.*?cancel-in-progress:\s*true",
         "job-level 30-minute ceiling": r"jobs:\s*\n\s+ui-smoke:\s*\n\s+runs-on:.*?\n\s+timeout-minutes:\s*30",
         "bounded 18-minute emulator step": r"name: Launch emulator, verify tab navigation, capture screenshots\s*\n\s+timeout-minutes:\s*18",
         "API 35 emulator image": r"api-level:\s*35",
