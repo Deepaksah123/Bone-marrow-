@@ -33,6 +33,15 @@ The archive **does contain** a resource tree rooted at `resources/res/`, includi
 - `SplashActivity.onCreate()` is explicitly marked not decompiled; the condition choosing `onPlay()` vs alternate splash callbacks remains unresolved.
 - Local `app/src/main/AndroidManifest.xml` instead launches `.MainActivity`; this is a verified mismatch, not original UI parity.
 
+## Main host hierarchy — verified declarations
+
+- Launcher Activity: `com.marrow.ui.activities.onboarding.splash.SplashActivity`.
+- Main Activity: `kotlin.zadb`, declared in the original manifest as non-exported, `singleTop`, theme `@style/Marrow2`.
+- Inheritance chain: `zadb → zaaz → zaay → zabz → zaO → zabr → addObserverForBackInvoker`.
+- Original main-shell binding: `kotlin/parsePeriod.java` inflates `R.layout.activity_home_revamp`; the binding is held/accessed by `kotlin/zabr.java`.
+- Original tab controller: `kotlin/zabz.java`; it consumes `DataBuffer` values and configures custom tab views, toolbar/bookmark state, and tab selection.
+- Limitation: `SplashActivity.onCreate` and multiple inherited `onCreate` bodies are marked not decompiled. The source proves class/layout ownership and portions of tab behavior, not every lifecycle branch.
+
 ## Exact source domains present
 
 These names are exact source paths or class names from `sources/com/marrow2/ui/`; they establish code presence, not an exact screen layout.
