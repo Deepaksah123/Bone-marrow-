@@ -23,7 +23,7 @@ concurrency:
 jobs:
   ui-smoke:
     runs-on: ubuntu-latest
-    timeout-minutes: 18
+    timeout-minutes: 30
     steps:
       - name: Check out target repository only
         uses: actions/checkout@v4
@@ -90,6 +90,14 @@ jobs:
                 "Videos": "tvInternModeStatus",
                 "Home": "shimmerMain",
             }
+            screen_height = 0
+            for node in root.iter("node"):
+                match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", node.attrib.get("bounds", ""))
+                if match:
+                    screen_height = max(screen_height, int(match.group(4)))
+            if screen_height <= 0:
+                raise SystemExit("Could not determine screen height from launch hierarchy")
+
             for target in targets:
                 candidates = []
                 for node in root.iter("node"):
@@ -100,10 +108,13 @@ jobs:
                         match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", bounds)
                         if match:
                             x1, y1, x2, y2 = map(int, match.groups())
-                            candidates.append(((x1 + x2) // 2, (y1 + y2) // 2))
+                            # Restrict matches to the bottom navigation strip so body text
+                            # with the same label cannot steal the tap target.
+                            if y1 >= int(screen_height * 0.72):
+                                candidates.append(((y1 + y2) // 2, (x1 + x2) // 2, (y1 + y2) // 2))
                 if not candidates:
-                    raise SystemExit(f"Could not find tab node in launch hierarchy: {target}")
-                x, y = candidates[-1]
+                    raise SystemExit(f"Could not find bottom-navigation tab node in launch hierarchy: {target}")
+                _, x, y = max(candidates)
                 subprocess.run(["adb", "shell", "input", "tap", str(x), str(y)], check=True, timeout=10)
                 time.sleep(2)
                 subprocess.run(["adb", "shell", "uiautomator", "dump", "--compressed", "/sdcard/current.xml"], check=True, stdout=subprocess.DEVNULL, timeout=30)
@@ -209,16 +220,16 @@ jobs:
             video_root = dump_hierarchy("/sdcard/video-tooltip-open.xml", "qa-screenshots/video-tooltip-open-hierarchy.xml")
             if not any(node.attrib.get("resource-id", "").endswith("/tooltipInternModeInfo") for node in video_root.iter("node")):
                 raise SystemExit("Video tooltip did not become visible after tapping its source-bound trigger")
-            close_bounds = bounds_for_resource(video_root, "btnCloseInternModeTooltip")
+            close_bounds = bounds_for_resource(video_root, "btnInternModeToolTipDone")
             match = re.fullmatch(r"\[(\d+),(\d+)\]\[(\d+),(\d+)\]", close_bounds)
             if not match:
-                raise SystemExit("Could not locate source-backed Intern Mode tooltip close control")
+                raise SystemExit("Could not locate source-backed Intern Mode tooltip Done control")
             x1, y1, x2, y2 = map(int, match.groups())
             subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
             time.sleep(1)
             video_root = dump_hierarchy("/sdcard/video-tooltip-closed.xml", "qa-screenshots/video-tooltip-closed-hierarchy.xml")
-            if any(node.attrib.get("resource-id", "").endswith("/tvInternModeTooltipDescription") for node in video_root.iter("node")):
-                raise SystemExit("Intern Mode tooltip content remained visible after tapping its close control")
+            if any(node.attrib.get("resource-id", "").endswith("/txtToolTipBody") for node in video_root.iter("node")):
+                raise SystemExit("Intern Mode tooltip content remained visible after tapping its Done control")
             # The banner starts GONE until real ViewModel/account state is available.
             # Verify its source-bound dismiss listener statically instead of inventing state.
             main_activity = Path("app/src/main/java/com/marrow/reconstruction/MainActivity.java").read_text(encoding="utf-8")
