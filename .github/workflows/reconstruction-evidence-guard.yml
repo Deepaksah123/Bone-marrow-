@@ -262,6 +262,18 @@ jobs:
           # Batch 48: inner Video landing scroll content must follow the source light/dark theme.
           grep -A4 -F 'android:id="@+id/clMain"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'android:background="?attr/backgroundColor"'
 
+          # Batch 56: source-bound Video Intern Mode banner close and tooltip affordance.
+          grep -Fq 'View internModeBanner = root.findViewById(R.id.clInternModeBanner);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'closeInternModeBanner.setOnClickListener(v ->' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'internModeBanner.setVisibility(View.GONE)' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'View internModeTooltip = root.findViewById(R.id.tooltipInternModeInfo);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'View internModeTooltipTrigger = root.findViewById(R.id.ibTooltip);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'internModeTooltip.setVisibility(nextVisibility);' app/src/main/java/com/marrow/reconstruction/MainActivity.java
+          grep -Fq 'android:id="@+id/clInternModeBanner"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'android:id="@+id/btnCloseInternModeBanner"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'android:id="@+id/tooltipInternModeInfo"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -Fq 'android:id="@+id/ibTooltip"' app/src/main/res/layout/fragment_video_landing_replica.xml
+
           # Batch 52: drawer hierarchy is reconstructed from the original APK binary XML.
           grep -Fq 'drawer_menu_empty_host_replica' app/src/main/res/layout/activity_main.xml
           grep -Fq 'verified original base.apk binary XML for drawer_menu_revamp' app/src/main/res/layout/drawer_menu_empty_host_replica.xml
