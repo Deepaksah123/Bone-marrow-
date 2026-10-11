@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import java.util.Locale;
 
 public final class MainActivity extends FragmentActivity {
     private TabLayout tabLayout;
@@ -202,7 +201,8 @@ public final class MainActivity extends FragmentActivity {
         // OFF colors through its theme attributes. The original event -> ViewModel
         // -> observer transition has not yet been traced end-to-end here. Do not
         // fake an ON/OFF transition by changing only the label and colors.
-        modeStatus.setText(String.format(Locale.ROOT,
+        // Original setScrollPosition uses String.format(getString(R.string.concise_mode), state).
+        modeStatus.setText(String.format(
                 getString(R.string.concise_mode), modeSwitch.isChecked() ? "ON" : "OFF"));
         modeSwitch.setClickable(false);
         modeSwitch.setFocusable(false);
