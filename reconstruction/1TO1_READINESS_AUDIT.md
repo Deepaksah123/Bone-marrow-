@@ -468,3 +468,17 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - The four tab Fragment runtime descriptors are `Lo/makeGooglePlayServicesAvailable;`, `Lo/ResidentKeyRequirementUnsupportedResidentKeyRequirementException;`, `Lo/WalletConstantsCardNetwork;`, and `Lo/setScrollPosition;`. The original helper uses `"Home_" + cls.getName()`, so exact runtime tags use `Home_o.*`, not `Home_kotlin.*`.
 - Corrected the local shell's four destination tags and added a guard that rejects decompiler package aliases in runtime tags. The Fragment objects themselves are still local wrappers; no original class has been claimed as integrated.
 - This correction supersedes earlier documentation that described the decompiler package aliases as original runtime class names. Raw APK manifest strings and DEX descriptors are now the authority for runtime identity.
+
+
+Intern Mode source event pipeline recovered; local interaction remains deferred
+
+
+
+## Intern Mode event/state pipeline — Batch 66 (2026-10-12)
+
+- Original Videos fragment source: `sources/kotlin/setScrollPosition.java`, raw runtime class `o.setScrollPosition`; original ViewModel source: `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java`.
+- Verified switch listener at `setScrollPosition.java:2816–2821`: `SwitchMaterial.setOnCheckedChangeListener` forwards the checked boolean to a handler that dispatches `TransformationChildCard.MediaBrowserCompatItemReceiver(checked)` into the ViewModel.
+- Verified ViewModel event branch at `VideoLandingViewModel.java:1992–2000`: compares the event against the current `TransformationChildLayout` state, updates that state if different, clears an associated state flag for the enabling branch when required, and launches the `onFastForward` coroutine for the transition.
+- Verified the fragment has separate ON/OFF render paths that update switch checked state, formatted status text, theme-derived track/thumb tints, background colors, and loading/transition text; the state observer also controls banner/progress visibility. This is not equivalent to a local label-only toggle.
+- The local app does not contain the original VideoLandingViewModel, repository/use-case graph, or state observer pipeline. Some original coroutine bodies are decompiler-skipped. The local switch is therefore intentionally non-clickable and non-focusable; no substitute state transition is fabricated.
+- This batch records source evidence and guards against accidentally re-enabling the local switch without the verified original binding path. It does not claim Intern Mode behavior parity.
