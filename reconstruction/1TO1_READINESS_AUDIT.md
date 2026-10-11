@@ -300,3 +300,9 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 
 - Verified the new smoke-workflow contract script is listed under both push and pull-request path filters, so edits to the contract guard itself trigger the intended QA workflow rather than relying on an unrelated workflow-file edit.
 - This is trigger coverage only; the new contract check must pass in CI and runtime screenshot artifacts still require inspection.
+
+
+## Smoke workflow path-filter deduplication — Batch 84 (2026-10-11)
+
+- Removed a duplicate push path-filter entry for the smoke-workflow contract script found during post-commit validation. The script remains included exactly once in both push and pull-request path filters.
+- No runtime or UI behavior changed. The workflow guard and full smoke evidence still need their CI results.

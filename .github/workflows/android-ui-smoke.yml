@@ -9,7 +9,6 @@ on:
       - ".github/scripts/run_android_ui_smoke.py"
       - ".github/scripts/test_android_ui_smoke.py"
       - ".github/scripts/verify_android_ui_smoke_workflow.py"
-      - ".github/scripts/verify_android_ui_smoke_workflow.py"
       - ".github/workflows/android-ui-smoke.yml"
   pull_request:
     branches: [main]
