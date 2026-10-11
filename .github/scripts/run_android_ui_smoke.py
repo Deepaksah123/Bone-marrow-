@@ -346,6 +346,16 @@ def assert_switch_checked(root: ET.Element, resource_id: str, expected: bool) ->
         raise SystemExit(f"Switch state mismatch for {resource_id}: expected checked={expected}, got {node.attrib.get('checked')!r}")
 
 
+def assert_switch_interaction_deferred(root: ET.Element, resource_id: str) -> None:
+    node = find_node(root, resource_id=resource_id)
+    if node is None:
+        raise SystemExit(f"Visible source-bound switch not found: {resource_id}")
+    if node.attrib.get("clickable", "").lower() != "false":
+        raise SystemExit(f"Intern Mode switch must remain non-clickable until its original ViewModel is integrated: {resource_id}")
+    if node.attrib.get("focusable", "").lower() != "false":
+        raise SystemExit(f"Intern Mode switch must remain non-focusable until its original ViewModel is integrated: {resource_id}")
+
+
 def tap(x: int, y: int) -> None:
     # UIAutomator captures and cold-emulator System UI recovery can leave the
     # ADB shell briefly busy. A 10-second timeout caused the latest smoke run
@@ -457,11 +467,12 @@ def main() -> None:
     hierarchy = wait_for_tabs(timeout=30)
     ensure_app()
 
-    # Keep the verified XML default state visible, but do not claim the original
-    # Source event/state path is traced, but the original VideoLandingViewModel and its dependencies are not integrated locally. Verify the switch remains in the unresolved unchecked state; do not infer interaction parity.
-    # The switch remains deliberately non-actionable rather than faking ON/OFF UI.
+    # Keep the verified XML default state visible. The original event/state path is
+    # traced, but VideoLandingViewModel and its dependencies are not integrated locally.
+    # Verify the switch remains non-actionable rather than faking ON/OFF UI.
     hierarchy = tap_tab("Videos")
     assert_switch_checked(hierarchy, "switchInternMode", False)
+    assert_switch_interaction_deferred(hierarchy, "switchInternMode")
     assert_text(hierarchy, "tvInternModeStatus", "Intern Mode : OFF")
     screenshot("videos-intern-mode-unbound")
     hierarchy = tap_view("ibTooltip")
