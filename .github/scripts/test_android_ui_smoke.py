@@ -196,6 +196,13 @@ class ScreenshotEvidenceTests(unittest.TestCase):
             with self.assertRaisesRegex(SystemExit, "not a valid PNG"):
                 validate_png_capture(path)
 
+    def test_missing_ihdr_chunk_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "bad-header.png"
+            path.write_bytes(bytes((137, 80, 78, 71, 13, 10, 26, 10)) + struct.pack(">I", 13) + b"NOPE" + struct.pack(">II", 1080, 1920))
+            with self.assertRaisesRegex(SystemExit, "not a valid PNG"):
+                validate_png_capture(path)
+
     def test_too_small_capture_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "tests.png"
