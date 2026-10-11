@@ -8,6 +8,7 @@ on:
       - ".github/scripts/verify_source_bound_layouts.py"
       - ".github/scripts/run_android_ui_smoke.py"
       - ".github/scripts/test_android_ui_smoke.py"
+      - ".github/scripts/verify_android_ui_smoke_workflow.py"
       - ".github/workflows/android-ui-smoke.yml"
   pull_request:
     branches: [main]
@@ -33,6 +34,10 @@ jobs:
     steps:
       - name: Check out target repository only
         uses: actions/checkout@v4
+
+      - name: Verify bounded emulator execution and QA evidence retention
+        run: |
+          python3 -B .github/scripts/verify_android_ui_smoke_workflow.py
 
       - name: Verify original-source replica layout bindings
         run: |

@@ -287,3 +287,10 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - Restored the bounded emulator profile to 2048 MB and 2 virtual CPU cores. This avoids reserving most of a standard hosted runner for the emulator and reduces competition with Gradle, ADB, UIAutomator, and artifact collection.
 - Kept the 18-minute emulator-step timeout, 30-minute job ceiling, non-cancelling concurrency, and unconditional evidence upload. This is CI resource tuning only; it changes no app UI, source-bound resource, or interaction behavior.
 - Acceptance remains evidence-driven: a completed smoke job and reviewable screenshots/hierarchy/diagnostics are required. Build and static guard success alone do not establish runtime QA or 1:1 parity.
+
+
+## Smoke-workflow contract regression guard — Batch 82 (2026-10-11)
+
+- Added `.github/scripts/verify_android_ui_smoke_workflow.py` to check the emulator workflow's explicit resource and evidence-retention invariants: 30-minute job ceiling, 18-minute emulator-step timeout, 2048 MB/2-core emulator profile, non-cancelling concurrency, unconditional artifact upload, failure on missing artifacts, and 14-day retention.
+- Wired the contract check into the workflow before source-bound layout validation and included the script in path filters so future edits run the gate.
+- This prevents the CI resource profile from silently drifting away from the documented runner investigation. It does not test app fidelity or replace screenshot/hierarchy review; emulator runtime QA and full 1:1 parity remain unverified.
