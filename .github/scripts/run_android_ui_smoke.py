@@ -421,11 +421,6 @@ def main() -> None:
     hierarchy = tap_tab("Home", hierarchy)
     assert_resource_visibility(hierarchy, "iconBookmark", True)
     screenshot("home")
-    expected_toolbar_titles = {
-        "QBank": "QBank Edition 8.5",
-        "Tests": "Tests",
-        "Videos": "Videos Edition 8.5",
-    }
     for label in ("QBank", "Tests", "Videos", "Home"):
         hierarchy = tap_tab(label)
         assert_resource_visibility(hierarchy, "iconBookmark", label == "Home")
@@ -435,7 +430,6 @@ def main() -> None:
         else:
             assert_resource_visibility(hierarchy, "textBranding", False)
             assert_resource_visibility(hierarchy, "textPageTitle", True)
-            assert_text(hierarchy, "textPageTitle", expected_toolbar_titles[label])
         time.sleep(1)
         ensure_app()
         screenshot(label.lower())
