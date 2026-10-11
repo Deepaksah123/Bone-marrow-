@@ -391,3 +391,9 @@ Intern Mode switch pipeline source evidence
 
 
 Source file `sources/kotlin/TransformationChildLayout.java` declares the runtime type `com.marrow2.ui.video.landing.model.VideoLandingUIState` in Kotlin metadata. Verified fields: `editionSwitchBannerText`, `isInternModeEnabled`, `isInternModeOn`, `showPytBanner`, `sortOrder`, `showInternModeSnackBar`. The two Intern Mode booleans have distinct meanings; constructor defaults do not substitute for loaded course/account state.
+
+
+## VideoLanding controls — event-driven, not direct visibility actions
+
+- `sources/kotlin/setScrollPosition.java:2816–2821` confirms the Intern Mode switch listener forwards its checked boolean to a typed event and the ViewModel. Nearby click handlers around `2761–2871` similarly dispatch source event objects.
+- Local banner-dismiss and tooltip controls are intentionally non-clickable until their original event/state effects are integrated. Direct `View.GONE` mutations and hard-coded tooltip-state changes are not source-equivalent implementations.
