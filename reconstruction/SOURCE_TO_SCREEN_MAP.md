@@ -32,7 +32,7 @@ The earlier `sources/com/marrow2/ui/...` package inventory was not sufficient to
 
 Direct source evidence: `DataBuffer.java` lines 107 and 113–115 instantiate each `DataBuffer` with its enum name, index, tab string/drawable, and Fragment class. The named Fragment classes are present and extend Fragment-derived bases; QBank, Tests, and Video `onCreateView` methods invoke their generated binding classes. This establishes source class/layout ownership more strongly than package-name inference.
 
-**Correction to local shell:** `MainActivity.java` previously manufactured tags with a `Home_` prefix (for example, `Home_kotlin.makeGooglePlayServicesAvailable`); those strings do not occur in the decompiler source. The tags now use the verified original class names and inactive-tab cleanup matches only those four known tab tags. This fixes a fabricated identifier without asserting that the local wrapper Fragment is the original Fragment implementation.
+**Correction to local shell (verified against `sources/kotlin/copyToBuffer.java:163–192`):** the original tag is exactly `"Home_" + cls.getName()`. The original helper removes every managed fragment whose tag starts with `Home_`, looks up the selected exact tag, instantiates the original class if absent, and adds it to `R.id.upperContainer`. The local shell now restores that original prefix and cleanup rule. Its fragment objects are still local wrappers rather than the original Fragment classes, so this corrects tag semantics only; it does not claim source-native navigation parity.
 
 **Still unresolved:** the original launcher component is `com.marrow.ui.activities.onboarding.splash.SplashActivity`, not the local `MainActivity`. The original activity/fragment transition through splash, onboarding, and the main host has not yet been fully traced. The reconstructed app's local wrapper architecture therefore remains non-parity code until that runtime route and genuine dependencies are integrated.
 
@@ -72,6 +72,21 @@ The tab controller's selection handler does not just assign labels. In `sources/
 - The original `DataBuffer` enum declares HOME index 0 and QBANK/TESTS/VIDEOS indices 1/2/3 with the original classes and route keys (`KEY_HOME`, `qbank`, `test`, `video`). The selected item is carried as the actual `DataBuffer` object in each custom tab.
 
 This verifies that the reconstruction's `newTabFragment(index)` wrapper mechanism is not a 1:1 implementation of the original transaction path, even though its tags now match the verified class names. No wrapper change is being presented as full parity. The source-native integration target is the original `zadb` Activity/base hierarchy plus its `parsePeriod` binding and `copyToBuffer` fragment host, with their genuine dependencies/resources intact.
+
+## Original shell includes and runtime identity (additional verification)
+
+The original `activity_home_revamp` root binding (`sources/kotlin/parsePeriod.java:78–100`) identifies the root FrameLayout, drawer, content containers, and bottom TabLayout. Its binary XML includes these original resources by exact resource ID, resolved through `sources/com/marrow/R.java`:
+
+| Original include/resource | Resolved resource ID | Source role |
+|---|---:|---|
+| `banner_renew_plan` | `0x7f0d006b` | Monetization-related banner; intentionally excluded by project scope |
+| `banner_update_college_year_revamp` | `0x7f0d006c` | Original college-year update banner |
+| `banner_kyc_verify_revamp` | `0x7f0d006a` | Original KYC verification banner |
+| `drawer_menu_revamp` | `0x7f0d00b3` | Original drawer hierarchy |
+
+The current local `activity_main.xml` instead uses gone FrameLayout shells for the college-year/KYC banner IDs and includes `drawer_menu_empty_host_replica`. Those are not proven to be the original include hierarchies; they remain a verified parity gap until the binary XML resources are decoded and integrated from the source archive. No screenshot-derived replacements are being added.
+
+The original manifest also declares `com.marrow.TrainingApplication` as the Application class and `o._coerceBooleanFromInt` as `appComponentFactory`; the local manifest declares neither. The original package is `com.marrow`, version `12.0.0`, min SDK 29 and target SDK 35. The reconstruction module currently uses a different application ID and SDK levels. Changing those values alone would not restore the original Hilt/application/dependency graph, so they remain unresolved rather than being silently approximated.
 
 ## Resource evidence — corrected boundary
 
