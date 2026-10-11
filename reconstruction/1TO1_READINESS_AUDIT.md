@@ -157,3 +157,8 @@ The original `activity_home_revamp` binary XML (`0x7f0d0033`, obfuscated APK ent
 - Updated `.github/scripts/run_android_ui_smoke.py` in commit [d0ef80f](https://github.com/Deepaksah123/Bone-marrow-/commit/d0ef80ff084fd75f00b38bf162734a8c57e030f2) to suppress the one-time immersive confirmation and inspect the active window state before and after every screenshot, failing when a System UI ANR is detected.
 - The corrected smoke workflow is [run 38119313874](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38119313874). Its final result and screenshots must be reviewed before runtime QA can be accepted.
 - This correction does not change replica UI or prove 1:1 parity. Home/QBank/Tests/Videos data-bound content, complete behavior, and source-grounded visual comparison remain incomplete.
+
+
+## Toolbar bookmark action — Batch 65
+
+The original toolbar bookmark view is source-backed in the shell binding. An exact-symbol scan of the canonical decompiler archive found no separate Java/Kotlin click-listener reference to `iconBookmark` beyond the generated shell binding and resource declaration. Its click behavior remains unresolved; the replica must not attach a guessed destination. This is a tracked evidence gap, not a claim that the original app's bookmark feature is absent.
