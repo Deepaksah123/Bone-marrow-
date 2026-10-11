@@ -82,7 +82,8 @@ jobs:
           grep -Fq '<color name="mb_50">#62c8df</color>' app/src/main/res/values/colors.xml
           grep -Fq '<color name="n_80">#313434</color>' app/src/main/res/values/colors.xml
           # Visible Video landing controls use source light/dark attributes and spacing.
-          grep -Fq 'android:background="?attr/colorSurfaceVariant13"' app/src/main/res/layout/fragment_video_landing_replica.xml
+          grep -A6 -F 'android:id="@+id/llInternMode"' app/src/main/res/layout/fragment_video_landing_replica.xml | grep -Fq 'android:background="?attr/backgroundColor"'
+          grep -Fq 'android:background="?attr/backgroundVariant2"' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -Fq 'style="?attr/heading6"' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -Fq 'app:thumbTint="?attr/onBackgroundSurface5"' app/src/main/res/layout/fragment_video_landing_replica.xml
           grep -Fq 'app:trackTint="?attr/onSurfaceBgOutline"' app/src/main/res/layout/fragment_video_landing_replica.xml
