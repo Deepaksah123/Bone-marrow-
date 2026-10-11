@@ -513,7 +513,7 @@ def main() -> None:
         "run_id": os.environ.get("GITHUB_RUN_ID", "local"),
         "required_capture_count": len(required_captures),
         "captures": manifest,
-    }, indent=2) + "\\n", encoding="utf-8")
+    }, indent=2) + "\n", encoding="utf-8")
     print(f"Screenshot interaction QA completed; validated {len(manifest)} required captures and wrote {manifest_path}.", flush=True)
 
 
