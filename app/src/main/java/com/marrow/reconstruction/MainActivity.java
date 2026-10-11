@@ -160,7 +160,7 @@ public final class MainActivity extends FragmentActivity {
         for (Fragment fragment : manager.getFragments()) {
             if (fragment != null && fragment.isAdded()
                     && fragment.getTag() != null
-                    && isSourceTabDestinationTag(fragment.getTag())
+                    && fragment.getTag().startsWith("Home_")
                     && fragment != destination) {
                 transaction.remove(fragment);
             }
@@ -175,23 +175,17 @@ public final class MainActivity extends FragmentActivity {
         transaction.commit();
     }
 
-    // Source DataBuffer.java maps the four tabs to these exact original Fragment classes.
-    // The rendered instances remain local wrappers; tags retain source class identity without
-    // inventing the former "Home_" prefix. Runtime parity with the original NavHost is unresolved.
+    // Source copyToBuffer.write(Class) uses "Home_" + Class.getName() as the tag,
+    // removes prior Home_ destinations, and instantiates the selected source Fragment class.
+    // This reconstruction retains the verified tag scheme, but its Fragment instances are
+    // still local wrappers; exact source-native Fragment integration remains unresolved.
     private static String sourceDestinationTagFor(int index) {
         switch (index) {
-            case 1: return "kotlin.ResidentKeyRequirementUnsupportedResidentKeyRequirementException";
-            case 2: return "kotlin.WalletConstantsCardNetwork";
-            case 3: return "kotlin.setScrollPosition";
-            default: return "kotlin.makeGooglePlayServicesAvailable";
+            case 1: return "Home_kotlin.ResidentKeyRequirementUnsupportedResidentKeyRequirementException";
+            case 2: return "Home_kotlin.WalletConstantsCardNetwork";
+            case 3: return "Home_kotlin.setScrollPosition";
+            default: return "Home_kotlin.makeGooglePlayServicesAvailable";
         }
-    }
-
-    private static boolean isSourceTabDestinationTag(String tag) {
-        return "kotlin.makeGooglePlayServicesAvailable".equals(tag)
-                || "kotlin.ResidentKeyRequirementUnsupportedResidentKeyRequirementException".equals(tag)
-                || "kotlin.WalletConstantsCardNetwork".equals(tag)
-                || "kotlin.setScrollPosition".equals(tag);
     }
 
     private static TabContentFragment newTabFragment(int index) {
