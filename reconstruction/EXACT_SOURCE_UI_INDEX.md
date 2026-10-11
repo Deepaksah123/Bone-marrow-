@@ -356,3 +356,11 @@ The raw original APK manifest and DEX type descriptors are authoritative for run
 - Tab Fragments: `o.makeGooglePlayServicesAvailable`, `o.ResidentKeyRequirementUnsupportedResidentKeyRequirementException`, `o.WalletConstantsCardNetwork`, `o.setScrollPosition`
 
 The original fragment transaction helper constructs tags as `Home_ + Class.getName()`, so source-native tags are `Home_o.*`. The reconstruction now uses those runtime-qualified tags; the local Fragment classes are still wrappers and do not satisfy source-native class identity.
+
+
+## Splash callback and duplicate-launch evidence — Batch 66
+
+- `SplashActivity.onPlayFromMediaId()` calls the private `onPlay()`; that method obtains an Intent from the original runtime host's companion factory, adds `key_override_transition=false`, starts the Activity, and finishes. Raw host identity is `o.zadb`.
+- Separate recovered callbacks start `com.marrow.kt.ui.activities.sync.SyncingActivity`, runtime `o.createFloatList`, and runtime `o.getAnchorU`, then finish. They are alternate callback destinations, not proof that the launcher unconditionally routes to one of them.
+- Raw `classes.dex` code units 9811–9849 in the 12,952-unit `SplashActivity.onCreate` body encode a duplicate-launch guard: if `isTaskRoot()` is false, the Intent has category `android.intent.category.LAUNCHER`, and its action equals `android.intent.action.MAIN`, the code calls `finish()`.
+- The decompiler explicitly skips `SplashActivity.onCreate`; callback selection remains unresolved. Do not invent a default callback route from these separate callback methods.
