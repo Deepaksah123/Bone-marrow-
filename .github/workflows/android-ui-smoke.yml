@@ -177,7 +177,51 @@ jobs:
             if "shimmerMain" not in Path("qa-screenshots/search-back-hierarchy.xml").read_text(encoding="utf-8"):
                 raise SystemExit("Better Search back action did not return to the source-backed Home loading state")
 
-            # Capture both resolved theme modes after tab navigation. These images are            # QA evidence only; they are not used to infer or synthesize UI.
+            # Verify the source-bound Video banner close and tooltip affordances.
+            current_root = ET.parse("qa-screenshots/home-hierarchy.xml").getroot()
+            video_bounds = None
+            for node in current_root.iter("node"):
+                if node.attrib.get("text", "") == "Videos" or node.attrib.get("content-desc", "") == "Videos":
+                    video_bounds = node.attrib.get("bounds", "")
+            match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", video_bounds or "")
+            if not match:
+                raise SystemExit("Could not locate Videos tab for interaction QA")
+            x1, y1, x2, y2 = map(int, match.groups())
+            subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
+            time.sleep(1)
+            def dump_hierarchy(remote, local):
+                subprocess.run(["adb", "shell", "uiautomator", "dump", "--compressed", remote], check=True, stdout=subprocess.DEVNULL, timeout=30)
+                subprocess.run(["adb", "pull", remote, local], check=True, stdout=subprocess.DEVNULL, timeout=30)
+                return ET.parse(local).getroot()
+            video_root = dump_hierarchy("/sdcard/video-controls.xml", "qa-screenshots/video-controls-hierarchy.xml")
+            def bounds_for_resource(root_node, suffix):
+                for node in root_node.iter("node"):
+                    if node.attrib.get("resource-id", "").endswith("/" + suffix):
+                        return node.attrib.get("bounds", "")
+                return ""
+            tooltip_bounds = bounds_for_resource(video_root, "ibTooltip")
+            match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", tooltip_bounds)
+            if not match:
+                raise SystemExit("Could not locate source-bound Video tooltip trigger")
+            x1, y1, x2, y2 = map(int, match.groups())
+            subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
+            time.sleep(1)
+            video_root = dump_hierarchy("/sdcard/video-tooltip-open.xml", "qa-screenshots/video-tooltip-open-hierarchy.xml")
+            if not any(node.attrib.get("resource-id", "").endswith("/tooltipInternModeInfo") for node in video_root.iter("node")):
+                raise SystemExit("Video tooltip did not become visible after tapping its source-bound trigger")
+            close_bounds = bounds_for_resource(video_root, "btnCloseInternModeBanner")
+            match = re.fullmatch(r"\\[(\\d+),(\\d+)\\]\\[(\\d+),(\\d+)\\]", close_bounds)
+            if not match:
+                raise SystemExit("Could not locate source-bound Intern Mode banner close control")
+            x1, y1, x2, y2 = map(int, match.groups())
+            subprocess.run(["adb", "shell", "input", "tap", str((x1+x2)//2), str((y1+y2)//2)], check=True, timeout=10)
+            time.sleep(1)
+            video_root = dump_hierarchy("/sdcard/video-banner-closed.xml", "qa-screenshots/video-banner-closed-hierarchy.xml")
+            if any(node.attrib.get("resource-id", "").endswith("/btnCloseInternModeBanner") for node in video_root.iter("node")):
+                raise SystemExit("Intern Mode banner close control remained visible after tap")
+
+            # Capture both resolved theme modes after tab navigation. These images are
+            # QA evidence only; they are not used to infer or synthesize UI.
             subprocess.run(["adb", "shell", "cmd", "uimode", "night", "yes"], check=True, timeout=20)
             subprocess.run(["adb", "shell", "am", "force-stop", "com.marrow.reconstruction.replica"], check=True, timeout=15)
             subprocess.run(["adb", "shell", "am", "start", "-n", "com.marrow.reconstruction.replica/com.marrow.reconstruction.MainActivity"], check=True, stdout=subprocess.DEVNULL, timeout=15)
