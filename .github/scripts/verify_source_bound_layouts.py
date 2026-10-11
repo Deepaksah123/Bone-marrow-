@@ -262,6 +262,25 @@ def main() -> int:
     elif 'app:layout_constraintTop_toTopOf="parent"' not in appbar.group(0):
         failures.append("Tests: AppBarLayout is missing the original top constraint")
 
+    # Toolbar title/branding states are transcribed from the original screenshot reference
+    # and asserted again against the live accessibility tree by the emulator smoke test.
+    strings_root = ET.parse(VALUES / "strings.xml").getroot()
+    string_values = {node.attrib.get("name"): (node.text or "") for node in strings_root.findall("string")}
+    title_bindings = {
+        "replica_tab_title_qbank_edition_85": "QBank Edition 8.5",
+        "replica_tab_title_tests": "Tests",
+        "replica_tab_title_videos_edition_85": "Videos Edition 8.5",
+    }
+    for resource_name, expected_text in title_bindings.items():
+        if string_values.get(resource_name) != expected_text:
+            failures.append(f"Toolbar title resource {resource_name} must remain {expected_text!r}")
+    activity_java = (ROOT / "app/src/main/java/com/marrow/reconstruction/MainActivity.java").read_text(encoding="utf-8")
+    for resource_name in title_bindings:
+        if f"R.string.{resource_name}" not in activity_java:
+            failures.append(f"Toolbar title resource {resource_name} is not bound by MainActivity")
+    if "textBranding.setVisibility(View.VISIBLE)" not in activity_java or "textPageTitle.setVisibility(View.GONE)" not in activity_java:
+        failures.append("Home toolbar must retain branding and hide the centered page title")
+
     if failures:
         print("\nSOURCE-BOUND LAYOUT VALIDATION: FAIL")
         for failure in failures:
