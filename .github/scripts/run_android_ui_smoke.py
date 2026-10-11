@@ -38,10 +38,19 @@ def back() -> None:
 
 
 def screenshot(name: str) -> None:
-    remote = f"/sdcard/{name}.png"
-    adb(["shell", "screencap", "-p", remote], timeout=30)
-    adb(["pull", remote, str(OUT / f"{name}.png")], timeout=30)
-    print(f"Captured screenshot: {name}", flush=True)
+    # Stream the framebuffer directly; remote-file screencap can fail on headless
+    # SwiftShader emulators with an invalid ColorBuffer despite a healthy app.
+    cmd = ["adb", "exec-out", "screencap", "-p"]
+    print("$ " + " ".join(cmd), flush=True)
+    result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=30)
+    if result.returncode != 0 or not result.stdout.startswith(b"\\x89PNG\\r\\n\\x1a\\n"):
+        raise SystemExit(
+            f"Framebuffer capture failed for {name}: rc={result.returncode}; "
+            f"stderr={result.stderr.decode(errors='replace')[-600:]}; "
+            f"bytes={len(result.stdout)}"
+        )
+    (OUT / f"{name}.png").write_bytes(result.stdout)
+    print(f"Captured screenshot: {name} ({len(result.stdout)} bytes)", flush=True)
 
 
 def main() -> None:
