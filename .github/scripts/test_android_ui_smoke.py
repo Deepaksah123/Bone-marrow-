@@ -10,7 +10,7 @@ from unittest.mock import patch
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-from run_android_ui_smoke import assert_switch_interaction_deferred, assert_text, find_node, node_center, tab_is_selected, tap, validate_png_capture, visible_anr_marker, visible_system_ui_anr, wait_button_center
+from run_android_ui_smoke import assert_interaction_deferred, assert_switch_interaction_deferred, assert_text, find_node, node_center, tab_is_selected, tap, validate_png_capture, visible_anr_marker, visible_system_ui_anr, wait_button_center
 
 
 class VisibleAnrMarkerTests(unittest.TestCase):
@@ -157,6 +157,23 @@ class AccessibilityParserTests(unittest.TestCase):
         self.assertNotIn("setOnCheckedChangeListener", method)
         self.assertIn("String.format(", method)
         self.assertNotIn("Locale.ROOT", method)
+
+    def test_source_bound_video_events_remain_deferred_without_original_viewmodel(self) -> None:
+        for resource_id in ("ibTooltip", "btnCloseInternModeBanner", "btnInternModeToolTipDone"):
+            with self.subTest(resource_id=resource_id):
+                root = ET.fromstring(
+                    f'<hierarchy><node resource-id="pkg/{resource_id}" visible-to-user="true" '
+                    'clickable="false" focusable="false" bounds="[0,0][100,100]" /></hierarchy>'
+                )
+                assert_interaction_deferred(root, resource_id, "source-bound video event")
+
+    def test_source_bound_video_event_rejects_clickable_node(self) -> None:
+        root = ET.fromstring(
+            '<hierarchy><node resource-id="pkg/ibTooltip" visible-to-user="true" '
+            'clickable="true" focusable="false" bounds="[0,0][100,100]" /></hierarchy>'
+        )
+        with self.assertRaises(SystemExit):
+            assert_interaction_deferred(root, "ibTooltip", "source-bound video event")
 
     def test_deferred_intern_mode_switch_requires_non_clickable_and_non_focusable_node(self) -> None:
         root = ET.fromstring(
