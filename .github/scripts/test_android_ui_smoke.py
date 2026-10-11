@@ -158,6 +158,22 @@ class AccessibilityParserTests(unittest.TestCase):
         self.assertIn("String.format(", method)
         self.assertNotIn("Locale.ROOT", method)
 
+    def test_video_banner_and_tooltip_controls_have_no_local_visibility_substitute(self) -> None:
+        from pathlib import Path
+
+        root = Path(__file__).resolve().parents[2]
+        source = (root / "app/src/main/java/com/marrow/reconstruction/MainActivity.java").read_text(encoding="utf-8")
+        start = source.index("View closeInternModeBanner = root.findViewById")
+        end = source.index("\n        }\n        return root;", start)
+        block = source[start:end]
+        for control in ("closeInternModeBanner", "internModeTooltipTrigger", "doneInternModeTooltip"):
+            with self.subTest(control=control):
+                self.assertIn(f"{control}.setClickable(false);", block)
+                self.assertIn(f"{control}.setFocusable(false);", block)
+        self.assertNotIn("setOnClickListener", block)
+        self.assertNotIn("setVisibility(View.GONE)", block)
+        self.assertNotIn("setVisibility(View.VISIBLE)", block)
+
     def test_source_bound_video_events_remain_deferred_without_original_viewmodel(self) -> None:
         for resource_id in ("ibTooltip", "btnCloseInternModeBanner", "btnInternModeToolTipDone"):
             with self.subTest(resource_id=resource_id):
