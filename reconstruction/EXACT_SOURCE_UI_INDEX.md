@@ -397,3 +397,15 @@ Source file `sources/kotlin/TransformationChildLayout.java` declares the runtime
 
 - `sources/kotlin/setScrollPosition.java:2816–2821` confirms the Intern Mode switch listener forwards its checked boolean to a typed event and the ViewModel. Nearby click handlers around `2761–2871` similarly dispatch source event objects.
 - Local banner-dismiss and tooltip controls are intentionally non-clickable until their original event/state effects are integrated. Direct `View.GONE` mutations and hard-coded tooltip-state changes are not source-equivalent implementations.
+
+
+## Verified VideoLanding control-to-event mapping
+
+| Original view | Binding field | Event sent to original ViewModel |
+|---|---|---|
+| `btnCloseInternModeBanner` | `IconCompatParcelizer` | `TransformationChildCard.write.INSTANCE` |
+| `ibTooltip` | `MediaMetadataCompat` | `TransformationChildCard.AudioAttributesCompatParcelizer.INSTANCE` |
+| `btnInternModeToolTipDone` | `onPrepareFromUri.IconCompatParcelizer` | `TransformationChildCard.AudioAttributesImplApi21Parcelizer.INSTANCE` |
+| `switchInternMode` | `onPlayFromSearch` | `TransformationChildCard.MediaBrowserCompatItemReceiver(checked)` |
+
+Evidence: `sources/kotlin/setScrollPosition.java:2816–2853`, `sources/kotlin/buildAndPrepareSampleStreamWrappers.java:24–60, 129–140`, and `sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java:2011–2038`. The first two event coroutine bodies are not fully decompiled; the local app leaves these controls deferred instead of approximating their state effects.
