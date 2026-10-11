@@ -242,3 +242,12 @@
 - [x] Recorded original loading-state message selection and tooltip-copy selection from the original fragment observer.
 - [x] Kept the loading overlay and tooltip hidden until their original state streams are integrated; the state-dependent message remains unpopulated.
 - [ ] Integrate the original app-scoped ViewModel/provider graph and lifecycle/observer collection. Several decompiler bodies remain unresolved.
+
+
+## Batch 70 — original drawer ViewModel event trace
+
+- [x] Traced verified ViewModel-level drawer actions for About Us, FAQs, Know More, Marrow Notes, Rate Us, Report Video Piracy, Terms, and Share the App.
+- [x] Recorded original event variants and checksum fingerprints from the decompiler archive.
+- [x] Kept local drawer routes unbound because original row-to-listener mapping, account/course visibility predicates, and final effect consumer remain unresolved.
+- [ ] Recover original drawer binding/listener-to-row mapping and effect consumer from genuine source/DEX evidence before enabling route interactions.
+- [ ] Re-run build, evidence guard, layout tests, and emulator smoke on the latest PR head; no full drawer interaction parity is claimed.
