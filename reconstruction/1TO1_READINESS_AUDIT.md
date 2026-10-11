@@ -335,3 +335,9 @@ The earlier screenshot artifact contained an Android “Digital Wellbeing isn't 
 - This ensures that if emulator boot or the emulator action fails before Python smoke code starts, the unconditional artifact step can still preserve a traceable artifact instead of losing all evidence because the directory never existed.
 - A context-only artifact is **not** screenshot QA and does not change the pass criteria. The emulator step must succeed and actual screenshots/hierarchy/diagnostics must be reviewed before runtime acceptance.
 - Extended the workflow contract guard to enforce the pre-emulator evidence step.
+
+
+## Workflow contract guard expression correction — Batch 89 (2026-10-11)
+
+- Simplified the new pre-emulator-step contract check to direct source-text assertions. This avoids over-escaped regular-expression syntax in the Python checker and verifies both the step name and its explicit invocation-state marker.
+- The checker is validated by the same CI smoke job before emulator startup; no application code or visual UI changed.
