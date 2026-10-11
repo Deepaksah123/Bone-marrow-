@@ -254,7 +254,7 @@ public final class MainActivity extends FragmentActivity {
                 });
                 View doneInternModeTooltip = root.findViewById(R.id.btnInternModeToolTipDone);
                 if (doneInternModeTooltip != null) {
-                    closeInternModeTooltip.setOnClickListener(v ->
+                    doneInternModeTooltip.setOnClickListener(v ->
                             internModeTooltip.setVisibility(View.GONE));
                 }
             }
