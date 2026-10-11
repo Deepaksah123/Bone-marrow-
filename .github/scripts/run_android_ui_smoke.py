@@ -28,20 +28,22 @@ def ensure_app() -> None:
         raise SystemExit("Reconstruction app process exited during interaction QA")
 
 
-def assert_no_system_anr(stage: str) -> None:
-    # A live app PID is not enough: Android can display a System UI ANR dialog
-    # over screenshots while taps still return successfully. Inspect active
-    # window state and fail the QA gate rather than uploading false-positive QA.
+def assert_no_anr_dialog(stage: str) -> None:
+    # A live app PID is not enough: any Android process can put an ANR dialog
+    # over the app while taps still return successfully. Inspect active window
+    # state and reject all such captures, not only System UI ANRs.
     result = adb(["shell", "dumpsys", "window", "windows"], timeout=20)
     window_state = result.stdout.lower()
     indicators = (
-        "application not responding: system ui",
-        "system ui is not responding",
-        "system ui isn't responding",
+        "application not responding",
+        "isn't responding",
+        "is not responding",
+        "process system isn't responding",
+        "process system is not responding",
     )
     found = next((marker for marker in indicators if marker in window_state), None)
     if found:
-        raise SystemExit(f"Emulator System UI ANR detected {stage}: {found}")
+        raise SystemExit(f"Emulator ANR dialog detected {stage}: {found}")
 
 
 def tap(x: int, y: int) -> None:
@@ -54,7 +56,7 @@ def back() -> None:
 
 
 def screenshot(name: str) -> None:
-    assert_no_system_anr(f"before screenshot {name}")
+    assert_no_anr_dialog(f"before screenshot {name}")
     # Stream the framebuffer directly; remote-file screencap can fail on headless
     # SwiftShader emulators with an invalid ColorBuffer despite a healthy app.
     cmd = ["adb", "exec-out", "screencap", "-p"]
@@ -67,7 +69,7 @@ def screenshot(name: str) -> None:
             f"bytes={len(result.stdout)}"
         )
     (OUT / f"{name}.png").write_bytes(result.stdout)
-    assert_no_system_anr(f"after screenshot {name}")
+    assert_no_anr_dialog(f"after screenshot {name}")
     print(f"Captured screenshot: {name} ({len(result.stdout)} bytes)", flush=True)
 
 
