@@ -16,11 +16,12 @@ class BuiltApkVerificationTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.apk = self.root / "app-debug.apk"
         self.aapt = self.root / "aapt"
-        self.aapt.write_text(
-            "#!/bin/sh\nprintf \"package: name='%s' versionCode='1' versionName='0.1.0'\\nlaunchable-activity: name='%s'\\n\"\n"
-            % (EXPECTED_PACKAGE, EXPECTED_LAUNCHER),
-            encoding="utf-8",
-        )
+        self.aapt.write_text(chr(10).join([
+            "#!/usr/bin/env python3",
+            "print(\"package: name='com.marrow.reconstruction.replica' versionCode='1'\")",
+            "print(\"launchable-activity: name='com.marrow.reconstruction.MainActivity'\")",
+            "",
+        ]), encoding="utf-8")
         self.aapt.chmod(0o755)
         self.make_apk()
 
