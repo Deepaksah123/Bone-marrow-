@@ -10,7 +10,7 @@ from unittest.mock import patch
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-from run_android_ui_smoke import assert_interaction_deferred, assert_switch_interaction_deferred, assert_text, find_node, node_center, tab_is_selected, tap, validate_png_capture, visible_anr_marker
+from run_android_ui_smoke import assert_interaction_deferred, assert_no_anr_dialog, assert_switch_interaction_deferred, assert_text, find_node, node_center, tab_is_selected, tap, validate_png_capture, visible_anr_marker
 
 
 class VisibleAnrMarkerTests(unittest.TestCase):
@@ -41,6 +41,25 @@ class VisibleAnrMarkerTests(unittest.TestCase):
           Surface: shown=true layer=1 alpha=1.0
         """
         self.assertIsNotNone(visible_anr_marker(dump))
+
+
+    @patch("run_android_ui_smoke.write_anr_diagnostics")
+    @patch("run_android_ui_smoke.adb")
+    def test_visible_anr_fails_without_recovery(self, mock_adb, mock_diagnostics) -> None:
+        dump = """
+        Window #4 Window{f2c880f u0 Application Not Responding: com.android.systemui}:
+          isVisible=true
+          Surface: shown=true layer=1 alpha=1.0
+        """
+        mock_adb.return_value = subprocess.CompletedProcess(
+            args=["adb"], returncode=0, stdout=dump, stderr=""
+        )
+        with self.assertRaisesRegex(SystemExit, "Visible emulator ANR dialog detected"):
+            assert_no_anr_dialog("unit test")
+        mock_adb.assert_called_once_with(
+            ["shell", "dumpsys", "window", "windows"], timeout=30
+        )
+        mock_diagnostics.assert_called_once()
 
 
 
