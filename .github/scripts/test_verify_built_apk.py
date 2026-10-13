@@ -52,12 +52,12 @@ class BuiltApkVerificationTests(unittest.TestCase):
     def test_missing_required_layout_fails_closed(self) -> None:
         self.make_apk(omit_layout="fragment_home_replica")
         with self.assertRaisesRegex(SystemExit, "fragment_home_replica"):
-            inspect_apk(self.apk, self.aapt)
+            inspect_apk(self.apk, self.aapt, self.apksigner)
 
     def test_corrupt_apk_fails_closed(self) -> None:
         self.apk.write_bytes(b"not an APK")
         with self.assertRaisesRegex(SystemExit, "not a readable ZIP/APK"):
-            inspect_apk(self.apk, self.aapt)
+            inspect_apk(self.apk, self.aapt, self.apksigner)
 
     def test_invalid_signature_fails_closed(self) -> None:
         self.apksigner.write_text(chr(10).join([
@@ -74,7 +74,7 @@ class BuiltApkVerificationTests(unittest.TestCase):
     def test_missing_apk_fails_closed(self) -> None:
         self.apk.unlink()
         with self.assertRaisesRegex(SystemExit, "missing or empty"):
-            inspect_apk(self.apk, self.aapt)
+            inspect_apk(self.apk, self.aapt, self.apksigner)
 
 
 if __name__ == "__main__":
