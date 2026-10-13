@@ -16,6 +16,7 @@ class BuiltApkVerificationTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.apk = self.root / "app-debug.apk"
         self.aapt = self.root / "aapt"
+        self.apksigner = self.root / "apksigner"
         self.aapt.write_text(chr(10).join([
             "#!/usr/bin/env python3",
             "print(\"package: name='com.marrow.reconstruction.replica' versionCode='1'\")",
@@ -23,6 +24,8 @@ class BuiltApkVerificationTests(unittest.TestCase):
             "",
         ]), encoding="utf-8")
         self.aapt.chmod(0o755)
+        self.apksigner.write_text(chr(10).join(["#!/usr/bin/env python3", "print(\"Verifies\")", "print(\"Verified using v1 scheme (JAR signing): true\")", ""]), encoding="utf-8")
+        self.apksigner.chmod(0o755)
         self.make_apk()
 
     def tearDown(self) -> None:
@@ -38,10 +41,11 @@ class BuiltApkVerificationTests(unittest.TestCase):
                     archive.writestr(f"res/layout/{layout}.xml", b"compiled layout fixture")
 
     def test_accepts_well_formed_package_and_emits_non_parity_receipt(self) -> None:
-        receipt = inspect_apk(self.apk, self.aapt)
+        receipt = inspect_apk(self.apk, self.aapt, self.apksigner)
         self.assertEqual(receipt["application_id"], EXPECTED_PACKAGE)
         self.assertEqual(receipt["launcher_activity"], EXPECTED_LAUNCHER)
         self.assertEqual(receipt["zip_integrity"], "PASS")
+        self.assertEqual(receipt["signature_verification"], "PASS")
         self.assertEqual(receipt["ui_parity"], "NOT_ASSERTED")
         self.assertEqual(len(receipt["sha256"]), 64)
 
@@ -54,6 +58,18 @@ class BuiltApkVerificationTests(unittest.TestCase):
         self.apk.write_bytes(b"not an APK")
         with self.assertRaisesRegex(SystemExit, "not a readable ZIP/APK"):
             inspect_apk(self.apk, self.aapt)
+
+    def test_invalid_signature_fails_closed(self) -> None:
+        self.apksigner.write_text(chr(10).join([
+            "#!/usr/bin/env python3",
+            "import sys",
+            "print('DOES NOT VERIFY', file=sys.stderr)",
+            "sys.exit(1)",
+            "",
+        ]), encoding="utf-8")
+        self.apksigner.chmod(0o755)
+        with self.assertRaisesRegex(SystemExit, "APK signature verification failed"):
+            inspect_apk(self.apk, self.aapt, self.apksigner)
 
     def test_missing_apk_fails_closed(self) -> None:
         self.apk.unlink()
