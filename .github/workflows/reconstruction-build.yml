@@ -37,10 +37,12 @@ jobs:
           java-version: '17'
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
-      - name: Verify Gradle wrapper
-        run: test -x ./gradlew
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
       - name: Build debug APK
-        run: ./gradlew --no-daemon --stacktrace assembleDebug
+        run: gradle --no-daemon --stacktrace assembleDebug
       - name: Verify independent package and launcher icon
         run: |
           grep -q 'applicationId .com.marrow.reconstruction.replica.' app/build.gradle
