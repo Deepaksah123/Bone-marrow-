@@ -280,6 +280,7 @@ def validate_png_capture(image_path: Path, *, minimum_width: int = 320, minimum_
     offset = len(signature)
     width = height = 0
     seen_ihdr = seen_idat = seen_iend = False
+    idat_payloads: list[bytes] = []
     while offset < len(image_bytes):
         if offset + 12 > len(image_bytes):
             raise SystemExit(f"Truncated PNG chunk framing: {image_path}")
@@ -302,6 +303,7 @@ def validate_png_capture(image_path: Path, *, minimum_width: int = 320, minimum_
             raise SystemExit(f"PNG contains duplicate IHDR chunk: {image_path}")
         if chunk_type == b"IDAT":
             seen_idat = True
+            idat_payloads.append(chunk_data)
         if chunk_type == b"IEND":
             if chunk_length != 0 or not seen_idat:
                 raise SystemExit(f"PNG has invalid IEND or missing image data: {image_path}")
@@ -312,6 +314,10 @@ def validate_png_capture(image_path: Path, *, minimum_width: int = 320, minimum_
 
     if not seen_ihdr or not seen_idat or not seen_iend or offset != len(image_bytes):
         raise SystemExit(f"PNG is missing required chunks or has trailing data: {image_path}")
+    try:
+        zlib.decompress(b"".join(idat_payloads))
+    except zlib.error as exc:
+        raise SystemExit(f"PNG IDAT stream is corrupt: {image_path}: {exc}") from exc
     if width < minimum_width or height < minimum_height:
         raise SystemExit(f"Required screenshot has implausible dimensions {width}x{height}: {image_path}")
     return {"file": image_path.name, "bytes": len(image_bytes), "width": width, "height": height}
