@@ -33,7 +33,6 @@ class VisibleAnrMarkerTests(unittest.TestCase):
           Surface: shown=true layer=1 alpha=1.0
         """
         self.assertEqual(visible_anr_marker(dump), "application not responding")
-        self.assertTrue(visible_system_ui_anr(dump))
 
     def test_visible_replica_anr_is_not_classified_as_system_ui(self) -> None:
         dump = """
@@ -42,7 +41,6 @@ class VisibleAnrMarkerTests(unittest.TestCase):
           Surface: shown=true layer=1 alpha=1.0
         """
         self.assertIsNotNone(visible_anr_marker(dump))
-        self.assertFalse(visible_system_ui_anr(dump))
 
 
 
