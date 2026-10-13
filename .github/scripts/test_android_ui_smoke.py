@@ -279,6 +279,18 @@ class ScreenshotEvidenceTests(unittest.TestCase):
             with self.assertRaisesRegex(SystemExit, "missing required chunks"):
                 validate_png_capture(path)
 
+    def test_corrupt_compressed_image_data_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "bad-idat.png"
+            path.write_bytes(
+                self.signature
+                + self.chunk(b"IHDR", struct.pack(">IIBBBBB", 1080, 1920, 8, 2, 0, 0, 0))
+                + self.chunk(b"IDAT", b"not a zlib stream")
+                + self.chunk(b"IEND", b"")
+            )
+            with self.assertRaisesRegex(SystemExit, "IDAT stream is corrupt"):
+                validate_png_capture(path)
+
     def test_too_small_capture_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "tests.png"
