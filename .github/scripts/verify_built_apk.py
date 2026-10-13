@@ -28,7 +28,7 @@ REQUIRED_LAYOUTS = {
 }
 
 
-def inspect_apk(apk_path: Path, aapt_path: Path) -> dict[str, object]:
+def inspect_apk(apk_path: Path, aapt_path: Path, apksigner_path: Path) -> dict[str, object]:
     if not apk_path.is_file() or apk_path.stat().st_size == 0:
         raise SystemExit(f"Built APK is missing or empty: {apk_path}")
 
@@ -41,8 +41,10 @@ def inspect_apk(apk_path: Path, aapt_path: Path) -> dict[str, object]:
 
     if bad_entries is not None:
         raise SystemExit(f"Built APK contains a corrupt ZIP entry: {bad_entries}")
-    if "AndroidManifest.xml" not in names or "classes.dex" not in names:
-        raise SystemExit("Built APK is missing AndroidManifest.xml or classes.dex")
+    required_entries = {"AndroidManifest.xml", "classes.dex", "resources.arsc"}
+    missing_entries = sorted(required_entries - names)
+    if missing_entries:
+        raise SystemExit("Built APK is missing required entries: " + ", ".join(missing_entries))
 
     packaged_layouts = {
         Path(name).stem for name in names
@@ -69,6 +71,15 @@ def inspect_apk(apk_path: Path, aapt_path: Path) -> dict[str, object]:
         found = launch_match.group(1) if launch_match else "unresolved"
         raise SystemExit(f"Unexpected APK launcher: {found}; expected {EXPECTED_LAUNCHER}")
 
+    try:
+        signature = subprocess.run(
+            [str(apksigner_path), "verify", "--verbose", str(apk_path)],
+            check=True, capture_output=True, text=True, timeout=30,
+        )
+    except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+        detail = getattr(exc, "stderr", None)
+        raise SystemExit(f"APK signature verification failed: {detail or exc}") from exc
+
     digest = hashlib.sha256(apk_path.read_bytes()).hexdigest()
     return {
         "apk": apk_path.name,
@@ -79,6 +90,8 @@ def inspect_apk(apk_path: Path, aapt_path: Path) -> dict[str, object]:
         "required_layouts": sorted(REQUIRED_LAYOUTS),
         "compiled_layout_count": len(packaged_layouts),
         "zip_integrity": "PASS",
+        "signature_verification": "PASS",
+        "signature_details": signature.stdout.strip(),
         "ui_parity": "NOT_ASSERTED",
     }
 
@@ -87,9 +100,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("apk", type=Path)
     parser.add_argument("--aapt", required=True, type=Path)
+    parser.add_argument("--apksigner", required=True, type=Path)
     parser.add_argument("--output", type=Path, help="Optional JSON receipt path.")
     args = parser.parse_args()
-    receipt = inspect_apk(args.apk, args.aapt)
+    receipt = inspect_apk(args.apk, args.aapt, args.apksigner)
     rendered = json.dumps(receipt, indent=2, sort_keys=True)
     print(rendered)
     if args.output:
