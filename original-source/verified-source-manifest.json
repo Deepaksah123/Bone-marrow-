@@ -1,0 +1,119 @@
+{
+  "source_of_truth": {
+    "apk": {
+      "file": "base.apk",
+      "sha256": "e03a582c20eec102510509918315be53e45bb9fe90647207b2c956a0f55316a3"
+    },
+    "decompiler_archive": {
+      "file": "base.apk_Decompiler.com.zip",
+      "sha256": "92fa24c6d91faafa61e3317adcb5c7c10384eea437fa6b7f99c09ac372ab8685"
+    }
+  },
+  "verified_original_files": [
+    {
+      "archive_path": "sources/com/marrow2/ui/home/HomeViewModelV2.java",
+      "sha256": "f78d22c8f2cc7d2c82f5289066a484b3ce2209f7f6bae732464233b64e71e80d",
+      "bytes": 295884,
+      "role": "Original Home ViewModel decompiled from supplied archive"
+    },
+    {
+      "archive_path": "sources/kotlin/makeGooglePlayServicesAvailable.java",
+      "sha256": "cb3b035b6173ab2b9b1d17f6080ae6857e925690a8ec3bfba8e779fb78faaa7b",
+      "bytes": 149700,
+      "role": "Original HomeFragmentV2 decompiler alias; not a drop-in Android source class without its original dependency graph"
+    },
+    {
+      "archive_path": "sources/kotlin/getNextSegmentHolder.java",
+      "sha256": "95a2da26e36c6902ecc2140fffb41d0faa58795a4dcc341769da29008f7ca221",
+      "bytes": 13270,
+      "role": "Original binding for fragment_home"
+    },
+    {
+      "archive_path": "sources/kotlin/continuePreparing.java",
+      "sha256": "5a5471c7e3ae1eed6c8bd32240c556c36522a2ed60d8877760f5c8df3b526bfd",
+      "bytes": 4709,
+      "role": "Original binding for layout_dynamic_zen_area"
+    },
+    {
+      "archive_path": "resources/res/layout/fragment_home",
+      "sha256": "8868c7a68754639fe156b044ce3fe274304248ae5db82504b4771f6132683032",
+      "bytes": 10084,
+      "format": "Android compiled binary XML"
+    },
+    {
+      "archive_path": "resources/res/layout/layout_dynamic_zen_area",
+      "sha256": "31805dbf6680ca10afd718a41bd60c991bf15533d977212137febf5180278a57",
+      "bytes": 3136,
+      "format": "Android compiled binary XML"
+    },
+    {
+      "archive_path": "resources/res/layout/activity_home_revamp",
+      "sha256": "d93aae6f7dd945240def31a99eccd2b50e01f1006e97ca0c78ba8c340b53a93c",
+      "bytes": 7056,
+      "format": "Android compiled binary XML"
+    },
+    {
+      "archive_path": "resources/res/layout/fragment_video_landing",
+      "sha256": "6f3a84568feb3e759e0cafa1bc5352031758a0face9ae8d97f5476c64dbbe601",
+      "bytes": 12400,
+      "format": "Android compiled binary XML"
+    },
+    {
+      "archive_path": "resources/res/layout/fragment_qbank_landing",
+      "sha256": "c62f50c11e35bdc0c904982b372ec95264e2f9aacc73c4fe9fbe04410097867f",
+      "bytes": 1200,
+      "format": "Android compiled binary XML"
+    },
+    {
+      "archive_path": "resources/res/layout/fragment_home_test",
+      "sha256": "6efa92d7a34a78bc0694f2bfd8ea4b134f01f27e87c50eabc6d7e24734220711",
+      "bytes": 3068,
+      "format": "Android compiled binary XML"
+    },
+    {
+      "archive_path": "resources/res/values/public.xml",
+      "sha256": "962e102e46eb72fa0b2a2ae34782e2b0e93414dc4261f048abd925817990f685",
+      "bytes": 1042635,
+      "format": "Decompiler resource-ID map"
+    }
+  ],
+  "verified_navigation": {
+    "shell_layout": "activity_home_revamp",
+    "tab_controller": "sources/kotlin/zabz.java",
+    "tab_data": "sources/kotlin/DataBuffer.java",
+    "destinations": [
+      {
+        "tab_index": 0,
+        "tab": "HOME",
+        "fragment_decompiler_alias": "kotlin.makeGooglePlayServicesAvailable",
+        "layout": "fragment_home"
+      },
+      {
+        "tab_index": 1,
+        "tab": "QBANK",
+        "fragment_decompiler_alias": "kotlin.ResidentKeyRequirementUnsupportedResidentKeyRequirementException",
+        "layout": "fragment_qbank_landing"
+      },
+      {
+        "tab_index": 2,
+        "tab": "TESTS",
+        "fragment_decompiler_alias": "kotlin.WalletConstantsCardNetwork",
+        "layout": "fragment_home_test"
+      },
+      {
+        "tab_index": 3,
+        "tab": "VIDEOS",
+        "fragment_decompiler_alias": "kotlin.setScrollPosition",
+        "layout": "fragment_video_landing"
+      }
+    ],
+    "launcher_activity": "com.marrow.ui.activities.onboarding.splash.SplashActivity"
+  },
+  "unresolved_integration_dependencies": [
+    "Original application DI/provider graph for HomeViewModelV2 constructor dependencies",
+    "Original fragment superclass/runtime and generated binding dependencies",
+    "Original navigation/splash lifecycle transition into the home shell",
+    "Full original resource table and compiled resources are available in the supplied APK; decompiler archive alone does not contain resources.arsc"
+  ],
+  "integrity_rule": "This manifest records source paths and hashes verified against the supplied files. It is not a claim that the local replica is 1:1 or that the decompiled classes are currently integrated."
+}
