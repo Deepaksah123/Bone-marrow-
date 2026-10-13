@@ -8,6 +8,7 @@ import re
 import struct
 import subprocess
 import time
+import zlib
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -268,14 +269,49 @@ def screenshot(name: str) -> None:
 
 
 def validate_png_capture(image_path: Path, *, minimum_width: int = 320, minimum_height: int = 480) -> dict[str, int | str]:
-    """Validate a required screenshot's PNG signature, IHDR dimensions and byte count."""
+    """Validate PNG chunk framing, CRCs, image data, terminator, and dimensions."""
     if not image_path.is_file():
         raise SystemExit(f"Required screenshot evidence missing: {image_path}")
     image_bytes = image_path.read_bytes()
-    if (len(image_bytes) < 24 or not image_bytes.startswith(bytes((137, 80, 78, 71, 13, 10, 26, 10)))
-            or image_bytes[12:16] != b"IHDR"):
+    signature = bytes((137, 80, 78, 71, 13, 10, 26, 10))
+    if len(image_bytes) < len(signature) or not image_bytes.startswith(signature):
         raise SystemExit(f"Required screenshot is not a valid PNG: {image_path}")
-    width, height = struct.unpack(">II", image_bytes[16:24])
+
+    offset = len(signature)
+    width = height = 0
+    seen_ihdr = seen_idat = seen_iend = False
+    while offset < len(image_bytes):
+        if offset + 12 > len(image_bytes):
+            raise SystemExit(f"Truncated PNG chunk framing: {image_path}")
+        chunk_length = struct.unpack(">I", image_bytes[offset:offset + 4])[0]
+        chunk_type = image_bytes[offset + 4:offset + 8]
+        chunk_end = offset + 12 + chunk_length
+        if chunk_end > len(image_bytes):
+            raise SystemExit(f"Truncated PNG chunk payload: {image_path}")
+        chunk_data = image_bytes[offset + 8:offset + 8 + chunk_length]
+        stored_crc = struct.unpack(">I", image_bytes[offset + 8 + chunk_length:chunk_end])[0]
+        actual_crc = zlib.crc32(chunk_type + chunk_data) & 0xffffffff
+        if stored_crc != actual_crc:
+            raise SystemExit(f"PNG chunk CRC mismatch ({chunk_type.decode('ascii', errors='replace')}): {image_path}")
+        if not seen_ihdr:
+            if chunk_type != b"IHDR" or chunk_length != 13:
+                raise SystemExit(f"PNG must begin with a valid IHDR chunk: {image_path}")
+            width, height = struct.unpack(">II", chunk_data[:8])
+            seen_ihdr = True
+        elif chunk_type == b"IHDR":
+            raise SystemExit(f"PNG contains duplicate IHDR chunk: {image_path}")
+        if chunk_type == b"IDAT":
+            seen_idat = True
+        if chunk_type == b"IEND":
+            if chunk_length != 0 or not seen_idat:
+                raise SystemExit(f"PNG has invalid IEND or missing image data: {image_path}")
+            seen_iend = True
+            offset = chunk_end
+            break
+        offset = chunk_end
+
+    if not seen_ihdr or not seen_idat or not seen_iend or offset != len(image_bytes):
+        raise SystemExit(f"PNG is missing required chunks or has trailing data: {image_path}")
     if width < minimum_width or height < minimum_height:
         raise SystemExit(f"Required screenshot has implausible dimensions {width}x{height}: {image_path}")
     return {"file": image_path.name, "bytes": len(image_bytes), "width": width, "height": height}
@@ -358,7 +394,6 @@ def main() -> None:
     # The banner and tooltip-dismiss buttons are inside source layouts whose
     # verified default visibility is GONE, so UIAutomator cannot assert their node
     # properties at runtime. Source-level regression tests verify their disabled state.
-    screenshot("video-tooltip-dismiss-deferred")
     ensure_app()
 
     # Light/dark theme captures.
@@ -376,7 +411,7 @@ def main() -> None:
     required_captures = (
         "home", "qbank", "tests", "videos", "drawer-open", "search-open",
         "videos-intern-mode-unbound", "video-tooltip-deferred",
-        "video-tooltip-dismiss-deferred", "video-dark", "home-dark",
+        "video-dark", "home-dark",
     )
     manifest = []
     for name in required_captures:
