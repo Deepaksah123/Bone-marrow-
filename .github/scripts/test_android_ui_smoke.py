@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import struct
 import subprocess
+import zlib
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -223,10 +224,20 @@ class InternModeResourceParityTests(unittest.TestCase):
 
 
 class ScreenshotEvidenceTests(unittest.TestCase):
+    signature = bytes((137, 80, 78, 71, 13, 10, 26, 10))
+
     @staticmethod
-    def fake_png(width: int = 1080, height: int = 1920) -> bytes:
-        # Minimal byte sequence sufficient to exercise PNG signature + IHDR parsing.
-        return bytes((137, 80, 78, 71, 13, 10, 26, 10)) + struct.pack(">I", 13) + b"IHDR" + struct.pack(">II", width, height)
+    def chunk(kind: bytes, payload: bytes) -> bytes:
+        body = kind + payload
+        return struct.pack(">I", len(payload)) + body + struct.pack(">I", zlib.crc32(body) & 0xffffffff)
+
+    @classmethod
+    def fake_png(cls, width: int = 1080, height: int = 1920) -> bytes:
+        # Complete chunk framing with valid CRCs; pixel decoding is outside this gate.
+        ihdr = struct.pack(">IIBBBBB", width, height, 8, 2, 0, 0, 0)
+        return (cls.signature + cls.chunk(b"IHDR", ihdr)
+                + cls.chunk(b"IDAT", zlib.compress(b"minimal-test-payload"))
+                + cls.chunk(b"IEND", b""))
 
     def test_valid_png_manifest_entry_reports_size_and_dimensions(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
@@ -248,8 +259,24 @@ class ScreenshotEvidenceTests(unittest.TestCase):
     def test_missing_ihdr_chunk_is_rejected(self) -> None:
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / "bad-header.png"
-            path.write_bytes(bytes((137, 80, 78, 71, 13, 10, 26, 10)) + struct.pack(">I", 13) + b"NOPE" + struct.pack(">II", 1080, 1920))
-            with self.assertRaisesRegex(SystemExit, "not a valid PNG"):
+            path.write_bytes(self.signature + self.chunk(b"NOPE", struct.pack(">II", 1080, 1920)))
+            with self.assertRaisesRegex(SystemExit, "valid IHDR"):
+                validate_png_capture(path)
+
+    def test_chunk_crc_corruption_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "bad-crc.png"
+            payload = bytearray(self.fake_png())
+            payload[29] ^= 0x01
+            path.write_bytes(payload)
+            with self.assertRaisesRegex(SystemExit, "CRC mismatch"):
+                validate_png_capture(path)
+
+    def test_missing_iend_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "truncated.png"
+            path.write_bytes(self.signature + self.chunk(b"IHDR", struct.pack(">IIBBBBB", 1080, 1920, 8, 2, 0, 0, 0)) + self.chunk(b"IDAT", b"x"))
+            with self.assertRaisesRegex(SystemExit, "missing required chunks"):
                 validate_png_capture(path)
 
     def test_too_small_capture_is_rejected(self) -> None:
