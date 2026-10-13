@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Marrow Reconstruction</string>
+    <string name="app_name">Marrow</string>
     <string name="tab_home">Home</string>
     <string name="tab_qbank">QBank</string>
     <string name="tab_tests">Tests</string>
@@ -18,6 +18,10 @@
     <string name="text_concise_tooltip_description_updated">Intern Mode marks the videos that contain Previous Years’ Topics (PYTs) from NEET PG and INI-CET exams.</string>
     <string name="pyt_turn_on">Turn On</string>
     <string name="nav_learn_more">Learn More</string>
+    <string name="text_mapping_pyt">Mapping PYTs</string>
+    <string name="text_turning_off_intern_mode">Turning off Intern Mode</string>
+    <string name="text_reducing_video_hrs">Reducing video hours</string>
+    <string name="text_original_video_hrs">Original video hours</string>
     <string name="text_watch_next">Watch Next</string>
     <string name="nav_text_settings">Settings</string>
     <string name="your_course">Your Course</string>

@@ -60,3 +60,54 @@ Core layout/resource references cross-check successfully. Tooltip IDs, hierarchy
 - Independent content-level checks against the current GitHub files report all expected required IDs present, no excluded IDs reintroduced, and no unresolved tooltip strings or dimensions.
 - Further binary-XML comparisons restored the original Video root ID `parentFrame`, added QBank's original 16dp horizontal RecyclerView margins, aligned the Tests root background/orientation, layout gravity and parent width, and restored the original bottom-tab clipping flags and FrameLayout layout gravity.
 - The static regression check is now part of CI. The actual Android build/emulator job still needs to finish successfully before runtime QA can be called PASS.
+
+
+## Intern Mode fallback colors — Batch 64
+
+- Compared the Intern Mode OFF/ON state branches in the original `sources/kotlin/setScrollPosition.java` against the canonical decompiler archive's `resources/res/values/colors.xml`.
+- Original OFF background uses `?attr/backgroundColor`, falling back to `@color/bg_no_guess` (`#f5f5f5`); ON uses `?attr/colorSurfaceVariant13`, falling back to `@color/sepia80` (`#fce795`).
+- Restored those exact fallback resources and used them in `MainActivity.updateInternModeVisualState` instead of transparent fallback values. Added a regression assertion to the source-bound verifier.
+- This is a narrowly scoped source-evidence correction, not a claim of complete 1:1 parity. Runtime screenshot verification and remaining screen/data/interactions are still outstanding.
+
+
+## Toolbar bookmark action evidence boundary — Batch 65
+
+- Searched the canonical decompiler archive `base.apk_Decompiler.com.zip` for the exact symbols `iconBookmark` and `R.id.iconBookmark`.
+- The only Java/Kotlin occurrences of `iconBookmark` are in `sources/kotlin/parsePeriod.java` (the generated `activity_home_revamp` view-binding class) and the resource symbol declaration in `sources/com/marrow/R.java`. No separate Java/Kotlin click-listener reference to this toolbar view was found by that exact-symbol scan.
+- Therefore, the toolbar bookmark's click destination/behavior remains **unverified**. Keep its source-backed visual control, but do not invent a destination, overlay, or navigation action. A broader call-path trace is required before wiring behavior.
+- This is a source-evidence boundary, not proof that the original app has no bookmark behavior; obfuscated or indirect binding paths may require further tracing.
+
+
+## Intern Mode tooltip and banner event reconciliation — Batch 66
+
+- Traced the generated Video binding field order in `sources/kotlin/buildAndPrepareSampleStreamWrappers.java`: the first ImageButton is `btnCloseInternModeBanner`; the later ImageButton field `MediaMetadataCompat` is `ibTooltip`. They dispatch different events.
+- `btnCloseInternModeBanner` dispatches `TransformationChildCard.write.INSTANCE`. The VideoLandingViewModel clears `showPytBanner`, and the source observer applies that state to `clInternModeBanner`.
+- `ibTooltip` dispatches `TransformationChildCard.AudioAttributesCompatParcelizer.INSTANCE`. The VideoLandingViewModel emits `InternModeTooltipState(showTooltip=true, isCurrentEd6=...)`; the source observer shows the tooltip, chooses the default or updated description based on the current-edition flag, and handles dismissal separately.
+- Corrected the replica to keep banner dismissal on `btnCloseInternModeBanner` and make `ibTooltip` open the tooltip. Since the current-edition flag is not yet data-bound, the replica uses the original default description and hides Learn More instead of fabricating the ED6 variant. Done dismisses the tooltip. The current-edition-dependent branch and exact fade/touch behavior remain incomplete.
+- Artifact review of run `38120225475` found Android ANR dialogs despite its green conclusion. The smoke guard now rejects generic ANR dialogs; the replacement run and its artifact must be reviewed before runtime QA is considered valid.
+
+
+## Emulator screenshot isolation — Batch 67
+
+- The previous QA artifact's Home screenshot showed the Android system dialog “Digital Wellbeing isn't responding” over the app, so the prior green workflow was not valid visual evidence.
+- The smoke runner now force-stops and disables the optional `com.google.android.apps.wellbeing` package in the disposable API 31 emulator when present, preventing that unrelated system process from covering the app under test.
+- The ANR guard now checks both `dumpsys window windows` and `dumpsys activity activities` for generic ANR-dialog indicators before and after every screenshot. Any detected ANR fails the run instead of uploading a misleading artifact.
+- This change affects only disposable CI-emulator setup; it does not alter the reconstructed app or claim original-APK parity. Review the next run's actual artifact before accepting runtime QA.
+
+
+## Intern Mode switch event boundary — Batch 68
+
+- The original video layout declares `switchInternMode` with `android:checked="false"` and theme-bound OFF track/thumb colors. The existing replica additionally attached a local listener that only changed the status label and local colors; it did not reproduce the original edition/state transition.
+- The verified trace covers the ON/OFF color branches in `sources/kotlin/setScrollPosition.java`, but the current evidence set does not yet connect the switch event through the original ViewModel/observer flow and its side effects.
+- Removed the local-only fake toggle. The replica now renders the verified XML default state and original `concise_mode` label, while keeping the switch non-actionable until its actual source event/state path is traced. This is an explicit unresolved behavior, not a parity claim.
+- Updated emulator QA to stop tapping the unverified switch or accepting synthetic ON/OFF screenshots. It still checks the verified OFF default, captures that state, and tests the independently source-traced tooltip open/Done flow.
+- The source-bound verifier now fails if a local-only `setOnCheckedChangeListener`/visual-state imitation is reintroduced.
+- Remaining for this control: trace the exact original listener/event, ViewModel state mutation, observer-to-binding updates, persisted/default state, and transition side effects before enabling it.
+
+
+## Toolbar title source correction — Batch 63 (2026-10-11)
+
+- The earlier Batch 98 note records a screenshot-based title transcription. That is not accepted as implementation evidence under the source-only reconstruction rule.
+- Direct source now checked: `zabz.java:2563–2567` binds the non-Home toolbar title from `DataBuffer.getRemoteActionCompatParcelizer()`; `DataBuffer.java:43–51, 63–70` initializes the title field to empty and exposes a setter. Batch 64 raw-DEX inspection traced the three setter calls to `CourseConfigV2.CourseStrings.getQbankHeaderTitle()`, `getTestHeaderTitle()`, and `getVideoHeaderTitle()` in `HomeUIActivityViewModel$read.invokeSuspend`. Actual values remain course-config data, not static labels.
+- The local screenshot-derived title strings were removed. The title view remains visible on non-Home tabs but blank until the genuine update path is recovered. No claim is made that the original runtime title is blank.
+- Original app label verified as `Marrow`; the local app label now matches it. App ID remains separate from the original package.

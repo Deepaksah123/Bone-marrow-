@@ -62,12 +62,6 @@
                     app:layout_constraintEnd_toEndOf="parent">
 
                     <FrameLayout
-                        android:id="@+id/renewPlanBanner"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="gone" />
-
-                    <FrameLayout
                         android:id="@+id/collegeYearUpdateBanner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
