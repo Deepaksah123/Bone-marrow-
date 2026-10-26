@@ -47,7 +47,7 @@ jobs:
         run: |
           grep -q 'applicationId .com.marrow.reconstruction.replica.' app/build.gradle
           grep -q 'android:icon="@mipmap/ic_launcher"' app/src/main/AndroidManifest.xml
-          test -s app/src/main/res/mipmap-anydpi/ic_launcher.xml
+          test -s app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml
           test -s app/src/main/res/drawable/ic_launcher_foreground.xml
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
