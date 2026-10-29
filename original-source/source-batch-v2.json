@@ -1,0 +1,86 @@
+{
+  "bundle": {
+    "file": "marrow-original-source-batch-v2.zip",
+    "sha256": "ad96059e8742c4bf808bc64ddb92ac5b9a940864574de741350fcbd4bb1896aa",
+    "entries": 42,
+    "zip_integrity": "PASS",
+    "per_entry_sha256_validation": "PASS"
+  },
+  "source_of_truth": {
+    "apk_sha256": "e03a582c20eec102510509918315be53e45bb9fe90647207b2c956a0f55316a3",
+    "decompiler_archive_sha256": "92fa24c6d91faafa61e3317adcb5c7c10384eea437fa6b7f99c09ac372ab8685"
+  },
+  "original_tab_sources": [
+    {
+      "tab": "HOME",
+      "fragment": "sources/kotlin/makeGooglePlayServicesAvailable.java",
+      "fragment_sha256": "cb3b035b6173ab2b9b1d17f6080ae6857e925690a8ec3bfba8e779fb78faaa7b",
+      "viewmodel": "sources/com/marrow2/ui/home/HomeViewModelV2.java",
+      "viewmodel_sha256": "f78d22c8f2cc7d2c82f5289066a484b3ce2209f7f6bae732464233b64e71e80d",
+      "layout": "resources/res/layout/fragment_home",
+      "layout_sha256": "8868c7a68754639fe156b044ce3fe274304248ae5db82504b4771f6132683032"
+    },
+    {
+      "tab": "QBANK",
+      "fragment": "sources/kotlin/ResidentKeyRequirementUnsupportedResidentKeyRequirementException.java",
+      "fragment_sha256": "44ef6750e8859ecb3c61fd6a0a8eb60fb61d9f84a9439b4e55b92cd9492d6def",
+      "viewmodel": "sources/com/marrow2/ui/qbank/landing/QBankLandingViewModel.java",
+      "viewmodel_sha256": "4990c4a0c02ace2dcb1a394a08315846dccffabfe227e86082dc89d3d72c7a70",
+      "layout": "resources/res/layout/fragment_qbank_landing",
+      "layout_sha256": "c62f50c11e35bdc0c904982b372ec95264e2f9aacc73c4fe9b04410097867f"
+    },
+    {
+      "tab": "TESTS",
+      "fragment": "sources/kotlin/WalletConstantsCardNetwork.java",
+      "fragment_sha256": "ffa3e27f275aab01aa14716ceea66e1988f54fa013dc50fabb931570ba97581a",
+      "viewmodel": "sources/com/marrow2/ui/test/landing/HomeTestViewModel.java",
+      "viewmodel_sha256": "8e7f0595188fd90667b1660085c1d40d0ea7bd72c9f365d6a1e999b8a7941dab",
+      "layout": "resources/res/layout/fragment_home_test",
+      "layout_sha256": "6efa92d7a34a78bc0694f2bfd8ea4b134f01f27e87c50eabc6d7e24734220711"
+    },
+    {
+      "tab": "VIDEOS",
+      "fragment": "sources/kotlin/setScrollPosition.java",
+      "fragment_sha256": "55f60c96dcde612b1e13108ce4ba85133d03525e676d3b3705bfca375d488615",
+      "viewmodel": "sources/com/marrow2/ui/video/landing/VideoLandingViewModel.java",
+      "viewmodel_sha256": "a57ae71953d5ca86534f5fbe8083930f38028891d9ace152b9ae22a8454a29cd",
+      "layout": "resources/res/layout/fragment_video_landing",
+      "layout_sha256": "6f3a84568feb3e759e0cafa1bc5352031758a0face9ae8d97f5476c64dbbe601"
+    }
+  ],
+  "included_support_sources": [
+    "sources/kotlin/zabz.java",
+    "sources/kotlin/DataBuffer.java",
+    "sources/kotlin/parsePeriod.java",
+    "sources/kotlin/getNextSegmentHolder.java",
+    "sources/kotlin/continuePreparing.java",
+    "sources/kotlin/HlsMediaChunk.java",
+    "sources/kotlin/getNextMediaSequenceAndPartIndex.java",
+    "sources/kotlin/buildAndPrepareSampleStreamWrappers.java",
+    "sources/com/marrow/ui/activities/onboarding/splash/SplashActivity.java",
+    "sources/com/marrow2/ui/home/HomeViewModelV2_HiltModules.java",
+    "sources/com/marrow2/ui/qbank/landing/QBankLandingViewModel_HiltModules.java",
+    "sources/com/marrow2/ui/test/landing/HomeTestViewModel_HiltModules.java",
+    "sources/com/marrow2/ui/video/landing/VideoLandingViewModel_HiltModules.java",
+    "resources/res/values/public.xml",
+    "original-apk/AndroidManifest.xml",
+    "original-apk/resources.arsc"
+  ],
+  "viewmodel_constructor_dependency_counts": {
+    "HomeViewModelV2": 11,
+    "QBankLandingViewModel": 7,
+    "HomeTestViewModel": 6,
+    "VideoLandingViewModel": 7
+  },
+  "status": {
+    "source_batch": "assembled and hash-verified",
+    "app_integration": "NOT COMPLETE",
+    "build_ready": false,
+    "blockers": [
+      "Full original dependency-injection/provider graph is not integrated.",
+      "The decompiler archive contains obfuscated aliases and generated/runtime dependencies that cannot safely be treated as drop-in source classes.",
+      "Original splash-to-shell lifecycle and all resource bindings require integration and build validation."
+    ],
+    "provenance": "Only byte-preserved original source/resources from the supplied APK/decompiler archive; no screenshots, invented UI, or placeholder user content."
+  }
+}

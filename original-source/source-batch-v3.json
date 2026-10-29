@@ -1,0 +1,34 @@
+{
+  "bundle_file": "marrow-original-source-batch-v3.zip",
+  "bundle_sha256": "0c398c0ce92236b63fbc7fa54f8433af45646478942943522eeaa3910ef33d78",
+  "bundle_bytes": 1477908,
+  "zip_integrity": "PASS",
+  "archive_entries": 117,
+  "manifest_entries": 116,
+  "per_entry_sha256_and_size_validation": "PASS",
+  "source_of_truth": {
+    "apk_sha256": "e03a582c20eec102510509918315be53e45bb9fe90647207b2c956a0f55316a3",
+    "decompiler_archive_sha256": "92fa24c6d91faafa61e3317adcb5c7c10384eea437fa6b7f99c09ac372ab8685"
+  },
+  "scope": {
+    "original_tab_fragments": 4,
+    "original_viewmodels": 4,
+    "original_layout_dependency_closure": 20,
+    "original_drawable_asset_names": 49,
+    "included_resource_asset_files": 51,
+    "original_source_classes": 32,
+    "base_values_xml": true,
+    "night_tablet_and_api_value_overrides": true,
+    "binary_original_apk_resources": [
+      "original-apk/AndroidManifest.xml",
+      "original-apk/resources.arsc"
+    ]
+  },
+  "integration_status": "NOT COMPLETE",
+  "verified_blockers": [
+    "Original app dependency-injection/provider graph is not integrated.",
+    "Decompiler aliases and generated/runtime dependencies are not safe drop-in Java classes.",
+    "Original splash-to-shell lifecycle and full resource bindings still require integration and build validation."
+  ],
+  "provenance": "Bundle is byte-preserved original files selected from the user-supplied APK/decompiler archive. It contains no screenshot-derived UI or fabricated user content."
+}

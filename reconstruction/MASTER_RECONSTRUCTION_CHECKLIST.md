@@ -21,7 +21,7 @@
 - [x] Test landing replica includes source-bound `test_tab_toolbar`, `loader_empty_layout`, and `loading_layout` containers.
 - [x] Video landing replica includes several source-bound view IDs, including `clMain`, `epoxyRVSubject`, and the documented deck/bookmark/sample-video containers.
 - [x] Navigation batch commit `7ff041d7c84a4d7b8a4cfc095e2322ad11c4296b` replaces the prior per-tab `replace()` flow with separate tagged tab fragments and add/show/hide behavior: [commit](https://github.com/Deepaksah123/Bone-marrow-/commit/7ff041d7c84a4d7b8a4cfc095e2322ad11c4296b).
-- [x] Navigation follow-up commit `1ef4db62408ad188f2a760eda92d5d2b4ba85f45` aligns Home tab fragment tags with the exact original destination class names recorded in `DataBuffer.java`; local wrapper fragment classes are still a reconstruction boundary, not the original fragment implementations.
+- [x] Navigation follow-up commit `1ef4db62408ad188f2a760eda92d5d2b4ba85f45` aligned tags with the decompiler's destination class aliases; Batch 65 corrects those runtime tags to raw DEX `o.*` names (`Home_o.*`) because `copyToBuffer.write(Class)` uses `Class.getName()`. Local wrapper Fragment classes remain a reconstruction boundary, not original implementations.
 - [x] Tests layout follow-up commits `871337b330bde3dc132f9c9587be9fe092cab08f`, `9b4b8102686733c4ce44d664bacfc60561b476aa`, and `7f5b27b778e77bdfc6c19ffccb06b1894d1103aa` align the app-bar ID to source-bound `appbarGTa`, repair its constraint references, and add source-bound `collapsing_toolbar`; wrapper class/attributes remain unverified.
 - [x] Recovered `base.apk` and `base.apk_Decompiler.com.zip` from the Library in this session; verified SHA-256 values against the original evidence record. The original APK contains `resources.arsc`; the decompiler ZIP still omits that table.
 - [x] Added `reconstruction/DECODED_CORE_LAYOUT_HIERARCHY_BATCH_20.md` with decoded IDs and include trees for Home, shell, Tests, QBank and Videos.
@@ -188,3 +188,66 @@
 - [x] Android build passed: [run 38082219855](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082219855).
 - [ ] Finish emulator UI smoke and inspect screenshots: [run 38082552298](https://github.com/Deepaksah123/Bone-marrow-/actions/runs/38082552298).
 - [ ] Full source-state visibility/navigation trace and original-APK pixel comparison remain open.
+
+
+## Parallel batch execution — 2026-10-11
+
+- [x] Added static regression assertions for source-backed initial states and video subject-grid behavior in the source-bound layout verifier. This protects Home shimmer vs empty list, QBank spinner vs empty subject list, Tests loading vs empty list, and Videos 2/3-column layout/spacing behavior.
+- [x] Toolbar title/branding states are guarded against resource and Java-binding regressions.
+- [ ] Current-head emulator run must finish with screenshots/diagnostics uploaded before runtime QA can be marked PASS.
+- [ ] Reconstruct original ViewModel/adapter/data bindings and perform pixel comparison; do not fabricate rows to make loading states disappear.
+
+## Raw runtime class identity and title-binding cleanup — Batches 63–65
+
+- Removed the three static toolbar title strings previously transcribed from screenshots. Original DEX calls `CourseConfigV2.CourseStrings.getQbankHeaderTitle()`, `getTestHeaderTitle()`, and `getVideoHeaderTitle()` and passes those values to `DataBuffer.read(String)`. The local title stays blank until the original config/ViewModel flow is integrated.
+- Matched the local app label to original source string `Marrow` while retaining a separate application ID.
+- Corrected source-runtime package identity: raw APK manifest/DEX uses `o.zadb`, `o._coerceBooleanFromInt`, and tab Fragment classes in `o.*`; the decompiler archive remaps these to `kotlin.*`. Local source-tab tags now use `Home_o.*`, matching the original `Home_ + Class.getName()` convention.
+- Added source guard assertions against screenshot-title regressions and decompiler-alias runtime tags.
+- Validation on intermediate commit `f01bdaeb83eea470a224cab0fb6c2cbfddbb73c7`: Android build, evidence guard, and source layout audit tests passed. Emulator smoke QA was still running at that checkpoint; it must be inspected separately. The combined raw-package correction/guard commit still requires a fresh build and CI validation after it is pushed to the working branch.
+- Full source-native Fragment/Application/Activity integration and 1:1 parity remain incomplete; no manifest-only launcher swap was made.
+
+
+## Batch 66 — Intern Mode event/state trace
+
+- [x] Traced the original Videos fragment switch listener through `o.setScrollPosition`, the checked-boolean event `TransformationChildCard.MediaBrowserCompatItemReceiver`, and `VideoLandingViewModel.IconCompatParcelizer` state update.
+- [x] Verified original state observer owns ON/OFF label, checked state, theme tints, banners, and transition/loading labels; the behavior is not a cosmetic toggle.
+- [x] Kept the local switch non-clickable/non-focusable because the original ViewModel/repository/use-case graph is not integrated. Updated smoke comments and added a regression test to reject a local listener before source integration.
+- [ ] Full original Videos ViewModel and data/repository dependency integration remains unresolved; this batch does not claim Intern Mode parity.
+
+
+## Batch 67 — VideoLanding event fidelity boundary
+
+- [x] Removed locally invented direct visibility changes for the Intern Mode banner dismiss and tooltip trigger/dismiss controls.
+- [x] Verified original binding-to-event mapping for banner dismiss, tooltip open, tooltip Done, Learn More, and the Intern Mode switch from `setScrollPosition.java`, `buildAndPrepareSampleStreamWrappers.java`, and `VideoLandingViewModel.java`.
+- [x] Kept banner dismiss, tooltip open/Done, Learn More, and switch controls non-clickable/non-focusable until the original ViewModel event/state pipeline is integrated.
+- [x] Updated emulator smoke expectations, source-evidence guard, and regression tests to reject local direct visibility/navigation substitutes.
+- [x] Recomputed the SHA-256 fingerprints for eight original Intern Mode source/dependency files directly from the supplied decompiler archive.
+- [ ] Integrate the original VideoLanding ViewModel, event classes, observer, and injected dependencies before enabling these actions. Do not claim tooltip/banner interaction parity yet.
+- [ ] Latest Android build and emulator smoke results must be checked on the final batch commit; earlier smoke runs were cancelled when the branch was advanced.
+
+
+## Batch 68 — original VideoLanding dependency graph
+
+- [x] Traced the original `VideoLandingViewModel` factory callsite and recorded its seven constructor providers in source order.
+- [x] Verified archive implementation classes for the first four injected interfaces and the AppModule/coroutine-dispatcher provider paths.
+- [x] Preserved source fingerprints for the factory, ViewModel, and dependency implementations.
+- [ ] Integrate the original application provider graph and ViewModel lifecycle before enabling VideoLanding event controls; several coroutine bodies remain decompiler-unresolved.
+- [ ] Re-run build, evidence guard, layout/unit tests, and emulator smoke QA on the final PR head. Prior emulator smoke run was cancelled when branch commits advanced.
+
+
+## Batch 69 — transition resources and state binding
+
+- [x] Restored the four source-backed Intern Mode transition strings verbatim from the original archive.
+- [x] Added regression tests for exact transition and tooltip resource values.
+- [x] Recorded original loading-state message selection and tooltip-copy selection from the original fragment observer.
+- [x] Kept the loading overlay and tooltip hidden until their original state streams are integrated; the state-dependent message remains unpopulated.
+- [ ] Integrate the original app-scoped ViewModel/provider graph and lifecycle/observer collection. Several decompiler bodies remain unresolved.
+
+
+## Batch 70 — original drawer ViewModel event trace
+
+- [x] Traced verified ViewModel-level drawer actions for About Us, FAQs, Know More, Marrow Notes, Rate Us, Report Video Piracy, Terms, and Share the App.
+- [x] Recorded original event variants and checksum fingerprints from the decompiler archive.
+- [x] Kept local drawer routes unbound because original row-to-listener mapping, account/course visibility predicates, and final effect consumer remain unresolved.
+- [ ] Recover original drawer binding/listener-to-row mapping and effect consumer from genuine source/DEX evidence before enabling route interactions.
+- [ ] Re-run build, evidence guard, layout tests, and emulator smoke on the latest PR head; no full drawer interaction parity is claimed.

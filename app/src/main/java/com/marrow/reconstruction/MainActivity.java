@@ -16,11 +16,13 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import java.util.Locale;
 
 public final class MainActivity extends FragmentActivity {
     private TabLayout tabLayout;
     private ImageView bookmarkIcon;
+    private TextView textBranding;
+    private TextView textPageTitle;
+    private androidx.drawerlayout.widget.DrawerLayout drawerLayout;
     private static final int[] ICONS = { R.drawable.ic_home_tab_home, R.drawable.ic_home_tab_qbank, R.drawable.ic_home_tab_tests, R.drawable.ic_home_tab_videos };
     private static final int[] LABELS = { R.string.tab_home, R.string.tab_qbank, R.string.tab_tests, R.string.tab_video };
     private int selectedTab = 0;
@@ -51,7 +53,7 @@ public final class MainActivity extends FragmentActivity {
         super.onCreate(state);
         setContentView(R.layout.activity_main);
         ImageView menuIcon = findViewById(R.id.iconMenu);
-        androidx.drawerlayout.widget.DrawerLayout drawerLayout = findViewById(R.id.drawerLayout);
+        drawerLayout = findViewById(R.id.drawerLayout);
         menuIcon.setOnClickListener(v -> drawerLayout.openDrawer(android.view.Gravity.START));
         ImageView searchIcon = findViewById(R.id.iconSearch);
         searchIcon.setOnClickListener(v -> {
@@ -68,6 +70,8 @@ public final class MainActivity extends FragmentActivity {
         // The drawer's source-backed non-monetization hierarchy is reconstructed.
         // Keep account data and row destinations unbound until their original flows are traced.
         bookmarkIcon = findViewById(R.id.iconBookmark);
+        textBranding = findViewById(R.id.textBranding);
+        textPageTitle = findViewById(R.id.textPageTitle);
         byte[] menuIconBytes = Base64.decode(getString(R.string.source_menu_icon_png_base64), Base64.DEFAULT);
         menuIcon.setImageBitmap(BitmapFactory.decodeByteArray(menuIconBytes, 0, menuIconBytes.length));
         tabLayout = findViewById(R.id.bottomNavigation);
@@ -96,6 +100,21 @@ public final class MainActivity extends FragmentActivity {
         tabLayout.selectTab(tabLayout.getTabAt(selectedTab));
     }
 
+    private void updateToolbarTitle(int index) {
+        if (textBranding == null || textPageTitle == null) return;
+        if (index == 0) {
+            textBranding.setVisibility(View.VISIBLE);
+            textPageTitle.setVisibility(View.GONE);
+            return;
+        }
+        textBranding.setVisibility(View.GONE);
+        textPageTitle.setVisibility(View.VISIBLE);
+        // Original zabz.read(int) binds this field from DataBuffer.getRemoteActionCompatParcelizer().
+        // DataBuffer initializes that mutable title to an empty string; its edition/configuration
+        // update path is not reconstructed here. Do not substitute screenshot-transcribed labels.
+        textPageTitle.setText("");
+    }
+
     private void updateTabAppearance(TabLayout.Tab tab, boolean selected) {
         if (tab == null || tab.getCustomView() == null) return;
         View custom=tab.getCustomView();
@@ -111,6 +130,7 @@ public final class MainActivity extends FragmentActivity {
 
     private void renderTab(int index) {
         selectedTab = Math.max(0, Math.min(index, 3));
+        updateToolbarTitle(selectedTab);
         // The source DataBuffer exposes the bookmark action on HOME only.
         if (bookmarkIcon != null) {
             bookmarkIcon.setVisibility(selectedTab == 0 ? View.VISIBLE : View.GONE);
@@ -124,8 +144,8 @@ public final class MainActivity extends FragmentActivity {
         Fragment destination = manager.findFragmentByTag(destinationTag);
         androidx.fragment.app.FragmentTransaction transaction = manager.beginTransaction();
 
-        // Match the verified source helper: remove inactive Home_ destinations, preserve the
-        // selected instance if present, then add it if absent or show it if already managed.
+        // Remove only the four source-mapped tab destinations, preserve the selected instance,
+        // then add it if absent or show it if already managed.
         for (Fragment fragment : manager.getFragments()) {
             if (fragment != null && fragment.isAdded()
                     && fragment.getTag() != null
@@ -144,14 +164,16 @@ public final class MainActivity extends FragmentActivity {
         transaction.commit();
     }
 
-    // These destination names are verified in the original DataBuffer model.
-    // Local wrapper Fragments keep reconstruction classes separate from source names.
+    // Original DEX classes are in package o; the decompiler aliases these classes under package kotlin.\n    // Source copyToBuffer.write(Class) uses "Home_" + Class.getName() as the tag,
+    // removes prior Home_ destinations, and instantiates the selected source Fragment class.
+    // This reconstruction retains the verified tag scheme, but its Fragment instances are
+    // still local wrappers; exact source-native Fragment integration remains unresolved.
     private static String sourceDestinationTagFor(int index) {
         switch (index) {
-            case 1: return "Home_kotlin.ResidentKeyRequirementUnsupportedResidentKeyRequirementException";
-            case 2: return "Home_kotlin.WalletConstantsCardNetwork";
-            case 3: return "Home_kotlin.setScrollPosition";
-            default: return "Home_kotlin.makeGooglePlayServicesAvailable";
+            case 1: return "Home_o.ResidentKeyRequirementUnsupportedResidentKeyRequirementException";
+            case 2: return "Home_o.WalletConstantsCardNetwork";
+            case 3: return "Home_o.setScrollPosition";
+            default: return "Home_o.makeGooglePlayServicesAvailable";
         }
     }
 
@@ -172,30 +194,18 @@ public final class MainActivity extends FragmentActivity {
     private void configureInternModeSwitch(View root) {
         com.google.android.material.switchmaterial.SwitchMaterial modeSwitch =
                 root.findViewById(R.id.switchInternMode);
-        View modeContainer = root.findViewById(R.id.llInternMode);
         TextView modeStatus = root.findViewById(R.id.tvInternModeStatus);
-        if (modeSwitch == null || modeContainer == null || modeStatus == null) return;
+        if (modeSwitch == null || modeStatus == null) return;
 
-        modeSwitch.setChecked(false);
-        updateInternModeVisualState(modeSwitch, modeContainer, modeStatus, false);
-        modeSwitch.setOnCheckedChangeListener((button, checked) ->
-                updateInternModeVisualState(modeSwitch, modeContainer, modeStatus, checked));
-    }
-
-    private void updateInternModeVisualState(
-            com.google.android.material.switchmaterial.SwitchMaterial modeSwitch,
-            View modeContainer, TextView modeStatus, boolean enabled) {
-        modeStatus.setText(String.format(Locale.ROOT,
-                getString(R.string.concise_mode), enabled ? "ON" : "OFF"));
-        modeContainer.setBackgroundColor(resolveThemeColor(
-                enabled ? R.attr.colorSurfaceVariant13 : R.attr.backgroundColor,
-                android.graphics.Color.TRANSPARENT));
-        modeSwitch.setTrackTintList(ColorStateList.valueOf(resolveThemeColor(
-                enabled ? R.attr.onBackgroundVariant2 : R.attr.onSurfaceBgOutline,
-                android.graphics.Color.TRANSPARENT)));
-        modeSwitch.setThumbTintList(ColorStateList.valueOf(resolveThemeColor(
-                enabled ? R.attr.onSurfaceBlue3 : R.attr.onBackgroundSurface5,
-                android.graphics.Color.TRANSPARENT)));
+        // The original XML defines the initial switch state as unchecked and the
+        // OFF colors through its theme attributes. The original event -> ViewModel
+        // -> observer transition has not yet been traced end-to-end here. Do not
+        // fake an ON/OFF transition by changing only the label and colors.
+        // Original setScrollPosition uses String.format(getString(R.string.concise_mode), state).
+        modeStatus.setText(String.format(
+                getString(R.string.concise_mode), modeSwitch.isChecked() ? "ON" : "OFF"));
+        modeSwitch.setClickable(false);
+        modeSwitch.setFocusable(false);
     }
 
     private int resolveThemeColor(int attribute, int fallback) {
@@ -277,29 +287,28 @@ public final class MainActivity extends FragmentActivity {
                 });
             }
 
-            // These controls are bound by the original VideoLandingFragment view binding.
-            // The original close action dispatches a dedicated banner-dismiss event.
-            View internModeBanner = root.findViewById(R.id.clInternModeBanner);
+            // The original VideoLandingFragment dispatches these controls into its ViewModel.
+            // That event/state observer is not integrated here; do not substitute local visibility
+            // mutations for the original banner-dismiss and tooltip state transitions.
             View closeInternModeBanner = root.findViewById(R.id.btnCloseInternModeBanner);
-            if (internModeBanner != null && closeInternModeBanner != null) {
-                closeInternModeBanner.setOnClickListener(v ->
-                        internModeBanner.setVisibility(View.GONE));
-            }
-
-            // The source tooltip trigger and tooltip include are both part of the original binding.
-            View internModeTooltip = root.findViewById(R.id.tooltipInternModeInfo);
             View internModeTooltipTrigger = root.findViewById(R.id.ibTooltip);
-            if (internModeTooltip != null && internModeTooltipTrigger != null) {
-                internModeTooltipTrigger.setOnClickListener(v -> {
-                    int nextVisibility = internModeTooltip.getVisibility() == View.VISIBLE
-                            ? View.GONE : View.VISIBLE;
-                    internModeTooltip.setVisibility(nextVisibility);
-                });
-                View doneInternModeTooltip = root.findViewById(R.id.btnInternModeToolTipDone);
-                if (doneInternModeTooltip != null) {
-                    doneInternModeTooltip.setOnClickListener(v ->
-                            internModeTooltip.setVisibility(View.GONE));
-                }
+            View doneInternModeTooltip = root.findViewById(R.id.btnInternModeToolTipDone);
+            View learnMoreInternMode = root.findViewById(R.id.tvLearnMore);
+            if (closeInternModeBanner != null) {
+                closeInternModeBanner.setClickable(false);
+                closeInternModeBanner.setFocusable(false);
+            }
+            if (internModeTooltipTrigger != null) {
+                internModeTooltipTrigger.setClickable(false);
+                internModeTooltipTrigger.setFocusable(false);
+            }
+            if (doneInternModeTooltip != null) {
+                doneInternModeTooltip.setClickable(false);
+                doneInternModeTooltip.setFocusable(false);
+            }
+            if (learnMoreInternMode != null) {
+                learnMoreInternMode.setClickable(false);
+                learnMoreInternMode.setFocusable(false);
             }
         }
         return root;
@@ -330,6 +339,18 @@ public final class MainActivity extends FragmentActivity {
     public static final class QBankTabFragment extends TabContentFragment { }
     public static final class TestsTabFragment extends TabContentFragment { }
     public static final class VideosTabFragment extends TabContentFragment { }
+
+    @Override public void onBackPressed() {
+        // Preserve the original shell when Android BACK is pressed over the
+        // navigation drawer. FragmentActivity handles the Search back stack
+        // after the drawer is closed.
+        if (drawerLayout != null
+                && drawerLayout.isDrawerOpen(android.view.Gravity.START)) {
+            drawerLayout.closeDrawer(android.view.Gravity.START);
+            return;
+        }
+        super.onBackPressed();
+    }
 
     @Override protected void onSaveInstanceState(Bundle out) {
         out.putInt("selected_home_tab",selectedTab); super.onSaveInstanceState(out);
