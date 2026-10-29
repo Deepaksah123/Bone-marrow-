@@ -1,7 +1,7 @@
 {
   "bundle": {
     "file": "marrow-original-source-batch-v3.zip",
-    "sha256": "abe05e918f435859d30dc85a35c41a4bdee96bc051d581307a167a0cad7ac602",
+    "sha256": "cd0992383974c1dfb80a977cd33c04c5c7dbe8024108f21179f790b7275fddf9",
     "entries": 79,
     "payload_hash_validation": "PASS",
     "screenshot_material": "NONE"
@@ -37,6 +37,12 @@
     "QBankLandingViewModel": 7,
     "HomeTestViewModel": 6,
     "VideoLandingViewModel": 7
+  },
+  "viewmodel_constructor_dependencies": {
+    "HomeViewModelV2": ["getCodecsCorrespondingToMimeType","NetworkTypeObserverApi31DisplayInfoCallback","lambdaregister0comgoogleandroidexoplayer2utilNetworkTypeObserver","ParsableNalUnitBitArray","LogLogLevel","crc32","resetForTests","isSeekPending","OptionalModuleApi","Allocator","getPlatform"],
+    "QBankLandingViewModel": ["ParsableNalUnitBitArray","NetworkTypeObserverApi31DisplayInfoCallback","LogLogLevel","SurfaceInfo","isSeekPending","getArray","Allocator"],
+    "HomeTestViewModel": ["LogLogLevel","crc32","getDisplaySizeV17","UriData","isSeekPending","POJOPropertyBuilder5"],
+    "VideoLandingViewModel": ["isEncodingHighResolutionPcm","LogLogLevel","getDisplaySizeV17","binarySearchCeil","isSeekPending","Allocator","getPlatform"]
   },
   "status": {
     "source_batch_integrity": "verified",
