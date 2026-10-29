@@ -14,8 +14,15 @@
     "original_tab_fragments": 4,
     "original_viewmodels": 4,
     "original_layout_dependency_closure": 20,
-    "original_drawable_asset_names": 47,
-    "binary_original_apk_resources": ["original-apk/AndroidManifest.xml", "original-apk/resources.arsc"]
+    "original_drawable_asset_names": 49,
+    "included_resource_asset_files": 51,
+    "original_source_classes": 32,
+    "base_values_xml": true,
+    "night_tablet_and_api_value_overrides": true,
+    "binary_original_apk_resources": [
+      "original-apk/AndroidManifest.xml",
+      "original-apk/resources.arsc"
+    ]
   },
   "integration_status": "NOT COMPLETE",
   "verified_blockers": [
