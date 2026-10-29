@@ -132,6 +132,12 @@ def read_hierarchy() -> ET.Element:
         raise RuntimeError(f"UIAutomator did not confirm a hierarchy dump: {dump.stdout[-500:]}")
     xml = adb(["shell", "cat", path], timeout=10).stdout
     root = ET.fromstring(xml)
+    # Keep the exact hierarchy before checking for a late platform/app ANR.
+    # This is diagnostic evidence only; it is never used to construct UI.
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / "last-accessibility-hierarchy.xml").write_text(
+        ET.tostring(root, encoding="unicode"), encoding="utf-8"
+    )
     assert_no_anr_dialog("after accessibility hierarchy dump")
     return root
 

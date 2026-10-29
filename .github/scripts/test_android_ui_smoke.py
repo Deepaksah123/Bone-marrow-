@@ -11,7 +11,31 @@ from unittest.mock import patch
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
-from run_android_ui_smoke import assert_interaction_deferred, assert_no_anr_dialog, assert_switch_interaction_deferred, assert_text, find_node, node_center, tab_is_selected, tap, validate_png_capture, visible_anr_marker
+import run_android_ui_smoke as smoke
+from run_android_ui_smoke import read_hierarchy, assert_interaction_deferred, assert_no_anr_dialog, assert_switch_interaction_deferred, assert_text, find_node, node_center, tab_is_selected, tap, validate_png_capture, visible_anr_marker
+
+
+class ReadHierarchyEvidenceTests(unittest.TestCase):
+    @patch("run_android_ui_smoke.write_anr_diagnostics")
+    @patch("run_android_ui_smoke.adb")
+    def test_last_hierarchy_is_saved_before_late_anr_fails(self, mock_adb, mock_diagnostics) -> None:
+        hidden = "Window #4 Window{f2c880f u0 Application Not Responding: com.android.systemui}:\\n isVisible=false\\n Surface: shown=false"
+        visible = "Window #4 Window{f2c880f u0 Application Not Responding: com.android.systemui}:\\n isVisible=true\\n Surface: shown=true"
+        hierarchy = '<hierarchy><node content-desc="Home" bounds="[0,0][100,100]" /></hierarchy>'
+        mock_adb.side_effect = [
+            subprocess.CompletedProcess(args=["adb"], returncode=0, stdout=hidden, stderr=""),
+            subprocess.CompletedProcess(args=["adb"], returncode=0, stdout="", stderr=""),
+            subprocess.CompletedProcess(args=["adb"], returncode=0, stdout="UI hierarchy dumped to: /sdcard/marrow-ui-hierarchy.xml", stderr=""),
+            subprocess.CompletedProcess(args=["adb"], returncode=0, stdout=hierarchy, stderr=""),
+            subprocess.CompletedProcess(args=["adb"], returncode=0, stdout=visible, stderr=""),
+        ]
+        with tempfile.TemporaryDirectory() as tmp, patch.object(smoke, "OUT", Path(tmp)):
+            with self.assertRaisesRegex(SystemExit, "Visible emulator ANR dialog detected"):
+                read_hierarchy()
+            saved = Path(tmp) / "last-accessibility-hierarchy.xml"
+            self.assertTrue(saved.is_file())
+            self.assertEqual(ET.parse(saved).getroot().find("node").attrib["content-desc"], "Home")
+        mock_diagnostics.assert_called_once()
 
 
 class VisibleAnrMarkerTests(unittest.TestCase):
