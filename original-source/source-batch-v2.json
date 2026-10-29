@@ -1,7 +1,7 @@
 {
   "bundle": {
     "file": "marrow-original-source-batch-v2.zip",
-    "sha256": "67f9f5cafa7da693f948052057eed3d5a3a40820e77b209826c62d957cd929e0",
+    "sha256": "ad96059e8742c4bf808bc64ddb92ac5b9a940864574de741350fcbd4bb1896aa",
     "entries": 42,
     "zip_integrity": "PASS",
     "per_entry_sha256_validation": "PASS"
@@ -66,6 +66,12 @@
     "original-apk/AndroidManifest.xml",
     "original-apk/resources.arsc"
   ],
+  "viewmodel_constructor_dependency_counts": {
+    "HomeViewModelV2": 11,
+    "QBankLandingViewModel": 7,
+    "HomeTestViewModel": 6,
+    "VideoLandingViewModel": 7
+  },
   "status": {
     "source_batch": "assembled and hash-verified",
     "app_integration": "NOT COMPLETE",
