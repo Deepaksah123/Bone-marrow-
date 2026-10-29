@@ -1,8 +1,8 @@
 {
   "bundle": {
     "file": "marrow-original-source-batch-v3.zip",
-    "sha256": "cd0992383974c1dfb80a977cd33c04c5c7dbe8024108f21179f790b7275fddf9",
-    "entries": 79,
+    "sha256": "0c398c0ce92236b63fbc7fa54f8433af45646478942943522eeaa3910ef33d78",
+    "entries": 117,
     "payload_hash_validation": "PASS",
     "screenshot_material": "NONE"
   },
@@ -28,6 +28,7 @@
     "original_source_classes": 32,
     "original_binary_layouts": 20,
     "referenced_original_asset_names": 49,
+    "included_resource_asset_files": 51,
     "base_values_xml": true,
     "night_tablet_and_api_value_overrides": true,
     "original_manifest_and_resources_arsc": true
